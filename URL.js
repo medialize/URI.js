@@ -1,14 +1,20 @@
 (function(undefined) {
 
+if (window.hURL) {
+    window.console && (console.warn || console.log)("hURL.js could not load, since window.hURL already present");
+    return;
+}
+
 // TODO: shim Array.forEach()
 // TODO: shim Object.forEach()
+// TODO: look at json-query thing paul irish mentioned (podcast on modernizr)
 
 // constructor
-var URL = function(url) {
+var hURL = function(url) {
         if (url === undefined) {
             url = location.href + "";
         }
-        // url can be URL|String, or _parts Object
+        // url can be hURL|String, or _parts Object
 
         this._string = "";
         this._parts = {
@@ -22,42 +28,155 @@ var URL = function(url) {
             fragment: undefined
         };
         if (typeof url === "string") {
-            this._parts = URL.parse(url);
+            this._parts = hURL.parse(url);
             this._string = this.build();
-        } else if (url.constructor === URL) {
+        } else if (url.constructor === hURL) {
             // TODO: copy _parts and _string
         } else if (typeof url == "object" && (url.host || url.path)) {
             
         } else {
             throw new Error("invalid input"); // TODO: right error to throw?
         }
+        
+        // todo function() constructor returning new object
     },
-    p = URL.prototype;
+    p = hURL.prototype;
 
 
-URL.parse = function(string) {
+hURL.parse = function(string) {
+    var pos, t, parts = {};
+    // [protocol"://"[username[":"password]"@"]hostname[":"port]]["/"path["?"querystring]["#"fragment]]
+    // maybe rewrite this to a RegExp? What about IDN?
+    
+    // extract fragment
+    pos = string.indexOf('#');
+    if (pos > -1) {
+        // escaping?
+        parts.fragment = string.substr(pos + 1);
+        string = string.substr(0, pos);
+    }
+    
+    // extract query
+    pos = string.indexOf('?');
+    if (pos > -1) {
+        // escaping?
+        parts.query = string.substr(pos + 1);
+        string = string.substr(0, pos);
+    }
+    
+    // extract protocol
+    pos = string.indexOf('://');
+    if (pos > -1) {
+        parts.protocol = string.substr(0, pos);
+        string = string.substr(pos + 3);
+        
+        // extract username:password
+        pos = string.indexOf('@');
+        if (pos > -1) {
+            t = string.substr(0, pos).split(':');
+            parts.username = t[0];
+            parts.password = t[1];
+            string = string.substr(pos + 1);
+        }
+
+        // extract host:port
+        pos = string.indexOf('/');
+        if (pos > -1) {
+            t = string.substr(0, pos).split(':');
+            parts.host = t[0];
+            parts.port = t[1];
+            string = string.substr(pos);
+        }
+    }
+    
+    // what's left must be the path
+    parts.path = string;
+    
+    // and we're done
+    return parts;
+};
+
+hURL.parseQuery = function(string, flat) {
+    // "?"[name"="value"&"]+        -- valid
+    var a = [], 
+        o = {};
+        
+    // throw out the funky business
+    string = string.replace(/&+/g, '&').replace(/^\?*&*/, '');
+    
+    string.split('&').forEach(function(kv){
+        var t = kv.split('='),
+            item = {
+                name: decodeURIComponent(t.pop()),
+                value: decodeURIComponent(t.join('='))
+            };
+
+        if (flat) {
+            a.push(item);
+        } else {
+            // TODO: parse name[][fooo][] into something useful
+        }
+    });
     
 };
 
-URL.parseQuery = function(string) {
+hURL.build = function(parts) {
+    var t = "";
+    if (parts.protocol !== undefined) {
+        t += parts.protocol + "://";
+    }
+
+    if (parts.username !== undefined) {
+        t += parts.username;
+
+        if (parts.password !== undefined) {
+            t += ':' + parts.username;            
+        }
+
+        t += "@";
+    }
     
+    if (parts.host !== undefined) {
+        t += parts.host;
+
+        if (parts.port !== undefined) {
+            t += ':' + parts.port;
+        }
+
+        t += '/';
+    }
+    
+    if (parts.path !== undefined) {
+        if (parts.path[0] === '/') {
+            t += parts.path.substr(1);
+        } else {
+             // won't make much sense, if there's anything before the path
+            t += parts.path;
+        }
+    }
+    
+    if (parts.query !== undefined) {
+        t += '?' + parts.query;
+    }
+    
+    if (parts.fragment !== undefined) {
+        t += '#' + parts.fragment;
+    }
+    return t;
 };
 
-URL.build = function(parts) {
-    
-};
-
-URL.buildQuery = function(parts) {
-    
+hURL.buildQuery = function(parts) {
+    // TODO: build querystring from object / array
 };
 
 p.build = function() {
-    this._string = URL.build(this._parts);
+    this._string = hURL.build(this._parts);
+    return this;
 };
 
 
 p.toString = function() {
-    return this._string;
+    return this.build()._string;
 };
 p.valueOf = function() {
     return this.toString();
@@ -91,7 +210,7 @@ p.getPassword = function() {
 };
 p.setPassword = function(password) {
     // TODO: encode username
-    this._parts.username = username;
+    this._parts.password = password;
     this.build();
     return this;
 };
@@ -110,7 +229,12 @@ p.getDomain = function() {
     // TODO: convinience, return "google.com" from "www.google.com"
 };
 p.getTld = function() {
-    // TODO: convinience, return "com" from "www.google.com"
+    // return "com" from "www.google.com"
+    // TODO: edge case - IPv4 / IPv6
+    var domain = this.getDomain(),
+        pos = domain.lastIndexOf('.');
+    
+    return domain.substr(pos + 1);
 };
 
 
@@ -135,13 +259,20 @@ p.setPath = function(path) {
     return this;
 };
 p.getPathDirectory = function() {
-    // TODO: return dirname(this.getPathname());
+    // TODO: edge cases "/", ""
+    var pos = this._parts.path.lastIndexOf('/');
+    return pos > -1 ? this._parts.path.substr(0, pos) : undefined;
 };
 p.getPathFilename = function() {
-    // TODO: return basename(this.getPathname());
+    // TODO: edge cases "/", ""
+    var pos = this._parts.path.lastIndexOf('/');
+    return this._parts.path.substr(pos+1);
 };
 p.getPathSuffix = function() {
-    // TODO: return suffix(this.getPathname());
+    var filename = this.getPathFilename(),
+        pos = filename.lastIndexOf('.');
+
+    return pos.substr(pos+1);
 };
 
 
@@ -178,7 +309,54 @@ p.setHash = p.setFragment; // "convinience"
 
 p.normalize = function() {
     // reduce ".." and "."
-    // can only be done on 
+    // can only be done on URLs with a path
+    
+    // TODO: port my stuff from smarty
+    /*
+        // resolve relative path
+        if (!preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $file)) {
+            $_was_relative_prefix = $file[0] == '.' ? substr($file, 0, strpos($file, '|')) : null;
+            $_path = DS . trim($file, '/\\');
+            $_was_relative = true;
+        } else {
+            $_path = $file;
+        }
+        // don't we all just love windows?
+        $_path = str_replace('\\', '/', $_path);
+        // resolve simples
+        $_path = preg_replace('#(/\./(\./)*)|/{2,}#', '/', $_path);
+        // resolve parents
+        while (true) {
+            $_parent = strpos($_path, '/../');
+            if ($_parent === false) {
+                break;
+            } else if ($_parent === 0) {
+                $_path = substr($_path, 3);
+                break;
+            }
+            $_pos = strrpos($_path, '/', $_parent - strlen($_path) - 1);
+            if ($_pos === false) {
+                // don't we all just love windows?
+                $_pos = $_parent;
+            }
+            $_path = substr_replace($_path, '', $_pos, $_parent + 3 - $_pos);
+        }
+        if (DS != '/') {
+            // don't we all just love windows?
+            $_path = str_replace('/', '\\', $_path);
+        }
+        // revert to relative
+        if (isset($_was_relative)) {
+            if (isset($_was_relative_prefix)){
+                $_path = $_was_relative_prefix . $_path;
+            } else {
+                $_path = substr($_path, 1);
+            }
+        }
+
+        // this is only required for directories
+        $file = rtrim($_path, '/\\');
+    */
 };
 
 p.resolve = function(base) {
@@ -190,18 +368,85 @@ p.resolveTo = function(base) {
     // this being "../bar/baz.html?foo=bar"
     // base being "http://example.org/foo/other/file.html"
     // return being http://example.org/foo/bar/baz.html?foo=bar"
+    
+    // TODO: port my stuff from Shurlook
+    /*
+        // http://tools.ietf.org/html/rfc3986#section-5
+    	public function absoluteTo( $base )
+    	{
+    		// abort if this is not a relative URL
+    		if( !$this->isRelativeURL() )
+    			return clone $this;
+
+    		if( is_string( $base ) )
+    			$base = new URL( $base );
+
+    		// abort if $base is a relative URL
+    		if( $base->isRelativeURL() )
+    			throw new \Exception( '"'. $base .'" is a relative URL and thus not suited as the base URL for relative-to-absolute-URL-translation' );
+
+    		// don't modify the current object
+    		$url = clone $this;
+
+    		$url->setProtocol( $base->getProtocol() );
+    		$url->setUsername( $base->getUsername() );
+    		$url->setPassword( $base->getPassword() );
+    		$url->setHost( $base->getHost() );
+    		$url->setPort( $base->getPort() );
+
+    		if( $url->isRelativePath() )
+    		{
+    			$p = $base->getPath();
+    			$basePath = ( !$p || $p == '/' ) ? '/' : $base->getPathDirectory();
+    			$url->setPath( $basePath . $url->getPath() );
+    		}
+
+    		return $url;
+    	}
+    */
+    
 };
 
-p.relativeTo = function(base) { // NOTE: same signature as new URL() please
-    if (!(base instanceof URL)) { // base.constructor !== URL
-        base = new URL(base);
+p.relativeTo = function(base) { // NOTE: same signature as new hURL() please
+    if (!(base instanceof hURL)) { // base.constructor !== hURL
+        base = new hURL(base);
     }
-    // base = new URL(base);
-    
+
     // this being "http://example.org/foo/bar/baz.html?foo=bar"
     // base being "http://example.org/foo/other/file.html"
     // return being "../bar/baz.html?foo=bar"
+    
 };
 
+
+
+
+p.getIsRelative = function() {
+    return this._parts.host === undefined;
+};
+p.getHostIsName = function() {
+    return !this.getHostIsIp();
+};
+p.getHostIsIp = function() {
+    return this.getHostIsIp4() || this.getHostIsIp6();
+};
+p.getHostIsIp4 = function() {
+    // TODO: identify IPv4
+    // preg_match( '#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/#iuS', $this->parts[ self::HOST ] );
+};
+p.getHostIsIp6 = function() {
+    // TODO: identify IPv6    
+};
+p.getHostIsIp6 = function() {
+    // TODO: identify IPv6    
+};
+p.getHostIsIdn = function() {
+    // TODO: identify IDN    
+};
+
+
+
+
+window.hURL = hURL;
 
 })();
