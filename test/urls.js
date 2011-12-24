@@ -1,4 +1,40 @@
 var urls = [{
+        name: "scheme and domain",
+        url: "http://www.example.org",
+        _url: "http://www.example.org/",
+        parts: {
+            protocol: 'http',
+            username: undefined,
+            password: undefined,
+            host: 'www.example.org',
+            port: undefined,
+            path: '/',
+            query: undefined,
+            fragment: undefined
+        },
+        convinience: {
+            isRelative: false,
+            // host
+            authority: 'www.example.org',
+            domain: 'example.org',
+            tld: 'org',
+            hostIsName: true,
+            hostIsIp: false,
+            hostIsIp4: false,
+            hostIsIp6: false,
+            hostIsIdn: false,
+            hostIsPunycode: false,
+            // path
+            pathDirectory: '/',
+            pathFilename: undefined,
+            pathSuffix: undefined,
+            // window.location compatibility
+            hash: "", // location.hash style
+            search: "", // location.search style
+            host: 'www.example.org',
+            hostname: 'www.example.org'
+        }
+    }, {
         name: "qualified HTTP",
         url: "http://www.example.org/some/directory/file.html?query=string#fragment",
         parts: {
@@ -22,6 +58,7 @@ var urls = [{
             hostIsIp4: false,
             hostIsIp6: false,
             hostIsIdn: false,
+            hostIsPunycode: false,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',
@@ -56,6 +93,7 @@ var urls = [{
             hostIsIp4: false,
             hostIsIp6: false,
             hostIsIdn: false,
+            hostIsPunycode: false,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',
@@ -90,6 +128,7 @@ var urls = [{
             hostIsIp4: undefined,
             hostIsIp6: undefined,
             hostIsIdn: undefined,
+            hostIsPunycode: undefined,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',
@@ -124,6 +163,7 @@ var urls = [{
             hostIsIp4: undefined,
             hostIsIp6: undefined,
             hostIsIdn: undefined,
+            hostIsPunycode: undefined,
             // path
             pathDirectory: '../some/directory',
             pathFilename: 'file.html',
@@ -158,6 +198,7 @@ var urls = [{
             hostIsIp4: undefined,
             hostIsIp6: undefined,
             hostIsIdn: undefined,
+            hostIsPunycode: undefined,
             // path
             pathDirectory: 'user:pass@www.example.org:123/some/directory',
             pathFilename: 'file.html',
@@ -192,6 +233,7 @@ var urls = [{
             hostIsIp4: false,
             hostIsIp6: false,
             hostIsIdn: false,
+            hostIsPunycode: false,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',
@@ -226,6 +268,7 @@ var urls = [{
             hostIsIp4: true,
             hostIsIp6: false,
             hostIsIdn: false,
+            hostIsPunycode: false,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',
@@ -260,6 +303,7 @@ var urls = [{
             hostIsIp4: false,
             hostIsIp6: true,
             hostIsIdn: false,
+            hostIsPunycode: false,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',
@@ -294,6 +338,7 @@ var urls = [{
             hostIsIp4: false,
             hostIsIp6: true,
             hostIsIdn: false,
+            hostIsPunycode: false,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',
@@ -305,7 +350,7 @@ var urls = [{
             hostname: 'fe80:0000:0000:0000:0204:61ff:fe9d:f156'
         }
     }, {
-        name: "IDN (encoded)",
+        name: "IDN (punycode)",
         url: "http://user:pass@xn--exmple-cua.org:123/some/directory/file.html?query=string#fragment",
         parts: {
             protocol: 'http',
@@ -327,7 +372,8 @@ var urls = [{
             hostIsIp: false,
             hostIsIp4: false,
             hostIsIp6: false,
-            hostIsIdn: true,
+            hostIsIdn: false,
+            hostIsPunycode: true,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',
@@ -362,6 +408,7 @@ var urls = [{
             hostIsIp4: false,
             hostIsIp6: false,
             hostIsIdn: true,
+            hostIsPunycode: false,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',

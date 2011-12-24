@@ -67,37 +67,39 @@ hURL.parse = function(string) {
 
         // extract host:port
         pos = string.indexOf('/');
-        if (pos > -1) {
-            if (string[0] === "[") {
-                // IPv6 host - http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6
-                // I claim most client software breaks on IPv6 anyways. To simplify things, hURL only accepts
-                // IPv6+port in the format [2001:db8::1]:80 (for the time being)
-                var bracketPos = string.indexOf(']');
-                parts.host = string.substring(1, bracketPos);
-                parts.port = string.substring(bracketPos+2, pos);
-            } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
-                // IPv6 host contains multiple colons - but no port
-                parts.host = string.substr(0, pos);
-                parts.port = undefined;
-            } else {
-                t = string.substr(0, pos).split(':');
-                parts.host = t[0];
-                parts.port = t[1];
-            }
-            
-            // port is expected to be numeric
-            if (parts.port !== undefined) {
-                if (typeof parts.port === 'string') {
-                    parts.port = parseInt(parts.port, 10);
-                }
-                
-                if (isNaN(parts.port)) {
-                    parts.port = undefined;
-                }
-            }
-            
-            string = string.substr(pos);
+        if (pos === -1) {
+            pos = string.length;
         }
+        
+        if (string[0] === "[") {
+            // IPv6 host - http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6
+            // I claim most client software breaks on IPv6 anyways. To simplify things, hURL only accepts
+            // IPv6+port in the format [2001:db8::1]:80 (for the time being)
+            var bracketPos = string.indexOf(']');
+            parts.host = string.substring(1, bracketPos);
+            parts.port = string.substring(bracketPos+2, pos);
+        } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
+            // IPv6 host contains multiple colons - but no port
+            parts.host = string.substr(0, pos);
+            parts.port = undefined;
+        } else {
+            t = string.substr(0, pos).split(':');
+            parts.host = t[0];
+            parts.port = t[1];
+        }
+        
+        // port is expected to be numeric
+        if (parts.port !== undefined) {
+            if (typeof parts.port === 'string') {
+                parts.port = parseInt(parts.port, 10);
+            }
+            
+            if (isNaN(parts.port)) {
+                parts.port = undefined;
+            }
+        }
+        
+        string = string.substr(pos) || '/';
     }
     
     // what's left must be the path
@@ -308,16 +310,24 @@ p.setPath = function(path) {
     return this;
 };
 p.getPathDirectory = function() {
-    // TODO: edge cases "/", ""
+    if (this._parts.path === '/') {
+        return '/';
+    }
     var pos = this._parts.path.lastIndexOf('/');
     return pos > -1 ? this._parts.path.substr(0, pos) : undefined;
 };
 p.getPathFilename = function() {
-    // TODO: edge cases "/", ""
+    if (this._parts.path === '/') {
+        return undefined;
+    }
     var pos = this._parts.path.lastIndexOf('/');
     return this._parts.path.substr(pos+1);
 };
 p.getPathSuffix = function() {
+    if (this._parts.path === '/') {
+        return undefined;
+    }
+    
     var filename = this.getPathFilename(),
         pos = filename.lastIndexOf('.');
 
@@ -341,6 +351,15 @@ p.setQuery = function(query) {
     return this;
 };
 p.addQuery = function(name, value) {
+    if (typeof name === "object") {
+        
+    } else if (typeof name === "object") {
+        
+    } else if (typeof name === "string") {
+
+    } else {
+        throw new TypeError("hURL.addQuery() accepts object, array or string as the first parameter");
+    }
     // TODO: addQuery(name, value) || name is string || array || object - question: should be overwritten or appended?
 };
 p.getQueryArray = function() {
@@ -349,6 +368,7 @@ p.getQueryArray = function() {
 p.getQueryObject = function() {
     // TODO: getQueryObject();  // { key: value, key2: [value, …], … } // PHP-style foo[] assoc array
 };
+
 
 p.getFragment = function() {
     return this._parts.fragment;
@@ -369,7 +389,6 @@ p.setFragment = function(fragment) {
 
 // compatibility with window.location
 p.getSearch = function() {
-    // compatibility with window.location
     if (!this._parts.query) {
         return "";
     }
@@ -377,8 +396,10 @@ p.getSearch = function() {
     return "?" + this._parts.query;
 };
 p.setSearch = p.setQuery;
+p.addSearch = p.addQuery;
+p.getSearchArray = p.getQueryArray();
+p.getSearchObject = p.getQueryObject();
 p.getHash = function() {
-    // compatibility with window.location
     if (!this._parts.fragment) {
         return "";
     }
@@ -390,35 +411,47 @@ p.getPathname = p.getPath;
 p.setPathname = p.setPath;
 p.getHref = p.toString;
 p.setHref = function(href) {
-    var key;
+    var _hURL = href instanceof hURL,
+        _object = typeof href === "object" && (href.host || href.path),
+        key;
     
     if (typeof href === "string") {
         this._parts = hURL.parse(href);
-        this.build();
-    } else if (href instanceof hURL) {
-        for (key in href._parts) {
+    } else if (_hURL || _object) {
+        var src = _hURL ? href._parts : href;
+        for (key in src) {
             if (Object.hasOwnProperty.call(this._parts, key)) {
-                this._parts[key] = href._parts[key];
-            }
-        }
-    } else if (typeof href === "object" && (href.host || href.path)) {
-        for (key in href) {
-            if (Object.hasOwnProperty.call(this._parts, key)) {
-                this._parts[key] = href[key];
+                this._parts[key] = src[key];
             }
         }
     } else {
-        throw new Error("invalid input"); // TODO: right error to throw?
+        throw new TypeError("invalid input");
     }
+    
+    this.build();
 };
 
-
+// sanitizing URLs
 p.normalize = function() {
-    this.normalizeHost().normalizePath();
+    return this
+        .normalizeHost()
+        .normalizePort()
+        .normalizePath()
+        .normalizeQuery()
+        .normalizeFragment();
 };
 p.normalizeHost = function() {
     // TODO: convert to IDN if necessary
     // TODO: shrink to bestipv6 if necessary
+    
+    return this;
+};
+p.normalizePort = function() {
+    // remove port of it's the protocol's default
+    if (this._parts.protocol !== undefined && this._parts.port === hURL.defaultPorts[this._parts.protocol]) {
+        this._parts.port = undefined;
+    }
+    
     return this;
 };
 p.normalizePath = function() {
@@ -473,6 +506,29 @@ p.normalizePath = function() {
     */
     return this;
 };
+p.normalizeQuery = function() {
+    if (this._parts.query !== undefined) {
+        if (!this._parts.query.length) {
+            this._parts.query = undefined;
+        } else {
+            this.setQuery(hURL.parseQuery(this._parts.query));
+        }
+    }
+    
+    return this;
+};
+p.normalizeSearch = p.normalizeQuery;
+p.normalizeFragment = function() {
+    if (this._parts.fragment !== undefined) {
+        if (!this._parts.fragment.length) {
+            this._parts.fragment = undefined;
+        }
+    }
+    
+    return this;
+};
+p.normalizeHash = p.normalizeFragment;
+
 
 p.resolve = function(base) {
     // this being "http://example.org/foo/other/file.html"
@@ -532,6 +588,7 @@ p.relativeTo = function(base) {
     // return being "../bar/baz.html?foo=bar"
 };
 
+
 // "username:password@host:port"
 p.getAuthority = function() {
     if (this._parts.host === undefined) {
@@ -577,18 +634,35 @@ p.getHostIsIdn = function() {
         return false;
     }
     
+    return hURL.idn_expression.test(this._parts.host);
+};
+p.getHostIsPunycode = function() {
+    if (this._parts.host === undefined) {
+        return this._parts.host;
+    }
+    if (this.getHostIsIp()) {
+        return false;
+    }
+    
     return hURL.punycode_expression.test(this._parts.host);
 };
-p.getHostIsPunycode = p.getHostIsIdn;
 
-hURL.punycode_expression = /(^xn--)|[^a-z0-9\.-]/i;
+
+hURL.idn_expression = /[^a-z0-9\.-]/i;
+hURL.punycode_expression = /(^xn--)/i;
 // well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
 hURL.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 // credits to Rich Brown
 // source: http://forums.intermapper.com/viewtopic.php?p=1096#1096
 // specification: http://www.ietf.org/rfc/rfc4291.txt
 hURL.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/ ;
-
+// http://www.iana.org/assignments/uri-schemes.html
+// http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
+hURL.defaultPorts = {
+    http: 80, 
+    https: 443, 
+    ftp: 21
+};
 
 
 window.hURL = hURL;
