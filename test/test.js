@@ -66,17 +66,27 @@ test("normalize", function() {
    
 });
 test("normalizeHost", function() {
-   
+    if (window.punycode) {
+        var u = new hURL("http://exämple.org/foobar.html");
+        u.normalizeHost();
+        equal(u+"", "http://xn--exmple-cua.org/foobar.html", "converting IDN to punycode");
+    }
+
+    if (window.IPv6) {
+        u = new hURL("http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html");
+        u.normalizeHost();
+        equal(u+"", "http://fe80::204:61ff:fe9d:f156/foobar.html", "best IPv6 representation");
+    }
 });
 test("normalizePort", function() {
-   var u = new hURL("http://example.org:80/foobar.html");
-   u.normalizePort();
-   equal(u+"", "http://example.org/foobar.html", "dropping port 80 for http");
-   
-   u = new hURL("ftp://example.org:80/foobar.html");
-   u.normalizePort();
-   equal(u+"", "ftp://example.org:80/foobar.html", "keeping port 80 for ftp");
-   
+    var u = new hURL("http://example.org:80/foobar.html");
+    u.normalizePort();
+    equal(u+"", "http://example.org/foobar.html", "dropping port 80 for http");
+
+    u = new hURL("ftp://example.org:80/foobar.html");
+    u.normalizePort();
+    equal(u+"", "ftp://example.org:80/foobar.html", "keeping port 80 for ftp");
+
 });
 test("normalizePath", function() {
    

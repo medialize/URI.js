@@ -434,30 +434,33 @@ p.setHref = function(href) {
 // sanitizing URLs
 p.normalize = function() {
     return this
-        .normalizeHost()
-        .normalizePort()
-        .normalizePath()
-        .normalizeQuery()
-        .normalizeFragment();
+        .normalizeHost(false)
+        .normalizePort(false)
+        .normalizePath(false)
+        .normalizeQuery(false)
+        .normalizeFragment(false)
+        .build();
 };
-p.normalizeHost = function() {
+p.normalizeHost = function(build) {
     if (this.getHostIsIdn() && window.punycode) {
-        this._parts.host = punycode.encode(this._parts.host);
+        this._parts.host = punycode.toASCII(this._parts.host);
     } else if (this.getHostIsIp6() && window.IPv6) {
         this._parts.host = IPv6.best(this._parts.host);        
     }
 
+    build !== false && this.build();
     return this;
 };
-p.normalizePort = function() {
+p.normalizePort = function(build) {
     // remove port of it's the protocol's default
     if (this._parts.protocol !== undefined && this._parts.port === hURL.defaultPorts[this._parts.protocol]) {
         this._parts.port = undefined;
     }
-    
+
+    build !== false && this.build();
     return this;
 };
-p.normalizePath = function() {
+p.normalizePath = function(build) {
     // reduce ".." and "."
     // can only be done on URLs with a path
     
@@ -507,9 +510,11 @@ p.normalizePath = function() {
         // this is only required for directories
         $file = rtrim($_path, '/\\');
     */
+    
+    build !== false && this.build();
     return this;
 };
-p.normalizeQuery = function() {
+p.normalizeQuery = function(build) {
     if (this._parts.query !== undefined) {
         if (!this._parts.query.length) {
             this._parts.query = undefined;
@@ -518,16 +523,18 @@ p.normalizeQuery = function() {
         }
     }
     
+    build !== false && this.build();
     return this;
 };
 p.normalizeSearch = p.normalizeQuery;
-p.normalizeFragment = function() {
+p.normalizeFragment = function(build) {
     if (this._parts.fragment !== undefined) {
         if (!this._parts.fragment.length) {
             this._parts.fragment = undefined;
         }
     }
     
+    build !== false && this.build();
     return this;
 };
 p.normalizeHash = p.normalizeFragment;
