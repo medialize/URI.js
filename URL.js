@@ -13,17 +13,17 @@ var hURL = function(url) {
 
         this._string = "";
         this._parts = {
-            protocol: undefined, 
-            username: undefined, 
-            password: undefined, 
-            host: undefined, 
-            port: undefined, 
-            path: undefined, 
-            query: undefined, 
-            fragment: undefined
+            protocol: null, 
+            username: null, 
+            password: null, 
+            host: null, 
+            port: null, 
+            path: null, 
+            query: null, 
+            fragment: null
         };
         
-        this.setHref(url);
+        this.href(url);
         return this;
     },
     p = hURL.prototype;
@@ -38,7 +38,7 @@ hURL.parse = function(string) {
     pos = string.indexOf('#');
     if (pos > -1) {
         // escaping?
-        parts.fragment = string.substr(pos + 1);
+        parts.fragment = string.substr(pos + 1) || null;
         string = string.substr(0, pos);
     }
     
@@ -46,7 +46,7 @@ hURL.parse = function(string) {
     pos = string.indexOf('?');
     if (pos > -1) {
         // escaping?
-        parts.query = string.substr(pos + 1);
+        parts.query = string.substr(pos + 1) || null;
         string = string.substr(0, pos);
     }
     
@@ -60,8 +60,8 @@ hURL.parse = function(string) {
         pos = string.indexOf('@');
         if (pos > -1) {
             t = string.substr(0, pos).split(':');
-            parts.username = t[0];
-            parts.password = t[1];
+            parts.username = t[0] || null;
+            parts.password = t[1] || null;
             string = string.substr(pos + 1);
         }
 
@@ -77,26 +77,15 @@ hURL.parse = function(string) {
             // IPv6+port in the format [2001:db8::1]:80 (for the time being)
             var bracketPos = string.indexOf(']');
             parts.host = string.substring(1, bracketPos);
-            parts.port = string.substring(bracketPos+2, pos);
+            parts.port = string.substring(bracketPos+2, pos) || null;
         } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
             // IPv6 host contains multiple colons - but no port
             parts.host = string.substr(0, pos);
-            parts.port = undefined;
+            parts.port = null;
         } else {
             t = string.substr(0, pos).split(':');
             parts.host = t[0];
-            parts.port = t[1];
-        }
-        
-        // port is expected to be numeric
-        if (parts.port !== undefined) {
-            if (typeof parts.port === 'string') {
-                parts.port = parseInt(parts.port, 10);
-            }
-            
-            if (isNaN(parts.port)) {
-                parts.port = undefined;
-            }
+            parts.port = t[1] || null;
         }
         
         string = string.substr(pos) || '/';
@@ -133,25 +122,25 @@ hURL.parseQuery = function(string) {
 hURL.build = function(parts) {
     var t = '';
     
-    if (parts.protocol !== undefined) {
+    if (typeof parts.protocol === "string" && parts.protocol.length) {
         t += parts.protocol + "://";
     }
 
     t += (hURL.buildAuthority(parts) || '');
     
-    if (parts.path !== undefined) {
-        if (parts.path[0] !== '/' && parts.host !== undefined) {
+    if (typeof parts.path === "string") {
+        if (parts.path[0] !== '/' && typeof parts.host === "string") {
             t += '/';
         }
         
         t += parts.path;
     }
     
-    if (parts.query !== undefined) {
+    if (typeof parts.query == "string") {
         t += '?' + parts.query;
     }
     
-    if (parts.fragment !== undefined) {
+    if (typeof parts.fragment === "string") {
         t += '#' + parts.fragment;
     }
     return t;
@@ -159,10 +148,10 @@ hURL.build = function(parts) {
 hURL.buildHost = function(parts) {
     var t = '';
     
-    if (parts.host === undefined) {
+    if (!parts.host) {
         return '';
     } else if (hURL.ip6_expression.test(parts.host)) {
-        if (parts.port !== undefined) {
+        if (typeof parts.port === "string") {
             t += "[" + parts.host + "]:" + parts.port;
         } else {
             // don't know if we should always wrap IPv6 in []
@@ -171,7 +160,7 @@ hURL.buildHost = function(parts) {
         }
     } else {
         t += parts.host;
-        if (parts.port !== undefined) {
+        if (typeof parts.port === "string") {
             t += ':' + parts.port;
         }
     }
@@ -181,10 +170,10 @@ hURL.buildHost = function(parts) {
 hURL.buildAuthority = function(parts) {
     var t = '';
     
-    if (parts.username !== undefined) {
+    if (typeof parts.username === "string") {
         t += parts.username;
 
-        if (parts.password !== undefined) {
+        if (typeof parts.password === "string") {
             t += ':' + parts.password;            
         }
 
@@ -205,7 +194,6 @@ p.build = function() {
     return this;
 };
 
-
 p.toString = function() {
     return this.build()._string;
 };
@@ -213,52 +201,92 @@ p.valueOf = function() {
     return this.toString();
 };
 
+// generate simple accessors
+var _parts = {protocol: 'protocol', username: 'username', password: 'password', hostname: 'host',  port: 'port', path: 'path'},
+    _part;
 
-p.getProtocol = function() {
-    return this._parts.protocol;
-};
-p.setProtocol = function(protocol) {
-    // TODO: alnum
-    this._parts.protocol = protocol;
-    this.build();
-    return this;    
+for (_part in _parts) {
+    p[_part] = (function(_part){
+        return function(v, build) {
+            if (v === undefined) {
+                return this._parts[_part] || "";
+            } else {
+                this._parts[_part] = v;
+                build !== false && this.build();
+                return this;
+            }
+        };
+    })(_parts[_part]);
+}
+
+// generate accessors with optionally prefixed input
+_parts = {query: '?', fragment: '#'};
+for (_part in _parts) {
+    p[_part] = (function(_part, _key){
+        return function(v, build) {
+            if (v === undefined) {
+                return this._parts[_part] || "";
+            } else {
+                if (v !== null) {
+                    v = v + "";
+                    if (v[0] === _key) {
+                        v = v.substr(1);
+                    }
+                }
+
+                this._parts[_part] = v;
+                build !== false && this.build();
+                return this;
+            }
+        };
+    })(_part, _parts[_part]);
+}
+
+// generate accessors with prefixed output
+_parts = {search: ['?', 'query'], hash: ['#', 'fragment']};
+for (_part in _parts) {
+    p[_part] = (function(_part, _key){
+        return function(v, build) {
+            var t = this[_part](v, build);
+            return typeof t === "string" && t.length ? (_key + t) : t;
+        };
+    })(_parts[_part][1], _parts[_part][0]);
+}
+
+// compatibility with window.location
+p.pathname = p.path;
+p.href = function(href, build) {
+    if (href === undefined) {
+        return this.toString();
+    } else {
+        var _hURL = href instanceof hURL,
+            _object = typeof href === "object" && (href.host || href.path),
+            key;
+    
+        if (typeof href === "string") {
+            this._parts = hURL.parse(href);
+        } else if (_hURL || _object) {
+            var src = _hURL ? href._parts : href;
+            for (key in src) {
+                if (Object.hasOwnProperty.call(this._parts, key)) {
+                    this._parts[key] = src[key];
+                }
+            }
+        } else {
+            throw new TypeError("invalid input");
+        }
+    
+        build !== false && this.build();
+        return this;
+    }
 };
 
 
-p.getUsername = function() {
-    return this._parts.username;
-};
-p.setUsername = function(username) {
-    // TODO: encode username
-    this._parts.username = username;
-    this.build();
-    return this;
-};
 
 
-p.getPassword = function() {
-    return this._parts.password;
-};
-p.setPassword = function(password) {
-    // TODO: encode username
-    this._parts.password = password;
-    this.build();
-    return this;
-};
-
-
-p.getHostname = function() {
-    return this._parts.host;
-};
-p.setHostname = function(host) {
-    // TODO: validate hostname integrity (domain, IDN, IPv4, IPv6)
-    this._parts.host = host;
-    this.build();
-    return this;
-};
 p.getHost = function() {
-    if (this._parts.host === undefined) {
-        return undefined;
+    if (!this._parts.host) {
+        return "";
     }
     
     return hURL.buildHost(this._parts);
@@ -269,9 +297,8 @@ p.setHost = function(host) {
 };
 p.getDomain = function() {
     // convinience, return "google.com" from "www.google.com"
-    // TODO: edge case IDN
-    if (this._parts.host === undefined || this.getHostIsIp()) {
-        return undefined;
+    if (!this._parts.host || this.getHostIsIp()) {
+        return "";
     }
     
     // "localhost" is a domain, too
@@ -280,35 +307,14 @@ p.getDomain = function() {
 p.getTld = function() {
     // return "com" from "www.google.com"
     // TODO: edge case - IDN
-    if (this._parts.host === undefined || this.getHostIsIp()) {
-        return undefined;
+    if (!this._parts.host || this.getHostIsIp()) {
+        return "";
     }
     
     var pos = this._parts.host.lastIndexOf('.');
     return this._parts.host.substr(pos + 1);
 };
 
-
-p.getPort = function() {
-    return this._parts.port;
-};
-p.setPort = function(port) {
-    // TODO: validate port is a number or undefined
-    this._parts.port = port;
-    this.build();
-    return this;
-};
-
-
-p.getPath = function() {
-    return this._parts.path;
-};
-p.setPath = function(path) {
-    // TODO: validate path integrity, maybe add option to not automatically encode stuff
-    this._parts.path = path;
-    this.build();
-    return this;
-};
 p.getPathDirectory = function() {
     if (this._parts.path === '/') {
         return '/';
@@ -318,14 +324,14 @@ p.getPathDirectory = function() {
 };
 p.getPathFilename = function() {
     if (this._parts.path === '/') {
-        return undefined;
+        return "";
     }
     var pos = this._parts.path.lastIndexOf('/');
     return this._parts.path.substr(pos+1);
 };
 p.getPathSuffix = function() {
     if (this._parts.path === '/') {
-        return undefined;
+        return "";
     }
     
     var filename = this.getPathFilename(),
@@ -334,22 +340,16 @@ p.getPathSuffix = function() {
     return filename.substr(pos+1);
 };
 
-
-p.getQuery = function() {
-    return this._parts.query;
-};
-p.setQuery = function(query) {
-    if (query !== undefined) {
-        query = search + "";
-        if (query[0] === '?') {
-            query = query.substr(1);
-        }
+// "username:password@host:port"
+p.getAuthority = function() {
+    if (!this._parts.host) {
+        return "";
     }
-    
-    this._parts.query = query;
-    this.build();
-    return this;
+
+    return hURL.buildAuthority(this._parts);
 };
+
+
 p.addQuery = function(name, value) {
     if (typeof name === "object") {
         
@@ -370,66 +370,8 @@ p.getQueryObject = function() {
 };
 
 
-p.getFragment = function() {
-    return this._parts.fragment;
-};
-p.setFragment = function(fragment) {
-    if (fragment !== undefined) {
-        fragment = fragment + "";
-        if (fragment[0] === '#') {
-            fragment = hash.substr(1);
-        }
-    }
-    
-    this._parts.fragment = fragment;
-    this.build();
-    return this;
-};
 
 
-// compatibility with window.location
-p.getSearch = function() {
-    if (!this._parts.query) {
-        return "";
-    }
-    
-    return "?" + this._parts.query;
-};
-p.setSearch = p.setQuery;
-p.addSearch = p.addQuery;
-p.getSearchArray = p.getQueryArray();
-p.getSearchObject = p.getQueryObject();
-p.getHash = function() {
-    if (!this._parts.fragment) {
-        return "";
-    }
-    
-    return "#" + this._parts.fragment;
-};
-p.setHash = p.setFragment;
-p.getPathname = p.getPath;
-p.setPathname = p.setPath;
-p.getHref = p.toString;
-p.setHref = function(href) {
-    var _hURL = href instanceof hURL,
-        _object = typeof href === "object" && (href.host || href.path),
-        key;
-    
-    if (typeof href === "string") {
-        this._parts = hURL.parse(href);
-    } else if (_hURL || _object) {
-        var src = _hURL ? href._parts : href;
-        for (key in src) {
-            if (Object.hasOwnProperty.call(this._parts, key)) {
-                this._parts[key] = src[key];
-            }
-        }
-    } else {
-        throw new TypeError("invalid input");
-    }
-    
-    this.build();
-};
 
 // sanitizing URLs
 p.normalize = function() {
@@ -453,8 +395,8 @@ p.normalizeHost = function(build) {
 };
 p.normalizePort = function(build) {
     // remove port of it's the protocol's default
-    if (this._parts.protocol !== undefined && this._parts.port === hURL.defaultPorts[this._parts.protocol]) {
-        this._parts.port = undefined;
+    if (typeof this._parts.protocol === "string" && this._parts.port === hURL.defaultPorts[this._parts.protocol]) {
+        this._parts.port = null;
     }
 
     build !== false && this.build();
@@ -515,31 +457,30 @@ p.normalizePath = function(build) {
     return this;
 };
 p.normalizeQuery = function(build) {
-    if (this._parts.query !== undefined) {
+    if (typeof this._parts.query === "string") {
         if (!this._parts.query.length) {
-            this._parts.query = undefined;
+            this._parts.query = null;
         } else {
-            this.setQuery(hURL.parseQuery(this._parts.query));
+            this.query(hURL.parseQuery(this._parts.query));
         }
+    }
+    
+    build !== false && this.build();
+    return this;
+};
+p.normalizeFragment = function(build) {
+    if (!this._parts.fragment) {
+        this._parts.fragment = null;
     }
     
     build !== false && this.build();
     return this;
 };
 p.normalizeSearch = p.normalizeQuery;
-p.normalizeFragment = function(build) {
-    if (this._parts.fragment !== undefined) {
-        if (!this._parts.fragment.length) {
-            this._parts.fragment = undefined;
-        }
-    }
-    
-    build !== false && this.build();
-    return this;
-};
 p.normalizeHash = p.normalizeFragment;
 
 
+// relative and absolute URLs
 p.resolve = function(base) {
     // this being "http://example.org/foo/other/file.html"
     // base being "../bar/baz.html?foo=bar"
@@ -587,7 +528,6 @@ p.resolveTo = function(base) {
     */
     
 };
-
 p.relativeTo = function(base) {
     if (!(base instanceof hURL)) {
         base = new hURL(base);
@@ -599,21 +539,14 @@ p.relativeTo = function(base) {
 };
 
 
-// "username:password@host:port"
-p.getAuthority = function() {
-    if (this._parts.host === undefined) {
-        return this._parts.host;
-    }
 
-    return hURL.buildAuthority(this._parts);
-};
 
 p.getIsRelative = function() {
-    return this._parts.host === undefined;
+    return !this._parts.host;
 };
 p.getHostIsName = function() {
-    if (this._parts.host === undefined) {
-        return this._parts.host;
+    if (!this._parts.host) {
+        return false;
     }
     
     return !this.getHostIsIp();
@@ -622,35 +555,29 @@ p.getHostIsIp = function() {
     return this.getHostIsIp4() || this.getHostIsIp6();
 };
 p.getHostIsIp4 = function() {
-    if (this._parts.host === undefined) {
-        return this._parts.host;
+    if (!this._parts.host) {
+        return false;
     }
 
     return hURL.ip4_expression.test(this._parts.host);
 };
 p.getHostIsIp6 = function() {
-    if (this._parts.host === undefined) {
-        return this._parts.host;
+    if (!this._parts.host) {
+        return false;
     }
     
     return hURL.ip6_expression.test(this._parts.host);
     
 };
 p.getHostIsIdn = function() {
-    if (this._parts.host === undefined) {
-        return this._parts.host;
-    }
-    if (this.getHostIsIp()) {
+    if (!this._parts.host || this.getHostIsIp()) {
         return false;
     }
-    
+
     return hURL.idn_expression.test(this._parts.host);
 };
 p.getHostIsPunycode = function() {
-    if (this._parts.host === undefined) {
-        return this._parts.host;
-    }
-    if (this.getHostIsIp()) {
+    if (!this._parts.host || this.getHostIsIp()) {
         return false;
     }
     
@@ -669,9 +596,9 @@ hURL.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A
 // http://www.iana.org/assignments/uri-schemes.html
 // http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
 hURL.defaultPorts = {
-    http: 80, 
-    https: 443, 
-    ftp: 21
+    http: "80", 
+    https: "443", 
+    ftp: "21"
 };
 
 

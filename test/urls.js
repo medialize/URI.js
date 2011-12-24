@@ -4,13 +4,13 @@ var urls = [{
         _url: "http://www.example.org/",
         parts: {
             protocol: 'http',
-            username: undefined,
-            password: undefined,
+            username: null,
+            password: null,
             host: 'www.example.org',
-            port: undefined,
+            port: "",
             path: '/',
-            query: undefined,
-            fragment: undefined
+            query: null,
+            fragment: null
         },
         convinience: {
             isRelative: false,
@@ -26,8 +26,8 @@ var urls = [{
             hostIsPunycode: false,
             // path
             pathDirectory: '/',
-            pathFilename: undefined,
-            pathSuffix: undefined,
+            pathFilename: '',
+            pathSuffix: '',
             // window.location compatibility
             hash: "", // location.hash style
             search: "", // location.search style
@@ -39,10 +39,10 @@ var urls = [{
         url: "http://www.example.org/some/directory/file.html?query=string#fragment",
         parts: {
             protocol: 'http',
-            username: undefined,
-            password: undefined,
+            username: null,
+            password: null,
             host: 'www.example.org',
-            port: undefined,
+            port: "",
             path: '/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -77,7 +77,7 @@ var urls = [{
             username: 'user',
             password: 'pass',
             host: 'www.example.org',
-            port: 123,
+            port: "123",
             path: '/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -108,11 +108,11 @@ var urls = [{
         name: "host-relative URL",
         url: "/some/directory/file.html?query=string#fragment",
         parts: {
-            protocol: undefined,
-            username: undefined,
-            password: undefined,
-            host: undefined,
-            port: undefined,
+            protocol: '',
+            username: null,
+            password: null,
+            host: "",
+            port: "",
             path: '/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -120,15 +120,15 @@ var urls = [{
         convinience: {
             isRelative: true,
             // host
-            authority: undefined,
-            domain: undefined,
-            tld: undefined,
-            hostIsName: undefined,
-            hostIsIp: undefined,
-            hostIsIp4: undefined,
-            hostIsIp6: undefined,
-            hostIsIdn: undefined,
-            hostIsPunycode: undefined,
+            authority: "",
+            domain: "",
+            tld: "",
+            hostIsName: false,
+            hostIsIp: false,
+            hostIsIp4: false,
+            hostIsIp6: false,
+            hostIsIdn: false,
+            hostIsPunycode: false,
             // path
             pathDirectory: '/some/directory',
             pathFilename: 'file.html',
@@ -136,18 +136,18 @@ var urls = [{
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
-            host: undefined,
-            hostname: undefined
+            host: "",
+            hostname: ""
         }
     }, {
         name: "path-relative URL",
         url: "../some/directory/file.html?query=string#fragment",
         parts: {
-            protocol: undefined,
-            username: undefined,
-            password: undefined,
-            host: undefined,
-            port: undefined,
+            protocol: '',
+            username: null,
+            password: null,
+            host: '',
+            port: "",
             path: '../some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -155,15 +155,15 @@ var urls = [{
         convinience: {
             isRelative: true,
             // host
-            authority: undefined,
-            domain: undefined,
-            tld: undefined,
-            hostIsName: undefined,
-            hostIsIp: undefined,
-            hostIsIp4: undefined,
-            hostIsIp6: undefined,
-            hostIsIdn: undefined,
-            hostIsPunycode: undefined,
+            authority: '',
+            domain: '',
+            tld: '',
+            hostIsName: false,
+            hostIsIp: false,
+            hostIsIp4: false,
+            hostIsIp6: false,
+            hostIsIdn: false,
+            hostIsPunycode: false,
             // path
             pathDirectory: '../some/directory',
             pathFilename: 'file.html',
@@ -171,18 +171,18 @@ var urls = [{
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
-            host: undefined,
-            hostname: undefined
+            host: "",
+            hostname: ""
         }
     }, {
         name: "missing scheme",
         url: "user:pass@www.example.org:123/some/directory/file.html?query=string#fragment",
         parts: {
-            protocol: undefined,
-            username: undefined,
-            password: undefined,
-            host: undefined,
-            port: undefined,
+            protocol: '',
+            username: null,
+            password: null,
+            host: "",
+            port: "",
             path: 'user:pass@www.example.org:123/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -190,15 +190,15 @@ var urls = [{
         convinience: {
             isRelative: true,
             // host
-            authority: undefined,
-            domain: undefined,
-            tld: undefined,
-            hostIsName: undefined,
-            hostIsIp: undefined,
-            hostIsIp4: undefined,
-            hostIsIp6: undefined,
-            hostIsIdn: undefined,
-            hostIsPunycode: undefined,
+            authority: "",
+            domain: "",
+            tld: "",
+            hostIsName: false,
+            hostIsIp: false,
+            hostIsIp4: false,
+            hostIsIp6: false,
+            hostIsIdn: false,
+            hostIsPunycode: false,
             // path
             pathDirectory: 'user:pass@www.example.org:123/some/directory',
             pathFilename: 'file.html',
@@ -206,18 +206,19 @@ var urls = [{
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
-            host: undefined,
-            hostname: undefined
+            host: "",
+            hostname: ""
         }
     }, {
         name: "ignoring scheme",
         url: "://user:pass@www.example.org:123/some/directory/file.html?query=string#fragment",
+        _url: "user:pass@www.example.org:123/some/directory/file.html?query=string#fragment",
         parts: {
-            protocol: '', // not undefined!
+            protocol: '',
             username: 'user',
             password: 'pass',
             host: 'www.example.org',
-            port: 123,
+            port: "123",
             path: '/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -252,7 +253,7 @@ var urls = [{
             username: 'user',
             password: 'pass',
             host: '123.123.123.123',
-            port: 123,
+            port: "123",
             path: '/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -261,8 +262,8 @@ var urls = [{
             isRelative: false,
             // host
             authority: 'user:pass@123.123.123.123:123',
-            domain: undefined,
-            tld: undefined,
+            domain: "",
+            tld: "",
             hostIsName: false,
             hostIsIp: true,
             hostIsIp4: true,
@@ -287,7 +288,7 @@ var urls = [{
             username: 'user',
             password: 'pass',
             host: 'fe80:0000:0000:0000:0204:61ff:fe9d:f156',
-            port: undefined,
+            port: "",
             path: '/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -296,8 +297,8 @@ var urls = [{
             isRelative: false,
             // host
             authority: 'user:pass@fe80:0000:0000:0000:0204:61ff:fe9d:f156',
-            domain: undefined,
-            tld: undefined,
+            domain: "",
+            tld: "",
             hostIsName: false,
             hostIsIp: true,
             hostIsIp4: false,
@@ -322,7 +323,7 @@ var urls = [{
             username: 'user',
             password: 'pass',
             host: 'fe80:0000:0000:0000:0204:61ff:fe9d:f156',
-            port: 123,
+            port: "123",
             path: '/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -331,8 +332,8 @@ var urls = [{
             isRelative: false,
             // host
             authority: 'user:pass@[fe80:0000:0000:0000:0204:61ff:fe9d:f156]:123',
-            domain: undefined,
-            tld: undefined,
+            domain: "",
+            tld: "",
             hostIsName: false,
             hostIsIp: true,
             hostIsIp4: false,
@@ -357,7 +358,7 @@ var urls = [{
             username: 'user',
             password: 'pass',
             host: 'xn--exmple-cua.org',
-            port: 123,
+            port: "123",
             path: '/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -392,7 +393,7 @@ var urls = [{
             username: 'user',
             password: 'pass',
             host: 'exämple.org',
-            port: 123,
+            port: "123",
             path: '/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
@@ -418,6 +419,41 @@ var urls = [{
             search: '?query=string',
             host: 'exämple.org:123',
             hostname: 'exämple.org'
+        }
+    }, {
+        name: "file://",
+        url: "file:///foo/bar/baz.html",
+        parts: {
+            protocol: 'file',
+            username: null,
+            password: null,
+            host: '',
+            port: "",
+            path: '/foo/bar/baz.html',
+            query: null,
+            fragment: null
+        },
+        convinience: {
+            isRelative: true,
+            // host
+            authority: '',
+            domain: "",
+            tld: "",
+            hostIsName: false,
+            hostIsIp: false,
+            hostIsIp4: false,
+            hostIsIp6: false,
+            hostIsIdn: false,
+            hostIsPunycode: false,
+            // path
+            pathDirectory: '/foo/bar',
+            pathFilename: 'baz.html',
+            pathSuffix: 'html',
+            // window.location compatibility
+            hash: '',
+            search: '',
+            host: '',
+            hostname: ''
         }
     }
 ];

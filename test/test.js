@@ -2,6 +2,7 @@ test("loaded", function() {
     ok(window.hURL);
 });
 
+
 module("constructing");
 test("new hURL(string)", function() {
     var u = new hURL("http://example.org/");
@@ -34,6 +35,7 @@ test("function hURL(string)", function() {
     ok(u._parts.host !== undefined, "host undefined");
 });
 
+
 module("parsing");
 urls.forEach(function(t) {
     test("parse " + t.name, function() {
@@ -45,16 +47,21 @@ urls.forEach(function(t) {
         
         // test parsed parts
         for (key in t.parts) {
-            if (Object.hasOwnProperty.call(t.parts, key)) {
-                equal(u._parts[key], t.parts[key], key);
+            if (Object.hasOwnProperty.call(t, key)) {
+                equal(u[key], t.parts[key], key);
             }
         }
         
         // test convinience
         for (key in t.convinience) {
             if (Object.hasOwnProperty.call(t.convinience, key)) {
-                var method = 'get' + key[0].toUpperCase() + key.substr(1);
-                equal(u[method](), t.convinience[key], key);
+                if (u[key]) {
+                    equal(u[key].call(u), t.convinience[key], key);
+                } else {
+                    // TODO: remove this branch
+                    var method = 'get' + key[0].toUpperCase() + key.substr(1);
+                    equal(u[method].call(u), t.convinience[key], key);
+                }
             }
         }
     });
@@ -63,7 +70,7 @@ urls.forEach(function(t) {
 
 module("normalizing");
 test("normalize", function() {
-   
+   // TODO: test normalize()
 });
 test("normalizeHost", function() {
     if (window.punycode) {
@@ -89,17 +96,40 @@ test("normalizePort", function() {
 
 });
 test("normalizePath", function() {
-   
+   // TODO: test normalizePath()
 });
 test("normalizeQuery", function() {
     var u = new hURL("http://example.org/foobar.html?");
     u.normalizeQuery();
     equal(u+"", "http://example.org/foobar.html", "dropping empty query sign");
     
-    // TODO: bad querystring
+    // TODO: test bad querystring
 });
 test("normalizeFragment", function() {
     var u = new hURL("http://example.org/foobar.html#");
     u.normalizeFragment();
     equal(u+"", "http://example.org/foobar.html", "dropping empty fragment sign");
 });
+
+
+module("mutating");
+test("protocol", function() {
+    var u = new hURL("http://example.org/foo.html");
+    u.protocol('ftp');
+    equal(u.protocol(), "ftp", "ftp protocol");
+    equal(u+"", "ftp://example.org/foo.html", "ftp url");
+
+    u.protocol('');
+    equal(u.protocol(), "", "missing protocol");
+    equal(u+"", "example.org/foo.html", "no-scheme url");
+    
+    u.protocol(null);
+    equal(u.protocol(), "", "missing protocol");
+    equal(u+"", "example.org/foo.html", "no-scheme url");
+    
+    
+    u = new hURL("://example.org/foo.html");
+    equal(u.protocol(), "", "ftp protocol");
+    equal(u+"", "example.org/foo.html", "ftp url");
+});
+
