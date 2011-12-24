@@ -1,12 +1,5 @@
 (function(undefined) {
 
-if (window.hURL) {
-    window.console && (console.warn || console.log)("hURL.js could not load, since window.hURL already present");
-    return;
-}
-
-// TODO: look at json-query thing paul irish mentioned (podcast on modernizr)
-
 // constructor
 var hURL = function(url) {
         // Allow instantiation without the 'new' keyword
@@ -420,8 +413,15 @@ p.setHref = function(href) {
 };
 
 
-
 p.normalize = function() {
+    this.normalizeHost().normalizePath();
+};
+p.normalizeHost = function() {
+    // TODO: convert to IDN if necessary
+    // TODO: shrink to bestipv6 if necessary
+    return this;
+};
+p.normalizePath = function() {
     // reduce ".." and "."
     // can only be done on URLs with a path
     
@@ -471,6 +471,7 @@ p.normalize = function() {
         // this is only required for directories
         $file = rtrim($_path, '/\\');
     */
+    return this;
 };
 
 p.resolve = function(base) {
@@ -572,15 +573,20 @@ p.getHostIsIdn = function() {
     if (this._parts.host === undefined) {
         return this._parts.host;
     }
-    // TODO: identify IDN
-    return false;
+    if (this.getHostIsIp()) {
+        return false;
+    }
+    
+    return hURL.punycode_expression.test(this._parts.host);
 };
+p.getHostIsPunycode = p.getHostIsIdn;
 
+hURL.punycode_expression = /(^xn--)|[^a-z0-9\.-]/i;
 // well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
 hURL.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 // credits to Rich Brown
 // source: http://forums.intermapper.com/viewtopic.php?p=1096#1096
-// FIXME: "[" + IPv6 + "]"
+// specification: http://www.ietf.org/rfc/rfc4291.txt
 hURL.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/ ;
 
 

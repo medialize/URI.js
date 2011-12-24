@@ -304,6 +304,74 @@ var urls = [{
             host: '[fe80:0000:0000:0000:0204:61ff:fe9d:f156]:123',
             hostname: 'fe80:0000:0000:0000:0204:61ff:fe9d:f156'
         }
+    }, {
+        name: "IDN (encoded)",
+        url: "http://user:pass@xn--exmple-cua.org:123/some/directory/file.html?query=string#fragment",
+        parts: {
+            protocol: 'http',
+            username: 'user',
+            password: 'pass',
+            host: 'xn--exmple-cua.org',
+            port: 123,
+            path: '/some/directory/file.html',
+            query: 'query=string',
+            fragment: 'fragment'
+        },
+        convinience: {
+            isRelative: false,
+            // host
+            authority: 'user:pass@xn--exmple-cua.org:123',
+            domain: 'xn--exmple-cua.org',
+            tld: 'org',
+            hostIsName: true,
+            hostIsIp: false,
+            hostIsIp4: false,
+            hostIsIp6: false,
+            hostIsIdn: true,
+            // path
+            pathDirectory: '/some/directory',
+            pathFilename: 'file.html',
+            pathSuffix: 'html',
+            // window.location compatibility
+            hash: '#fragment',
+            search: '?query=string',
+            host: 'xn--exmple-cua.org:123',
+            hostname: 'xn--exmple-cua.org'
+        }
+    }, {
+        name: "IDN",
+        url: "http://user:pass@exämple.org:123/some/directory/file.html?query=string#fragment",
+        parts: {
+            protocol: 'http',
+            username: 'user',
+            password: 'pass',
+            host: 'exämple.org',
+            port: 123,
+            path: '/some/directory/file.html',
+            query: 'query=string',
+            fragment: 'fragment'
+        },
+        convinience: {
+            isRelative: false,
+            // host
+            authority: 'user:pass@exämple.org:123',
+            domain: 'exämple.org',
+            tld: 'org',
+            hostIsName: true,
+            hostIsIp: false,
+            hostIsIp4: false,
+            hostIsIp6: false,
+            hostIsIdn: true,
+            // path
+            pathDirectory: '/some/directory',
+            pathFilename: 'file.html',
+            pathSuffix: 'html',
+            // window.location compatibility
+            hash: '#fragment',
+            search: '?query=string',
+            host: 'exämple.org:123',
+            hostname: 'exämple.org'
+        }
     }
 ];
 
