@@ -5,8 +5,6 @@ if (window.hURL) {
     return;
 }
 
-// TODO: shim Array.forEach()
-// TODO: shim Object.forEach()
 // TODO: look at json-query thing paul irish mentioned (podcast on modernizr)
 
 // constructor
@@ -117,21 +115,22 @@ hURL.parse = function(string) {
 };
 
 hURL.parseQuery = function(string) {
-    // "?"[name"="value"&"]+        -- valid
-    var items = [];
+    var items = [],
+        splits = string.split('&'),
+        length = splits.length;
         
-    // throw out the funky business
+    // throw out the funky business - "?"[name"="value"&"]+
     string = string.replace(/&+/g, '&').replace(/^\?*&*/, '');
-    
-    string.split('&').forEach(function(kv){
-        var t = kv.split('='),
+
+    for (var i = 0; i < length; i++) {
+        var v = splits[i].split('='),
             item = {
-                name: decodeURIComponent(t.pop()),
-                value: decodeURIComponent(t.join('='))
+                name: decodeURIComponent(v.pop()),
+                value: decodeURIComponent(v.join('='))
             };
-        
+
         items.push(item);
-    });
+    }
     
     return items;
 };
