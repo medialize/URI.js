@@ -32,7 +32,7 @@ var hURL = function(url) {
 hURL.parse = function(string) {
     var pos, t, parts = {};
     // [protocol"://"[username[":"password]"@"]hostname[":"port]]["/"path["?"querystring]["#"fragment]]
-    // http://blog.stevenlevithan.com/archives/parseuri What about IDN?
+    // TODO: check http://blog.stevenlevithan.com/archives/parseuri
     
     // extract fragment
     pos = string.indexOf('#');
@@ -441,9 +441,12 @@ p.normalize = function() {
         .normalizeFragment();
 };
 p.normalizeHost = function() {
-    // TODO: convert to IDN if necessary
-    // TODO: shrink to bestipv6 if necessary
-    
+    if (this.getHostIsIdn() && window.punycode) {
+        this._parts.host = punycode.encode(this._parts.host);
+    } else if (this.getHostIsIp6() && window.IPv6) {
+        this._parts.host = IPv6.best(this._parts.host);        
+    }
+
     return this;
 };
 p.normalizePort = function() {

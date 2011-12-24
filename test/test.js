@@ -18,6 +18,16 @@ test("new hURL(hURL)", function() {
     ok(u instanceof hURL, "instanceof hURL");
     ok(u._parts.host !== undefined, "host undefined");
 });
+test("new hURL(new Date())", function() {
+    raises(function() {
+        new hURL(new Date());
+    }, TypeError, "Failing unknown input");
+});
+test("new hURL()", function() {
+    var u = new hURL();
+    ok(u instanceof hURL, "instanceof hURL");
+    ok(u._parts.host === location.hostname, "host == location.hostname");
+});
 test("function hURL(string)", function() {
     var u = new hURL("http://example.org/");
     ok(u instanceof hURL, "instanceof hURL");
@@ -72,8 +82,14 @@ test("normalizePath", function() {
    
 });
 test("normalizeQuery", function() {
-   
+    var u = new hURL("http://example.org/foobar.html?");
+    u.normalizeQuery();
+    equal(u+"", "http://example.org/foobar.html", "dropping empty query sign");
+    
+    // TODO: bad querystring
 });
 test("normalizeFragment", function() {
-   
+    var u = new hURL("http://example.org/foobar.html#");
+    u.normalizeFragment();
+    equal(u+"", "http://example.org/foobar.html", "dropping empty fragment sign");
 });
