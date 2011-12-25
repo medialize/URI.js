@@ -708,6 +708,8 @@ p.removeQuery = function(name, value, build) {
     build !== false && this.build();
     return this;
 };
+p.addSearch = p.addQuery;
+p.removeSearch = p.removeQuery;
 
 // sanitizing URLs
 p.normalize = function() {

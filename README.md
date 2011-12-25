@@ -64,8 +64,104 @@ why, thank you for your support, dear browser.
 
 ## TODO ##
 
+* Proper Documentation
 * AMD stuff
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * accept all [IPv6 notations](http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6)
 * throw this at someone to make a specification out of it, so browser eventually support this natively (care to help?)
+
+## API Doc ##
+
+```javascript
+URI("http://example.org/foo.html?hello=world")
+    .username("rodneyrehm") 
+        // -> http://rodneyrehm@example.org/foo.html?hello=world
+    .username("") 
+        // -> http://example.org/foo.html?hello=world
+    .directory("bar")
+        // -> http://example.org/bar/foo.html?hello=world
+    .suffix('xml)    
+        // -> http://example.org/bar/foo.xml?hello=world
+    .query('')       
+        // -> http://example.org/bar/foo.xml
+    .tld('com')      
+        // -> http://example.com/bar/foo.xml
+```
+
+### URI() constructor ###
+
+```javascript
+var uri = new URI(); // same as new URI(location.href)
+// string
+uri = new URI("http://example.org");
+// URI object for cloning
+uri = new URI(new URI("http://example.org"))
+// URI parts object
+uri = new URI({
+    protocol: 'http',
+    host: 'example.org'
+});
+// without new keyword
+uri = URI("example.org");
+```
+
+### URI part accessors ###
+
+```javascript
+// basic mutation
+.protocol()
+.username()
+.password()
+.hostname()
+.domain()
+.tld()
+.host()
+.port()
+.authority()
+.pathname() | .path()
+.directory()
+.filename()
+.suffix()
+.query() // input leading ? stripped
+.search() // leading ?
+.fragment() // input leading # stripped
+.hash()  // leading #
+```
+
+### Working the Query Strings ###
+
+
+```javascript
+// query string fun
+.query() returns string "foo=bar&hello=world&hello=mars"
+.query(true) returns object {foo: "bar", hello: ["world", "mars"]}
+.query( string|object ) to set a new query string
+.addQuery(name, value) 
+.addQuery(object) 
+.removeQuery(name) 
+.removeQuery(name, value) 
+.removeQuery(array) 
+.removeQuery(object) 
+addSearch() and .removeSearch() for conventions
+```
+
+### Sanitizing URLs ###
+
+
+```javascript
+.normalize()
+.normalizeHost()
+.normalizePort()
+.normalizePath()
+.normalizeQuery() .normalizeSearch()
+.normalizeFragment() .normalizeHash()
+```
+
+### Mutating Paths ###
+
+
+```javascript
+.relativeTo()
+.absoluteTo()
+```
 
