@@ -45,6 +45,8 @@ These are mostly having Node.js in mind:
 * http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html#workerlocation
 * MozURLProperty (not documented yet?!) https://developer.mozilla.org/User:trevorh/Interface_documentation_status
 
+* http://php.net/parse_str http://www.php.net/manual/en/function.http-build-query.php
+
 ## Why name it hURL? ##
 
 For one, Firefox already used `window.URL` for MozURLProperty. Modifying URLs like the following snippet just made me want to <del>[hurl](http://en.wiktionary.org/wiki/hurl) (vomit, puke, throw up, …)</del> <ins>shoot myself in the head</ins>.

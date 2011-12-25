@@ -1,5 +1,11 @@
 (function(undefined) {
 
+if (!RegExp.escape) {
+    RegExp.escape = function(string) {
+        return string.replace( /(\^|\$|\\|\||\/|\*|\+|\?|\{|\}|\(|\)|\[|\]|\.)/g, "\\" + "$1" );
+    };
+}
+
 // constructor
 var hURL = function(url) {
         // Allow instantiation without the 'new' keyword
@@ -11,18 +17,6 @@ var hURL = function(url) {
             url = location.href + "";
         }
 
-        this._string = "";
-        this._parts = {
-            protocol: null, 
-            username: null, 
-            password: null, 
-            host: null, 
-            port: null, 
-            path: null, 
-            query: null, 
-            fragment: null
-        };
-        
         this.href(url);
         return this;
     },
@@ -100,6 +94,9 @@ hURL.parseAuthority = function(string, parts) {
         parts.username = t[0] || null;
         parts.password = t[1] || null;
         string = string.substr(pos + 1);
+    } else {
+        parts.username = null;
+        parts.password = null;
     }
 
     return hURL.parseHost(string, parts);
@@ -157,7 +154,7 @@ hURL.buildHost = function(parts) {
     if (!parts.host) {
         return '';
     } else if (hURL.ip6_expression.test(parts.host)) {
-        if (typeof parts.port === "string") {
+        if (parts.port) {
             t += "[" + parts.host + "]:" + parts.port;
         } else {
             // don't know if we should always wrap IPv6 in []
@@ -166,7 +163,7 @@ hURL.buildHost = function(parts) {
         }
     } else {
         t += parts.host;
-        if (typeof parts.port === "string") {
+        if (parts.port) {
             t += ':' + parts.port;
         }
     }
@@ -176,10 +173,10 @@ hURL.buildHost = function(parts) {
 hURL.buildAuthority = function(parts) {
     var t = '';
     
-    if (typeof parts.username === "string") {
+    if (parts.username) {
         t += parts.username;
 
-        if (typeof parts.password === "string") {
+        if (parts.password) {
             t += ':' + parts.password;            
         }
 
@@ -208,7 +205,7 @@ p.valueOf = function() {
 };
 
 // generate simple accessors
-var _parts = {protocol: 'protocol', username: 'username', password: 'password', hostname: 'host',  port: 'port', path: 'path'},
+var _parts = {protocol: 'protocol', username: 'username', password: 'password', hostname: 'host',  port: 'port'},
     _part;
 
 for (_part in _parts) {
@@ -259,11 +256,32 @@ for (_part in _parts) {
     })(_parts[_part][1], _parts[_part][0]);
 }
 
-p.pathname = p.path;
+p.pathname = function(v, build) {
+    if (v === undefined) {
+        return this._parts.path || "/";
+    } else {
+        this._parts.path = v || "/";
+        build !== false && this.build();
+        return this;
+    }
+};
+p.path = p.pathname;
 p.href = function(href, build) {
     if (href === undefined) {
         return this.toString();
     } else {
+        this._string = "";
+        this._parts = {
+            protocol: null, 
+            username: null, 
+            password: null, 
+            host: null, 
+            port: null, 
+            path: null, 
+            query: null, 
+            fragment: null
+        };
+        
         var _hURL = href instanceof hURL,
             _object = typeof href === "object" && (href.host || href.path),
             key;
@@ -285,6 +303,8 @@ p.href = function(href, build) {
         return this;
     }
 };
+
+
 
 // combination accessors
 p.host = function(v, build) {
@@ -317,7 +337,18 @@ p.domain = function(v, build) {
         // "localhost" is a domain, too
         return this._parts.host.match(/\.?([^\.]+.[^\.]+)$/)[1] || this._parts.host;
     } else {
-        // TODO: mutate domain
+        if (!v) {
+            // cannot kill the domain
+            // TODO: decide if this should throw an Error
+            return this;
+        } else if (!this._parts.host || this.getHostIsIp()) {
+            this._parts.host = v;
+        } else {
+            var replace = new RegExp(RegExp.escape(this.domain()) + "$");
+            this._parts.host = this._parts.host.replace(replace, v);
+        }
+        
+        build !== false && this.build();
         return this;
     }
 };
@@ -331,7 +362,18 @@ p.tld = function(v, build) {
         var pos = this._parts.host.lastIndexOf('.');
         return this._parts.host.substr(pos + 1);
     } else {
-        // TODO: mutate TLD
+        if (!v) {
+            // cannot kill the domain
+            // TODO: decide if this should throw an Error
+            return this;
+        } else if (!this._parts.host || this.getHostIsIp()) {
+            // TODO: decide if this should throw an Error
+            this._parts.host = v;
+        } else {
+            var replace = new RegExp(RegExp.escape(this.tld()) + "$");
+            this._parts.host = this._parts.host.replace(replace, v);
+        }
+        
         return this;
     }
 };
