@@ -37,6 +37,7 @@ test("function hURL(string)", function() {
 
 
 module("parsing");
+// TODO: make for() out of this for IE6
 urls.forEach(function(t) {
     test("parse " + t.name, function() {
         var u = new hURL(t.url),
@@ -97,7 +98,58 @@ test("normalizePort", function() {
 
 });
 test("normalizePath", function() {
-   // TODO: test normalizePath()
+    // relative URL
+    var u = new hURL('/food/bar/baz.html');
+
+    u.normalizePath();
+    equal(u.path(), '/food/bar/baz.html', "absolute path without change");
+
+    u.path('food/bar/baz.html').normalizePath();
+    equal(u.path(), 'food/bar/baz.html', "relative path without change");
+   
+    u.path('/food/../bar/baz.html').normalizePath();
+    equal(u.path(), '/bar/baz.html', "single parent");
+
+    u.path('/food/woo/../../bar/baz.html').normalizePath();
+    equal(u.path(), '/bar/baz.html', "double parent");
+
+    u.path('/food/woo/../bar/../baz.html').normalizePath();
+    equal(u.path(), '/food/baz.html', "split double parent");
+
+    u.path('/food/woo/.././../baz.html').normalizePath();
+    equal(u.path(), '/baz.html', "cwd-split double parent");
+
+    u.path('food/woo/../bar/baz.html').normalizePath();
+    equal(u.path(), 'food/bar/baz.html', "relative parent");
+    
+    u.path('./food/woo/../bar/baz.html').normalizePath();
+    equal(u.path(), './food/bar/baz.html', "dot-relative parent");
+
+    // absolute URL
+    u = new hURL('http://example.org/foo/bar/baz.html');
+    u.normalizePath();
+    equal(u.path(), '/foo/bar/baz.html', "URL: absolute path without change");
+
+    u.path('foo/bar/baz.html').normalizePath();
+    equal(u.path(), '/foo/bar/baz.html', "URL: relative path without change");
+   
+    u.path('/foo/../bar/baz.html').normalizePath();
+    equal(u.path(), '/bar/baz.html', "URL: single parent");
+
+    u.path('/foo/woo/../../bar/baz.html').normalizePath();
+    equal(u.path(), '/bar/baz.html', "URL: double parent");
+    
+    u.path('/foo/woo/../bar/../baz.html').normalizePath();
+    equal(u.path(), '/foo/baz.html', "URL: split double parent");
+    
+    u.path('/foo/woo/.././../baz.html').normalizePath();
+    equal(u.path(), '/baz.html', "URL: cwd-split double parent");
+    
+    u.path('foo/woo/../bar/baz.html').normalizePath();
+    equal(u.path(), '/foo/bar/baz.html', "URL: relative parent");
+    
+    u.path('./foo/woo/../bar/baz.html').normalizePath();
+    equal(u.path(), '/foo/bar/baz.html', "URL: dot-relative parent");
 });
 test("normalizeQuery", function() {
     var u = new hURL("http://example.org/foobar.html?");

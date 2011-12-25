@@ -575,56 +575,53 @@ p.normalizePort = function(build) {
     return this;
 };
 p.normalizePath = function(build) {
-    // reduce ".." and "."
-    // can only be done on URLs with a path
+    if (!this._parts.path || this._parts.path === '/') {
+        return this;
+    }
     
-    // TODO: port my stuff from smarty
-    /*
-        // resolve relative path
-        if (!preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $file)) {
-            $_was_relative_prefix = $file[0] == '.' ? substr($file, 0, strpos($file, '|')) : null;
-            $_path = DS . trim($file, '/\\');
-            $_was_relative = true;
-        } else {
-            $_path = $file;
+    var _was_relative,
+        _was_relative_prefix,
+        _path = this._parts.path,
+        _parent, _pos;
+console.log(_path, '----- input');
+    // handle relative paths
+    if (_path[0] !== '/') {
+        if (_path[0] === '.') {
+            _was_relative_prefix = _path.substr(0, _path.indexOf('/'));
         }
-        // don't we all just love windows?
-        $_path = str_replace('\\', '/', $_path);
-        // resolve simples
-        $_path = preg_replace('#(/\./(\./)*)|/{2,}#', '/', $_path);
-        // resolve parents
-        while (true) {
-            $_parent = strpos($_path, '/../');
-            if ($_parent === false) {
-                break;
-            } else if ($_parent === 0) {
-                $_path = substr($_path, 3);
-                break;
-            }
-            $_pos = strrpos($_path, '/', $_parent - strlen($_path) - 1);
-            if ($_pos === false) {
-                // don't we all just love windows?
-                $_pos = $_parent;
-            }
-            $_path = substr_replace($_path, '', $_pos, $_parent + 3 - $_pos);
-        }
-        if (DS != '/') {
-            // don't we all just love windows?
-            $_path = str_replace('/', '\\', $_path);
-        }
-        // revert to relative
-        if (isset($_was_relative)) {
-            if (isset($_was_relative_prefix)){
-                $_path = $_was_relative_prefix . $_path;
-            } else {
-                $_path = substr($_path, 1);
-            }
+        _was_relative = true;
+        _path = '/' + _path;
+    }
+    // resolve simples
+    _path = _path.replace(/(\/(\.\/)+)|\/{2,}/g, '/');
+    // resolve parents
+    while (true) {
+        _parent = _path.indexOf('/../');
+        if (_parent === -1) {
+            // no more ../ to resolve
+            break;
+        } else if (_parent === 0) {
+            // top level cannot be relative...
+            _path = _path.substr(3);
+            break;
         }
 
-        // this is only required for directories
-        $file = rtrim($_path, '/\\');
-    */
-    
+        _pos = _path.substr(0, _parent).lastIndexOf('/');
+        if (_pos === -1) {
+            _pos = _parent;
+        }
+        _path = _path.substr(0, _pos) + _path.substr(_parent + 3);
+    }
+    // revert to relative
+    if (_was_relative && this.is('relative')) {
+        if (_was_relative_prefix){
+            _path = _was_relative_prefix + _path;
+        } else {
+            _path = _path.substr(1);
+        }
+    }
+
+    this._parts.path = _path;
     build !== false && this.build();
     return this;
 };
