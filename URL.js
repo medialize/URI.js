@@ -838,7 +838,6 @@ p.absoluteTo = function(base) {
     return resolved;
 };
 p.relativeTo = function(base) {
-    // TODO: relativeTo()
     if (!(base instanceof hURL)) {
         base = new hURL(base);
     }

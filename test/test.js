@@ -603,6 +603,9 @@ test("relativeTo", function() {
             r = u.relativeTo(b);
         
         equal(r + "", t.result, t.name);
+
+        var a = r.absoluteTo(t.base);
+        equal(a + "", t.url, t.name + " reversed");
     }
 });
 
