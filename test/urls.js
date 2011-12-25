@@ -25,9 +25,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/',
-            pathFilename: '',
-            pathSuffix: '',
+            directory: '/',
+            filename: '',
+            suffix: '',
             // window.location compatibility
             hash: "", // location.hash style
             search: "", // location.search style
@@ -60,9 +60,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -95,9 +95,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -130,9 +130,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -165,9 +165,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '../some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '../some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -200,9 +200,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: 'user:pass@www.example.org:123/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: 'user:pass@www.example.org:123/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -236,9 +236,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -271,9 +271,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -306,9 +306,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -341,9 +341,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -376,9 +376,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: true,
             // path
-            pathDirectory: '/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -411,9 +411,9 @@ var urls = [{
             hostIsIdn: true,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/some/directory',
-            pathFilename: 'file.html',
-            pathSuffix: 'html',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '#fragment',
             search: '?query=string',
@@ -446,9 +446,9 @@ var urls = [{
             hostIsIdn: false,
             hostIsPunycode: false,
             // path
-            pathDirectory: '/foo/bar',
-            pathFilename: 'baz.html',
-            pathSuffix: 'html',
+            directory: '/foo/bar',
+            filename: 'baz.html',
+            suffix: 'html',
             // window.location compatibility
             hash: '',
             search: '',

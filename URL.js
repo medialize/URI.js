@@ -56,39 +56,8 @@ hURL.parse = function(string) {
         parts.protocol = string.substr(0, pos);
         string = string.substr(pos + 3);
         
-        // extract username:password
-        pos = string.indexOf('@');
-        if (pos > -1) {
-            t = string.substr(0, pos).split(':');
-            parts.username = t[0] || null;
-            parts.password = t[1] || null;
-            string = string.substr(pos + 1);
-        }
-
-        // extract host:port
-        pos = string.indexOf('/');
-        if (pos === -1) {
-            pos = string.length;
-        }
-        
-        if (string[0] === "[") {
-            // IPv6 host - http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6
-            // I claim most client software breaks on IPv6 anyways. To simplify things, hURL only accepts
-            // IPv6+port in the format [2001:db8::1]:80 (for the time being)
-            var bracketPos = string.indexOf(']');
-            parts.host = string.substring(1, bracketPos);
-            parts.port = string.substring(bracketPos+2, pos) || null;
-        } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
-            // IPv6 host contains multiple colons - but no port
-            parts.host = string.substr(0, pos);
-            parts.port = null;
-        } else {
-            t = string.substr(0, pos).split(':');
-            parts.host = t[0];
-            parts.port = t[1] || null;
-        }
-        
-        string = string.substr(pos) || '/';
+        // extract "user:pass@host:port"
+        string = hURL.parseAuthority(string, parts);
     }
     
     // what's left must be the path
@@ -97,7 +66,44 @@ hURL.parse = function(string) {
     // and we're done
     return parts;
 };
+hURL.parseHost = function(string, parts) {
+    // extract host:port
+    var pos = string.indexOf('/');
+    if (pos === -1) {
+        pos = string.length;
+    }
+    
+    if (string[0] === "[") {
+        // IPv6 host - http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6
+        // I claim most client software breaks on IPv6 anyways. To simplify things, hURL only accepts
+        // IPv6+port in the format [2001:db8::1]:80 (for the time being)
+        var bracketPos = string.indexOf(']');
+        parts.host = string.substring(1, bracketPos);
+        parts.port = string.substring(bracketPos+2, pos) || null;
+    } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
+        // IPv6 host contains multiple colons - but no port
+        parts.host = string.substr(0, pos);
+        parts.port = null;
+    } else {
+        t = string.substr(0, pos).split(':');
+        parts.host = t[0];
+        parts.port = t[1] || null;
+    }
+    
+    return string.substr(pos) || '/';
+};
+hURL.parseAuthority = function(string, parts) {
+    // extract username:password
+    var pos = string.indexOf('@');
+    if (pos > -1) {
+        t = string.substr(0, pos).split(':');
+        parts.username = t[0] || null;
+        parts.password = t[1] || null;
+        string = string.substr(pos + 1);
+    }
 
+    return hURL.parseHost(string, parts);
+};
 hURL.parseQuery = function(string) {
     var items = [],
         splits = string.split('&'),
@@ -253,7 +259,6 @@ for (_part in _parts) {
     })(_parts[_part][1], _parts[_part][0]);
 }
 
-// compatibility with window.location
 p.pathname = p.path;
 p.href = function(href, build) {
     if (href === undefined) {
@@ -281,75 +286,97 @@ p.href = function(href, build) {
     }
 };
 
-
-
-
-p.getHost = function() {
-    if (!this._parts.host) {
-        return "";
+// combination accessors
+p.host = function(v, build) {
+    if (v === undefined) {
+        return this._parts.host ? hURL.buildHost(this._parts) : "";
+    } else {
+        hURL.parseHost(v, this._parts);
+        build !== false && this.build();
+        return this;
     }
+};
+p.authority = function(v, build) {
+    if (v === undefined) {
+        return this._parts.host ? hURL.buildAuthority(this._parts) : "";
+    } else {
+        hURL.parseAuthority(v, this._parts);
+        build !== false && this.build();
+        return this;
+    }
+};
+
+// fraction accessors
+p.domain = function(v, build) {
+    // convinience, return "example.org" from "www.example.org"
+    if (v === undefined) {
+        if (!this._parts.host || this.getHostIsIp()) {
+            return "";
+        }
+
+        // "localhost" is a domain, too
+        return this._parts.host.match(/\.?([^\.]+.[^\.]+)$/)[1] || this._parts.host;
+    } else {
+        // TODO: mutate domain
+        return this;
+    }
+};
+p.tld = function(v, build) {
+    // return "org" from "www.example.org"
+    if (v === undefined) {
+        if (!this._parts.host || this.getHostIsIp()) {
+            return "";
+        }
+
+        var pos = this._parts.host.lastIndexOf('.');
+        return this._parts.host.substr(pos + 1);
+    } else {
+        // TODO: mutate TLD
+        return this;
+    }
+};
+p.directory = function(v, build) {
+    if (v === undefined) {
+        if (!this._parts.path || this._parts.path === '/') {
+            return '/';
+        }
+        
+        var pos = this._parts.path.lastIndexOf('/');
+        return pos > -1 ? this._parts.path.substr(0, pos) : "/";
+    } else {
+        // TODO: mutate directory
+        return this;
+    }
+};
+p.filename = function(v, build) {
+    if (v === undefined) {
+        if (!this._parts.path || this._parts.path === '/') {
+            return "";
+        }
+        var pos = this._parts.path.lastIndexOf('/');
+        return this._parts.path.substr(pos+1);
+    } else {
+        // TODO: mutate directory
+        return this;
+    }
+};
+p.suffix = function(v, build) {
+    if (v === undefined) {
+        if (!this._parts.path || this._parts.path === '/') {
+            return "";
+        }
     
-    return hURL.buildHost(this._parts);
-};
-p.setHost = function(host) {
-    // TODO: parse host [to split IP]
-    return this;
-};
-p.getDomain = function() {
-    // convinience, return "google.com" from "www.google.com"
-    if (!this._parts.host || this.getHostIsIp()) {
-        return "";
+        var filename = this.filename(),
+            pos = filename.lastIndexOf('.');
+
+        return filename.substr(pos+1);
+    } else {
+        // TODO: mutate suffix
+        return this;
     }
-    
-    // "localhost" is a domain, too
-    return this._parts.host.match(/\.?([^\.]+.[^\.]+)$/)[1] || this._parts.host;
-};
-p.getTld = function() {
-    // return "com" from "www.google.com"
-    // TODO: edge case - IDN
-    if (!this._parts.host || this.getHostIsIp()) {
-        return "";
-    }
-    
-    var pos = this._parts.host.lastIndexOf('.');
-    return this._parts.host.substr(pos + 1);
 };
 
-p.getPathDirectory = function() {
-    if (this._parts.path === '/') {
-        return '/';
-    }
-    var pos = this._parts.path.lastIndexOf('/');
-    return pos > -1 ? this._parts.path.substr(0, pos) : undefined;
-};
-p.getPathFilename = function() {
-    if (this._parts.path === '/') {
-        return "";
-    }
-    var pos = this._parts.path.lastIndexOf('/');
-    return this._parts.path.substr(pos+1);
-};
-p.getPathSuffix = function() {
-    if (this._parts.path === '/') {
-        return "";
-    }
-    
-    var filename = this.getPathFilename(),
-        pos = filename.lastIndexOf('.');
-
-    return filename.substr(pos+1);
-};
-
-// "username:password@host:port"
-p.getAuthority = function() {
-    if (!this._parts.host) {
-        return "";
-    }
-
-    return hURL.buildAuthority(this._parts);
-};
-
-
+// mutating query string
 p.addQuery = function(name, value) {
     if (typeof name === "object") {
         
@@ -368,10 +395,6 @@ p.getQueryArray = function() {
 p.getQueryObject = function() {
     // TODO: getQueryObject();  // { key: value, key2: [value, …], … } // PHP-style foo[] assoc array
 };
-
-
-
-
 
 // sanitizing URLs
 p.normalize = function() {
@@ -479,8 +502,7 @@ p.normalizeFragment = function(build) {
 p.normalizeSearch = p.normalizeQuery;
 p.normalizeHash = p.normalizeFragment;
 
-
-// relative and absolute URLs
+// resolving relative and absolute URLs
 p.resolve = function(base) {
     // this being "http://example.org/foo/other/file.html"
     // base being "../bar/baz.html?foo=bar"
@@ -538,9 +560,7 @@ p.relativeTo = function(base) {
     // return being "../bar/baz.html?foo=bar"
 };
 
-
-
-
+// convinience flags
 p.getIsRelative = function() {
     return !this._parts.host;
 };
@@ -584,7 +604,7 @@ p.getHostIsPunycode = function() {
     return hURL.punycode_expression.test(this._parts.host);
 };
 
-
+// static properties
 hURL.idn_expression = /[^a-z0-9\.-]/i;
 hURL.punycode_expression = /(^xn--)/i;
 // well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?

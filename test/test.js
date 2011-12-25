@@ -126,10 +126,5 @@ test("protocol", function() {
     u.protocol(null);
     equal(u.protocol(), "", "missing protocol");
     equal(u+"", "example.org/foo.html", "no-scheme url");
-    
-    
-    u = new hURL("://example.org/foo.html");
-    equal(u.protocol(), "", "ftp protocol");
-    equal(u+"", "example.org/foo.html", "ftp url");
 });
 
