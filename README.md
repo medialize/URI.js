@@ -68,6 +68,7 @@ url.addQuery("foo", "bar");
 ## TODO ##
 
 * AMD stuff
+* modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * accept all [IPv6 notations](http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6)
 * add `bestIp6()` (for the fun of it…)
 * throw this at someone to make a specification out of it, so browser eventually support this natively (care to help?)

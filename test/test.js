@@ -47,21 +47,22 @@ urls.forEach(function(t) {
         
         // test parsed parts
         for (key in t.parts) {
-            if (Object.hasOwnProperty.call(t, key)) {
-                equal(u[key], t.parts[key], key);
+            if (Object.hasOwnProperty.call(t.parts, key)) {
+                equal(u._parts[key], t.parts[key], "part: " + key);
             }
         }
         
-        // test convinience
-        for (key in t.convinience) {
-            if (Object.hasOwnProperty.call(t.convinience, key)) {
-                if (u[key]) {
-                    equal(u[key].call(u), t.convinience[key], key);
-                } else {
-                    // TODO: remove this branch
-                    var method = 'get' + key[0].toUpperCase() + key.substr(1);
-                    equal(u[method].call(u), t.convinience[key], key);
-                }
+        // test accessors
+        for (key in t.accessors) {
+            if (Object.hasOwnProperty.call(t.accessors, key)) {
+                equal(u[key](), t.accessors[key], "accessor: " + key);
+            }
+        }
+        
+        // test is()
+        for (key in t.is) {
+            if (Object.hasOwnProperty.call(t.is, key)) {
+                equal(u.is(key), t.is[key], "is: " + key);
             }
         }
     });
@@ -303,28 +304,92 @@ test("domain", function() {
     equal(u.hostname(), "www.foo.bar", "changed hostname foo.bar");
     equal(u+"", "http://www.foo.bar/foo.html", "changed url foo.bar");
     
-    u.domain("");
-    equal(u.hostname(), "www.foo.bar", "changed ''");
-    equal(u+"", "http://www.foo.bar/foo.html", "changed url ''");
+    raises(function() {
+        u.domain("");
+    }, TypeError, "Failing empty input");
 });
 test("tld", function() {
     var u = new hURL("http://www.example.org/foo.html");
     u.tld("mine");
     equal(u.tld(), "mine", "tld changed");
     equal(u+"", "http://www.example.mine/foo.html", "changed url mine");
-    
-    u.tld("");
-    equal(u.tld(), "mine", "tld changed");
-    equal(u+"", "http://www.example.mine/foo.html", "changed url ''");
+
+    raises(function() {
+        u.tld("");
+    }, TypeError, "Failing empty input");
 });
 test("directory", function() {
-    // TODO: mutating directory test
+    var u = new hURL("http://www.example.org/some/directory/foo.html");
+    u.directory("/");
+    equal(u.path(), "/foo.html", "changed path '/'");
+    equal(u+"", "http://www.example.org/foo.html", "changed url '/'");
+    
+    u.directory("");
+    equal(u.path(), "/foo.html", "changed path ''");
+    equal(u+"", "http://www.example.org/foo.html", "changed url ''");
+    
+    u.directory("/bar");
+    equal(u.path(), "/bar/foo.html", "changed path '/bar'");
+    equal(u+"", "http://www.example.org/bar/foo.html", "changed url '/bar'");
+    
+    u.directory("baz");
+    equal(u.path(), "/baz/foo.html", "changed path 'baz'");
+    equal(u+"", "http://www.example.org/baz/foo.html", "changed url 'baz'");
+    
+    // relative paths
+    u = new hURL("../some/directory/foo.html");
+    u.directory("../other/");
+    equal(u.path(), "../other/foo.html", "changed path '../other/'");
+    equal(u+"", "../other/foo.html", "changed url '../other/'");
+    
+    u.directory("mine");
+    equal(u.path(), "mine/foo.html", "changed path 'mine'");
+    equal(u+"", "mine/foo.html", "changed url 'mine'");
+    
+    u.directory("/");
+    equal(u.path(), "/foo.html", "changed path '/'");
+    equal(u+"", "/foo.html", "changed url '/'");
+    
+    u.directory("");
+    equal(u.path(), "foo.html", "changed path ''");
+    equal(u+"", "foo.html", "changed url ''");
+    
+    u.directory("../blubb");
+    equal(u.path(), "../blubb/foo.html", "changed path '../blubb'");
+    equal(u+"", "../blubb/foo.html", "changed url '../blubb'");
+   
 });
 test("filename", function() {
-    // TODO: mutating filename test
+    var u = new hURL("http://www.example.org/some/directory/foo.html");
+    u.filename("hello.world");
+    equal(u.path(), "/some/directory/hello.world", "changed path 'hello.world'");
+    equal(u+"", "http://www.example.org/some/directory/hello.world", "changed url 'hello.world'");
+    
+    u.filename("hello");
+    equal(u.path(), "/some/directory/hello", "changed path 'hello'");
+    equal(u+"", "http://www.example.org/some/directory/hello", "changed url 'hello'");
+    
+    u.filename("");
+    equal(u.path(), "/some/directory/", "changed path ''");
+    equal(u+"", "http://www.example.org/some/directory/", "changed url ''");
+    
+    u.filename("world");
+    equal(u.path(), "/some/directory/world", "changed path 'world'");
+    equal(u+"", "http://www.example.org/some/directory/world", "changed url 'world'");
 });
 test("suffix", function() {
-    // TODO: mutating suffix test
+    var u = new hURL("http://www.example.org/some/directory/foo.html");
+    u.suffix("xml");
+    equal(u.path(), "/some/directory/foo.xml", "changed path 'xml'");
+    equal(u+"", "http://www.example.org/some/directory/foo.xml", "changed url 'xml'");
+    
+    u.suffix("");
+    equal(u.path(), "/some/directory/foo", "changed path ''");
+    equal(u+"", "http://www.example.org/some/directory/foo", "changed url ''");
+    
+    u.suffix("html");
+    equal(u.path(), "/some/directory/foo.html", "changed path 'html'");
+    equal(u+"", "http://www.example.org/some/directory/foo.html", "changed url 'html'");
 });
 
 module("mutating query strings");

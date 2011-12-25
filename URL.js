@@ -72,15 +72,15 @@ hURL.parseHost = function(string, parts) {
         // I claim most client software breaks on IPv6 anyways. To simplify things, hURL only accepts
         // IPv6+port in the format [2001:db8::1]:80 (for the time being)
         var bracketPos = string.indexOf(']');
-        parts.host = string.substring(1, bracketPos);
+        parts.host = string.substring(1, bracketPos) || null;
         parts.port = string.substring(bracketPos+2, pos) || null;
     } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
         // IPv6 host contains multiple colons - but no port
-        parts.host = string.substr(0, pos);
+        parts.host = string.substr(0, pos) || null;
         parts.port = null;
     } else {
         t = string.substr(0, pos).split(':');
-        parts.host = t[0];
+        parts.host = t[0] || null;
         parts.port = t[1] || null;
     }
     
@@ -198,7 +198,8 @@ p.build = function() {
 };
 
 p.toString = function() {
-    return this.build()._string;
+    // return this.build()._string;
+    return this._string;
 };
 p.valueOf = function() {
     return this.toString();
@@ -304,7 +305,58 @@ p.href = function(href, build) {
     }
 };
 
-
+// identification accessors
+p.is = function(what) {
+    var ip = false, 
+        ip4 = false, 
+        ip6 = false, 
+        name = false,
+        idn = false,
+        punycode = false,
+        relative = true;
+    
+    if (this._parts.host) {
+        relative = false;
+        ip4 = hURL.ip4_expression.test(this._parts.host);
+        ip6 = hURL.ip6_expression.test(this._parts.host);
+        ip = ip4 || ip6;
+        name = !ip;
+        idn = name && hURL.idn_expression.test(this._parts.host);
+        punycode = name && hURL.punycode_expression.test(this._parts.host);
+        
+    }
+    
+    switch (what.toLowerCase()) {
+        case 'relative':
+            return relative;
+            
+        // hostname identification
+        case 'domain':
+        case 'name':
+            return name;
+            
+        case 'ip':
+            return ip;
+                
+        case 'ip4':
+        case 'ipv4':
+        case 'inet4':
+            return ip4;
+                
+        case 'ip6':
+        case 'ipv6':
+        case 'inet6':
+            return ip6;
+            
+        case 'idn':
+            return idn;
+        
+        case 'punycode':
+            return punycode;
+    }
+    
+    return null;
+};
 
 // combination accessors
 p.host = function(v, build) {
@@ -330,7 +382,7 @@ p.authority = function(v, build) {
 p.domain = function(v, build) {
     // convinience, return "example.org" from "www.example.org"
     if (v === undefined) {
-        if (!this._parts.host || this.getHostIsIp()) {
+        if (!this._parts.host || this.is('IP')) {
             return "";
         }
 
@@ -338,10 +390,8 @@ p.domain = function(v, build) {
         return this._parts.host.match(/\.?([^\.]+.[^\.]+)$/)[1] || this._parts.host;
     } else {
         if (!v) {
-            // cannot kill the domain
-            // TODO: decide if this should throw an Error
-            return this;
-        } else if (!this._parts.host || this.getHostIsIp()) {
+            throw new TypeError("cannot set domain empty");
+        } else if (!this._parts.host || this.is('IP')) {
             this._parts.host = v;
         } else {
             var replace = new RegExp(RegExp.escape(this.domain()) + "$");
@@ -355,7 +405,7 @@ p.domain = function(v, build) {
 p.tld = function(v, build) {
     // return "org" from "www.example.org"
     if (v === undefined) {
-        if (!this._parts.host || this.getHostIsIp()) {
+        if (!this._parts.host || this.is('IP')) {
             return "";
         }
 
@@ -363,17 +413,15 @@ p.tld = function(v, build) {
         return this._parts.host.substr(pos + 1);
     } else {
         if (!v) {
-            // cannot kill the domain
-            // TODO: decide if this should throw an Error
-            return this;
-        } else if (!this._parts.host || this.getHostIsIp()) {
-            // TODO: decide if this should throw an Error
-            this._parts.host = v;
+            throw new TypeError("cannot set TLD empty");
+        } else if (!this._parts.host || this.is('IP')) {
+            throw new ReferenceError("cannot set TLD on non-domain host");
         } else {
             var replace = new RegExp(RegExp.escape(this.tld()) + "$");
             this._parts.host = this._parts.host.replace(replace, v);
         }
         
+        build !== false && this.build();
         return this;
     }
 };
@@ -382,11 +430,32 @@ p.directory = function(v, build) {
         if (!this._parts.path || this._parts.path === '/') {
             return '/';
         }
-        
-        var pos = this._parts.path.lastIndexOf('/');
-        return pos > -1 ? this._parts.path.substr(0, pos) : "/";
+
+        var end = this._parts.path.length - this.filename().length - 1;
+        return this._parts.path.substring(0, end);
     } else {
-        // TODO: mutate directory
+        var e = this._parts.path.length - this.filename().length,
+            directory = this._parts.path.substring(0, e),
+            replace = new RegExp('^' + RegExp.escape(directory));
+
+        // fully qualifier directories begin with a slash
+        if (!this.is('relative')) {
+            if (!v) {
+                v = '/';
+            }
+            
+            if (v[0] !== '/') {
+                v = "/" + v;
+            }
+        }
+        
+        // directories always end with a slash
+        if (v && v[v.length - 1] !== '/') {
+            v += '/';
+        }
+
+        this._parts.path = this._parts.path.replace(replace, v);
+        build !== false && this.build();
         return this;
     }
 };
@@ -395,10 +464,18 @@ p.filename = function(v, build) {
         if (!this._parts.path || this._parts.path === '/') {
             return "";
         }
+        
         var pos = this._parts.path.lastIndexOf('/');
         return this._parts.path.substr(pos+1);
     } else {
-        // TODO: mutate directory
+
+        if (v[0] === '/') {
+            v = v.substr(1);
+        }
+        
+        var replace = new RegExp(RegExp.escape(this.filename()) + "$");
+        this._parts.path = this._parts.path.replace(replace, v);
+        build !== false && this.build();
         return this;
     }
 };
@@ -409,14 +486,45 @@ p.suffix = function(v, build) {
         }
     
         var filename = this.filename(),
-            pos = filename.lastIndexOf('.');
-
-        return filename.substr(pos+1);
+            pos = filename.lastIndexOf('.'),
+            s;
+        
+        if (pos === -1) {
+            return "";
+        }
+        
+        // suffix may only contain alnum characters (yup, I made this up.)
+        s = filename.substr(pos+1);
+        return (/^[a-z0-9]+$/i).test(s) ? s : "";
     } else {
-        // TODO: mutate suffix
+        if (v[0] === '.') {
+            v = v.substr(1);
+        }
+        
+        var suffix = this.suffix(),
+            replace;
+
+        if (!suffix) {
+            if (!v) {
+                return this;
+            }
+
+            this._parts.path += '.' + v;
+        } else if (!v) {
+            replace = new RegExp(RegExp.escape("." + suffix) + "$");
+        } else {
+            replace = new RegExp(RegExp.escape(suffix) + "$");
+        }
+        
+        if (replace) {
+            this._parts.path = this._parts.path.replace(replace, v);
+        }
+        
+        build !== false && this.build();
         return this;
     }
 };
+
 
 // mutating query string
 p.addQuery = function(name, value) {
@@ -431,9 +539,8 @@ p.addQuery = function(name, value) {
     }
     // TODO: addQuery(name, value) || name is string || array || object - question: should be overwritten or appended?
 };
-p.getQueryArray = function() {
-    // TODO: getQueryArray();   // flat [ {key: "", value: ""}, … ]
-};
+p.filterQuery = function(){};
+p.mapQuery = function(){};
 p.getQueryObject = function() {
     // TODO: getQueryObject();  // { key: value, key2: [value, …], … } // PHP-style foo[] assoc array
 };
@@ -449,12 +556,12 @@ p.normalize = function() {
         .build();
 };
 p.normalizeHost = function(build) {
-    if (this.getHostIsIdn() && window.punycode) {
+    if (this.is('IDN') && window.punycode) {
         this._parts.host = punycode.toASCII(this._parts.host);
-    } else if (this.getHostIsIp6() && window.IPv6) {
-        this._parts.host = IPv6.best(this._parts.host);        
+    } else if (this.is('IPv6') && window.IPv6) {
+        this._parts.host = IPv6.best(this._parts.host);
     }
-
+    
     build !== false && this.build();
     return this;
 };
@@ -602,49 +709,6 @@ p.relativeTo = function(base) {
     // return being "../bar/baz.html?foo=bar"
 };
 
-// convinience flags
-p.getIsRelative = function() {
-    return !this._parts.host;
-};
-p.getHostIsName = function() {
-    if (!this._parts.host) {
-        return false;
-    }
-    
-    return !this.getHostIsIp();
-};
-p.getHostIsIp = function() {
-    return this.getHostIsIp4() || this.getHostIsIp6();
-};
-p.getHostIsIp4 = function() {
-    if (!this._parts.host) {
-        return false;
-    }
-
-    return hURL.ip4_expression.test(this._parts.host);
-};
-p.getHostIsIp6 = function() {
-    if (!this._parts.host) {
-        return false;
-    }
-    
-    return hURL.ip6_expression.test(this._parts.host);
-    
-};
-p.getHostIsIdn = function() {
-    if (!this._parts.host || this.getHostIsIp()) {
-        return false;
-    }
-
-    return hURL.idn_expression.test(this._parts.host);
-};
-p.getHostIsPunycode = function() {
-    if (!this._parts.host || this.getHostIsIp()) {
-        return false;
-    }
-    
-    return hURL.punycode_expression.test(this._parts.host);
-};
 
 // static properties
 hURL.idn_expression = /[^a-z0-9\.-]/i;
