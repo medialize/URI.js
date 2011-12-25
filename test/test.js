@@ -1,37 +1,37 @@
 test("loaded", function() {
-    ok(window.hURL);
+    ok(window.URI);
 });
 
 
 module("constructing");
-test("new hURL(string)", function() {
-    var u = new hURL("http://example.org/");
-    ok(u instanceof hURL, "instanceof hURL");
+test("new URI(string)", function() {
+    var u = new URI("http://example.org/");
+    ok(u instanceof URI, "instanceof URI");
     ok(u._parts.host !== undefined, "host undefined");
 });
-test("new hURL(object)", function() {
-    var u = new hURL({protocol: "http", host: 'example.org'});
-    ok(u instanceof hURL, "instanceof hURL");
+test("new URI(object)", function() {
+    var u = new URI({protocol: "http", host: 'example.org'});
+    ok(u instanceof URI, "instanceof URI");
     ok(u._parts.host !== undefined, "host undefined");
 });
-test("new hURL(hURL)", function() {
-    var u = new hURL(new hURL({protocol: "http", host: 'example.org'}));
-    ok(u instanceof hURL, "instanceof hURL");
+test("new URI(URI)", function() {
+    var u = new URI(new URI({protocol: "http", host: 'example.org'}));
+    ok(u instanceof URI, "instanceof URI");
     ok(u._parts.host !== undefined, "host undefined");
 });
-test("new hURL(new Date())", function() {
+test("new URI(new Date())", function() {
     raises(function() {
-        new hURL(new Date());
+        new URI(new Date());
     }, TypeError, "Failing unknown input");
 });
-test("new hURL()", function() {
-    var u = new hURL();
-    ok(u instanceof hURL, "instanceof hURL");
+test("new URI()", function() {
+    var u = new URI();
+    ok(u instanceof URI, "instanceof URI");
     ok(u._parts.host === location.hostname, "host == location.hostname");
 });
-test("function hURL(string)", function() {
-    var u = new hURL("http://example.org/");
-    ok(u instanceof hURL, "instanceof hURL");
+test("function URI(string)", function() {
+    var u = new URI("http://example.org/");
+    ok(u instanceof URI, "instanceof URI");
     ok(u._parts.host !== undefined, "host undefined");
 });
 
@@ -41,7 +41,7 @@ module("parsing");
 for (var i = 0, t; t = urls[i]; i++) {
     (function(t){
         test("parse " + t.name, function() {
-            var u = new hURL(t.url),
+            var u = new URI(t.url),
                 key;
         
             // test URL built from parts
@@ -74,7 +74,7 @@ for (var i = 0, t; t = urls[i]; i++) {
 
 module("mutating basics");
 test("protocol", function() {
-    var u = new hURL("http://example.org/foo.html");
+    var u = new URI("http://example.org/foo.html");
     u.protocol('ftp');
     equal(u.protocol(), "ftp", "ftp protocol");
     equal(u+"", "ftp://example.org/foo.html", "ftp url");
@@ -88,7 +88,7 @@ test("protocol", function() {
     equal(u+"", "example.org/foo.html", "no-scheme url");
 });
 test("username", function() { 
-    var u = new hURL("http://example.org/foo.html");
+    var u = new URI("http://example.org/foo.html");
     u.username("hello");
     equal(u.username(), "hello", "changed username hello");
     equal(u.password(), "", "changed passowrd hello");
@@ -100,7 +100,7 @@ test("username", function() {
     equal(u+"", "http://example.org/foo.html", "changed url ''");
 });
 test("password", function() { 
-    var u = new hURL("http://hello@example.org/foo.html");
+    var u = new URI("http://hello@example.org/foo.html");
     u.password("world");
     equal(u.username(), "hello", "changed username world");
     equal(u.password(), "world", "changed passowrd world");
@@ -117,7 +117,7 @@ test("password", function() {
     equal(u+"", "http://example.org/foo.html", "changed url - password without username");
 });
 test("hostname", function() {
-    var u = new hURL("http://example.org/foo.html");
+    var u = new URI("http://example.org/foo.html");
     u.hostname('abc.foobar.lala');
     equal(u.hostname(), "abc.foobar.lala", "hostname changed");
     equal(u+"", "http://abc.foobar.lala/foo.html", "hostname changed url");
@@ -127,7 +127,7 @@ test("hostname", function() {
     equal(u+"", "http:///foo.html", "hostname removed url");
 });
 test("port", function() { 
-    var u = new hURL("http://example.org/foo.html");
+    var u = new URI("http://example.org/foo.html");
     u.port('80');
     equal(u.port(), "80", "changing port 80");
     equal(u+"", "http://example.org:80/foo.html", "changing url 80");
@@ -137,7 +137,7 @@ test("port", function() {
     equal(u+"", "http://example.org/foo.html", "changing url ''");
 });
 test("path", function() { 
-    var u = new hURL("http://example.org/foobar.html?query=string");
+    var u = new URI("http://example.org/foobar.html?query=string");
     u.pathname('/some/path/file.suffix');
     equal(u.pathname(), '/some/path/file.suffix', "changing pathname '/some/path/file.suffix'");
     equal(u+"", "http://example.org/some/path/file.suffix?query=string", "changing url '/some/path/file.suffix'");
@@ -147,7 +147,7 @@ test("path", function() {
     equal(u+"", "http://example.org/?query=string", "changing url ''");
 });
 test("query", function() { 
-    var u = new hURL("http://example.org/foo.html");
+    var u = new URI("http://example.org/foo.html");
     u.query('foo=bar=foo');
     equal(u.query(), "foo=bar=foo", "query: foo=bar=foo");
     equal(u.search(), "?foo=bar=foo", "query: foo=bar=foo - search");
@@ -173,7 +173,7 @@ test("query", function() {
     equal(u.search(), "", "search: '' - query");
 });
 test("fragment", function() { 
-    var u = new hURL("http://example.org/foo.html");
+    var u = new URI("http://example.org/foo.html");
     u.fragment('foo');
     equal(u.fragment(), "foo", "fragment: foo");
     equal(u.hash(), "#foo", "fragment: foo - hash");
@@ -202,7 +202,7 @@ test("fragment", function() {
 
 module("mutating compounds");
 test("host", function() {
-    var u = new hURL("http://foo.bar/foo.html");
+    var u = new URI("http://foo.bar/foo.html");
     
     u.host('example.org:80');
     equal(u.hostname(), "example.org", "host changed hostname");
@@ -215,7 +215,7 @@ test("host", function() {
     equal(u+"", "http://some-domain.com/foo.html", "host modified url");
 });
 test("authority", function() {
-    var u = new hURL("http://foo.bar/foo.html");
+    var u = new URI("http://foo.bar/foo.html");
     
     u.authority('username:password@example.org:80');
     equal(u.username(), "username", "authority changed username");
@@ -232,7 +232,7 @@ test("authority", function() {
     equal(u+"", "http://some-domain.com/foo.html", "authority modified url");
 });
 test("href", function() {
-    var u = new hURL("http://foo.bar/foo.html");
+    var u = new URI("http://foo.bar/foo.html");
 
     u.href('ftp://u:p@example.org:123/directory/file.suffix?query=string#fragment');
     equal(u.protocol(), "ftp", "href changed protocol");
@@ -260,7 +260,7 @@ test("href", function() {
 
 module("mutating fractions");
 test("domain", function() {
-    var u = new hURL("http://www.example.org/foo.html");
+    var u = new URI("http://www.example.org/foo.html");
     u.domain("foo.bar");
     equal(u.hostname(), "www.foo.bar", "changed hostname foo.bar");
     equal(u+"", "http://www.foo.bar/foo.html", "changed url foo.bar");
@@ -270,7 +270,7 @@ test("domain", function() {
     }, TypeError, "Failing empty input");
 });
 test("tld", function() {
-    var u = new hURL("http://www.example.org/foo.html");
+    var u = new URI("http://www.example.org/foo.html");
     u.tld("mine");
     equal(u.tld(), "mine", "tld changed");
     equal(u+"", "http://www.example.mine/foo.html", "changed url mine");
@@ -280,7 +280,7 @@ test("tld", function() {
     }, TypeError, "Failing empty input");
 });
 test("directory", function() {
-    var u = new hURL("http://www.example.org/some/directory/foo.html");
+    var u = new URI("http://www.example.org/some/directory/foo.html");
     u.directory("/");
     equal(u.path(), "/foo.html", "changed path '/'");
     equal(u+"", "http://www.example.org/foo.html", "changed url '/'");
@@ -298,7 +298,7 @@ test("directory", function() {
     equal(u+"", "http://www.example.org/baz/foo.html", "changed url 'baz'");
     
     // relative paths
-    u = new hURL("../some/directory/foo.html");
+    u = new URI("../some/directory/foo.html");
     u.directory("../other/");
     equal(u.path(), "../other/foo.html", "changed path '../other/'");
     equal(u+"", "../other/foo.html", "changed url '../other/'");
@@ -321,7 +321,7 @@ test("directory", function() {
    
 });
 test("filename", function() {
-    var u = new hURL("http://www.example.org/some/directory/foo.html");
+    var u = new URI("http://www.example.org/some/directory/foo.html");
     u.filename("hello.world");
     equal(u.path(), "/some/directory/hello.world", "changed path 'hello.world'");
     equal(u+"", "http://www.example.org/some/directory/hello.world", "changed url 'hello.world'");
@@ -339,7 +339,7 @@ test("filename", function() {
     equal(u+"", "http://www.example.org/some/directory/world", "changed url 'world'");
 });
 test("suffix", function() {
-    var u = new hURL("http://www.example.org/some/directory/foo.html");
+    var u = new URI("http://www.example.org/some/directory/foo.html");
     u.suffix("xml");
     equal(u.path(), "/some/directory/foo.xml", "changed path 'xml'");
     equal(u+"", "http://www.example.org/some/directory/foo.xml", "changed url 'xml'");
@@ -356,7 +356,7 @@ test("suffix", function() {
 
 module("mutating query strings");
 test("mutating object", function() {
-    var u = new hURL('?foo=bar&baz=bam&baz=bau'),
+    var u = new URI('?foo=bar&baz=bam&baz=bau'),
         q = u.query(true);
     
     q.something = ['new', 'and', 'funky'];
@@ -372,7 +372,7 @@ test("mutating object", function() {
     equal(u.query(), 'something=new&something=and&something=funky', "removing array");
 });
 test("addQuery", function() {
-    var u = hURL('?foo=bar');
+    var u = URI('?foo=bar');
     u.addQuery('baz', 'bam');
     equal(u.query(), 'foo=bar&baz=bam', "add name, value");
     
@@ -387,7 +387,7 @@ test("addQuery", function() {
     equal(u.query(), 'foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2', "add {name: array}");
 });
 test("removeQuery", function() {
-    var u = new hURL('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
+    var u = new URI('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
     
     u.removeQuery('foo', 'bar');
     equal(u.query(), 'foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3', 'removing name, value');
@@ -410,36 +410,36 @@ test("removeQuery", function() {
 
 module("normalizing");
 test("normalize", function() {
-   var u = new hURL("http://www.exämple.org:80/food/woo/.././../baz.html?&foo=bar&&baz=bam&&baz=bau&#");
+   var u = new URI("http://www.exämple.org:80/food/woo/.././../baz.html?&foo=bar&&baz=bam&&baz=bau&#");
    u.normalize();
    equal(u+"", "http://www.xn--exmple-cua.org/baz.html?foo=bar&baz=bam&baz=bau", "fully normalized URL");
 });
 test("normalizeHost", function() {
     if (window.punycode) {
-        var u = new hURL("http://exämple.org/foobar.html");
+        var u = new URI("http://exämple.org/foobar.html");
         u.normalizeHost();
         equal(u+"", "http://xn--exmple-cua.org/foobar.html", "converting IDN to punycode");
     }
 
     if (window.IPv6) {
-        u = new hURL("http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html");
+        u = new URI("http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html");
         u.normalizeHost();
         equal(u+"", "http://fe80::204:61ff:fe9d:f156/foobar.html", "best IPv6 representation");
     }
 });
 test("normalizePort", function() {
-    var u = new hURL("http://example.org:80/foobar.html");
+    var u = new URI("http://example.org:80/foobar.html");
     u.normalizePort();
     equal(u+"", "http://example.org/foobar.html", "dropping port 80 for http");
 
-    u = new hURL("ftp://example.org:80/foobar.html");
+    u = new URI("ftp://example.org:80/foobar.html");
     u.normalizePort();
     equal(u+"", "ftp://example.org:80/foobar.html", "keeping port 80 for ftp");
 
 });
 test("normalizePath", function() {
     // relative URL
-    var u = new hURL('/food/bar/baz.html');
+    var u = new URI('/food/bar/baz.html');
 
     u.normalizePath();
     equal(u.path(), '/food/bar/baz.html', "absolute path without change");
@@ -466,7 +466,7 @@ test("normalizePath", function() {
     equal(u.path(), './food/bar/baz.html', "dot-relative parent");
 
     // absolute URL
-    u = new hURL('http://example.org/foo/bar/baz.html');
+    u = new URI('http://example.org/foo/bar/baz.html');
     u.normalizePath();
     equal(u.path(), '/foo/bar/baz.html', "URL: absolute path without change");
 
@@ -492,7 +492,7 @@ test("normalizePath", function() {
     equal(u.path(), '/foo/bar/baz.html', "URL: dot-relative parent");
 });
 test("normalizeQuery", function() {
-    var u = new hURL("http://example.org/foobar.html?");
+    var u = new URI("http://example.org/foobar.html?");
     u.normalizeQuery();
     equal(u+"", "http://example.org/foobar.html", "dropping empty query sign");
     
@@ -506,7 +506,7 @@ test("normalizeQuery", function() {
     equal(u.query(), "foo=bar", "duplicate key=value resolution");
 });
 test("normalizeFragment", function() {
-    var u = new hURL("http://example.org/foobar.html#");
+    var u = new URI("http://example.org/foobar.html#");
     u.normalizeFragment();
     equal(u+"", "http://example.org/foobar.html", "dropping empty fragment sign");
 });
@@ -561,7 +561,7 @@ test("absoluteTo", function() {
     ];
 
     for (var i = 0, t; t = tests[i]; i++) {
-        var u = new hURL(t.url),
+        var u = new URI(t.url),
             r = u.absoluteTo(t.base);
         
         equal(r + "", t.result, t.name);
@@ -598,8 +598,8 @@ test("relativeTo", function() {
     ];
     
     for (var i = 0, t; t = tests[i]; i++) {
-        var u = new hURL(t.url),
-            b = new hURL(t.base),
+        var u = new URI(t.url),
+            b = new URI(t.base),
             r = u.relativeTo(b);
         
         equal(r + "", t.result, t.name);
