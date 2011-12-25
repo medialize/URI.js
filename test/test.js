@@ -37,133 +37,39 @@ test("function hURL(string)", function() {
 
 
 module("parsing");
-// TODO: make for() out of this for IE6
-urls.forEach(function(t) {
-    test("parse " + t.name, function() {
-        var u = new hURL(t.url),
-            key;
+// [].forEach() no IE, lacking interest in polyfilling this...
+for (var i = 0, t; t = urls[i]; i++) {
+    (function(t){
+        test("parse " + t.name, function() {
+            var u = new hURL(t.url),
+                key;
         
-        // test URL built from parts
-        equal(u+"", t._url || t.url, "toString");
+            // test URL built from parts
+            equal(u + "", t._url || t.url, "toString");
         
-        // test parsed parts
-        for (key in t.parts) {
-            if (Object.hasOwnProperty.call(t.parts, key)) {
-                equal(u._parts[key], t.parts[key], "part: " + key);
+            // test parsed parts
+            for (key in t.parts) {
+                if (Object.hasOwnProperty.call(t.parts, key)) {
+                    equal(u._parts[key], t.parts[key], "part: " + key);
+                }
             }
-        }
         
-        // test accessors
-        for (key in t.accessors) {
-            if (Object.hasOwnProperty.call(t.accessors, key)) {
-                equal(u[key](), t.accessors[key], "accessor: " + key);
+            // test accessors
+            for (key in t.accessors) {
+                if (Object.hasOwnProperty.call(t.accessors, key)) {
+                    equal(u[key](), t.accessors[key], "accessor: " + key);
+                }
             }
-        }
         
-        // test is()
-        for (key in t.is) {
-            if (Object.hasOwnProperty.call(t.is, key)) {
-                equal(u.is(key), t.is[key], "is: " + key);
+            // test is()
+            for (key in t.is) {
+                if (Object.hasOwnProperty.call(t.is, key)) {
+                    equal(u.is(key), t.is[key], "is: " + key);
+                }
             }
-        }
-    });
-});
-
-
-module("normalizing");
-test("normalize", function() {
-   // TODO: test normalize()
-});
-test("normalizeHost", function() {
-    if (window.punycode) {
-        var u = new hURL("http://exämple.org/foobar.html");
-        u.normalizeHost();
-        equal(u+"", "http://xn--exmple-cua.org/foobar.html", "converting IDN to punycode");
-    }
-
-    if (window.IPv6) {
-        u = new hURL("http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html");
-        u.normalizeHost();
-        equal(u+"", "http://fe80::204:61ff:fe9d:f156/foobar.html", "best IPv6 representation");
-    }
-});
-test("normalizePort", function() {
-    var u = new hURL("http://example.org:80/foobar.html");
-    u.normalizePort();
-    equal(u+"", "http://example.org/foobar.html", "dropping port 80 for http");
-
-    u = new hURL("ftp://example.org:80/foobar.html");
-    u.normalizePort();
-    equal(u+"", "ftp://example.org:80/foobar.html", "keeping port 80 for ftp");
-
-});
-test("normalizePath", function() {
-    // relative URL
-    var u = new hURL('/food/bar/baz.html');
-
-    u.normalizePath();
-    equal(u.path(), '/food/bar/baz.html', "absolute path without change");
-
-    u.path('food/bar/baz.html').normalizePath();
-    equal(u.path(), 'food/bar/baz.html', "relative path without change");
-   
-    u.path('/food/../bar/baz.html').normalizePath();
-    equal(u.path(), '/bar/baz.html', "single parent");
-
-    u.path('/food/woo/../../bar/baz.html').normalizePath();
-    equal(u.path(), '/bar/baz.html', "double parent");
-
-    u.path('/food/woo/../bar/../baz.html').normalizePath();
-    equal(u.path(), '/food/baz.html', "split double parent");
-
-    u.path('/food/woo/.././../baz.html').normalizePath();
-    equal(u.path(), '/baz.html', "cwd-split double parent");
-
-    u.path('food/woo/../bar/baz.html').normalizePath();
-    equal(u.path(), 'food/bar/baz.html', "relative parent");
-    
-    u.path('./food/woo/../bar/baz.html').normalizePath();
-    equal(u.path(), './food/bar/baz.html', "dot-relative parent");
-
-    // absolute URL
-    u = new hURL('http://example.org/foo/bar/baz.html');
-    u.normalizePath();
-    equal(u.path(), '/foo/bar/baz.html', "URL: absolute path without change");
-
-    u.path('foo/bar/baz.html').normalizePath();
-    equal(u.path(), '/foo/bar/baz.html', "URL: relative path without change");
-   
-    u.path('/foo/../bar/baz.html').normalizePath();
-    equal(u.path(), '/bar/baz.html', "URL: single parent");
-
-    u.path('/foo/woo/../../bar/baz.html').normalizePath();
-    equal(u.path(), '/bar/baz.html', "URL: double parent");
-    
-    u.path('/foo/woo/../bar/../baz.html').normalizePath();
-    equal(u.path(), '/foo/baz.html', "URL: split double parent");
-    
-    u.path('/foo/woo/.././../baz.html').normalizePath();
-    equal(u.path(), '/baz.html', "URL: cwd-split double parent");
-    
-    u.path('foo/woo/../bar/baz.html').normalizePath();
-    equal(u.path(), '/foo/bar/baz.html', "URL: relative parent");
-    
-    u.path('./foo/woo/../bar/baz.html').normalizePath();
-    equal(u.path(), '/foo/bar/baz.html', "URL: dot-relative parent");
-});
-test("normalizeQuery", function() {
-    var u = new hURL("http://example.org/foobar.html?");
-    u.normalizeQuery();
-    equal(u+"", "http://example.org/foobar.html", "dropping empty query sign");
-    
-    // TODO: test bad querystring
-});
-test("normalizeFragment", function() {
-    var u = new hURL("http://example.org/foobar.html#");
-    u.normalizeFragment();
-    equal(u+"", "http://example.org/foobar.html", "dropping empty fragment sign");
-});
-
+        });
+    })(t);
+};
 
 module("mutating basics");
 test("protocol", function() {
@@ -445,4 +351,217 @@ test("suffix", function() {
 });
 
 module("mutating query strings");
+test("mutating object", function() {
+    var u = new hURL('?foo=bar&baz=bam&baz=bau'),
+        q = u.query(true);
+    
+    q.something = ['new', 'and', 'funky'];
+    u.query(q);
+    equal(u.query(), 'foo=bar&baz=bam&baz=bau&something=new&something=and&something=funky', "adding array");
+
+    q.foo = undefined;
+    u.query(q);
+    equal(u.query(), 'baz=bam&baz=bau&something=new&something=and&something=funky', "removing field");
+    
+    q.baz = undefined;
+    u.query(q);
+    equal(u.query(), 'something=new&something=and&something=funky', "removing array");
+});
+test("addQuery", function() {
+    var u = hURL('?foo=bar');
+    u.addQuery('baz', 'bam');
+    equal(u.query(), 'foo=bar&baz=bam', "add name, value");
+    
+    u.addQuery('array', ['one', 'two']);
+    equal(u.query(), 'foo=bar&baz=bam&array=one&array=two', "add name, array");
+    
+    u.query('?foo=bar');
+    u.addQuery({'obj': 'bam', foo: "baz"});
+    equal(u.query(), 'foo=bar&foo=baz&obj=bam', "add {name: value}");
+    
+    u.addQuery({'foo': 'bam', bar: ['1', '2']});
+    equal(u.query(), 'foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2', "add {name: array}");
+});
+test("removeQuery", function() {
+    var u = new hURL('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
+    
+    u.removeQuery('foo', 'bar');
+    equal(u.query(), 'foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3', 'removing name, value');
+    
+    u.removeQuery('foo');
+    equal(u.query(), 'obj=bam&bar=1&bar=2&bar=3', 'removing name');
+    
+    u.removeQuery('bar', ['1', '3']);
+    equal(u.query(), 'obj=bam&bar=2', 'removing name, array');
+    
+    u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
+    u.removeQuery(['foo', 'bar']);
+    equal(u.query(), 'obj=bam', 'removing array');
+    
+    u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
+    u.removeQuery({foo: 'bar', obj: undefined, bar: ["1", "2"]});
+    equal(u.query(), 'foo=baz&foo=bam&bar=3', 'removing object');
+});
+
+module("normalizing");
+test("normalize", function() {
+   var u = new hURL("http://www.exämple.org:80/food/woo/.././../baz.html?&foo=bar&&baz=bam&&baz=bau&#");
+   u.normalize();
+   equal(u+"", "http://www.xn--exmple-cua.org/baz.html?foo=bar&baz=bam&baz=bau", "fully normalized URL");
+});
+test("normalizeHost", function() {
+    if (window.punycode) {
+        var u = new hURL("http://exämple.org/foobar.html");
+        u.normalizeHost();
+        equal(u+"", "http://xn--exmple-cua.org/foobar.html", "converting IDN to punycode");
+    }
+
+    if (window.IPv6) {
+        u = new hURL("http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html");
+        u.normalizeHost();
+        equal(u+"", "http://fe80::204:61ff:fe9d:f156/foobar.html", "best IPv6 representation");
+    }
+});
+test("normalizePort", function() {
+    var u = new hURL("http://example.org:80/foobar.html");
+    u.normalizePort();
+    equal(u+"", "http://example.org/foobar.html", "dropping port 80 for http");
+
+    u = new hURL("ftp://example.org:80/foobar.html");
+    u.normalizePort();
+    equal(u+"", "ftp://example.org:80/foobar.html", "keeping port 80 for ftp");
+
+});
+test("normalizePath", function() {
+    // relative URL
+    var u = new hURL('/food/bar/baz.html');
+
+    u.normalizePath();
+    equal(u.path(), '/food/bar/baz.html', "absolute path without change");
+
+    u.path('food/bar/baz.html').normalizePath();
+    equal(u.path(), 'food/bar/baz.html', "relative path without change");
+   
+    u.path('/food/../bar/baz.html').normalizePath();
+    equal(u.path(), '/bar/baz.html', "single parent");
+
+    u.path('/food/woo/../../bar/baz.html').normalizePath();
+    equal(u.path(), '/bar/baz.html', "double parent");
+
+    u.path('/food/woo/../bar/../baz.html').normalizePath();
+    equal(u.path(), '/food/baz.html', "split double parent");
+
+    u.path('/food/woo/.././../baz.html').normalizePath();
+    equal(u.path(), '/baz.html', "cwd-split double parent");
+
+    u.path('food/woo/../bar/baz.html').normalizePath();
+    equal(u.path(), 'food/bar/baz.html', "relative parent");
+    
+    u.path('./food/woo/../bar/baz.html').normalizePath();
+    equal(u.path(), './food/bar/baz.html', "dot-relative parent");
+
+    // absolute URL
+    u = new hURL('http://example.org/foo/bar/baz.html');
+    u.normalizePath();
+    equal(u.path(), '/foo/bar/baz.html', "URL: absolute path without change");
+
+    u.path('foo/bar/baz.html').normalizePath();
+    equal(u.path(), '/foo/bar/baz.html', "URL: relative path without change");
+   
+    u.path('/foo/../bar/baz.html').normalizePath();
+    equal(u.path(), '/bar/baz.html', "URL: single parent");
+
+    u.path('/foo/woo/../../bar/baz.html').normalizePath();
+    equal(u.path(), '/bar/baz.html', "URL: double parent");
+    
+    u.path('/foo/woo/../bar/../baz.html').normalizePath();
+    equal(u.path(), '/foo/baz.html', "URL: split double parent");
+    
+    u.path('/foo/woo/.././../baz.html').normalizePath();
+    equal(u.path(), '/baz.html', "URL: cwd-split double parent");
+    
+    u.path('foo/woo/../bar/baz.html').normalizePath();
+    equal(u.path(), '/foo/bar/baz.html', "URL: relative parent");
+    
+    u.path('./foo/woo/../bar/baz.html').normalizePath();
+    equal(u.path(), '/foo/bar/baz.html', "URL: dot-relative parent");
+});
+test("normalizeQuery", function() {
+    var u = new hURL("http://example.org/foobar.html?");
+    u.normalizeQuery();
+    equal(u+"", "http://example.org/foobar.html", "dropping empty query sign");
+    
+    u.query("?&foo=bar&&baz=bam&").normalizeQuery();
+    equal(u.query(), "foo=bar&baz=bam", "bad query resolution");
+    
+    u.query("?&foo=bar&&baz=bam&&baz=bau&").normalizeQuery();
+    equal(u.query(), "foo=bar&baz=bam&baz=bau", "bad query resolution");
+    
+    u.query("?&foo=bar&foo=bar").normalizeQuery();
+    equal(u.query(), "foo=bar", "duplicate key=value resolution");
+});
+test("normalizeFragment", function() {
+    var u = new hURL("http://example.org/foobar.html#");
+    u.normalizeFragment();
+    equal(u+"", "http://example.org/foobar.html", "dropping empty fragment sign");
+});
+
+module("resolving URLs");
+test("resolveTo", function() {
+    // this being "../bar/baz.html?foo=bar"
+    // base being "http://example.org/foo/other/file.html"
+    // return being http://example.org/foo/bar/baz.html?foo=bar"
+    var tests = [{
+            name: 'relative resolve',
+            url: 'relative/path?blubber=1#hash1',
+            base: 'http://www.example.org/path/to/file?some=query#hash',
+            result: 'http://www.example.org/path/to/relative/path?blubber=1#hash1'
+        }, {
+            name: 'absolute resolve',
+            url: '/absolute/path?blubber=1#hash1',
+            base: 'http://www.example.org/path/to/file?some=query#hash',
+            result: 'http://www.example.org/absolute/path?blubber=1#hash1'
+        }, {
+            name: 'relative resolve full URL',
+            url: 'relative/path?blubber=1#hash3',
+            base: 'http://user:pass@www.example.org:1234/path/to/file?some=query#hash',
+            result: 'http://user:pass@www.example.org:1234/path/to/relative/path?blubber=1#hash3'
+        }, {
+            name: 'absolute resolve full URL',
+            url: '/absolute/path?blubber=1#hash3',
+            base: 'http://user:pass@www.example.org:1234/path/to/file?some=query#hash',
+            result: 'http://user:pass@www.example.org:1234/absolute/path?blubber=1#hash3'
+        }, {
+            name: 'path-relative resolve',
+            url: './relative/path?blubber=1#hash3',
+            base: 'http://user:pass@www.example.org:1234/path/to/file?some=query#hash',
+            result: 'http://user:pass@www.example.org:1234/path/to/relative/path?blubber=1#hash3'
+        }, {
+            name: 'path-relative parent resolve',
+            url: '../relative/path?blubber=1#hash3',
+            base: 'http://user:pass@www.example.org:1234/path/to/file?some=query#hash',
+            result: 'http://user:pass@www.example.org:1234/path/relative/path?blubber=1#hash3'
+        }, {
+            name: 'path-relative path resolve',
+            url: './relative/path?blubber=1#hash3',
+            base: '/path/to/file?some=query#hash',
+            result: '/path/to/relative/path?blubber=1#hash3'
+        }, {
+            name: 'path-relative parent path resolve',
+            url: '../relative/path?blubber=1#hash3',
+            base: '/path/to/file?some=query#hash',
+            result: '/path/relative/path?blubber=1#hash3'
+        }
+    ];
+
+    for (var i = 0, t; t = tests[i]; i++) {
+        var u = new hURL(t.url),
+            r = u.resolveTo(t.base);
+        
+        equal(r + "", t.result, t.name);
+    }
+
+});
+
+
 

@@ -1,9 +1,37 @@
 (function(undefined) {
 
 if (!RegExp.escape) {
+    // still can't believe this isn't a regular function(!)
     RegExp.escape = function(string) {
         return string.replace( /(\^|\$|\\|\||\/|\*|\+|\?|\{|\}|\(|\)|\[|\]|\.)/g, "\\" + "$1" );
     };
+}
+
+function isArray(obj) {
+    return String(Object.prototype.toString.call(obj)) === "[object Array]";
+}
+
+function filterArrayValues(data, value) {
+    var lookup = {}, 
+        i, length;
+        
+    if (isArray(value)) {
+        for (i = 0, length = value.length; i < length; i++) {
+            lookup[value[i]] = true;
+        }
+    } else {
+        lookup[value] = true;
+    }
+    
+    for (i = 0, length = data.length; i < length; i++) {
+        if (lookup[data[i]] !== undefined) {
+            data.splice(i, 1);
+            length--;
+            i--;
+        }
+    }
+    
+    return data;
 }
 
 // constructor
@@ -22,6 +50,28 @@ var hURL = function(url) {
     },
     p = hURL.prototype;
 
+// convinience
+hURL.encode = encodeURIComponent;
+hURL.decode = decodeURIComponent;
+p.encode = hURL.encode;
+p.decode = hURL.decode;
+
+// static properties
+hURL.idn_expression = /[^a-z0-9\.-]/i;
+hURL.punycode_expression = /(^xn--)/i;
+// well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
+hURL.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+// credits to Rich Brown
+// source: http://forums.intermapper.com/viewtopic.php?p=1096#1096
+// specification: http://www.ietf.org/rfc/rfc4291.txt
+hURL.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/ ;
+// http://www.iana.org/assignments/uri-schemes.html
+// http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
+hURL.defaultPorts = {
+    http: "80", 
+    https: "443", 
+    ftp: "21"
+};
 
 hURL.parse = function(string) {
     var pos, t, parts = {};
@@ -102,23 +152,30 @@ hURL.parseAuthority = function(string, parts) {
     return hURL.parseHost(string, parts);
 };
 hURL.parseQuery = function(string) {
-    var items = [],
+    // throw out the funky business - "?"[name"="value"&"]+
+    string = string.replace(/&+/g, '&').replace(/^\?*&*|&+$/g, '');
+
+    var items = {},
         splits = string.split('&'),
         length = splits.length;
-        
-    // throw out the funky business - "?"[name"="value"&"]+
-    string = string.replace(/&+/g, '&').replace(/^\?*&*/, '');
+
 
     for (var i = 0; i < length; i++) {
         var v = splits[i].split('='),
-            item = {
-                name: decodeURIComponent(v.pop()),
-                value: decodeURIComponent(v.join('='))
-            };
-
-        items.push(item);
+            name = hURL.decode(v.shift()),
+            value = hURL.decode(v.join('='));
+        
+        if (items[name]) {
+            if (typeof items[name] === "string") {
+                items[name] = [items[name]];
+            }
+            
+            items[name].push(value);
+        } else {
+            items[name] = value;
+        }
     }
-    
+
     return items;
 };
 
@@ -187,9 +244,76 @@ hURL.buildAuthority = function(parts) {
     
     return t;
 };
+hURL.buildQuery = function(data) {
+    var t = "";
+    for (var key in data) {
+        if (Object.hasOwnProperty.call(data, key)) {
+            var name = hURL.encode(key + "");
+            if (isArray(data[key])) {
+                var unique = {};
+                for (var i = 0, length = data[key].length; i < length; i++) {
+                    if (data[key][i] !== undefined && unique[data[key][i] + ""] === undefined) {
+                        t += "&" + name + "=" + hURL.encode(data[key][i] + "");
+                        unique[data[key][i] + ""] = true;
+                    }
+                }
+            } else if (data[key] !== undefined) {
+                t += "&" + name + "=" + hURL.encode(data[key] + "");
+            }
+        }
+    }
+    
+    return t.substr(1);
+};
 
-hURL.buildQuery = function(parts) {
-    // TODO: build querystring from array
+hURL.addQuery = function(data, name, value) {
+    if (typeof name === "object") {
+        for (var key in name) {
+            if (Object.prototype.hasOwnProperty.call(name, key)) {
+                hURL.addQuery(data, key, name[key]);
+            }
+        }
+    } else if (typeof name === "string") {
+        if (data[name] === undefined) {
+            data[name] = value;
+            return;
+        } else if (typeof data[name] === "string") {
+            data[name] = [data[name]];
+        }
+
+        if (!isArray(value)) {
+            value = [value];
+        }
+
+        data[name] = data[name].concat(value);
+    } else {
+        throw new TypeError("hURL.addQuery() accepts an object, string as the name parameter");
+    }
+};
+hURL.removeQuery = function(data, name, value) {
+    if (isArray(name)) {
+        for (var i = 0, length = name.length; i < length; i++) {
+            data[name[i]] = undefined;
+        }
+    } else if (typeof name === "object") {
+        for (var key in name) {
+            if (Object.prototype.hasOwnProperty.call(name, key)) {
+                hURL.removeQuery(data, key, name[key]);
+            }
+        }
+    } else if (typeof name === "string") {
+        if (value !== undefined) {
+            if (data[name] === value) {
+                data[name] = undefined;
+            } else if (isArray(data[name])) {
+                data[name] = filterArrayValues(data[name], value);
+            }
+        } else {
+            data[name] = undefined;
+        }
+    } else {
+        throw new TypeError("hURL.addQuery() accepts an object, string as the first parameter");
+    }
 };
 
 p.build = function() {
@@ -525,24 +649,40 @@ p.suffix = function(v, build) {
     }
 };
 
-
 // mutating query string
-p.addQuery = function(name, value) {
-    if (typeof name === "object") {
-        
-    } else if (typeof name === "object") {
-        
-    } else if (typeof name === "string") {
-
+var q = p.query;
+p.query = function(v, build) {
+    if (v === true) {
+        return hURL.parseQuery(this._parts.query);
+    } else if (v !== undefined && typeof v !== "string") {
+        this._parts.query = hURL.buildQuery(v);
+        build !== false && this.build();
+        return this;
     } else {
-        throw new TypeError("hURL.addQuery() accepts object, array or string as the first parameter");
+        return q.call(this, v, build);
     }
-    // TODO: addQuery(name, value) || name is string || array || object - question: should be overwritten or appended?
 };
-p.filterQuery = function(){};
-p.mapQuery = function(){};
-p.getQueryObject = function() {
-    // TODO: getQueryObject();  // { key: value, key2: [value, …], … } // PHP-style foo[] assoc array
+p.addQuery = function(name, value, build) {
+    var data = hURL.parseQuery(this._parts.query);
+    hURL.addQuery(data, name, value);
+    this._parts.query = hURL.buildQuery(data);
+    if (typeof name !== "string") {
+        build = value;
+    }
+    
+    build !== false && this.build();
+    return this;
+};
+p.removeQuery = function(name, value, build) {
+    var data = hURL.parseQuery(this._parts.query);
+    hURL.removeQuery(data, name, value);
+    this._parts.query = hURL.buildQuery(data);
+    if (typeof name !== "string") {
+        build = value;
+    }
+    
+    build !== false && this.build();
+    return this;
 };
 
 // sanitizing URLs
@@ -583,7 +723,7 @@ p.normalizePath = function(build) {
         _was_relative_prefix,
         _path = this._parts.path,
         _parent, _pos;
-console.log(_path, '----- input');
+
     // handle relative paths
     if (_path[0] !== '/') {
         if (_path[0] === '.') {
@@ -650,53 +790,38 @@ p.normalizeHash = p.normalizeFragment;
 
 // resolving relative and absolute URLs
 p.resolve = function(base) {
-    // this being "http://example.org/foo/other/file.html"
-    // base being "../bar/baz.html?foo=bar"
-    // return being http://example.org/foo/bar/baz.html?foo=bar"
+    if (!(base instanceof hURL)) {
+        base = new hURL(base);
+    }
+    
+    return base.resolveTo(this);
 };
 p.resolveTo = function(base) {
-    // this being "../bar/baz.html?foo=bar"
-    // base being "http://example.org/foo/other/file.html"
-    // return being http://example.org/foo/bar/baz.html?foo=bar"
+    if (!this.is('relative')) {
+        throw new Error('Cannot resolve non-relative URL');
+    }
     
-    // TODO: port my stuff from Shurlook
-    /*
-        // http://tools.ietf.org/html/rfc3986#section-5
-    	public function absoluteTo( $base )
-    	{
-    		// abort if this is not a relative URL
-    		if( !$this->isRelativeURL() )
-    			return clone $this;
+    if (!(base instanceof hURL)) {
+        base = new hURL(base);
+    }
 
-    		if( is_string( $base ) )
-    			$base = new URL( $base );
+    var resolved = new hURL(this),
+        properties = ['protocol', 'username', 'password', 'host', 'port']; 
 
-    		// abort if $base is a relative URL
-    		if( $base->isRelativeURL() )
-    			throw new \Exception( '"'. $base .'" is a relative URL and thus not suited as the base URL for relative-to-absolute-URL-translation' );
-
-    		// don't modify the current object
-    		$url = clone $this;
-
-    		$url->setProtocol( $base->getProtocol() );
-    		$url->setUsername( $base->getUsername() );
-    		$url->setPassword( $base->getPassword() );
-    		$url->setHost( $base->getHost() );
-    		$url->setPort( $base->getPort() );
-
-    		if( $url->isRelativePath() )
-    		{
-    			$p = $base->getPath();
-    			$basePath = ( !$p || $p == '/' ) ? '/' : $base->getPathDirectory();
-    			$url->setPath( $basePath . $url->getPath() );
-    		}
-
-    		return $url;
-    	}
-    */
+    for (var i = 0, p; p = properties[i]; i++) {
+        resolved._parts[p] = base._parts[p];
+    }
     
+    if (resolved._parts.path[0] !== '/') {
+        resolved._parts.path = base.directory() + '/' + resolved._parts.path;
+        resolved.normalizePath();
+    }
+
+    resolved.build();
+    return resolved;
 };
 p.relativeTo = function(base) {
+    // TODO: relativeTo()
     if (!(base instanceof hURL)) {
         base = new hURL(base);
     }
@@ -704,24 +829,6 @@ p.relativeTo = function(base) {
     // this being "http://example.org/foo/bar/baz.html?foo=bar"
     // base being "http://example.org/foo/other/file.html"
     // return being "../bar/baz.html?foo=bar"
-};
-
-
-// static properties
-hURL.idn_expression = /[^a-z0-9\.-]/i;
-hURL.punycode_expression = /(^xn--)/i;
-// well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
-hURL.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
-// credits to Rich Brown
-// source: http://forums.intermapper.com/viewtopic.php?p=1096#1096
-// specification: http://www.ietf.org/rfc/rfc4291.txt
-hURL.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/ ;
-// http://www.iana.org/assignments/uri-schemes.html
-// http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
-hURL.defaultPorts = {
-    http: "80", 
-    https: "443", 
-    ftp: "21"
 };
 
 

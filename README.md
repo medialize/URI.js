@@ -31,9 +31,10 @@ These are mostly having Node.js in mind:
 
 ## Resources ##
 
-* [Uniform Resource Identifiers (URI): Generic Syntax](http://www.ietf.org/rfc/rfc2396.txt)
-* [IPv6 Literal Addresses in URL's](http://www.ietf.org/rfc/rfc2732.txt)
-* [Punycode - Internationalized Domain Name (IDN)](http://www.ietf.org/rfc/rfc3492.txt)
+* [Uniform Resource Identifiers (URI): Generic Syntax](http://www.ietf.org/rfc/rfc2396.txt) -> http://tools.ietf.org/html/rfc3986
+* [IPv6 Literal Addresses in URL's](http://www.ietf.org/rfc/rfc2732.txt) -> http://tools.ietf.org/html/rfc3986
+* [Punycode - Internationalized Domain Name (IDN)](http://www.ietf.org/rfc/rfc3492.txt) -> http://tools.ietf.org/html/rfc3492
+* [URI - Reference Resolution](http://tools.ietf.org/html/rfc3986#section-5)
 
 * [Parsing URLs for Fun and Profit](http://tools.ietf.org/html/draft-abarth-url-01)
 * [Regular Expression URL Parser](http://blog.stevenlevithan.com/archives/parseuri)
