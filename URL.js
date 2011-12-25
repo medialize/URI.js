@@ -316,6 +316,30 @@ hURL.removeQuery = function(data, name, value) {
     }
 };
 
+hURL.commonPath = function(one, two) {
+    var length = Math.min(one.length, two.length),
+        pos;
+
+    // find first non-matching character
+    for (pos = 0; pos < length; pos++) {
+        if (one[pos] !== two[pos]) {
+            pos--;
+            break;
+        }
+    }
+    
+    if (pos < 1) {
+        return one[0] === two[0] && one[0] === '/' ? '/' : '';
+    }
+    
+    // revert to last /
+    if (one[pos] !== '/') {
+        pos = one.substr(0, pos).lastIndexOf('/');
+    }
+    
+    return one.substr(0, pos + 1);
+};
+
 p.build = function() {
     this._string = hURL.build(this._parts);
     return this;
@@ -789,14 +813,7 @@ p.normalizeSearch = p.normalizeQuery;
 p.normalizeHash = p.normalizeFragment;
 
 // resolving relative and absolute URLs
-p.resolve = function(base) {
-    if (!(base instanceof hURL)) {
-        base = new hURL(base);
-    }
-    
-    return base.resolveTo(this);
-};
-p.resolveTo = function(base) {
+p.absoluteTo = function(base) {
     if (!this.is('relative')) {
         throw new Error('Cannot resolve non-relative URL');
     }
@@ -812,7 +829,7 @@ p.resolveTo = function(base) {
         resolved._parts[p] = base._parts[p];
     }
     
-    if (resolved._parts.path[0] !== '/') {
+    if (resolved.path()[0] !== '/') {
         resolved._parts.path = base.directory() + '/' + resolved._parts.path;
         resolved.normalizePath();
     }
@@ -825,12 +842,41 @@ p.relativeTo = function(base) {
     if (!(base instanceof hURL)) {
         base = new hURL(base);
     }
+    
+    if (this.path()[0] !== '/' || base.path()[0] !== '/') {
+        throw new Error('Cannot calculate common path from non-relative URLs');
+    }
+    
+    var relative = new hURL(this),
+        properties = ['protocol', 'username', 'password', 'host', 'port'],
+        common = hURL.commonPath(relative.path(), base.path()),
+        _base = base.directory();
 
-    // this being "http://example.org/foo/bar/baz.html?foo=bar"
-    // base being "http://example.org/foo/other/file.html"
-    // return being "../bar/baz.html?foo=bar"
+    for (var i = 0, p; p = properties[i]; i++) {
+        relative._parts[p] = null;
+    }
+    
+    if (!common || common === '/') {
+        return relative;
+    }
+    
+    if (_base + '/' === common) {
+        relative._parts.path = './' + relative.filename();
+    } else {
+        var parents = '../',
+            _common = new RegExp('^' + RegExp.escape(common)),
+            _parents = _base.replace(_common, '/').match(/\//g).length -1;
+
+        while (_parents--) {
+            parents += '../';
+        }
+        
+        relative._parts.path = relative._parts.path.replace(_common, parents);
+    }
+    
+    relative.build();
+    return relative;
 };
-
 
 window.hURL = hURL;
 

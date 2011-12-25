@@ -71,6 +71,7 @@ for (var i = 0, t; t = urls[i]; i++) {
     })(t);
 };
 
+
 module("mutating basics");
 test("protocol", function() {
     var u = new hURL("http://example.org/foo.html");
@@ -198,6 +199,7 @@ test("fragment", function() {
     equal(u.hash(), "", "hash: '' - fragment");
 });
 
+
 module("mutating compounds");
 test("host", function() {
     var u = new hURL("http://foo.bar/foo.html");
@@ -254,6 +256,7 @@ test("href", function() {
     equal(u.hash(), "", "href removed hash");
     equal(u.href(), '../path/index.html', "href removed url");
 });
+
 
 module("mutating fractions");
 test("domain", function() {
@@ -350,6 +353,7 @@ test("suffix", function() {
     equal(u+"", "http://www.example.org/some/directory/foo.html", "changed url 'html'");
 });
 
+
 module("mutating query strings");
 test("mutating object", function() {
     var u = new hURL('?foo=bar&baz=bam&baz=bau'),
@@ -402,6 +406,7 @@ test("removeQuery", function() {
     u.removeQuery({foo: 'bar', obj: undefined, bar: ["1", "2"]});
     equal(u.query(), 'foo=baz&foo=bam&bar=3', 'removing object');
 });
+
 
 module("normalizing");
 test("normalize", function() {
@@ -506,8 +511,9 @@ test("normalizeFragment", function() {
     equal(u+"", "http://example.org/foobar.html", "dropping empty fragment sign");
 });
 
+
 module("resolving URLs");
-test("resolveTo", function() {
+test("absoluteTo", function() {
     // this being "../bar/baz.html?foo=bar"
     // base being "http://example.org/foo/other/file.html"
     // return being http://example.org/foo/bar/baz.html?foo=bar"
@@ -556,12 +562,48 @@ test("resolveTo", function() {
 
     for (var i = 0, t; t = tests[i]; i++) {
         var u = new hURL(t.url),
-            r = u.resolveTo(t.base);
+            r = u.absoluteTo(t.base);
         
         equal(r + "", t.result, t.name);
     }
 
 });
-
+test("relativeTo", function() {
+    var tests = [{
+            name: 'no relation',
+            url: '/relative/path?blubber=1#hash1',
+            base: '/path/to/file?some=query#hash',
+            result: '/relative/path?blubber=1#hash1'
+        }, {
+            name: 'same parent',
+            url: '/relative/path?blubber=1#hash1',
+            base: '/relative/file?some=query#hash',
+            result: './path?blubber=1#hash1'
+        }, {
+            name: 'direct parent',
+            url: '/relative/path?blubber=1#hash1',
+            base: '/relative/sub/file?some=query#hash',
+            result: '../path?blubber=1#hash1'
+        }, {
+            name: 'second parent',
+            url: '/relative/path?blubber=1#hash1',
+            base: '/relative/sub/sub/file?some=query#hash',
+            result: '../../path?blubber=1#hash1'
+        }, {
+            name: 'third parent',
+            url: '/relative/path?blubber=1#hash1',
+            base: '/relative/sub/foo/sub/file?some=query#hash',
+            result: '../../../path?blubber=1#hash1'
+        }
+    ];
+    
+    for (var i = 0, t; t = tests[i]; i++) {
+        var u = new hURL(t.url),
+            b = new hURL(t.base),
+            r = u.relativeTo(b);
+        
+        equal(r + "", t.result, t.name);
+    }
+});
 
 
