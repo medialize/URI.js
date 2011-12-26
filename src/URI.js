@@ -64,7 +64,7 @@ var URI = function(url) {
     },
     p = URI.prototype;
 
-// convinience
+// convenience
 URI.encode = encodeURIComponent;
 URI.decode = decodeURIComponent;
 p.encode = URI.encode;
@@ -542,7 +542,7 @@ p.authority = function(v, build) {
 
 // fraction accessors
 p.domain = function(v, build) {
-    // convinience, return "example.org" from "www.example.org"
+    // convenience, return "example.org" from "www.example.org"
     if (v === undefined) {
         if (!this._parts.hostname || this.is('IP')) {
             return "";

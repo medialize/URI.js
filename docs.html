@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>jQuery contextMenu Plugin</title>
-    <meta name="description" content="simple contextMenu generator for interactive web applications based on jQuery" />
+    <title>URI.js - API Documentation</title>
+    <meta name="description" content="Mutation facility for URLs." />
     
     <script src="jquery-1.7.1.min.js" type="text/javascript"></script>
     <script src="prettify/prettify.js" type="text/javascript"></script>
@@ -48,8 +48,8 @@
                 <li><a href="#accessors-port">port()</a></li>
                 <li><a href="#accessors-host">host()</a></li>
                 <li><a href="#accessors-authority">authority()</a></li>
-                <li><a href="#accessors-authority">domain()</a></li>
-                <li><a href="#accessors-authority">tld()</a></li>
+                <li><a href="#accessors-domain">domain()</a></li>
+                <li><a href="#accessors-tld">tld()</a></li>
 
                 <li><a href="#accessors-pathname">pathname(), path()</a></li>
                 <li><a href="#accessors-directory">directory()</a></li>
@@ -106,78 +106,235 @@ var uri = new URI({
 // without new keyword
 var uri = URI("example.org");</pre>
     
-    <p>The following parts can be</p>
+    <p>The following parts can be specified in an object:</p>
+    <pre class="prettyprint lang-js">var uri = new URI({
+    protocol: 'http', // no trailing :
+    username: 'user',
+    password: 'pass',
+    hostname: 'example.org',
+    port: '80', // string, please
+    // "path", not "pathname", sorry
+    path: '/foo/bar.html',
+    // "query", not "search", sorry
+    query: 'foo=bar&amp;bar=baz', // no leading ?
+    // "fragment", not "hash", sorry
+    fragment: 'frag' // no leading #
+});</pre>
     
     
-    <!--
-        ### URI() constructor ###
+    <h3 id="accessors-protocol">protocol()</h3>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get protocol
+uri.protocol(); // returns string "http"
+// set protocol
+uri.protocol("ftp"); // returns the URI instance for chaining</pre>
 
-        ```javascript
-        
-        ```
-
-        ### URI part accessors ###
-
-        ```javascript
-        // basic mutation
-        .protocol()
-        .username()
-        .password()
-        .hostname()
-        .domain()
-        .tld()
-        .host()
-        .port()
-        .authority()
-        .pathname() | .path()
-        .directory()
-        .filename()
-        .suffix()
-        .query() // input leading ? stripped
-        .search() // leading ?
-        .fragment() // input leading # stripped
-        .hash()  // leading #
-        ```
-
-        ### Working the Query Strings ###
-
-
-        ```javascript
-        // query string fun
-        .query() returns string "foo=bar&hello=world&hello=mars"
-        .query(true) returns object {foo: "bar", hello: ["world", "mars"]}
-        .query( string|object ) to set a new query string
-        .addQuery(name, value) 
-        .addQuery(object) 
-        .removeQuery(name) 
-        .removeQuery(name, value) 
-        .removeQuery(array) 
-        .removeQuery(object) 
-        addSearch() and .removeSearch() for conventions
-        ```
-
-        ### Sanitizing URLs ###
-
-
-        ```javascript
-        .normalize()
-        .normalizeHost()
-        .normalizePort()
-        .normalizePath()
-        .normalizeQuery() .normalizeSearch()
-        .normalizeFragment() .normalizeHash()
-        ```
-
-        ### Mutating Paths ###
-
-
-        ```javascript
-        .relativeTo()
-        .absoluteTo()
-        ```
+    <h3 id="accessors-username">username()</h3>
+    <pre class="prettyprint lang-js">var uri = new URI("http://user:pass@example.org/foo/hello.html");
+// get username
+uri.username(); // returns string "user"
+// set username
+uri.username("user"); // returns the URI instance for chaining</pre>
     
-    -->
+    <h3 id="accessors-password">password()</h3>
+    <pre class="prettyprint lang-js">var uri = new URI("http://user:pass@example.org/foo/hello.html");
+// get password
+uri.password(); // returns string "pass"
+// set password
+uri.password("user"); // returns the URI instance for chaining</pre>
+    
+    <h3 id="accessors-hostname">hostname()</h3>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get protocol
+uri.hostname(); // returns string
+// set protocol
+uri.hostname("example.org"); // returns the URI instance for chaining</pre>
+    <p>NOTE: .hostname() returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
+    
+    <h3 id="accessors-port">port()</h3>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org:8080/foo/hello.html");
+// get port
+uri.port(); // returns string "8080"
+// set port
+uri.port("80"); // returns the URI instance for chaining</pre>
+    <p>NOTE: although the port may be considered an integer, within URI it is a string.</p>
+    
+    <h3 id="accessors-host">host()</h3>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get host
+uri.host(); // returns string "example.org"
+// set host
+uri.host("example.org:80"); // returns the URI instance for chaining</pre>
+    <p>NOTE: .hostname() returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
+    
+    <h3 id="accessors-authority">authority()</h3>
+    <p>Authority is comprised of username, password, hostname and port</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://user:pass@example.org:88/foo/hello.html");
+// get authority
+uri.authority(); // returns string "user:pass@example.org:88"
+// set authority
+uri.authority("user:pass@example.org:80"); // returns the URI instance for chaining</pre>
+    <p>NOTE: .authority() will reset any of username, password and port if they're not specified.</p>
+    
+    <h3 id="accessors-authority">domain()</h3>
+    <p>.domain() is a convenience method that returns <code>example.org</code> from the hostname <code>www.example.org</code>.</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get domain
+uri.domain(); // returns string "example.org"
+// set domain
+uri.domain("otherdomain.com"); // returns the URI instance for chaining</pre>
+    <p>NOTE: .domain() will throw an error if you pass it an empty string.</p>
+    
+    <h3 id="accessors-authority">tld()</h3>
+    <p>.tld() is a convenience method that returns <code>org</code> from the hostname <code>www.example.org</code>.</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get tld
+uri.tld(); // returns string "org"
+// set tld
+uri.tld("com"); // returns the URI instance for chaining</pre>
+    <p>NOTE: .tld() will throw an error if you pass it an empty string or use it on an IP-host.</p>
 
+    <h3 id="accessors-pathname">pathname(), path()</h3>
+    <p>.path() is an alias of .pathname()</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get pathname
+uri.pathname(); // returns string "/foo/hello.html"
+// set pathname
+uri.pathname("/foo/hello.html"); // returns the URI instance for chaining</pre>
+    
+    <h3 id="accessors-directory">directory()</h3>
+    <p>.directory() is an convenience method for mutating the directory part of a path</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get directory
+uri.directory(); // returns string "/foo" (no trailing slash)
+// set directory
+uri.directory("/bar"); // returns the URI instance for chaining
+// uri == "http://example.org/bar/hello.html"</pre>
+    
+    <h3 id="accessors-filename">filename()</h3>
+    <p>.filename() is an convenience method for mutating the filename part of a path</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get filename
+uri.filename(); // returns string "hello.html" (no leading slash)
+// set filename
+uri.filename("world.xml"); // returns the URI instance for chaining
+// uri == "http://example.org/bar/world.xml"</pre>
+    
+    <h3 id="accessors-suffix">suffix()</h3>
+    <p>.suffix() is an convenience method for mutating the filename part of a path</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get suffix
+uri.suffix(); // returns string "html" (no leading dot)
+// set suffix
+uri.suffix("xml"); // returns the URI instance for chaining
+// uri == "http://example.org/bar/world.xml"</pre>
+    
+    <h3 id="accessors-search">search(), query()</h3>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html?foo=bar&amp;bar=baz");
+// get search
+uri.search(); // returns string "?foo=bar&amp;bar=baz" (leading ?)
+// get query
+uri.query(); // returns string "foo=bar&amp;bar=baz" (no leading ?)
+
+// .query() and .search() behave the same for the following:
+
+// set search
+uri.search("?foo=bar&amp;bar=baz"); // returns the URI instance for chaining
+uri.search("foo=bar&amp;bar=baz"); // returns the URI instance for chaining
+
+uri.search(""); // returns the URI instance for chaining
+// uri == "http://example.org/bar/world.html"
+
+// get data map:
+uri.search(true); // returns { foo: "bar", hello : ["world", "mars"] }
+
+// set data map:
+uri.search({ foo: "bar", hello : ["world", "mars"] });
+// uri == "http://example.org/bar/world.html?foo=bar&amp;hello=world&amp;hello=mars"</pre>
+
+    <h3 id="accessors-hash">hash(), fragment()</h3>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html#world");
+// get hash
+uri.hash(); // returns string "#world" (leading #)
+// get fragment
+uri.fragment(); // returns string "world" (no leading #)
+
+// .hash() and .fragment() behave the same for the following:
+
+// set hash
+uri.hash("#mars"); // returns the URI instance for chaining
+uri.hash("mars"); // returns the URI instance for chaining
+// uri == "http://example.org/bar/world.xml#mars"</pre>
+    
+    
+    <h3 id="search-add">addSearch(), addQuery()</h3>
+    <p>.addQuery() is an alias of .addSearch()</p>
+    <pre class="prettyprint lang-js">var uri = new URI("?hello=world");
+uri.addSearch("hello", "mars"); // returns the URI instance for chaining
+// uri == "?hello=world&amp;hello=mars"
+
+uri.addSearch({ foo: "bar", goodbye : ["world", "mars"] });
+// uri == "?hello=world&amp;hello=mars&amp;foo=bar&amp;goodbye=world&amp;goodbye=mars"
+</pre>
+    
+    <h3 id="search-remove">removeSearch(), removeQuery()</h3>
+    <p>.removeQuery() is an alias of .removeSearch()</p>
+    <pre class="prettyprint lang-js">var uri = new URI("?hello=world&amp;hello=mars&amp;foo=bar");
+// remove an attribute
+uri.removeSearch("hello"); // returns the URI instance for chaining
+// uri == "?foo=bar"
+
+// remove an attribute with value filter
+uri.search("?hello=world&amp;hello=mars&amp;foo=bar");
+uri.removeSearch("hello"); // returns the URI instance for chaining
+// uri == "?hello=mars&amp;foo=bar"
+
+// remove multiple values
+uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true");
+uri.addSearch(["hello", "foo"]);
+// uri == "?mine=true" 
+
+// remove multiple values with value filter
+uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true&amp;a=1&amp;b=2&amp;b=3");
+uri.addSearch({hello: "world", foo: undefined, a: ["1", "3"]});
+// uri == "?hello=mars&amp;mine=true&amp;b=2"</pre>
+    
+    <h3 id="normalize">normalize()</h3>
+    <p>executes normalizeHost(), normalizePort(), normalizePath(), normalizeSearch(), normalizeHash()</p>
+
+    <h3 id="normalize-host">normalizeHost()</h3>
+    <!-- todo: docs normalizeHost() -->
+
+    <h3 id="normalize-port">normalizePort()</h3>
+    <p>Removes the port, if it's the default for the given protocol (http: 80, https: 443, ftp: 21).</p>
+    <p>The list of default ports can be modified at <code>URI.defaultPorts</code></p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org:80/foo.html");
+// normalize port
+uri.normalizePort(); // returns the URI instance for chaining
+// uri == "http://example.org/foo.html"</pre>
+
+    <h3 id="normalize-path">normalizePath()</h3>
+    <!-- todo: docs normalizePath() -->
+
+    <h3 id="normalize-search">normalizeSearch(), normalizeQuery()</h3>
+    <p>Turns <code>?&amp;foo=bar&amp;&amp;foo=bar&amp;foo=baz&amp;</code> into <code>?foo=bar&amp;foo=baz</code> and removes ? if there is no query string.</p>
+    <pre class="prettyprint lang-js">var uri = new URI("?&amp;foo=bar&amp;&amp;foo=bar&amp;foo=baz&amp;");
+// normalize search
+uri.normalizeSearch(); // returns the URI instance for chaining
+// uri == "?foo=bar&amp;foo=baz"</pre>
+
+    <h3 id="normalize-hash">normalizeHash(), normalizeFragment()</h3>
+    <p>removes # if there is no hash</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html#");
+// normalize hash
+uri.normalizeHash(); // returns the URI instance for chaining
+// uri == "http://example.org/bar/world.xml"</pre>
+
+    <h3 id="relativeto">relativeTo()</h3>
+    <!-- todo: docs resolveTo() -->
+
+    <h3 id="absoluteto">absoluteTo()</h3>
+    <!-- todo: docs absoluteTo() -->
 
     </div>
 </body>
