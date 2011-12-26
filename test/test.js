@@ -7,17 +7,17 @@ module("constructing");
 test("new URI(string)", function() {
     var u = new URI("http://example.org/");
     ok(u instanceof URI, "instanceof URI");
-    ok(u._parts.host !== undefined, "host undefined");
+    ok(u._parts.hostname !== undefined, "host undefined");
 });
 test("new URI(object)", function() {
-    var u = new URI({protocol: "http", host: 'example.org'});
+    var u = new URI({protocol: "http", hostname: 'example.org'});
     ok(u instanceof URI, "instanceof URI");
-    ok(u._parts.host !== undefined, "host undefined");
+    ok(u._parts.hostname !== undefined, "host undefined");
 });
 test("new URI(URI)", function() {
-    var u = new URI(new URI({protocol: "http", host: 'example.org'}));
+    var u = new URI(new URI({protocol: "http", hostname: 'example.org'}));
     ok(u instanceof URI, "instanceof URI");
-    ok(u._parts.host !== undefined, "host undefined");
+    ok(u._parts.hostname !== undefined, "host undefined");
 });
 test("new URI(new Date())", function() {
     raises(function() {
@@ -27,12 +27,12 @@ test("new URI(new Date())", function() {
 test("new URI()", function() {
     var u = new URI();
     ok(u instanceof URI, "instanceof URI");
-    ok(u._parts.host === location.hostname, "host == location.hostname");
+    ok(u._parts.hostname === location.hostname, "hostname == location.hostname");
 });
 test("function URI(string)", function() {
     var u = new URI("http://example.org/");
     ok(u instanceof URI, "instanceof URI");
-    ok(u._parts.host !== undefined, "host undefined");
+    ok(u._parts.hostname !== undefined, "host undefined");
 });
 
 

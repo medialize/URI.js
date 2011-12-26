@@ -136,15 +136,15 @@ URI.parseHost = function(string, parts) {
         // I claim most client software breaks on IPv6 anyways. To simplify things, URI only accepts
         // IPv6+port in the format [2001:db8::1]:80 (for the time being)
         var bracketPos = string.indexOf(']');
-        parts.host = string.substring(1, bracketPos) || null;
+        parts.hostname = string.substring(1, bracketPos) || null;
         parts.port = string.substring(bracketPos+2, pos) || null;
     } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
         // IPv6 host contains multiple colons - but no port
-        parts.host = string.substr(0, pos) || null;
+        parts.hostname = string.substr(0, pos) || null;
         parts.port = null;
     } else {
         t = string.substr(0, pos).split(':');
-        parts.host = t[0] || null;
+        parts.hostname = t[0] || null;
         parts.port = t[1] || null;
     }
     
@@ -203,7 +203,7 @@ URI.build = function(parts) {
     t += (URI.buildAuthority(parts) || '');
     
     if (typeof parts.path === "string") {
-        if (parts.path[0] !== '/' && typeof parts.host === "string") {
+        if (parts.path[0] !== '/' && typeof parts.hostname === "string") {
             t += '/';
         }
         
@@ -222,18 +222,18 @@ URI.build = function(parts) {
 URI.buildHost = function(parts) {
     var t = '';
     
-    if (!parts.host) {
+    if (!parts.hostname) {
         return '';
-    } else if (URI.ip6_expression.test(parts.host)) {
+    } else if (URI.ip6_expression.test(parts.hostname)) {
         if (parts.port) {
-            t += "[" + parts.host + "]:" + parts.port;
+            t += "[" + parts.hostname + "]:" + parts.port;
         } else {
             // don't know if we should always wrap IPv6 in []
             // the RFC explicitly says SHOULD, not MUST.
-            t += parts.host;
+            t += parts.hostname;
         }
     } else {
-        t += parts.host;
+        t += parts.hostname;
         if (parts.port) {
             t += ':' + parts.port;
         }
@@ -368,7 +368,7 @@ p.valueOf = function() {
 };
 
 // generate simple accessors
-var _parts = {protocol: 'protocol', username: 'username', password: 'password', hostname: 'host',  port: 'port'},
+var _parts = {protocol: 'protocol', username: 'username', password: 'password', hostname: 'hostname',  port: 'port'},
     _part;
 
 for (_part in _parts) {
@@ -438,7 +438,7 @@ p.href = function(href, build) {
             protocol: null, 
             username: null, 
             password: null, 
-            host: null, 
+            hostname: null, 
             port: null, 
             path: null, 
             query: null, 
@@ -446,7 +446,7 @@ p.href = function(href, build) {
         };
         
         var _URI = href instanceof URI,
-            _object = typeof href === "object" && (href.host || href.path),
+            _object = typeof href === "object" && (href.hostname || href.path),
             key;
     
         if (typeof href === "string") {
@@ -477,14 +477,14 @@ p.is = function(what) {
         punycode = false,
         relative = true;
     
-    if (this._parts.host) {
+    if (this._parts.hostname) {
         relative = false;
-        ip4 = URI.ip4_expression.test(this._parts.host);
-        ip6 = URI.ip6_expression.test(this._parts.host);
+        ip4 = URI.ip4_expression.test(this._parts.hostname);
+        ip6 = URI.ip6_expression.test(this._parts.hostname);
         ip = ip4 || ip6;
         name = !ip;
-        idn = name && URI.idn_expression.test(this._parts.host);
-        punycode = name && URI.punycode_expression.test(this._parts.host);
+        idn = name && URI.idn_expression.test(this._parts.hostname);
+        punycode = name && URI.punycode_expression.test(this._parts.hostname);
         
     }
     
@@ -523,7 +523,7 @@ p.is = function(what) {
 // combination accessors
 p.host = function(v, build) {
     if (v === undefined) {
-        return this._parts.host ? URI.buildHost(this._parts) : "";
+        return this._parts.hostname ? URI.buildHost(this._parts) : "";
     } else {
         URI.parseHost(v, this._parts);
         build !== false && this.build();
@@ -532,7 +532,7 @@ p.host = function(v, build) {
 };
 p.authority = function(v, build) {
     if (v === undefined) {
-        return this._parts.host ? URI.buildAuthority(this._parts) : "";
+        return this._parts.hostname ? URI.buildAuthority(this._parts) : "";
     } else {
         URI.parseAuthority(v, this._parts);
         build !== false && this.build();
@@ -544,20 +544,20 @@ p.authority = function(v, build) {
 p.domain = function(v, build) {
     // convinience, return "example.org" from "www.example.org"
     if (v === undefined) {
-        if (!this._parts.host || this.is('IP')) {
+        if (!this._parts.hostname || this.is('IP')) {
             return "";
         }
 
         // "localhost" is a domain, too
-        return this._parts.host.match(/\.?([^\.]+.[^\.]+)$/)[1] || this._parts.host;
+        return this._parts.hostname.match(/\.?([^\.]+.[^\.]+)$/)[1] || this._parts.hostname;
     } else {
         if (!v) {
             throw new TypeError("cannot set domain empty");
-        } else if (!this._parts.host || this.is('IP')) {
-            this._parts.host = v;
+        } else if (!this._parts.hostname || this.is('IP')) {
+            this._parts.hostname = v;
         } else {
             var replace = new RegExp(RegExp.escape(this.domain()) + "$");
-            this._parts.host = this._parts.host.replace(replace, v);
+            this._parts.hostname = this._parts.hostname.replace(replace, v);
         }
         
         build !== false && this.build();
@@ -567,20 +567,20 @@ p.domain = function(v, build) {
 p.tld = function(v, build) {
     // return "org" from "www.example.org"
     if (v === undefined) {
-        if (!this._parts.host || this.is('IP')) {
+        if (!this._parts.hostname || this.is('IP')) {
             return "";
         }
 
-        var pos = this._parts.host.lastIndexOf('.');
-        return this._parts.host.substr(pos + 1);
+        var pos = this._parts.hostname.lastIndexOf('.');
+        return this._parts.hostname.substr(pos + 1);
     } else {
         if (!v) {
             throw new TypeError("cannot set TLD empty");
-        } else if (!this._parts.host || this.is('IP')) {
+        } else if (!this._parts.hostname || this.is('IP')) {
             throw new ReferenceError("cannot set TLD on non-domain host");
         } else {
             var replace = new RegExp(RegExp.escape(this.tld()) + "$");
-            this._parts.host = this._parts.host.replace(replace, v);
+            this._parts.hostname = this._parts.hostname.replace(replace, v);
         }
         
         build !== false && this.build();
@@ -737,9 +737,9 @@ p.normalize = function() {
 };
 p.normalizeHost = function(build) {
     if (this.is('IDN') && window.punycode) {
-        this._parts.host = punycode.toASCII(this._parts.host);
+        this._parts.hostname = punycode.toASCII(this._parts.hostname);
     } else if (this.is('IPv6') && window.IPv6) {
-        this._parts.host = IPv6.best(this._parts.host);
+        this._parts.hostname = IPv6.best(this._parts.hostname);
     }
     
     build !== false && this.build();
@@ -839,7 +839,7 @@ p.absoluteTo = function(base) {
     }
 
     var resolved = new URI(this),
-        properties = ['protocol', 'username', 'password', 'host', 'port']; 
+        properties = ['protocol', 'username', 'password', 'hostname', 'port']; 
 
     for (var i = 0, p; p = properties[i]; i++) {
         resolved._parts[p] = base._parts[p];
@@ -863,7 +863,7 @@ p.relativeTo = function(base) {
     }
     
     var relative = new URI(this),
-        properties = ['protocol', 'username', 'password', 'host', 'port'],
+        properties = ['protocol', 'username', 'password', 'hostname', 'port'],
         common = URI.commonPath(relative.path(), base.path()),
         _base = base.directory();
 
