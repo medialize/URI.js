@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>jQuery contextMenu Plugin</title>
+    <meta name="description" content="simple contextMenu generator for interactive web applications based on jQuery" />
+    
+    <script src="jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="prettify/prettify.js" type="text/javascript"></script>
+    <script src="screen.js" type="text/javascript"></script>
+    <link href="screen.css" rel="stylesheet" type="text/css" />
+    <link href="prettify/prettify.sunburst.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-8922143-3']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+</head>
+<body>
+    <a id="github-forkme" href="https://github.com/medialize/URI.js"><img src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+    <div id="container">
+    <h1><a href="https://github.com/medialize/URI.js">URI.js</a></h1>
+    
+    <ul class="menu">
+        <li><a href="index.html">About</a></li>
+        <li class="active"><a href="docs.html">Documentation</a></li>
+        <li><a href="http://rodneyrehm.de/en/">Author</a></li>
+    </ul>
+    
+    <ul class="toc">
+        <li><a href="#constructor">Constructing an URI</a></li>
+        <li>
+            Working with URI parts
+            <ul>
+                <li><a href="#accessors-protocol">protocol()</a></li>
+                <li><a href="#accessors-username">username()</a></li>
+                <li><a href="#accessors-password">password()</a></li>
+                <li><a href="#accessors-hostname">hostname()</a></li>
+                <li><a href="#accessors-port">port()</a></li>
+                <li><a href="#accessors-host">host()</a></li>
+                <li><a href="#accessors-authority">authority()</a></li>
+                <li><a href="#accessors-authority">domain()</a></li>
+                <li><a href="#accessors-authority">tld()</a></li>
+
+                <li><a href="#accessors-pathname">pathname(), path()</a></li>
+                <li><a href="#accessors-directory">directory()</a></li>
+                <li><a href="#accessors-filename">filename()</a></li>
+                <li><a href="#accessors-suffix">suffix()</a></li>
+                <li><a href="#accessors-search">search(), query()</a></li>
+                <li><a href="#accessors-hash">hash(), fragment()</a></li>
+            </ul>
+        </li>
+        <li>
+            Working with the query string
+            <ul>
+                <li><a href="#accessors-search">search(), query()</a></li>
+                <li><a href="#search-add">addSearch(), addQuery()</a></li>
+                <li><a href="#search-remove">removeSearch(), removeQuery()</a></li>
+            </ul>
+        </li>
+        <li>
+            Normalizing an URL
+            <ul>
+                <li><a href="#normalize">normalize()</a></li>
+                <li><a href="#normalize-host">normalizeHost()</a></li>
+                <li><a href="#normalize-port">normalizePort()</a></li>
+                <li><a href="#normalize-path">normalizePath()</a></li>
+                <li><a href="#normalize-search">normalizeSearch(), normalizeQuery()</a></li>
+                <li><a href="#normalize-hash">normalizeHash(), normalizeFragment()</a></li>
+            </ul>
+        </li>
+        <li>
+            Relative and Absolute URLs
+            <ul>
+                <li><a href="#relativeto">relativeTo()</a></li>
+                <li><a href="#absoluteto">absoluteTo()</a></li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h2 id="api-methods">URI.js API</h2>
+    
+    <h3 id="constructor">URI Constructor</h3>
+    <pre class="prettyprint lang-js">var uri = new URI(); // same as new URI(location.href)
+// string
+var uri = new URI("http://example.org");
+
+// URI object for cloning
+var uri = new URI(new URI("http://example.org"));
+
+// URI parts object
+var uri = new URI({
+    protocol: 'http',
+    host: 'example.org'
+});
+
+// without new keyword
+var uri = URI("example.org");</pre>
+    
+    <p>The following parts can be</p>
+    
+    
+    <!--
+        ### URI() constructor ###
+
+        ```javascript
+        
+        ```
+
+        ### URI part accessors ###
+
+        ```javascript
+        // basic mutation
+        .protocol()
+        .username()
+        .password()
+        .hostname()
+        .domain()
+        .tld()
+        .host()
+        .port()
+        .authority()
+        .pathname() | .path()
+        .directory()
+        .filename()
+        .suffix()
+        .query() // input leading ? stripped
+        .search() // leading ?
+        .fragment() // input leading # stripped
+        .hash()  // leading #
+        ```
+
+        ### Working the Query Strings ###
+
+
+        ```javascript
+        // query string fun
+        .query() returns string "foo=bar&hello=world&hello=mars"
+        .query(true) returns object {foo: "bar", hello: ["world", "mars"]}
+        .query( string|object ) to set a new query string
+        .addQuery(name, value) 
+        .addQuery(object) 
+        .removeQuery(name) 
+        .removeQuery(name, value) 
+        .removeQuery(array) 
+        .removeQuery(object) 
+        addSearch() and .removeSearch() for conventions
+        ```
+
+        ### Sanitizing URLs ###
+
+
+        ```javascript
+        .normalize()
+        .normalizeHost()
+        .normalizePort()
+        .normalizePath()
+        .normalizeQuery() .normalizeSearch()
+        .normalizeFragment() .normalizeHash()
+        ```
+
+        ### Mutating Paths ###
+
+
+        ```javascript
+        .relativeTo()
+        .absoluteTo()
+        ```
+    
+    -->
+
+
+    </div>
+</body>
+</html>
