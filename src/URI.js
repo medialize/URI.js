@@ -155,8 +155,8 @@ URI.parseAuthority = function(string, parts) {
     var pos = string.indexOf('@');
     if (pos > -1) {
         t = string.substr(0, pos).split(':');
-        parts.username = t[0] || null;
-        parts.password = t[1] || null;
+        parts.username = t[0] ? URI.decode(t[0]) : null;
+        parts.password = t[1] ? URI.decode(t[1]) : null;
         string = string.substr(pos + 1);
     } else {
         parts.username = null;
@@ -245,10 +245,10 @@ URI.buildAuthority = function(parts) {
     var t = '';
     
     if (parts.username) {
-        t += parts.username;
+        t += URI.encode(parts.username);
 
         if (parts.password) {
-            t += ':' + parts.password;            
+            t += ':' + URI.encode(parts.password);
         }
 
         t += "@";
