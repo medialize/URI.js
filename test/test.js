@@ -417,13 +417,13 @@ test("normalize", function() {
 test("normalizeHost", function() {
     if (window.punycode) {
         var u = new URI("http://exämple.org/foobar.html");
-        u.normalizeHost();
+        u.normalizeHostname();
         equal(u+"", "http://xn--exmple-cua.org/foobar.html", "converting IDN to punycode");
     }
 
     if (window.IPv6) {
         u = new URI("http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html");
-        u.normalizeHost();
+        u.normalizeHostname();
         equal(u+"", "http://fe80::204:61ff:fe9d:f156/foobar.html", "best IPv6 representation");
     }
 });

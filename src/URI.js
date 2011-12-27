@@ -728,14 +728,14 @@ p.removeSearch = p.removeQuery;
 // sanitizing URLs
 p.normalize = function() {
     return this
-        .normalizeHost(false)
+        .normalizeHostname(false)
         .normalizePort(false)
         .normalizePath(false)
         .normalizeQuery(false)
         .normalizeFragment(false)
         .build();
 };
-p.normalizeHost = function(build) {
+p.normalizeHostname = function(build) {
     if (this.is('IDN') && window.punycode) {
         this._parts.hostname = punycode.toASCII(this._parts.hostname);
     } else if (this.is('IPv6') && window.IPv6) {
@@ -805,6 +805,7 @@ p.normalizePath = function(build) {
     build !== false && this.build();
     return this;
 };
+p.normalizePathname = p.normalizePath;
 p.normalizeQuery = function(build) {
     if (typeof this._parts.query === "string") {
         if (!this._parts.query.length) {
