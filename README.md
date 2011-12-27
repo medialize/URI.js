@@ -104,6 +104,10 @@ Docs where you get more info on parsing and working with URLs
 * [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
 * [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
 
+### URL Draft ###
+
+* [W3C URL Draft](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html)
+
 
 ## TODO ##
 
@@ -112,7 +116,6 @@ if you want to get involved, these are things you could help out with…
 * AMD stuff
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * accept all [IPv6 notations](http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6)
-* throw this at someone to make a specification out of it, so browser eventually support this natively (care to help?)
 
 
 ## Authors ##
