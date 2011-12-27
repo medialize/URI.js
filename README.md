@@ -101,7 +101,7 @@ Docs where you get more info on parsing and working with URLs
 
 ### Alternatives ###
 
-* [The simple <a> URL Mutation "Hack"](http://jsfiddle.net/rodneyrehm/KkGUJ/)
+* [The simple <a> URL Mutation "Hack"](http://jsfiddle.net/rodneyrehm/KkGUJ/) ([jsPerf comparison](http://jsperf.com/idl-attributes-vs-uri-js))
 * [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
 * [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
 * [URL.js](https://github.com/ericf/urljs)
