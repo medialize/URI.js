@@ -15,7 +15,8 @@
 (function(undefined) {
 
 function escapeRegEx(string) {
-    return string.replace(/[$^\\.*+?()[\]{}|]/g, "\\$&");
+    // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
+    return string.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 }
 
 function isArray(obj) {
