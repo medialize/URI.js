@@ -99,6 +99,11 @@ Docs where you get more info on parsing and working with URLs
 * http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html#workerlocation
 * MozURLProperty (not documented yet?!) https://developer.mozilla.org/User:trevorh/Interface_documentation_status
 
+### Alternatives ###
+
+* [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
+* [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
+
 
 ## TODO ##
 
@@ -123,7 +128,7 @@ if you want to get involved, these are things you could help out with…
 
 ## Useless Information ##
 
-I built this sucker on Christmas 2011. It was a nice excuse to get away from the anual family terror. You should try it some time…
+I built this sucker during Christmas 2011. It was a nice excuse to get away from the annual family terror. You should try it some time…
 
 ### Naming Libraries sucks ###
 
