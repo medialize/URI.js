@@ -149,7 +149,7 @@ uri.password("user"); // returns the URI instance for chaining</pre>
 uri.hostname(); // returns string
 // set protocol
 uri.hostname("example.org"); // returns the URI instance for chaining</pre>
-    <p>NOTE: .hostname() returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
+    <p>NOTE: <a href="#accessors-hostname">.hostname()</a> returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
     
     <h3 id="accessors-port">port()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org:8080/foo/hello.html");
@@ -160,12 +160,12 @@ uri.port("80"); // returns the URI instance for chaining</pre>
     <p>NOTE: although the port may be considered an integer, within URI it is a string.</p>
     
     <h3 id="accessors-host">host()</h3>
-    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org:80/foo/hello.html");
 // get host
-uri.host(); // returns string "example.org"
+uri.host(); // returns string "example.org:80"
 // set host
 uri.host("example.org:80"); // returns the URI instance for chaining</pre>
-    <p>NOTE: .hostname() returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
+    <p>NOTE: <a href="#accessors-hostname">.hostname()</a> returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
     
     <h3 id="accessors-authority">authority()</h3>
     <p>Authority is comprised of username, password, hostname and port</p>
