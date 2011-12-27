@@ -103,6 +103,7 @@ Docs where you get more info on parsing and working with URLs
 
 * [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
 * [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
+* [URL.js](https://github.com/ericf/urljs)
 
 ### URL Draft ###
 
@@ -114,9 +115,11 @@ Docs where you get more info on parsing and working with URLs
 
 if you want to get involved, these are things you could help out with…
 
+* look into abusing HTMLAnchorElement: `var a = document.createElement("a"); a.href = uri; a.pathname`
 * AMD stuff
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * accept all [IPv6 notations](http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6)
+* include a hint for [jQuery.fn.serialize()](http://api.jquery.com/serialize/)
 
 
 ## Authors ##
