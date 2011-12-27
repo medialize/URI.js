@@ -14,11 +14,8 @@
  
 (function(undefined) {
 
-if (!RegExp.escape) {
-    // still can't believe this isn't a regular function(!)
-    RegExp.escape = function(string) {
-        return string.replace( /(\^|\$|\\|\||\/|\*|\+|\?|\{|\}|\(|\)|\[|\]|\.)/g, "\\" + "$1" );
-    };
+function escapeRegEx(string) {
+    return string.replace(/[$^\.*+?()[\\]{}|]/g, "\\" + "$1");
 }
 
 function isArray(obj) {
@@ -556,7 +553,7 @@ p.domain = function(v, build) {
         } else if (!this._parts.hostname || this.is('IP')) {
             this._parts.hostname = v;
         } else {
-            var replace = new RegExp(RegExp.escape(this.domain()) + "$");
+            var replace = new RegExp(escapeRegEx(this.domain()) + "$");
             this._parts.hostname = this._parts.hostname.replace(replace, v);
         }
         
@@ -579,7 +576,7 @@ p.tld = function(v, build) {
         } else if (!this._parts.hostname || this.is('IP')) {
             throw new ReferenceError("cannot set TLD on non-domain host");
         } else {
-            var replace = new RegExp(RegExp.escape(this.tld()) + "$");
+            var replace = new RegExp(escapeRegEx(this.tld()) + "$");
             this._parts.hostname = this._parts.hostname.replace(replace, v);
         }
         
@@ -598,7 +595,7 @@ p.directory = function(v, build) {
     } else {
         var e = this._parts.path.length - this.filename().length,
             directory = this._parts.path.substring(0, e),
-            replace = new RegExp('^' + RegExp.escape(directory));
+            replace = new RegExp('^' + escapeRegEx(directory));
 
         // fully qualifier directories begin with a slash
         if (!this.is('relative')) {
@@ -635,7 +632,7 @@ p.filename = function(v, build) {
             v = v.substr(1);
         }
         
-        var replace = new RegExp(RegExp.escape(this.filename()) + "$");
+        var replace = new RegExp(escapeRegEx(this.filename()) + "$");
         this._parts.path = this._parts.path.replace(replace, v);
         build !== false && this.build();
         return this;
@@ -673,9 +670,9 @@ p.suffix = function(v, build) {
 
             this._parts.path += '.' + v;
         } else if (!v) {
-            replace = new RegExp(RegExp.escape("." + suffix) + "$");
+            replace = new RegExp(escapeRegEx("." + suffix) + "$");
         } else {
-            replace = new RegExp(RegExp.escape(suffix) + "$");
+            replace = new RegExp(escapeRegEx(suffix) + "$");
         }
         
         if (replace) {
@@ -880,7 +877,7 @@ p.relativeTo = function(base) {
         relative._parts.path = './' + relative.filename();
     } else {
         var parents = '../',
-            _common = new RegExp('^' + RegExp.escape(common)),
+            _common = new RegExp('^' + escapeRegEx(common)),
             _parents = _base.replace(_common, '/').match(/\//g).length -1;
 
         while (_parents--) {
