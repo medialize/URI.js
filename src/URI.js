@@ -171,11 +171,11 @@ URI.parseQuery = function(string) {
         splits = string.split('&'),
         length = splits.length;
 
-
     for (var i = 0; i < length; i++) {
         var v = splits[i].split('='),
             name = URI.decode(v.shift()),
-            value = URI.decode(v.join('='));
+            // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
+            value = v.length ? URI.decode(v.join('=')) : null;
         
         if (items[name]) {
             if (typeof items[name] === "string") {
@@ -265,12 +265,14 @@ URI.buildQuery = function(data) {
                 var unique = {};
                 for (var i = 0, length = data[key].length; i < length; i++) {
                     if (data[key][i] !== undefined && unique[data[key][i] + ""] === undefined) {
-                        t += "&" + name + "=" + URI.encode(data[key][i] + "");
+                        // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
+                        t += "&" + name + (data[key][i] !== null ? "=" + URI.encode(data[key][i] + "") : "");
                         unique[data[key][i] + ""] = true;
                     }
                 }
             } else if (data[key] !== undefined) {
-                t += "&" + name + "=" + URI.encode(data[key] + "");
+                // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
+                t += "&" + name + (data[key] !== null ? "=" + URI.encode(data[key] + "") : "");
             }
         }
     }

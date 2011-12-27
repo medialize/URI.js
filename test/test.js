@@ -171,6 +171,10 @@ test("query", function() {
     u.search('');
     equal(u.query(), "", "search: ''");
     equal(u.search(), "", "search: '' - query");
+    
+    u.query('?foo');
+    equal(u.query(), "foo", "search: ''");
+    equal(u.search(), "?foo", "search: '' - query");
 });
 test("fragment", function() { 
     var u = new URI("http://example.org/foo.html");
@@ -385,6 +389,10 @@ test("addQuery", function() {
     
     u.addQuery({'foo': 'bam', bar: ['1', '2']});
     equal(u.query(), 'foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2', "add {name: array}");
+
+    u.query('?foo=bar');
+    u.addQuery({'bam': null, 'baz': ''});
+    equal(u.query(), 'foo=bar&bam&baz=', "add {name: null}");
 });
 test("removeQuery", function() {
     var u = new URI('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
