@@ -754,13 +754,17 @@ p.normalizeProtocol = function(build) {
     return this;
 };
 p.normalizeHostname = function(build) {
-    if (this.is('IDN') && window.punycode) {
-        this._parts.hostname = punycode.toASCII(this._parts.hostname);
-    } else if (this.is('IPv6') && window.IPv6) {
-        this._parts.hostname = IPv6.best(this._parts.hostname);
+    if (this._parts.hostname) {
+        if (this.is('IDN') && window.punycode) {
+            this._parts.hostname = punycode.toASCII(this._parts.hostname);
+        } else if (this.is('IPv6') && window.IPv6) {
+            this._parts.hostname = IPv6.best(this._parts.hostname);
+        }
+        
+        this._parts.hostname = this._parts.hostname.toLowerCase();
+        build !== false && this.build();
     }
     
-    build !== false && this.build();
     return this;
 };
 p.normalizePort = function(build) {

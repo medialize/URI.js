@@ -439,6 +439,10 @@ test("normalizeHost", function() {
         u.normalizeHostname();
         equal(u+"", "http://fe80::204:61ff:fe9d:f156/foobar.html", "best IPv6 representation");
     }
+    
+    u = new URI("http://wWw.eXamplE.Org/foobar.html");
+    u.normalizeHostname();
+    equal(u+"", "http://www.example.org/foobar.html", "lower case hostname");
 });
 test("normalizePort", function() {
     var u = new URI("http://example.org:80/foobar.html");
