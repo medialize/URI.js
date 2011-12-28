@@ -93,6 +93,28 @@ URI("/hello/foo/woo/.././../world.html")
     .<a href="docs.html#normalize-path">normalizePathname</a>();
         // -> /hello/world.html </pre>
     
+    <p>How do you like detecting URIs within random text?</p>
+    <pre class="prettyprint lang-js">var source = "Hello www.example.com,\n"
+    + "http://google.com is a search engine, like http://www.bing.com\n"
+    + "http://exämple.org/foo.html?baz=la#bumm is an IDN URL,\n"
+    + "http://123.123.123.123/foo.html is IPv4 and "
+    + "http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html is IPv6.\n"
+    + "links can also be in parens (http://example.org) "
+    + "or quotes »http://example.org«.";
+
+var result = <a href="docs.html#static-withinString">URI.withinString</a>(source, function(url) {
+    return '&lt;a&gt;' + url + '&lt;/a&gt;';
+});
+
+/* result is:
+Hello <strong>&lt;a&gt;www.example.com&lt;/a&gt;</strong>,
+<strong>&lt;a&gt;http://google.com&lt;/a&gt;</strong> is a search engine, like <strong>&lt;a&gt;http://www.bing.com&lt;/a&gt;</strong>
+<strong>&lt;a&gt;http://ex&auml;mple.org/foo.html?baz=la#bumm&lt;/a&gt;</strong> is an IDN URL,
+<strong>&lt;a&gt;http://123.123.123.123/foo.html&lt;/a&gt;</strong> is IPv4 and <strong>&lt;a&gt;http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html&lt;/a&gt;</strong> is IPv6.
+links can also be in parens (<strong>&lt;a&gt;http://example.org&lt;/a&gt;</strong>) or quotes &raquo;<strong>&lt;a&gt;http://example.org&lt;/a&gt;</strong>&laquo;.
+*/
+</pre>
+    
     <h2 id="authors">Authors</h2>
 	<ul>
 		<li><a href="http://rodneyrehm.de/en/">Rodney Rehm</a></li>

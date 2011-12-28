@@ -70,13 +70,15 @@ p.decode = URI.decode;
 
 // static properties
 URI.idn_expression = /[^a-z0-9\.-]/i;
-URI.punycode_expression = /(^xn--)/i;
+URI.punycode_expression = /(xn--)/i;
 // well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
 URI.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 // credits to Rich Brown
 // source: http://forums.intermapper.com/viewtopic.php?p=1096#1096
 // specification: http://www.ietf.org/rfc/rfc4291.txt
 URI.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/ ;
+// gruber revised expression - http://rodneyrehm.de/t/url-regex.html
+URI.find_uri_expression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/ig;
 // http://www.iana.org/assignments/uri-schemes.html
 // http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
 URI.defaultPorts = {
@@ -355,8 +357,12 @@ URI.commonPath = function(one, two) {
 };
 
 URI.withinString = function(string, callback) {
-    // TODO: add URI.inString(string, callback) using gruber revised http://rodneyrehm.de/t/url-regex.html
-    // if callback returns string, replace original sequence
+    // expression used is "gruber revised" (@gruber v2) determined to be the best solution in
+    // a regex sprint we did a couple of ages ago at
+    // * http://mathiasbynens.be/demo/url-regex
+    // * http://rodneyrehm.de/t/url-regex.html
+    
+    return string.replace(URI.find_uri_expression, callback);
 };
 
 p.build = function() {
@@ -491,7 +497,6 @@ p.is = function(what) {
         name = !ip;
         idn = name && URI.idn_expression.test(this._parts.hostname);
         punycode = name && URI.punycode_expression.test(this._parts.hostname);
-        
     }
     
     switch (what.toLowerCase()) {
@@ -731,9 +736,6 @@ p.removeQuery = function(name, value, build) {
 p.addSearch = p.addQuery;
 p.removeSearch = p.removeQuery;
 
-// TODO: normalize hostname to lower case (IPv6 to upper?)
-// TODO: normalize pathname elements: /%7Esmith/home.html -> /~smith/home.html
-
 // sanitizing URLs
 p.normalize = function() {
     return this
@@ -822,6 +824,8 @@ p.normalizePath = function(build) {
             _path = _path.substring(1);
         }
     }
+    
+    // TODO: normalize pathname elements: /%7Esmith/home.html -> /~smith/home.html
 
     this._parts.path = _path;
     build !== false && this.build();

@@ -158,6 +158,14 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+* URI.withinSring()
+* added normalizeProtocol() to lowercase protocols
+* made normalizeHostname() lowercase hostnames
+* replaced String.substr() by String.substring() (Issue #1)
+* parse "?foo" to `{foo: null}` [Algorithm for collecting URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters)
+* build `{foo: null, bar: ""}` to "?foo&bar=" [Algorithm for serializing URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization)
+* fixed RegExp escaping
+
 ### 1.0 ###
 
 * Initial URI.js
