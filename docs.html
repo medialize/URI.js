@@ -57,9 +57,10 @@
                 <li><a href="#accessors-suffix">suffix()</a></li>
                 <li><a href="#accessors-search">search(), query()</a></li>
                 <li><a href="#accessors-hash">hash(), fragment()</a></li>
+                
+                <li><a href="#is">determine URL types</a></li>
             </ul>
         </li>
-        <li><a href="#is">determine URL types</a></li>
         <li>
             Working with the query string
             <ul>
@@ -85,6 +86,25 @@
             <ul>
                 <li><a href="#relativeto">relativeTo()</a></li>
                 <li><a href="#absoluteto">absoluteTo()</a></li>
+            </ul>
+        </li>
+        <li>
+            Static Functions
+            <ul>
+                <li><a href="#static-parse">URI.parse()</a></li>
+                <li><a href="#static-parseAuthority">URI.parseAuthority()</a></li>
+                <li><a href="#static-parseHost">URI.parseHost()</a></li>
+                <li><a href="#static-parseQuery">URI.parseQuery()</a></li>
+                <li><a href="#static-build">URI.build()</a></li>
+                <li><a href="#static-buildAuthority">URI.buildAuthority()</a></li>
+                <li><a href="#static-buildHost">URI.buildHost()</a></li>
+                <li><a href="#static-buildQuery">URI.buildQuery()</a></li>
+                
+                <li><a href="#static-addQuery">URI.addQuery()</a></li>
+                <li><a href="#static-removeQuery">URI.removeQuery()</a></li>
+                
+                <li><a href="#static-commonPath">URI.commonPath()</a></li>
+                <li><a href="#static-withinString">URI.withinString()</a></li>
             </ul>
         </li>
     </ul>
@@ -123,8 +143,17 @@ var uri = URI("example.org");</pre>
     fragment: 'frag' // no leading #
 });</pre>
 
-    <!-- TODO: construct pathname-, query-, fragment- only URIs -->
-    
+    <p>using only components of URIs:</p>
+    <pre class="prettyprint lang-js">// Look ma! I'm only working the pathname
+var uri = new URI("some/directory/file.html");
+
+// Look ma! I'm only working the query string
+var uri = new URI("?foo=bar");
+
+// Look ma! I'm only working the fragment / hash
+var uri = new URI("#call-me-hash");
+
+// and any combination of the above…</pre>
     
     <h3 id="accessors-protocol">protocol()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
@@ -271,9 +300,43 @@ uri.hash("mars"); // returns the URI instance for chaining
 // uri == "http://example.org/bar/world.xml#mars"</pre>
     
     <h3 id="is">is()</h3>
-    <pre class="prettyprint lang-js">
-    // TODO: document URI.IS()
-</pre>
+    <p>.is() tells what a URL is. It responds with a boolean and can be asked the following questions:</p>
+    <dl>
+        <dt><code>relative<code></dt><dd><code>true</code> if URL doesn't have a hostname</dd>
+        <dt><code>domain</code>, <code>name</code></dt><dd><code>true</code> if hostname is not an IP</dd>
+        <dt><code>idn</code></dt><dd><code>true</code> if hostname contains non-alphanumeric characters and is not an IP</dd>
+        <dt><code>punycode</code></dt><dd><code>true</code> if hostname contains <code>xn--</code></dd>
+        <dt><code>ip</code></dt><dd><code>true</code> if hostname is IPv4 or IPv6</dd>
+        <dt><code>ip4</code>, <code>ipv4</code>, <code>inet4</code></dt><dd><code>true</code> if hostname is IPv4</dd>
+        <dt><code>ip6</code>, <code>ipv6</code>, <code>inet6</code></dt><dd><code>true</code> if hostname is IPv6</dd>
+    </dl>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/");
+uri.is('relative') === false;
+uri.is('name') === true;
+uri.is('punycode') === false;
+uri.is('IDN') === false; // case doesn't matter
+uri.is('idn') === false; // case doesn't matter
+uri.is('ip') === false;
+
+var uri = new URI("http://123.123.123.123/");
+uri.is('relative') === false;
+uri.is('name') === false;
+uri.is('IP') === true;
+uri.is('IPv4') === true;
+uri.is('IPv6') === false;
+
+var uri = new URI("http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/");
+uri.is('IP') === true;
+uri.is('IPv4') === false;
+uri.is('IPv6') === true;
+
+var uri = new URI("/hello/world.html");
+uri.is('relative') === true;
+uri.is('name') === false;
+uri.is('IP') === false;</pre>
+    
+    
+    <h2 id="querystrings">Working with the query string</h2>
     
     <h3 id="search-add">addSearch(), addQuery()</h3>
     <p>.addQuery() is an alias of .addSearch()</p>
@@ -306,6 +369,10 @@ uri.addSearch(["hello", "foo"]);
 uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true&amp;a=1&amp;b=2&amp;b=3");
 uri.addSearch({hello: "world", foo: undefined, a: ["1", "3"]});
 // uri == "?hello=mars&amp;mine=true&amp;b=2"</pre>
+    
+    
+    
+    <h2 id="normalizing">Normalizing URLs</h2>
     
     <h3 id="normalize">normalize()</h3>
     <p>executes normalizeProtocol(), normalizeHostname(), normalizePort(), normalizePath(), normalizeSearch(), normalizeHash()</p>
@@ -364,6 +431,10 @@ uri.normalizeSearch(); // returns the URI instance for chaining
 uri.normalizeHash(); // returns the URI instance for chaining
 // uri == "http://example.org/bar/world.xml"</pre>
 
+
+
+    <h2 id="relative-and-absolute">Relative and Absolute URLs</h2>
+
     <h3 id="relativeto">relativeTo()</h3>
     <p>.relativeTo() compares to paths an makes one relative to the other</p>
     <pre class="prettyprint lang-js">var uri = new URI("/relative/path");
@@ -379,14 +450,25 @@ var relUri = uri.relativeTo("/relative/sub/foo/sub/file"); // returns a new URI 
 var relUri = uri.absoluteTo("/relative/sub/foo/sub/file"); // returns a new URI instance
 // relUri == "/relative/path"</pre>
     <p>.relativeTo() and .absoluteTo() reverse each other.</p>
+
+
+
+    <h2 id="static-functions">Static Functions</h2>
     
-    <!-- TODO: document static functions
-        * parse, parseAuthority, parseHost, parseQuery
-        * build, buildAuthority, buildHost, buildQuery
-        * addQuery, removeQuery
-        * commonPath
-        * withinString
-     -->
+    <h3 id="static-parse">URI.parse()</h3>
+    <h3 id="static-parseAuthority">URI.parseAuthority()</h3>
+    <h3 id="static-parseHost">URI.parseHost()</h3>
+    <h3 id="static-parseQuery">URI.parseQuery()</h3>
+    <h3 id="static-build">URI.build()</h3>
+    <h3 id="static-buildAuthority">URI.buildAuthority()</h3>
+    <h3 id="static-buildHost">URI.buildHost()</h3>
+    <h3 id="static-buildQuery">URI.buildQuery()</h3>
+
+    <h3 id="static-addQuery">URI.addQuery()</h3>
+    <h3 id="static-removeQuery">URI.removeQuery()</h3>
+
+    <h3 id="static-commonPath">URI.commonPath()</h3>
+    <h3 id="static-withinString">URI.withinString()</h3>
     
     </div>
 </body>
