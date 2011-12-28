@@ -357,18 +357,18 @@ uri.removeSearch("hello"); // returns the URI instance for chaining
 
 // remove an attribute with value filter
 uri.search("?hello=world&amp;hello=mars&amp;foo=bar");
-uri.removeSearch("hello"); // returns the URI instance for chaining
+uri.removeSearch("hello", "world"); // returns the URI instance for chaining
 // uri == "?hello=mars&amp;foo=bar"
 
 // remove multiple values
 uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true");
-uri.addSearch(["hello", "foo"]);
+uri.removeSearch(["hello", "foo"]);
 // uri == "?mine=true" 
 
 // remove multiple values with value filter
-uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true&amp;a=1&amp;b=2&amp;b=3");
-uri.addSearch({hello: "world", foo: undefined, a: ["1", "3"]});
-// uri == "?hello=mars&amp;mine=true&amp;b=2"</pre>
+uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true&amp;a=1&amp;a=2&amp;a=3");
+uri.removeSearch({hello: "world", foo: undefined, a: ["1", "3"]});
+// uri == "?hello=mars&amp;mine=true&amp;a=2"</pre>
     
     
     
@@ -455,19 +455,149 @@ var relUri = uri.absoluteTo("/relative/sub/foo/sub/file"); // returns a new URI 
 
     <h2 id="static-functions">Static Functions</h2>
     
-    <h3 id="static-parse">URI.parse()</h3>
-    <h3 id="static-parseAuthority">URI.parseAuthority()</h3>
-    <h3 id="static-parseHost">URI.parseHost()</h3>
-    <h3 id="static-parseQuery">URI.parseQuery()</h3>
-    <h3 id="static-build">URI.build()</h3>
-    <h3 id="static-buildAuthority">URI.buildAuthority()</h3>
-    <h3 id="static-buildHost">URI.buildHost()</h3>
+    <h3 id="static-parse">URI.parse(<em>string</em> url)</h3>
+    <p>parses a string into its URI components. returns an object containing the found components</p>
+    <pre class="prettyprint lang-js">var result = URI.parse("http://example.org/foo.html");
+result === {
+    protocol: "http", 
+    username: null, 
+    password: null, 
+    hostname: "example.org",
+    port: null,
+    path: "/foo.html",
+    query: null,
+    fragment: null
+};</pre>
+    
+    <h3 id="static-parseAuthority">URI.parseAuthority(<em>string</em> url, <em>object</em> parts)</h3>
+    <p>parses a string's beginning into its URI components username, password, hostname, port. 
+        Found components are appended to the <code>parts</code> parameter.
+        Remaining string is returned</p>
+    <pre class="prettyprint lang-js">var parts = {},
+    result = URI.parseAuthority("user:pass@example.org:8080/foo.html", parts);
+result === "/foo.html";
+parts === {
+    username: "user", 
+    password: "pass", 
+    hostname: "example.org",
+    port: "8080"
+};</pre>
+    
+    <h3 id="static-parseHost">URI.parseHost(<em>string</em> url, <em>object</em> parts)</h3>
+    <p>parses a string's beginning into its URI components hostname, port. 
+        Found components are appended to the <code>parts</code> parameter.
+        Remaining string is returned</p>
+    <pre class="prettyprint lang-js">var parts = {},
+    result = URI.parseAuthority("example.org:8080/foo.html", parts);
+result === "/foo.html";
+parts === {
+    hostname: "example.org",
+    port: "8080"
+};</pre>
+    
+    <h3 id="static-parseQuery">URI.parseQuery(<em>string</em> querystring)</h3>
+    <p>Parses the passed query string into an object. Returns object <code>{propertyName: propertyValue}</code></p>
+    <pre class="prettyprint lang-js">var result = URI.parseQuery("?foo=bar&amp;hello=world&amp;hello=mars&amp;bam=&amp;yup");
+result === {
+    foo: "bar",
+    hello: ["world", "mars"],
+    bam: "",
+    yup: null
+};</pre>
+    
+    <h3 id="static-build">URI.build(<em>object</em> parts)</h3>
+    <p>serializes the URI components passed in <code>parts</code> into a URI string</p>
+    <pre class="prettyprint lang-js">var parts = {
+    protocol: "http", 
+    username: null, 
+    password: null, 
+    hostname: "example.org",
+    port: null,
+    path: "/foo.html",
+    query: null,
+    fragment: null
+};
+URI.build(parts) === "http://example.org/foo.html";</pre>
+    
+    <h3 id="static-buildAuthority">URI.buildAuthority(<em>object</em> parts)</h3>
+    <p>serializes the URI components username, password, hostname, port passed in <code>parts</code> into a URI string</p>
+    <pre class="prettyprint lang-js">var parts = {
+    username: "user", 
+    password: "pass", 
+    hostname: "example.org",
+    port: "8080"
+};
+URI.buildAuthority(parts) === "user:pass@example.org:8080";</pre>
+    
+    <h3 id="static-buildHost">URI.buildHost(<em>object</em> parts)</h3>
+    <p>serializes the URI components hostname, port passed in <code>parts</code> into a URI string</p>
+    <pre class="prettyprint lang-js">var parts = {
+    hostname: "example.org",
+    port: "8080"
+};
+URI.buildHost(parts) === "example.org:8080";</pre>
+    
     <h3 id="static-buildQuery">URI.buildQuery()</h3>
+    <p>serializes the query string parameters</p>
+    <pre class="prettyprint lang-js">var data = {
+    foo: "bar",
+    hello: ["world", "mars"],
+    bam: "",
+    yup: null,
+    removed: undefined
+}
+
+URI.buildQuery(data) === "foo=bar&amp;hello=world&amp;hello=mars&amp;bam=&amp;yup";</pre>
 
     <h3 id="static-addQuery">URI.addQuery()</h3>
+    <p>adds data to a map</p>
+    <pre class="prettyprint lang-js">var data = {};
+
+URI.addQuery(data, "hello", "mars");
+data === {hello: 'mars'};
+
+URI.addQuery(data, "hello", "world");
+data === {hello: ['mars', 'world']};
+
+URI.addQuery(data, {foo: "bar", goodbye : ["world", "mars"]});
+data === {hello: ['mars', 'world'], foo: "bar", goodbye : ["world", "mars"]};</pre>
+    
     <h3 id="static-removeQuery">URI.removeQuery()</h3>
+    <p>removes data from a map</p>
+    <pre class="prettyprint lang-js">var data === {hello: ['mars', 'world'], foo: "bar", goodbye : ["world", "mars"]};
+
+URI.removeQuery(data, "hello");
+data === {foo: "bar", goodbye : ["world", "mars"]};
+
+// remove an attribute with value filter
+data = {hello: ["world", "mars"], foo: "bar"};
+URI.removeQuery(data, "hello", "world");
+data === {hello: ["mars"], foo: "bar"} // yes, still an array
+
+// remove multiple values
+data = {hello: ["world", "mars"], foo: "bar", mine: "true"}
+URI.removeQuery(["hello", "foo"]);
+data === {mine: "true"};
+
+// remove multiple values with value filter
+data = {hello: ["world", "mars"], foo: "bar", mine: "true", a: ["1", "2", "3"]}
+URI.removeQuery({hello: "world", foo: undefined, a: ["1", "3"]});
+data === {hello: ["mars"], mine: "true", a: ["2"]}</pre>
 
     <h3 id="static-commonPath">URI.commonPath()</h3>
+    <p>URI.commonPath() determines the common base directory of two paths.</p>
+    <pre class="prettyprint lang-js">URI.commonPath('/foo/bar/baz.html', '/foo/bar/world.html');
+// returns "/foo/bar/"
+
+URI.commonPath('/foo/bar/baz.html', '/foo/bazz/world.html');
+// returns "/foo/"
+
+URI.commonPath('/foo/bar/baz.html', '/other/world.html');
+// returns "/"
+
+URI.commonPath('/foo', 'bar');
+// returns ""</pre>
+    
     <h3 id="static-withinString">URI.withinString()</h3>
     <p>URI.withinString() identifies URIs within text, e.g. to translate them to &lt;a&gt;-Tags. (Obviously you'd want to put the urls inside the href-Attribute and escape them properly…)</p>
     <pre class="prettyprint lang-js">var source = "Hello www.example.com,\n"
@@ -479,6 +609,8 @@ var relUri = uri.absoluteTo("/relative/sub/foo/sub/file"); // returns a new URI 
     + "or quotes »http://example.org«.";
 
 var result = URI.withinString(source, function(url) {
+    // callback needs to return a string
+    // feel free to URI(url).normalize().toString() or something
     return '&lt;a&gt;' + url + '&lt;/a&gt;';
 });
 
