@@ -13,7 +13,7 @@ var url = "http://example.org/foo?bar=baz",
 url += separator + encodeURIComponent("foo") + "=" + encodeURIComponent("bar");
 ```
 
-I still can't believe javascript - the f**ing backbone-language of the web - doesn't offer an API for mutating URLs. Browsers (Firefox) don't expose the `Location` object (the structure behind window.location).
+I still can't believe javascript - the f**ing backbone-language of the web - doesn't offer an API for mutating URLs. Browsers (Firefox) don't expose the `Location` object (the structure behind window.location). Yes, one could think of [decomposed IDL attributes](http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#url-decomposition-idl-attributes) as a native URL management facility. But it relies on the DOM element &lt;a&gt;, it's slow and doesn't offer any convenienve at all. 
 
 How about a nice, clean and simple API for mutating URIs:
 

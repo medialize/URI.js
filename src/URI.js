@@ -87,9 +87,8 @@ URI.defaultPorts = {
 
 URI.parse = function(string) {
     var pos, t, parts = {};
-    // [protocol"://"[username[":"password]"@"]hostname[":"port]]["/"path["?"querystring]["#"fragment]]
-    // TODO: check http://blog.stevenlevithan.com/archives/parseuri
-    
+    // [protocol"://"[username[":"password]"@"]hostname[":"port]"/"?][path]["?"querystring]["#"fragment]
+
     // extract fragment
     pos = string.indexOf('#');
     if (pos > -1) {
@@ -271,6 +270,7 @@ URI.buildQuery = function(data) {
                     }
                 }
             } else if (data[key] !== undefined) {
+                // TODO: check if foo[] really must be encoded to foo%5B%5D
                 // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
                 t += "&" + name + (data[key] !== null ? "=" + URI.encode(data[key] + "") : "");
             }
@@ -724,6 +724,10 @@ p.removeQuery = function(name, value, build) {
 };
 p.addSearch = p.addQuery;
 p.removeSearch = p.removeQuery;
+
+// TODO: normalize protocol to lower case
+// TODO: normalize hostname to lower case (IPv6 to upper?)
+// TODO: normalize pathname elements: /%7Esmith/home.html -> /~smith/home.html
 
 // sanitizing URLs
 p.normalize = function() {
