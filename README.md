@@ -72,7 +72,7 @@ use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 ```
 // ==ClosureCompiler==
 // @compilation_level SIMPLE_OPTIMIZATIONS
-// @output_file_name contextMenu.js
+// @output_file_name URI.min.js
 // @code_url http://medialize.github.com/URI.js/src/IPv6.js
 // @code_url http://medialize.github.com/URI.js/src/punycode.js
 // @code_url http://medialize.github.com/URI.js/src/URI.js
@@ -106,6 +106,7 @@ Docs where you get more info on parsing and working with URLs
 * [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
 * [URL.js](https://github.com/ericf/urljs)
 * [furl (Python)](https://github.com/gruns/furl)
+* [mediawiki Uri](https://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/resources/mediawiki/mediawiki.Uri.js?view=markup) (needs mw and jQuery)
 
 [Discussion on Hacker News](https://news.ycombinator.com/item?id=3398837)
 
