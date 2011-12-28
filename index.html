@@ -54,9 +54,13 @@ URI("http://example.org/foo.html?hello=world")
         // -> http://example.org/bar/foo.html?hello=world
     .<a href="docs.html#accessors-suffix">suffix</a>("xml")    
         // -> http://example.org/bar/foo.xml?hello=world
-    .<a href="docs.html#accessors-search">search</a>("")
+    .<a href="docs.html#accessors-hash">hash</a>("hackernews")
+        // -> http://example.org/bar/foo.xml?hello=world#hackernews
+    .<a href="docs.html#accessors-fragment">fragment</a>("")
+        // -> http://example.org/bar/foo.xml?hello=world
+    .<a href="docs.html#accessors-search">search</a>("") // alias of .query()
         // -> http://example.org/bar/foo.xml
-    .<a href="docs.html#accessors-tld">tld</a>("com")      
+    .<a href="docs.html#accessors-tld">tld</a>("com")
         // -> http://example.com/bar/foo.xml
     .<a href="docs.html#accessors-search">search</a>({ foo: "bar", hello: ["world", "mars"] });
         // -> http://example.com/bar/foo.xml?foo=bar&amp;hello=world&amp;hello=mars</pre>
