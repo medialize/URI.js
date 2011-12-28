@@ -48,6 +48,7 @@ function filterArrayValues(data, value) {
 
 // constructor
 var URI = function(url) {
+        // TODO: constructor(url, base) see http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
         // Allow instantiation without the 'new' keyword
         if (!(this instanceof URI)) {
             return new URI(url);
@@ -258,6 +259,26 @@ URI.buildAuthority = function(parts) {
     return t;
 };
 URI.buildQuery = function(data) {
+    // according to http://tools.ietf.org/html/rfc3986 or http://labs.apache.org/webarch/uri/rfc/rfc3986.html
+    // unreserved   = ALPHA / DIGIT / "-" / "." / "_" / "~"
+    // pct-encoded  = "%" HEXDIG HEXDIG
+    // sub-delims   = "!" / "$" / "&" / "'" / "(" / ")" / "*" / "+" / "," / ";" / "="
+    // pchar        = unreserved / pct-encoded / sub-delims / ":" / "@"
+    // query        = *( pchar / "/" / "?" )
+    // being »-._~!$&'()*+,;=:@/?« and alnum
+    // so the query string may contain »-._~!$&'()*+,;=:@/?« unencoded.
+    // &= have special meaning to paramter delimitation, thus need to be encoded ["&" : "%26", "=" : "%3D"].
+    // the RFC explicitly states ?/foo being a valid use case, no mention of parameter syntax!
+    // I have yet to hunt down the specification of ?property1=value1&property2
+    // pointer: http://en.wikipedia.org/wiki/Query_string
+    // Note that Wikipedia is nice, but it is NOT a reference
+    // For the time being a full encodeURIComponent won't hurt (much?)
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/encodeURI
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/encodeURIComponent
+
+    // TODO: figure out if ?key=value is the only allowed syntax (in HTTP)
+    // TODO: figure out how to proplery encode query string parameters
+
     var t = "";
     for (var key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
@@ -272,7 +293,6 @@ URI.buildQuery = function(data) {
                     }
                 }
             } else if (data[key] !== undefined) {
-                // TODO: check if foo[] really must be encoded to foo%5B%5D
                 // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
                 t += "&" + name + (data[key] !== null ? "=" + URI.encode(data[key] + "") : "");
             }
@@ -434,7 +454,7 @@ p.pathname = function(v, build) {
     if (v === undefined) {
         return this._parts.path || "/";
     } else {
-        // TODO: escape path segments
+        // TODO: properly escape path segments
         this._parts.path = v || "/";
         build !== false && this.build();
         return this;
@@ -826,6 +846,7 @@ p.normalizePath = function(build) {
     }
     
     // TODO: normalize pathname elements: /%7Esmith/home.html -> /~smith/home.html
+    // see http://labs.apache.org/webarch/uri/rfc/rfc3986.html#path
 
     this._parts.path = _path;
     build !== false && this.build();
