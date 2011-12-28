@@ -93,23 +93,23 @@ URI.parse = function(string) {
     pos = string.indexOf('#');
     if (pos > -1) {
         // escaping?
-        parts.fragment = string.substr(pos + 1) || null;
-        string = string.substr(0, pos);
+        parts.fragment = string.substring(pos + 1) || null;
+        string = string.substring(0, pos);
     }
     
     // extract query
     pos = string.indexOf('?');
     if (pos > -1) {
         // escaping?
-        parts.query = string.substr(pos + 1) || null;
-        string = string.substr(0, pos);
+        parts.query = string.substring(pos + 1) || null;
+        string = string.substring(0, pos);
     }
     
     // extract protocol
     pos = string.indexOf('://');
     if (pos > -1) {
-        parts.protocol = string.substr(0, pos);
-        string = string.substr(pos + 3);
+        parts.protocol = string.substring(0, pos);
+        string = string.substring(pos + 3);
         
         // extract "user:pass@host:port"
         string = URI.parseAuthority(string, parts);
@@ -137,24 +137,24 @@ URI.parseHost = function(string, parts) {
         parts.port = string.substring(bracketPos+2, pos) || null;
     } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
         // IPv6 host contains multiple colons - but no port
-        parts.hostname = string.substr(0, pos) || null;
+        parts.hostname = string.substring(0, pos) || null;
         parts.port = null;
     } else {
-        t = string.substr(0, pos).split(':');
+        t = string.substring(0, pos).split(':');
         parts.hostname = t[0] || null;
         parts.port = t[1] || null;
     }
     
-    return string.substr(pos) || '/';
+    return string.substring(pos) || '/';
 };
 URI.parseAuthority = function(string, parts) {
     // extract username:password
     var pos = string.indexOf('@');
     if (pos > -1) {
-        t = string.substr(0, pos).split(':');
+        t = string.substring(0, pos).split(':');
         parts.username = t[0] ? URI.decode(t[0]) : null;
         parts.password = t[1] ? URI.decode(t[1]) : null;
-        string = string.substr(pos + 1);
+        string = string.substring(pos + 1);
     } else {
         parts.username = null;
         parts.password = null;
@@ -277,7 +277,7 @@ URI.buildQuery = function(data) {
         }
     }
     
-    return t.substr(1);
+    return t.substring(1);
 };
 
 URI.addQuery = function(data, name, value) {
@@ -348,10 +348,10 @@ URI.commonPath = function(one, two) {
     
     // revert to last /
     if (one[pos] !== '/') {
-        pos = one.substr(0, pos).lastIndexOf('/');
+        pos = one.substring(0, pos).lastIndexOf('/');
     }
     
-    return one.substr(0, pos + 1);
+    return one.substring(0, pos + 1);
 };
 
 URI.withinString = function(string, callback) {
@@ -401,7 +401,7 @@ for (_part in _parts) {
                 if (v !== null) {
                     v = v + "";
                     if (v[0] === _key) {
-                        v = v.substr(1);
+                        v = v.substring(1);
                     }
                 }
 
@@ -578,7 +578,7 @@ p.tld = function(v, build) {
         }
 
         var pos = this._parts.hostname.lastIndexOf('.');
-        return this._parts.hostname.substr(pos + 1);
+        return this._parts.hostname.substring(pos + 1);
     } else {
         if (!v) {
             throw new TypeError("cannot set TLD empty");
@@ -634,11 +634,11 @@ p.filename = function(v, build) {
         }
         
         var pos = this._parts.path.lastIndexOf('/');
-        return this._parts.path.substr(pos+1);
+        return this._parts.path.substring(pos+1);
     } else {
 
         if (v[0] === '/') {
-            v = v.substr(1);
+            v = v.substring(1);
         }
         
         var replace = new RegExp(escapeRegEx(this.filename()) + "$");
@@ -662,11 +662,11 @@ p.suffix = function(v, build) {
         }
         
         // suffix may only contain alnum characters (yup, I made this up.)
-        s = filename.substr(pos+1);
+        s = filename.substring(pos+1);
         return (/^[a-z0-9]+$/i).test(s) ? s : "";
     } else {
         if (v[0] === '.') {
-            v = v.substr(1);
+            v = v.substring(1);
         }
         
         var suffix = this.suffix(),
@@ -777,7 +777,7 @@ p.normalizePath = function(build) {
     // handle relative paths
     if (_path[0] !== '/') {
         if (_path[0] === '.') {
-            _was_relative_prefix = _path.substr(0, _path.indexOf('/'));
+            _was_relative_prefix = _path.substring(0, _path.indexOf('/'));
         }
         _was_relative = true;
         _path = '/' + _path;
@@ -792,22 +792,22 @@ p.normalizePath = function(build) {
             break;
         } else if (_parent === 0) {
             // top level cannot be relative...
-            _path = _path.substr(3);
+            _path = _path.substring(3);
             break;
         }
 
-        _pos = _path.substr(0, _parent).lastIndexOf('/');
+        _pos = _path.substring(0, _parent).lastIndexOf('/');
         if (_pos === -1) {
             _pos = _parent;
         }
-        _path = _path.substr(0, _pos) + _path.substr(_parent + 3);
+        _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
     }
     // revert to relative
     if (_was_relative && this.is('relative')) {
         if (_was_relative_prefix){
             _path = _was_relative_prefix + _path;
         } else {
-            _path = _path.substr(1);
+            _path = _path.substring(1);
         }
     }
 
