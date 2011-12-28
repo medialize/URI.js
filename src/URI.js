@@ -354,6 +354,11 @@ URI.commonPath = function(one, two) {
     return one.substr(0, pos + 1);
 };
 
+URI.withinString = function(string, callback) {
+    // TODO: add URI.inString(string, callback) using gruber revised http://rodneyrehm.de/t/url-regex.html
+    // if callback returns string, replace original sequence
+};
+
 p.build = function() {
     this._string = URI.build(this._parts);
     return this;
@@ -729,7 +734,6 @@ p.removeSearch = p.removeQuery;
 // TODO: normalize protocol to lower case
 // TODO: normalize hostname to lower case (IPv6 to upper?)
 // TODO: normalize pathname elements: /%7Esmith/home.html -> /~smith/home.html
-// TODO: add URI.inString(string, callback) using gruber revised http://rodneyrehm.de/t/url-regex.html
 
 // sanitizing URLs
 p.normalize = function() {
