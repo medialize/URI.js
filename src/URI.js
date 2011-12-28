@@ -731,19 +731,27 @@ p.removeQuery = function(name, value, build) {
 p.addSearch = p.addQuery;
 p.removeSearch = p.removeQuery;
 
-// TODO: normalize protocol to lower case
 // TODO: normalize hostname to lower case (IPv6 to upper?)
 // TODO: normalize pathname elements: /%7Esmith/home.html -> /~smith/home.html
 
 // sanitizing URLs
 p.normalize = function() {
     return this
+        .normalizeProtocol(false)
         .normalizeHostname(false)
         .normalizePort(false)
         .normalizePath(false)
         .normalizeQuery(false)
         .normalizeFragment(false)
         .build();
+};
+p.normalizeProtocol = function(build) {
+    if (typeof this._parts.protocol === "string") {
+        this._parts.protocol = this._parts.protocol.toLowerCase();
+        build !== false && this.build();
+    }
+    
+    return this;
 };
 p.normalizeHostname = function(build) {
     if (this.is('IDN') && window.punycode) {
@@ -759,9 +767,9 @@ p.normalizePort = function(build) {
     // remove port of it's the protocol's default
     if (typeof this._parts.protocol === "string" && this._parts.port === URI.defaultPorts[this._parts.protocol]) {
         this._parts.port = null;
+        build !== false && this.build();
     }
 
-    build !== false && this.build();
     return this;
 };
 p.normalizePath = function(build) {
@@ -823,17 +831,18 @@ p.normalizeQuery = function(build) {
         } else {
             this.query(URI.parseQuery(this._parts.query));
         }
+        
+        build !== false && this.build();
     }
     
-    build !== false && this.build();
     return this;
 };
 p.normalizeFragment = function(build) {
     if (!this._parts.fragment) {
         this._parts.fragment = null;
+        build !== false && this.build();
     }
     
-    build !== false && this.build();
     return this;
 };
 p.normalizeSearch = p.normalizeQuery;

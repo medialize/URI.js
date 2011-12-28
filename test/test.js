@@ -422,6 +422,11 @@ test("normalize", function() {
    u.normalize();
    equal(u+"", "http://www.xn--exmple-cua.org/baz.html?foo=bar&baz=bam&baz=bau", "fully normalized URL");
 });
+test("normalizeProtocol", function() {
+    var u = new URI("hTTp://example.org/foobar.html");
+    u.normalizeProtocol();
+    equal(u+"", "http://example.org/foobar.html", "lowercase http");
+});
 test("normalizeHost", function() {
     if (window.punycode) {
         var u = new URI("http://exämple.org/foobar.html");
