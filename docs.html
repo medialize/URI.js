@@ -72,6 +72,7 @@
             Normalizing an URL
             <ul>
                 <li><a href="#normalize">normalize()</a></li>
+                <li><a href="#normalize-protocol">normalizeProtocol()</a></li>
                 <li><a href="#normalize-host">normalizeHostname()</a></li>
                 <li><a href="#normalize-port">normalizePort()</a></li>
                 <li><a href="#normalize-path">normalizePathname(), normalizePath()</a></li>
@@ -307,11 +308,17 @@ uri.addSearch({hello: "world", foo: undefined, a: ["1", "3"]});
 // uri == "?hello=mars&amp;mine=true&amp;b=2"</pre>
     
     <h3 id="normalize">normalize()</h3>
-    <p>executes normalizeHostname(), normalizePort(), normalizePath(), normalizeSearch(), normalizeHash()</p>
-
+    <p>executes normalizeProtocol(), normalizeHostname(), normalizePort(), normalizePath(), normalizeSearch(), normalizeHash()</p>
+    
+    <h3 id="normalize-protocol">normalizeProtocol()</h3>
+    <pre class="prettyprint lang-js">var uri = new URI("hTTp://www.example.org/");
+// normalize protocol
+uri.normalizeProtocol(); // returns the URI instance for chaining
+// uri == "http://www.example.org/"</pre>
+    
     <h3 id="normalize-host">normalizeHostname()</h3>
     <p>For IDN conversion <a href="https://github.com/bestiejs/punycode.js">punycode.js</a> must be available (bundled in URI.js).
-        For IPv6-best-notation conversion IPv6.js must be available (bundled in URI.js).</p>
+        For IPv6-best-notation conversion IPv6.js must be available (bundled in URI.js). Also lower-cases hostnames.</p>
     <pre class="prettyprint lang-js">var uri = new URI("http://www.exämple.org/");
 // normalize IDN host
 uri.normalizeHostname(); // returns the URI instance for chaining
@@ -321,7 +328,12 @@ uri.normalizeHostname(); // returns the URI instance for chaining
 uri.hostname('fe80:0000:0000:0000:0204:61ff:fe9d:f156');
 uri.normalizeHostname(); // returns the URI instance for chaining
 // uri == "http://fe80::204:61ff:fe9d:f156/"
-</pre>
+
+// normalize hostname to lower case
+uri.hostname('wWw.eXample.Org');
+uri.normalizeHostname(); // returns the URI instance for chaining
+// uri == "http://www.example.org/"</pre>
+    <p>There is no .normalizeHost(), as <a href="#accessors-host">.host()</a> is a property comprised of <a href="#accessors-hostname">.hostname()</a> and <a href="#accessors-port">.port()</a></p>
 
     <h3 id="normalize-port">normalizePort()</h3>
     <p>Removes the port, if it's the default for the given protocol (http: 80, https: 443, ftp: 21).</p>
