@@ -360,8 +360,9 @@ p.build = function() {
 };
 
 p.toString = function() {
-    // return this.build()._string;
-    return this._string;
+    return this.isFragmentURI() ?
+        (new URI(this.parentURI)).fragment(this._string).toString() :
+        this._string;
 };
 p.valueOf = function() {
     return this.toString();
@@ -893,6 +894,28 @@ p.relativeTo = function(base) {
     relative.build();
     return relative;
 };
+
+p.fragmentURI = function() {
+    if (this.isFragmentURI()) {
+        throw new TypeError("cannot nest fragmentURIs");
+    }
+
+    var frag = new URI(this.fragment());
+    frag.parentURI = this;
+    return frag;
+}
+
+p.isFragmentURI = function() {
+    return !!this.parentURI;
+}
+
+p.reassemble = function() {
+    if (!this.isFragmentURI()) {
+        throw new TypeError("can only reassemble fragment URIs");
+    }
+
+    return this.parentURI.fragment(this._string);
+}
 
 window.URI = URI;
 

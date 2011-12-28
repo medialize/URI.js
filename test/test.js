@@ -415,6 +415,38 @@ test("removeQuery", function() {
     equal(u.query(), 'foo=baz&foo=bam&bar=3', 'removing object');
 });
 
+module("fragmentURI");
+test("fragmentURI retrieval", function() {
+    var u = new URI("http://www.example.org/?userid=1#/single/page/app?page=5");
+    equal(u.fragmentURI().path(), "/single/page/app", "retrieve path from fragmentURI");
+    equal(u.fragmentURI().query(), "page=5", "retrieve query from fragmentURI");
+    raises(function() {
+        u.fragmentURI().fragmentURI();
+    }, TypeError, "nested calls to fragmentURI raises error");
+});
+test("isFragmentURI", function() {
+    var u = new URI("http://www.example.org/?userid=1#/single/page/app?page=5");
+    ok(u.fragmentURI().isFragmentURI(), "returns true when in fragmentURI");
+    ok(!u.isFragmentURI(), "returns false when not in fragmentURI");
+});
+test("fragmentURI mutation", function() {
+    var u = new URI("http://www.example.org/?userid=1#/single/page/app?page=5");
+    equal(u.fragmentURI().path("/otherpath")+"", "http://www.example.org/?userid=1#/otherpath?page=5", "string of modified fragmentURI returns reassembled full URL");
+    equal(u+"", "http://www.example.org/?userid=1#/single/page/app?page=5", "modifying a fragmentURI without calling reassemble, does not modify the original URI");
+    u.fragmentURI().path("/foo").addSearch("num", 6).reassemble();
+    equal(u+"", "http://www.example.org/?userid=1#/foo?page=5&num=6", "reassemble modifies the original URL");
+
+    u = new URI("http://www.example.org/?userid=1#/single/page/app?page=5");
+    var frag = u.fragmentURI();
+    frag.path("/foo");
+    u.port("8080");
+    frag.reassemble();
+    equal(u+"", "http://www.example.org:8080/?userid=1#/foo?page=5", "reassemble references the parent URI, not a copy");
+
+    raises(function() {
+        u.reassemble();
+    }, TypeError, "calling reassemble when not in a fragmentURI raises error");
+});
 
 module("normalizing");
 test("normalize", function() {
