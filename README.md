@@ -73,9 +73,9 @@ use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 // ==ClosureCompiler==
 // @compilation_level SIMPLE_OPTIMIZATIONS
 // @output_file_name contextMenu.js
-// @code_url http://medialize.github.com/URI.js/IPv6.js
-// @code_url http://medialize.github.com/URI.js/punycode.js
-// @code_url http://medialize.github.com/URI.js/URI.js
+// @code_url http://medialize.github.com/URI.js/src/IPv6.js
+// @code_url http://medialize.github.com/URI.js/src/punycode.js
+// @code_url http://medialize.github.com/URI.js/src/URI.js
 // ==/ClosureCompiler==    
 ```
 
@@ -105,6 +105,9 @@ Docs where you get more info on parsing and working with URLs
 * [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
 * [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
 * [URL.js](https://github.com/ericf/urljs)
+* [furl (Python)](https://github.com/gruns/furl)
+
+[Discussion on Hacker News](https://news.ycombinator.com/item?id=3398837)
 
 ### URL Draft ###
 

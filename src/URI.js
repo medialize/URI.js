@@ -423,6 +423,7 @@ p.pathname = function(v, build) {
     if (v === undefined) {
         return this._parts.path || "/";
     } else {
+        // TODO: escape path segments
         this._parts.path = v || "/";
         build !== false && this.build();
         return this;
@@ -728,6 +729,7 @@ p.removeSearch = p.removeQuery;
 // TODO: normalize protocol to lower case
 // TODO: normalize hostname to lower case (IPv6 to upper?)
 // TODO: normalize pathname elements: /%7Esmith/home.html -> /~smith/home.html
+// TODO: add URI.inString(string, callback) using gruber revised http://rodneyrehm.de/t/url-regex.html
 
 // sanitizing URLs
 p.normalize = function() {
