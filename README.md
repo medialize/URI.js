@@ -158,6 +158,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.1.0 ###
+
 * URI.withinSring()
 * added normalizeProtocol() to lowercase protocols
 * made normalizeHostname() lowercase hostnames
@@ -166,6 +168,6 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * build `{foo: null, bar: ""}` to "?foo&bar=" [Algorithm for serializing URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization)
 * fixed RegExp escaping
 
-### 1.0 ###
+### 1.0.0 ###
 
 * Initial URI.js
