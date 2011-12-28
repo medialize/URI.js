@@ -16,7 +16,7 @@
             "url": "http://opensource.org/licenses/GPL-3.0"
         }
     ],
-    "description": "Mutation facility for URLs.",
+    "description": "Mutation library for URLs.",
     "keywords": [
         "uri",
         "url",
