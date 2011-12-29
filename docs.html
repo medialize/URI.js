@@ -326,7 +326,8 @@ uri.search({ foo: "bar", hello : ["world", "mars"] });
 // If you're dealing with PHP, you probably want the latter…
 uri.search("?foo=bar&amp;bar=baz");
 uri.search("?foo=bar[]&amp;bar[]=baz");</pre>
-
+    <p>Note that names and values passed in an object are encoded automatically. 
+        The object, resulting from parsing the query string, contains decoded values</p>
 
     <h3 id="accessors-hash">hash(), fragment()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html#world");
@@ -394,6 +395,7 @@ uri.addSearch({ foo: "bar", goodbye : ["world", "mars"] });
 // If you're dealing with PHP, you probably want the latter…
 uri.addSearch("foo", ["bar", "baz"]);
 uri.addSearch("foo[]", ["bar", "baz"]);</pre>
+    <p>Note that names and values passed in are encoded automatically.</p>
     
     <h3 id="search-remove">removeSearch(), removeQuery()</h3>
     <p>.removeQuery() is an alias of .removeSearch()</p>
