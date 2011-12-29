@@ -341,6 +341,7 @@ uri.search("?foo=bar&amp;bar=baz");
 uri.search("?foo=bar[]&amp;bar[]=baz");</pre>
     <p>Note that names and values passed in an object are encoded automatically. 
         The object, resulting from parsing the query string, contains decoded values</p>
+    <p>Hint: If you're using jQuery, have a look at their <a href="http://api.jquery.com/serialize/">.serialize()</a> function.</p>
 
     <h3 id="accessors-hash">hash(), fragment()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html#world");

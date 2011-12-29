@@ -129,7 +129,8 @@ if you want to get involved, these are things you could help out with…
 * AMD stuff
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * accept all [IPv6 notations](http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6)
-* include a hint for [jQuery.fn.serialize()](http://api.jquery.com/serialize/)
+* accept [URNs](http://tools.ietf.org/html/rfc3986#section-3) (so URI.js truly is URI, not only URL)
+
 
 ## Authors ##
 
