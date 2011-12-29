@@ -150,6 +150,10 @@ test("path", function() {
     u.pathname('');
     equal(u.pathname(), '/', "changing pathname ''");
     equal(u+"", "http://example.org/?query=string", "changing url ''");
+    
+    u.pathname('/~userhome/@mine;is %2F and/');
+    equal(u.pathname(), '/~userhome/@mine;is%20%2F%20and/', "path encoding");
+    equal(u.pathname(true), '/~userhome/@mine;is %2F and/', "path decoded");
 });
 test("query", function() { 
     var u = new URI("http://example.org/foo.html");
@@ -327,7 +331,12 @@ test("directory", function() {
     u.directory("../blubb");
     equal(u.path(), "../blubb/foo.html", "changed path '../blubb'");
     equal(u+"", "../blubb/foo.html", "changed url '../blubb'");
-   
+    
+    // encoding
+    u.path("/some/directory/foo.html");
+    u.directory('/~userhome/@mine;is %2F and/');
+    equal(u.path(), '/~userhome/@mine;is%20%2F%20and/foo.html', "directory encoding");
+    equal(u.directory(true), '/~userhome/@mine;is %2F and', "directory decoded");
 });
 test("filename", function() {
     var u = new URI("http://www.example.org/some/directory/foo.html");
@@ -346,6 +355,12 @@ test("filename", function() {
     u.filename("world");
     equal(u.path(), "/some/directory/world", "changed path 'world'");
     equal(u+"", "http://www.example.org/some/directory/world", "changed url 'world'");
+    
+    // encoding
+    u.path("/some/directory/foo.html");
+    u.filename('hällo wörld.html');
+    equal(u.path(), '/some/directory/h%C3%A4llo%20w%C3%B6rld.html', "filename encoding");
+    equal(u.filename(true), 'hällo wörld.html', "filename decoded");
 });
 test("suffix", function() {
     var u = new URI("http://www.example.org/some/directory/foo.html");
@@ -360,6 +375,12 @@ test("suffix", function() {
     u.suffix("html");
     equal(u.path(), "/some/directory/foo.html", "changed path 'html'");
     equal(u+"", "http://www.example.org/some/directory/foo.html", "changed url 'html'");
+    
+    // encoding
+    u.suffix('cört');
+    equal(u.path(), '/some/directory/foo.c%C3%B6rt', "suffix encoding");
+    equal(u.suffix(), 'c%C3%B6rt', "suffix encoded"); // suffix is expected to be alnum!
+    equal(u.suffix(true), 'cört', "suffix decoded"); // suffix is expected to be alnum!
 });
 
 
@@ -398,6 +419,11 @@ test("addQuery", function() {
     u.query('?foo=bar');
     u.addQuery({'bam': null, 'baz': ''});
     equal(u.query(), 'foo=bar&bam&baz=', "add {name: null}");
+    
+    u.query('');
+    u.addQuery('some value', "must be encoded because of = and ? and #");
+    equal(u.query(), 'some+value=must+be+encoded+because+of+%3D+and+%3F+and+%23', "encoding");
+    equal(u.query(true)['some value'], "must be encoded because of = and ? and #", "decoding");
 });
 test("removeQuery", function() {
     var u = new URI('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
@@ -512,6 +538,11 @@ test("normalizePath", function() {
     
     u.path('./foo/woo/../bar/baz.html').normalizePath();
     equal(u.path(), '/foo/bar/baz.html', "URL: dot-relative parent");
+    
+    // encoding
+    u._parts.path = '/~userhome/@mine;is %2F and/';
+    u.normalize();
+    equal(u.pathname(), '/~userhome/@mine;is%20%2F%20and/', "path encoding");
 });
 test("normalizeQuery", function() {
     var u = new URI("http://example.org/foobar.html?");
@@ -660,7 +691,6 @@ test("equals", function() {
             "http://exAmple.org:80/foo/bar.html?foo=bar&hello=world&hello=mars#fragment",
             "http://example.org/foo/bar.html?foo=bar&hello=mars&hello=world#fragment",
             "http://example.org/foo/bar.html?hello=mars&hello=world&foo=bar&#fragment"
-            // TODO: test equality of resolved path names
         ],
         d = [
             "http://example.org/foo/../bar.html?foo=bar&hello=world&hello=mars#fragment",
@@ -681,6 +711,5 @@ test("equals", function() {
     for (i = 0; c = d[i]; i++) {
         equal(u.equals(c), false, "different " + i);
     }
-    
 });
 

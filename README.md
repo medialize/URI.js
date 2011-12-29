@@ -164,6 +164,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ## Changelog ##
 
 * added .equals() for URL comparison
+* proper encoding/decoding for .pathname(), .directory(), .filename() and .suffix() according to [RFC 3986 3.3](http://tools.ietf.org/html/rfc3986#section-3.3)
 * escape spaces in query strings with `+` according to [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type)
 * allow URI.buildQuery() to build duplicate key=value combinations
 * added URI(string, string) constructor to conform with the [specification](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor)

@@ -245,7 +245,13 @@ uri.tld("com"); // returns the URI instance for chaining</pre>
 // get pathname
 uri.pathname(); // returns string "/foo/hello.html"
 // set pathname
-uri.pathname("/foo/hello.html"); // returns the URI instance for chaining</pre>
+uri.pathname("/foo/hello.html"); // returns the URI instance for chaining
+
+// will encode for you
+uri.pathname('/hello world/');
+uri.pathname() === '/hello%20world/';
+// will decode for you
+uri.pathname(true) === '/hello world/';</pre>
     
     <h3 id="accessors-directory">directory()</h3>
     <p>.directory() is an convenience method for mutating the directory part of a path</p>
@@ -254,7 +260,13 @@ uri.pathname("/foo/hello.html"); // returns the URI instance for chaining</pre>
 uri.directory(); // returns string "/foo" (no trailing slash)
 // set directory
 uri.directory("/bar"); // returns the URI instance for chaining
-// uri == "http://example.org/bar/hello.html"</pre>
+// uri == "http://example.org/bar/hello.html"
+
+// will encode for you
+uri.directory('/hello world/');
+uri.directory() === '/hello%20world';
+// will decode for you
+uri.directory(true) === '/hello world';</pre>
     
     <h3 id="accessors-filename">filename()</h3>
     <p>.filename() is an convenience method for mutating the filename part of a path</p>
@@ -263,7 +275,13 @@ uri.directory("/bar"); // returns the URI instance for chaining
 uri.filename(); // returns string "hello.html" (no leading slash)
 // set filename
 uri.filename("world.xml"); // returns the URI instance for chaining
-// uri == "http://example.org/bar/world.xml"</pre>
+// uri == "http://example.org/bar/world.xml"
+
+// will encode for you
+uri.filename('hello world.html');
+uri.filename() === 'hello%20world.html';
+// will decode for you
+uri.filename(true) === 'hello world.html';</pre>
     
     <h3 id="accessors-suffix">suffix()</h3>
     <p>.suffix() is an convenience method for mutating the filename part of a path</p>
@@ -272,7 +290,13 @@ uri.filename("world.xml"); // returns the URI instance for chaining
 uri.suffix(); // returns string "html" (no leading dot)
 // set suffix
 uri.suffix("xml"); // returns the URI instance for chaining
-// uri == "http://example.org/bar/world.xml"</pre>
+// uri == "http://example.org/bar/world.xml"
+
+// will encode for you
+uri.suffix('würgh');
+uri.suffix() === 'w%C3%BCrgh';
+// will decode for you
+uri.suffix(true) === 'würgh';</pre>
     
     <h3 id="accessors-search">search(), query()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html?foo=bar&amp;bar=baz");

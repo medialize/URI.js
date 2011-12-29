@@ -68,12 +68,6 @@ var URI = function(url, base) {
     },
     p = URI.prototype;
 
-// convenience
-URI.encode = encodeURIComponent;
-URI.decode = decodeURIComponent;
-p.encode = URI.encode;
-p.decode = URI.decode;
-
 // static properties
 URI.idn_expression = /[^a-z0-9\.-]/i;
 URI.punycode_expression = /(xn--)/i;
@@ -92,6 +86,73 @@ URI.defaultPorts = {
     https: "443", 
     ftp: "21"
 };
+
+// encoding / decoding according to RFC3986
+URI.encode = encodeURIComponent;
+URI.decode = decodeURIComponent;
+URI.characters = {
+    pathname: {
+        encode: {
+            // RFC3986 2.1: For consistency, URI producers and normalizers should 
+            // use uppercase hexadecimal digits for all percent-encodings.
+            expression: /%(24|26|2B|2C|3B|3D|3A|40)/ig,
+            map: {
+                // -._~!'()*
+                "%24": "$",
+                "%26": "&",
+                "%2B": "+",
+                "%2C": ",",
+                "%3B": ";",
+                "%3D": "=",
+                "%3A": ":",
+                "%40": "@"
+            }
+        },
+        decode: {
+            expression: /[\/\?#]/g,
+            map: {
+                "/": "%2F", 
+                "?": "%3F", 
+                "#": "%23"
+            }
+        }
+    }
+};
+URI.encodeQuery = function(string) {
+    return encodeURIComponent(string + "").replace(/%20/g, '+');
+};
+URI.decodeQuery = function(string) {
+    return decodeURIComponent((string + "").replace(/\+/g, '%20'));
+};
+URI.recodePath = function(string) {
+    var segments = (string + "").split('/');
+    for (var i = 0, length = segments.length; i < length; i++) {
+        segments[i] = URI.encodePathSegment(URI.decode(segments[i]));
+    }
+    
+    return segments.join('/');
+};
+URI.decodePath = function(string) {
+    var segments = (string + "").split('/');
+    for (var i = 0, length = segments.length; i < length; i++) {
+        segments[i] = URI.decodePathSegment(segments[i]);
+    }
+
+    return segments.join('/');
+};
+// generate encode/decode path functions
+var _parts = {'encode':'encode', 'decode':'decode'},
+    _part;
+    
+for (_part in _parts) {
+    URI[_part + "PathSegment"] = (function(_part){
+        return function(string) {
+            return window[_part + 'URIComponent'](string + "").replace(URI.characters.pathname[_part].expression, function(c) {
+                return URI.characters.pathname[_part].map[c];
+            });
+        };
+    })(_parts[_part]);
+}
 
 URI.parse = function(string) {
     var pos, t, parts = {};
@@ -188,9 +249,9 @@ URI.parseQuery = function(string) {
 
     for (var i = 0; i < length; i++) {
         var v = splits[i].split('='),
-            name = URI.decode(v.shift()),
+            name = URI.decodeQuery(v.shift()),
             // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
-            value = v.length ? URI.decode(v.join('=')) : null;
+            value = v.length ? URI.decodeQuery(v.join('=')) : null;
         
         if (items[name]) {
             if (typeof items[name] === "string") {
@@ -258,6 +319,7 @@ URI.buildAuthority = function(parts) {
     var t = '';
     
     if (parts.username) {
+        // TODO: check how authority is supposed to be encoded
         t += URI.encode(parts.username);
 
         if (parts.password) {
@@ -273,22 +335,14 @@ URI.buildAuthority = function(parts) {
 };
 URI.buildQuery = function(data, duplicates) {
     // according to http://tools.ietf.org/html/rfc3986 or http://labs.apache.org/webarch/uri/rfc/rfc3986.html
-    // unreserved   = ALPHA / DIGIT / "-" / "." / "_" / "~"
-    // pct-encoded  = "%" HEXDIG HEXDIG
-    // sub-delims   = "!" / "$" / "&" / "'" / "(" / ")" / "*" / "+" / "," / ";" / "="
-    // pchar        = unreserved / pct-encoded / sub-delims / ":" / "@"
-    // query        = *( pchar / "/" / "?" )
-    // being »-._~!$&'()*+,;=:@/?« and alnum
-    // so the query string may contain »-._~!$&'()*+,;=:@/?« unencoded.
-    // &= have special meaning to paramter delimitation, thus need to be encoded ["&" : "%26", "=" : "%3D"].
+    // being »-._~!$&'()*+,;=:@/?« %HEX and alnum are allowed
     // the RFC explicitly states ?/foo being a valid use case, no mention of parameter syntax!
     // URI.js treats the query string as being application/x-www-form-urlencoded 
     // see http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type
 
     var t = "";
     for (var key in data) {
-        if (Object.hasOwnProperty.call(data, key)) {
-            var name = URI.encode(key + "");
+        if (Object.hasOwnProperty.call(data, key) && key) {
             if (isArray(data[key])) {
                 var unique = {};
                 for (var i = 0, length = data[key].length; i < length; i++) {
@@ -304,14 +358,13 @@ URI.buildQuery = function(data, duplicates) {
             }
         }
     }
-    
+
     return t.substring(1);
 };
 URI.buildQueryParameter = function(name, value) {
     // http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type -- application/x-www-form-urlencoded 
     // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
-    return URI.encode(name + "").replace('%20', '+') 
-        + (value !== null ? "=" + URI.encode(value + "").replace('%20', '+') : "");
+    return URI.encodeQuery(name) + (value !== null ? "=" + URI.encodeQuery(value) : "");
 };
 
 URI.addQuery = function(data, name, value) {
@@ -411,8 +464,7 @@ p.valueOf = function() {
 };
 
 // generate simple accessors
-var _parts = {protocol: 'protocol', username: 'username', password: 'password', hostname: 'hostname',  port: 'port'},
-    _part;
+_parts = {protocol: 'protocol', username: 'username', password: 'password', hostname: 'hostname',  port: 'port'};
 
 for (_part in _parts) {
     p[_part] = (function(_part){
@@ -463,11 +515,11 @@ for (_part in _parts) {
 }
 
 p.pathname = function(v, build) {
-    if (v === undefined) {
-        return this._parts.path || "/";
+    if (v === undefined || v === true) {
+        var res = this._parts.path || "/";
+        return v ? URI.decodePath(res) : res;
     } else {
-        // TODO: properly escape path segments
-        this._parts.path = v || "/";
+        this._parts.path = v ? URI.recodePath(v) : "/";
         build !== false && this.build();
         return this;
     }
@@ -631,13 +683,16 @@ p.tld = function(v, build) {
     }
 };
 p.directory = function(v, build) {
-    if (v === undefined) {
+    if (v === undefined || v === true) {
         if (!this._parts.path || this._parts.path === '/') {
             return '/';
         }
 
-        var end = this._parts.path.length - this.filename().length - 1;
-        return this._parts.path.substring(0, end) || "/";
+        var end = this._parts.path.length - this.filename().length - 1,
+            res = this._parts.path.substring(0, end) || "/";
+
+        return v ? URI.decodePath(res) : res;
+
     } else {
         var e = this._parts.path.length - this.filename().length,
             directory = this._parts.path.substring(0, e),
@@ -659,19 +714,22 @@ p.directory = function(v, build) {
             v += '/';
         }
 
+        v = URI.recodePath(v);
         this._parts.path = this._parts.path.replace(replace, v);
         build !== false && this.build();
         return this;
     }
 };
 p.filename = function(v, build) {
-    if (v === undefined) {
+    if (v === undefined || v === true) {
         if (!this._parts.path || this._parts.path === '/') {
             return "";
         }
         
-        var pos = this._parts.path.lastIndexOf('/');
-        return this._parts.path.substring(pos+1);
+        var pos = this._parts.path.lastIndexOf('/'),
+            res = this._parts.path.substring(pos+1);
+        
+        return v ? URI.decodePathSegment(res) : res;
     } else {
 
         if (v[0] === '/') {
@@ -679,13 +737,14 @@ p.filename = function(v, build) {
         }
         
         var replace = new RegExp(escapeRegEx(this.filename()) + "$");
+        v = URI.recodePath(v);
         this._parts.path = this._parts.path.replace(replace, v);
         build !== false && this.build();
         return this;
     }
 };
 p.suffix = function(v, build) {
-    if (v === undefined) {
+    if (v === undefined || v === true) {
         if (!this._parts.path || this._parts.path === '/') {
             return "";
         }
@@ -700,7 +759,8 @@ p.suffix = function(v, build) {
         
         // suffix may only contain alnum characters (yup, I made this up.)
         s = filename.substring(pos+1);
-        return (/^[a-z0-9]+$/i).test(s) ? s : "";
+        res = (/^[a-z0-9%]+$/i).test(s) ? s : "";
+        return v ? URI.decodePathSegment(res) : res;
     } else {
         if (v[0] === '.') {
             v = v.substring(1);
@@ -714,7 +774,7 @@ p.suffix = function(v, build) {
                 return this;
             }
 
-            this._parts.path += '.' + v;
+            this._parts.path += '.' + URI.recodePath(v);
         } else if (!v) {
             replace = new RegExp(escapeRegEx("." + suffix) + "$");
         } else {
@@ -722,6 +782,7 @@ p.suffix = function(v, build) {
         }
         
         if (replace) {
+            v = URI.recodePath(v);
             this._parts.path = this._parts.path.replace(replace, v);
         }
         
@@ -857,9 +918,7 @@ p.normalizePath = function(build) {
         }
     }
     
-    // TODO: normalize pathname elements: /%7Esmith/home.html -> /~smith/home.html
-    // see http://labs.apache.org/webarch/uri/rfc/rfc3986.html#path
-
+    _path = URI.recodePath(_path);
     this._parts.path = _path;
     build !== false && this.build();
     return this;
