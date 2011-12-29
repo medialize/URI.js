@@ -563,7 +563,10 @@ test("normalizeFragment", function() {
     u.normalizeFragment();
     equal(u+"", "http://example.org/foobar.html", "dropping empty fragment sign");
 });
-
+test("readable", function() {
+    var u = new URI("http://foo:bar@www.xn--exmple-cua.org/hello%20world/ä.html?foo%5B%5D=b+är#fragment");
+    equal(u.readable(), "http://www.exämple.org/hello world/ä.html?foo[]=b är#fragment", "readable URL");
+});
 
 module("resolving URLs");
 test("absoluteTo", function() {

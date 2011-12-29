@@ -948,6 +948,50 @@ p.normalizeFragment = function(build) {
 p.normalizeSearch = p.normalizeQuery;
 p.normalizeHash = p.normalizeFragment;
 
+p.readable = function() {
+    var uri = new URI(this);
+    // removing username, password, because they shouldn't be displayed according to RFC 3986
+    uri.username("").password("").normalize();
+    var t = '';
+    if (uri._parts.protocol) {
+        t += uri._parts.protocol + '://';
+    }
+
+    if (uri._parts.hostname) {
+        if (uri.is('punycode') && window.punycode) {
+            t += punycode.toUnicode(uri._parts.hostname);
+            if (uri._parts.port) {
+                t += ":" + uri._parts.port;
+            }
+        } else {
+            t += uri.host();
+        }
+    }
+
+    if (uri._parts.hostname && uri._parts.path && uri._parts.path[0] !== '/') {
+        t += '/';
+    }
+    
+    t += uri.path(true);
+    if (uri._parts.query) {
+        var q = '';
+        for (var i = 0, qp = uri._parts.query.split('&'), l = qp.length; i < l; i++) {
+            var kv = (qp[i] || "").split('=');
+            q += '&' + URI.decodeQuery(kv[0])
+                .replace(/&/g, '%26');
+
+            if (kv[1] !== undefined) {
+                q += "=" + URI.decodeQuery(kv[1])
+                    .replace(/&/g, '%26');
+            }
+        }
+        t += '?' + q.substring(1);
+    }
+
+    t += uri.hash();
+    return t;
+};
+
 // resolving relative and absolute URLs
 p.absoluteTo = function(base) {
     if (!this.is('relative')) {

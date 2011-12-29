@@ -168,6 +168,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * escape spaces in query strings with `+` according to [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type)
 * allow URI.buildQuery() to build duplicate key=value combinations
 * added URI(string, string) constructor to conform with the [specification](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor)
+* added .readable() for humanly readable representation of encoded URIs
 * fixed bug where @ in pathname would be parsed as part of the authority
 
 ### 1.1.0 ###

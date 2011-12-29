@@ -81,6 +81,7 @@
                 <li><a href="#normalize-hash">normalizeHash(), normalizeFragment()</a></li>
             </ul>
         </li>
+        <li><a href="#readable">readable()</a></li>
         <li>
             Relative and Absolute URLs
             <ul>
@@ -479,7 +480,17 @@ uri.normalizeSearch(); // returns the URI instance for chaining
 // normalize hash
 uri.normalizeHash(); // returns the URI instance for chaining
 // uri == "http://example.org/bar/world.xml"</pre>
+    
+    
+    <h2 id="formatting">Formatting URLs</h2>
+    
+    <h3 id="readable">readable()</h3>
+    <p>Formats URLs to be human readable (much like your browser does nowadays).</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://foo:bar@www.xn--exmple-cua.org/"
+    + "hello%20world/ä.html?foo%5B%5D=b+är#fragment");
 
+u.readable() === "http://www.exämple.org/"
+    + "hello world/ä.html?foo[]=b är#fragment";</pre>
 
 
     <h2 id="relative-and-absolute">Relative and Absolute URLs</h2>
@@ -711,6 +722,21 @@ Hello <strong>&lt;a&gt;www.example.com&lt;/a&gt;</strong>,
 <strong>&lt;a&gt;http://123.123.123.123/foo.html&lt;/a&gt;</strong> is IPv4 and <strong>&lt;a&gt;http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html&lt;/a&gt;</strong> is IPv6.
 links can also be in parens (<strong>&lt;a&gt;http://example.org&lt;/a&gt;</strong>) or quotes &raquo;<strong>&lt;a&gt;http://example.org&lt;/a&gt;</strong>&laquo;.
 */
+
+// a proper replacement could look like the following:
+var escapeHtml = function(string) { 
+        return string
+            .replace(/&amp;/g, '&amp;amp;')
+            .replace(/</g, '&amp;lt;')
+            .replace(/>/g, '&amp;gt;')
+            .replace(/"/g, '&amp;quot;');
+    }
+    result = URI.withinString(source, function(url) {
+        var uri = new URI(url);
+        uri.normalize();
+        return '&lt;a href="' + escapeHtml(uri) + '"&gt;' 
+            + escapeHtml(url.<a href="#readable">readable</a>()) + '&lt;/a&gt;';
+    });
 </pre>
     
     </div>
