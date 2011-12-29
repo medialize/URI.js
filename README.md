@@ -1,6 +1,7 @@
 # URI.js #
 
-[documentation](http://medialize.github.com/URI.js/docs.html)
+* [About](http://medialize.github.com/URI.js/)
+* [Documentation](http://medialize.github.com/URI.js/docs.html)
 
 ---
 
@@ -62,7 +63,7 @@ URI("/foo/bar/baz.html")
         // -> /foo/bar/baz.html
 ```
 
-See the [API Docs](http://medialize.github.com/URI.js/docs.html) for more stuff.
+See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://medialize.github.com/URI.js/docs.html) for more stuff.
 
 
 ## Minify ##
@@ -88,7 +89,7 @@ Docs where you get more info on parsing and working with URLs
 * [Punycode - Internationalized Domain Name (IDN)](http://www.ietf.org/rfc/rfc3492.txt) ([html version](http://tools.ietf.org/html/rfc3492))
 * [URI - Reference Resolution](http://tools.ietf.org/html/rfc3986#section-5)
 * [Parsing URLs for Fun and Profit](http://tools.ietf.org/html/draft-abarth-url-01)
-* [Regular Expression URL Parser](http://blog.stevenlevithan.com/archives/parseuri)
+* [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type) (Query String Parameters)
 * [Naming URL components](http://tantek.com/2011/238/b1/many-ways-slice-url-name-pieces)
 * [Java URI Class](http://docs.oracle.com/javase/7/docs/api/java/net/URI.html)
 * [Java Inet6Address Class](http://docs.oracle.com/javase/1.5.0/docs/api/java/net/Inet6Address.html)
@@ -102,19 +103,22 @@ Docs where you get more info on parsing and working with URLs
 
 ### Alternatives ###
 
+If you don't like URI.js, you may like one of these:
+
 * [The simple <a> URL Mutation "Hack"](http://jsfiddle.net/rodneyrehm/KkGUJ/) ([jsPerf comparison](http://jsperf.com/idl-attributes-vs-uri-js))
 * [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
 * [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
 * [URL.js](https://github.com/ericf/urljs)
 * [furl (Python)](https://github.com/gruns/furl)
 * [mediawiki Uri](https://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/resources/mediawiki/mediawiki.Uri.js?view=markup) (needs mw and jQuery)
+* [Google Closure Uri](http://www.google.com/codesearch#epIciakqvFc/trunk/closure/goog/uri/uri.js)
 
-[Discussion on Hacker News](https://news.ycombinator.com/item?id=3398837)
-
-### URL Draft ###
+### HTML5 URL Draft ###
 
 * [W3C URL Draft](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html)
 * [Webkit #71968 - Implement URL API](https://bugs.webkit.org/show_bug.cgi?id=71968)
+
+[Discussion on Hacker News](https://news.ycombinator.com/item?id=3398837)
 
 
 ## TODO ##
