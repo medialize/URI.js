@@ -85,6 +85,7 @@ use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 Docs where you get more info on parsing and working with URLs
 
 * [Uniform Resource Identifiers (URI): Generic Syntax](http://www.ietf.org/rfc/rfc2396.txt) ([superseded by 3986](http://tools.ietf.org/html/rfc3986))
+* [Internationalized Resource Identifiers (IRI)](http://tools.ietf.org/html/rfc3987)
 * [IPv6 Literal Addresses in URL's](http://www.ietf.org/rfc/rfc2732.txt) ([superseded by 3986](http://tools.ietf.org/html/rfc3986))
 * [Punycode - Internationalized Domain Name (IDN)](http://www.ietf.org/rfc/rfc3492.txt) ([html version](http://tools.ietf.org/html/rfc3492))
 * [URI - Reference Resolution](http://tools.ietf.org/html/rfc3986#section-5)
@@ -166,6 +167,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * escape spaces in query strings with `+` according to [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type)
 * allow URI.buildQuery() to build duplicate key=value combinations
 * added URI(string, string) constructor to conform with the [specification](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor)
+* fixed bug where @ in pathname would be parsed as part of the authority
 
 ### 1.1.0 ###
 

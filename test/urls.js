@@ -574,6 +574,47 @@ var urls = [{
             idn: false,
             punycode: false
         }
+    }, {
+        name: 'Path containing @',
+        url: 'http://www.example.org/@foobar',
+        parts: {
+            protocol: 'http',
+            username: null,
+            password: null,
+            hostname: 'www.example.org',
+            port: null,
+            path: '/@foobar',
+            query: null,
+            fragment: null
+        },
+        accessors: {
+            protocol: 'http',
+            username: '',
+            password: '',
+            port: '',
+            path: '/@foobar',
+            query: '',
+            fragment: '',
+            authority: 'www.example.org',
+            domain: 'example.org',
+            tld: 'org',
+            directory: '/',
+            filename: '@foobar',
+            suffix: '',
+            hash: '', // location.hash style
+            search: '', // location.search style
+            host: 'www.example.org',
+            hostname: 'www.example.org'
+        },
+        is: {
+            relative: false,
+            name: true,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
     }
 ];
 

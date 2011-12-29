@@ -61,7 +61,7 @@ var URI = function(url, base) {
         
         // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
         if (base !== undefined) {
-            return this.absoluteTo(base)
+            return this.absoluteTo(base);
         }
         
         return this;
@@ -125,7 +125,7 @@ URI.parse = function(string) {
     
     // what's left must be the path
     parts.path = string;
-    
+
     // and we're done
     return parts;
 };
@@ -153,12 +153,20 @@ URI.parseHost = function(string, parts) {
         parts.port = t[1] || null;
     }
     
+    if (parts.hostname && string.substring(pos)[0] !== '/') {
+        pos++;
+        string = "/" + string;
+    }
+    
     return string.substring(pos) || '/';
 };
 URI.parseAuthority = function(string, parts) {
     // extract username:password
-    var pos = string.indexOf('@');
-    if (pos > -1) {
+    var pos = string.indexOf('@'),
+        firstSlash = string.indexOf('/');
+
+    // authority@ must come before /path
+    if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
         t = string.substring(0, pos).split(':');
         parts.username = t[0] ? URI.decode(t[0]) : null;
         parts.password = t[1] ? URI.decode(t[1]) : null;
@@ -629,7 +637,7 @@ p.directory = function(v, build) {
         }
 
         var end = this._parts.path.length - this.filename().length - 1;
-        return this._parts.path.substring(0, end);
+        return this._parts.path.substring(0, end) || "/";
     } else {
         var e = this._parts.path.length - this.filename().length,
             directory = this._parts.path.substring(0, e),
