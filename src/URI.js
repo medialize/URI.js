@@ -258,7 +258,7 @@ URI.buildAuthority = function(parts) {
     
     return t;
 };
-URI.buildQuery = function(data) {
+URI.buildQuery = function(data, duplicates) {
     // according to http://tools.ietf.org/html/rfc3986 or http://labs.apache.org/webarch/uri/rfc/rfc3986.html
     // unreserved   = ALPHA / DIGIT / "-" / "." / "_" / "~"
     // pct-encoded  = "%" HEXDIG HEXDIG
@@ -269,15 +269,8 @@ URI.buildQuery = function(data) {
     // so the query string may contain »-._~!$&'()*+,;=:@/?« unencoded.
     // &= have special meaning to paramter delimitation, thus need to be encoded ["&" : "%26", "=" : "%3D"].
     // the RFC explicitly states ?/foo being a valid use case, no mention of parameter syntax!
-    // I have yet to hunt down the specification of ?property1=value1&property2
-    // pointer: http://en.wikipedia.org/wiki/Query_string
-    // Note that Wikipedia is nice, but it is NOT a reference
-    // For the time being a full encodeURIComponent won't hurt (much?)
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/encodeURI
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/encodeURIComponent
-
-    // TODO: figure out if ?key=value is the only allowed syntax (in HTTP)
-    // TODO: figure out how to proplery encode query string parameters
+    // URI.js treats the query string as being application/x-www-form-urlencoded 
+    // see http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type
 
     var t = "";
     for (var key in data) {
@@ -287,19 +280,25 @@ URI.buildQuery = function(data) {
                 var unique = {};
                 for (var i = 0, length = data[key].length; i < length; i++) {
                     if (data[key][i] !== undefined && unique[data[key][i] + ""] === undefined) {
-                        // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
-                        t += "&" + name + (data[key][i] !== null ? "=" + URI.encode(data[key][i] + "") : "");
-                        unique[data[key][i] + ""] = true;
+                        t += "&" + URI.buildQueryParameter(key, data[key][i]);
+                        if (duplicates !== true) {
+                            unique[data[key][i] + ""] = true;
+                        }
                     }
                 }
             } else if (data[key] !== undefined) {
-                // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
-                t += "&" + name + (data[key] !== null ? "=" + URI.encode(data[key] + "") : "");
+                t += '&' + URI.buildQueryParameter(key, data[key]);
             }
         }
     }
     
     return t.substring(1);
+};
+URI.buildQueryParameter = function(name, value) {
+    // http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type -- application/x-www-form-urlencoded 
+    // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
+    return URI.encode(name + "").replace('%20', '+') 
+        + (value !== null ? "=" + URI.encode(value + "").replace('%20', '+') : "");
 };
 
 URI.addQuery = function(data, name, value) {

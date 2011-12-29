@@ -92,6 +92,7 @@ Docs where you get more info on parsing and working with URLs
 * [Naming URL components](http://tantek.com/2011/238/b1/many-ways-slice-url-name-pieces)
 * [Java URI Class](http://docs.oracle.com/javase/7/docs/api/java/net/URI.html)
 * [Java Inet6Address Class](http://docs.oracle.com/javase/1.5.0/docs/api/java/net/Inet6Address.html)
+* [Node.js URL API](http://nodejs.org/docs/latest/api/url.html)
 
 ### MozURLProperty ###
 
@@ -158,6 +159,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ## Changelog ##
 
 * added .equals() for URL comparison
+* escape spaces in query strings with `+` according to [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type)
+* allow URI.buildQuery() to build duplicate key=value combinations
 
 ### 1.1.0 ###
 

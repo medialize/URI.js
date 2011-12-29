@@ -581,18 +581,32 @@ URI.buildAuthority(parts) === "user:pass@example.org:8080";</pre>
 };
 URI.buildHost(parts) === "example.org:8080";</pre>
     
-    <h3 id="static-buildQuery">URI.buildQuery()</h3>
+    <h3 id="static-buildQuery">URI.buildQuery(<em>object</em> data, [<em>boolean</em> duplicates])</h3>
     <p>serializes the query string parameters</p>
     <pre class="prettyprint lang-js">var data = {
     foo: "bar",
-    hello: ["world", "mars"],
+    hello: ["world", "mars", "mars"],
     bam: "",
     yup: null,
     removed: undefined
 }
 
-URI.buildQuery(data) === "foo=bar&amp;hello=world&amp;hello=mars&amp;bam=&amp;yup";</pre>
+// Note: duplicate hello=mars is dropped (default behavior!)
+URI.buildQuery(data) === "foo=bar&amp;hello=world&amp;hello=mars&amp;bam=&amp;yup";
 
+// Note: duplicate hello=mars is preserved
+URI.buildQuery(data, true) === "foo=bar&amp;hello=world&amp;hello=mars&amp;hello=mars&amp;bam=&amp;yup";</pre>
+    <p>To preserve duplicate values, use URI.buildQuery() directly:</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo.html?bar=baz"),
+    data = uri.query(true);
+
+data.some = "new data";
+uri.query(URI.buildQuery(data, true));
+
+// you can also use the static <a href="#static-addQuery">URI.addQuery()</a> and <a href="#static-removeQuery">URI.removeQuery()</a>
+URI.addQuery(data, "hello", "world");
+uri.query(URI.buildQuery(data, true));</pre>
+    
     <h3 id="static-addQuery">URI.addQuery()</h3>
     <p>adds data to a map</p>
     <pre class="prettyprint lang-js">var data = {};
