@@ -319,7 +319,6 @@ URI.buildAuthority = function(parts) {
     var t = '';
     
     if (parts.username) {
-        // TODO: check how authority is supposed to be encoded
         t += URI.encode(parts.username);
 
         if (parts.password) {
@@ -450,15 +449,19 @@ URI.withinString = function(string, callback) {
     return string.replace(URI.find_uri_expression, callback);
 };
 
-p.build = function() {
-    // TODO: improve deferring build
-    this._string = URI.build(this._parts);
+p.build = function(deferBuild) {
+    if (deferBuild === true) {
+        this._deferred_build = true;
+    } else if (deferBuild === undefined || this._deferred_build) {
+        this._string = URI.build(this._parts);
+        this._deferred_build = false;
+    }
+    
     return this;
 };
 
 p.toString = function() {
-    // return this.build()._string;
-    return this._string;
+    return this.build(false)._string;
 };
 p.valueOf = function() {
     return this.toString();
@@ -474,7 +477,7 @@ for (_part in _parts) {
                 return this._parts[_part] || "";
             } else {
                 this._parts[_part] = v;
-                build !== false && this.build();
+                this.build(!build);
                 return this;
             }
         };
@@ -497,7 +500,7 @@ for (_part in _parts) {
                 }
 
                 this._parts[_part] = v;
-                build !== false && this.build();
+                this.build(!build);
                 return this;
             }
         };
@@ -521,7 +524,7 @@ p.pathname = function(v, build) {
         return v ? URI.decodePath(res) : res;
     } else {
         this._parts.path = v ? URI.recodePath(v) : "/";
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -559,7 +562,7 @@ p.href = function(href, build) {
             throw new TypeError("invalid input");
         }
     
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -622,7 +625,7 @@ p.host = function(v, build) {
         return this._parts.hostname ? URI.buildHost(this._parts) : "";
     } else {
         URI.parseHost(v, this._parts);
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -631,7 +634,7 @@ p.authority = function(v, build) {
         return this._parts.hostname ? URI.buildAuthority(this._parts) : "";
     } else {
         URI.parseAuthority(v, this._parts);
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -656,7 +659,7 @@ p.subdomain = function(v, build) {
         }
         
         this._parts.hostname = this._parts.hostname.replace(replace, v);
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -679,7 +682,7 @@ p.domain = function(v, build) {
             this._parts.hostname = this._parts.hostname.replace(replace, v);
         }
         
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -702,7 +705,7 @@ p.tld = function(v, build) {
             this._parts.hostname = this._parts.hostname.replace(replace, v);
         }
         
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -740,7 +743,7 @@ p.directory = function(v, build) {
 
         v = URI.recodePath(v);
         this._parts.path = this._parts.path.replace(replace, v);
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -763,7 +766,7 @@ p.filename = function(v, build) {
         var replace = new RegExp(escapeRegEx(this.filename()) + "$");
         v = URI.recodePath(v);
         this._parts.path = this._parts.path.replace(replace, v);
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -810,7 +813,7 @@ p.suffix = function(v, build) {
             this._parts.path = this._parts.path.replace(replace, v);
         }
         
-        build !== false && this.build();
+        this.build(!build);
         return this;
     }
 };
@@ -822,7 +825,7 @@ p.query = function(v, build) {
         return URI.parseQuery(this._parts.query);
     } else if (v !== undefined && typeof v !== "string") {
         this._parts.query = URI.buildQuery(v);
-        build !== false && this.build();
+        this.build(!build);
         return this;
     } else {
         return q.call(this, v, build);
@@ -836,7 +839,7 @@ p.addQuery = function(name, value, build) {
         build = value;
     }
     
-    build !== false && this.build();
+    this.build(!build);
     return this;
 };
 p.removeQuery = function(name, value, build) {
@@ -847,7 +850,7 @@ p.removeQuery = function(name, value, build) {
         build = value;
     }
     
-    build !== false && this.build();
+    this.build(!build);
     return this;
 };
 p.addSearch = p.addQuery;
@@ -867,7 +870,7 @@ p.normalize = function() {
 p.normalizeProtocol = function(build) {
     if (typeof this._parts.protocol === "string") {
         this._parts.protocol = this._parts.protocol.toLowerCase();
-        build !== false && this.build();
+        this.build(!build);
     }
     
     return this;
@@ -881,7 +884,7 @@ p.normalizeHostname = function(build) {
         }
         
         this._parts.hostname = this._parts.hostname.toLowerCase();
-        build !== false && this.build();
+        this.build(!build);
     }
     
     return this;
@@ -890,7 +893,7 @@ p.normalizePort = function(build) {
     // remove port of it's the protocol's default
     if (typeof this._parts.protocol === "string" && this._parts.port === URI.defaultPorts[this._parts.protocol]) {
         this._parts.port = null;
-        build !== false && this.build();
+        this.build(!build);
     }
 
     return this;
@@ -944,7 +947,7 @@ p.normalizePath = function(build) {
     
     _path = URI.recodePath(_path);
     this._parts.path = _path;
-    build !== false && this.build();
+    this.build(!build);
     return this;
 };
 p.normalizePathname = p.normalizePath;
@@ -956,7 +959,7 @@ p.normalizeQuery = function(build) {
             this.query(URI.parseQuery(this._parts.query));
         }
         
-        build !== false && this.build();
+        this.build(!build);
     }
     
     return this;
@@ -964,7 +967,7 @@ p.normalizeQuery = function(build) {
 p.normalizeFragment = function(build) {
     if (!this._parts.fragment) {
         this._parts.fragment = null;
-        build !== false && this.build();
+        this.build(!build);
     }
     
     return this;

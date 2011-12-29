@@ -163,6 +163,9 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+* added .subdomain() convenience accessor
+* improved internal deferred build handling
+
 ### 1.2.0 ###
 
 * added .equals() for URL comparison
