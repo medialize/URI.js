@@ -34,6 +34,11 @@ test("function URI(string)", function() {
     ok(u instanceof URI, "instanceof URI");
     ok(u._parts.hostname !== undefined, "host undefined");
 });
+test("new URI(string, string)", function() {
+    // see http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
+    var u = new URI("../foobar.html", "http://example.org/hello/world.html");
+    equal(u+"", "http://example.org/foobar.html", "resolve on construct");
+});
 
 
 module("parsing");

@@ -132,7 +132,13 @@ var uri = new URI({
 });
 
 // without new keyword
-var uri = URI("example.org");</pre>
+var uri = URI("http://example.org");
+
+// resolving right in the constructor
+var uri = URI("../foobar.html", "http://example.org/hello/world.html");
+// which is exactly the same as 
+URI("../foobar.html").absoluteTo("http://example.org/hello/world.html");
+// but specified in <a href="http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor">URL constructor</a></pre>
     
     <p>The following parts can be specified in an object:</p>
     <pre class="prettyprint lang-js">var uri = new URI({

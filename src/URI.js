@@ -47,8 +47,7 @@ function filterArrayValues(data, value) {
 }
 
 // constructor
-var URI = function(url) {
-        // TODO: constructor(url, base) see http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
+var URI = function(url, base) {
         // Allow instantiation without the 'new' keyword
         if (!(this instanceof URI)) {
             return new URI(url);
@@ -59,6 +58,12 @@ var URI = function(url) {
         }
 
         this.href(url);
+        
+        // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
+        if (base !== undefined) {
+            return this.absoluteTo(base)
+        }
+        
         return this;
     },
     p = URI.prototype;
