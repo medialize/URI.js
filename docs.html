@@ -51,6 +51,7 @@
                 <li><a href="#accessors-port">port()</a></li>
                 <li><a href="#accessors-host">host()</a></li>
                 <li><a href="#accessors-authority">authority()</a></li>
+                <li><a href="#accessors-subdomain">subdomain()</a></li>
                 <li><a href="#accessors-domain">domain()</a></li>
                 <li><a href="#accessors-tld">tld()</a></li>
 
@@ -225,7 +226,7 @@ uri.authority(); // returns string "user:pass@example.org:88"
 uri.authority("user:pass@example.org:80"); // returns the URI instance for chaining</pre>
     <p>NOTE: .authority() will reset any of username, password and port if they're not specified.</p>
     
-    <h3 id="accessors-authority">domain()</h3>
+    <h3 id="accessors-domain">domain()</h3>
     <p>.domain() is a convenience method that returns <code>example.org</code> from the hostname <code>www.example.org</code>.</p>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
 // get domain
@@ -233,6 +234,14 @@ uri.domain(); // returns string "example.org"
 // set domain
 uri.domain("otherdomain.com"); // returns the URI instance for chaining</pre>
     <p>NOTE: .domain() will throw an error if you pass it an empty string.</p>
+    
+    <h3 id="accessors-subdomain">subdomain()</h3>
+    <p>.subdomain() is a convenience method that returns <code>www</code> from the hostname <code>www.example.org</code>.</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://www.example.org/foo/hello.html");
+// get subdomain
+uri.subdomain(); // returns string "www"
+// set subdomain
+uri.subdomain("other.subdomain"); // returns the URI instance for chaining</pre>
     
     <h3 id="accessors-tld">tld()</h3>
     <p>.tld() is a convenience method that returns <code>org</code> from the hostname <code>www.example.org</code>.</p>

@@ -451,6 +451,7 @@ URI.withinString = function(string, callback) {
 };
 
 p.build = function() {
+    // TODO: improve deferring build
     this._string = URI.build(this._parts);
     return this;
 };
@@ -636,6 +637,29 @@ p.authority = function(v, build) {
 };
 
 // fraction accessors
+p.subdomain = function(v, build) {
+    // convenience, return "example.org" from "www.example.org"
+    if (v === undefined) {
+        if (!this._parts.hostname || this.is('IP')) {
+            return "";
+        }
+
+        var end = this._parts.hostname.length - this.domain().length - 1;
+        return this._parts.hostname.substring(0, end) || "";
+    } else {
+        var e = this._parts.hostname.length - this.domain().length,
+            sub = this._parts.hostname.substring(0, e),
+            replace = new RegExp('^' + escapeRegEx(sub));
+
+        if (v && v[v.length - 1] !== '.') {
+            v += ".";
+        }
+        
+        this._parts.hostname = this._parts.hostname.replace(replace, v);
+        build !== false && this.build();
+        return this;
+    }
+};
 p.domain = function(v, build) {
     // convenience, return "example.org" from "www.example.org"
     if (v === undefined) {
@@ -644,7 +668,7 @@ p.domain = function(v, build) {
         }
 
         // "localhost" is a domain, too
-        return this._parts.hostname.match(/\.?([^\.]+.[^\.]+)$/)[1] || this._parts.hostname;
+        return this._parts.hostname.match(/\.?([^\.]+\.[^\.]+)$/)[1] || this._parts.hostname;
     } else {
         if (!v) {
             throw new TypeError("cannot set domain empty");

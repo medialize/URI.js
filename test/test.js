@@ -272,6 +272,21 @@ test("href", function() {
 
 
 module("mutating fractions");
+test("subdomain", function() {
+    var u = new URI("http://www.example.org/foo.html");
+    u.subdomain("foo.bar");
+    equal(u.hostname(), "foo.bar.example.org", "changed subdomain foo.bar");
+    equal(u+"", "http://foo.bar.example.org/foo.html", "changed url foo.bar");
+    
+    u.subdomain("");
+    equal(u.hostname(), "example.org", "changed subdomain ''");
+    equal(u+"", "http://example.org/foo.html", "changed url ''");
+    
+    u.subdomain("foo.");
+    equal(u.hostname(), "foo.example.org", "changed subdomain foo.");
+    equal(u+"", "http://foo.example.org/foo.html", "changed url foo.");
+    
+});
 test("domain", function() {
     var u = new URI("http://www.example.org/foo.html");
     u.domain("foo.bar");
