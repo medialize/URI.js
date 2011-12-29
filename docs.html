@@ -89,6 +89,12 @@
             </ul>
         </li>
         <li>
+            Comparing URLs
+            <ul>
+                <li><a href="#equals">equals()</a></li>
+            </ul>
+        </li>
+        <li>
             Static Functions
             <ul>
                 <li><a href="#static-parse">URI.parse()</a></li>
@@ -463,6 +469,33 @@ var relUri = uri.absoluteTo("/relative/sub/foo/sub/file"); // returns a new URI 
     <p>.relativeTo() and .absoluteTo() reverse each other.</p>
 
 
+
+    <h2 id="comparison">Comparing URLs</h2>
+    
+    <h3 id="equals">equals()</h3>
+    <p>.equals() determines if the given URLs are the same - disregarding default ports, capitalization, dot-pathnames, query-parameter order, etc.</p>
+    <pre class="prettyprint lang-js">var a = "http://example.org/foo/bar.html"
+        + "?foo=bar&amp;hello=world&amp;hello=mars#fragment",
+    b;
+
+// normalizing URI before comparison:
+b = "http://exAMPle.org:80/foo/../foo/bar.html"
+    + "?foo=bar&amp;hello=world&amp;hello=mars#fragment";
+
+a !== b;
+URI(a).equals(b) === true;
+
+
+// comparing query string parameters:
+b = "http://example.org/foo/bar.html"
+    + "?hello=mars&amp;foo=bar&amp;hello=world&amp;#fragment";
+
+a !== b;
+URI(a).equals(b) === true;
+
+// shorthand for comparing to window.location.href:
+URI(a).equals();</pre>
+    
 
     <h2 id="static-functions">Static Functions</h2>
     

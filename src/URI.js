@@ -942,6 +942,86 @@ p.relativeTo = function(base) {
     return relative;
 };
 
+// comparing URIs
+p.equals = function(uri) {
+    var one = new URI(this),
+        two = new URI(uri),
+        one_map = {}, 
+        two_map = {},
+        checked = {},
+        one_query, 
+        two_query,
+        key;
+
+    one.normalize();
+    two.normalize();
+    
+    // exact match
+    if (one.toString() === two.toString()) {
+        return true;
+    }
+    
+    // extract query string
+    one_query = one.query();
+    two_query = two.query();
+    one.query("");
+    two.query("");
+    
+    // definitely not equal if not even non-query parts match
+    if (one.toString() !== two.toString()) {
+        return false;
+    }
+    
+    // query parameters have the same length, even if they're permutated
+    if (one_query.length !== two_query.length) {
+        return false;
+    }
+    
+    one_map = URI.parseQuery(one_query);
+    two_map = URI.parseQuery(two_query);
+    
+    for (key in one_map) {
+        if (Object.prototype.hasOwnProperty.call(one_map, key)) {
+            if (!isArray(one_map[key])) {
+                if (one_map[key] !== two_map[key]) {
+                    return false;
+                }
+            } else {
+                if (!isArray(two_map[key])) {
+                    return false;
+                }
+                
+                // arrays can't be equal if they have different amount of content
+                if (one_map[key].length !== two_map[key].length) {
+                    return false;
+                }
+                
+                one_map[key].sort();
+                two_map[key].sort();
+                
+                for (var i = 0, l = one_map[key].length; i < l; i++) {
+                    if (one_map[key][i] !== two_map[key][i]) {
+                        return false;
+                    }
+                }
+            }
+            
+            checked[key] = true;
+        }
+    }
+    
+    for (key in two_map) {
+        if (Object.prototype.hasOwnProperty.call(two_map, key)) {
+            if (!checked[key]) {
+                // two contains a parameter not present in one
+                return false;
+            }
+        }
+    }
+    
+    return true;
+};
+
 window.URI = URI;
 
 })();

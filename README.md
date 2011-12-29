@@ -125,7 +125,6 @@ if you want to get involved, these are things you could help out with…
 * accept all [IPv6 notations](http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6)
 * include a hint for [jQuery.fn.serialize()](http://api.jquery.com/serialize/)
 
-
 ## Authors ##
 
 * [Rodney Rehm](https://github.com/rodneyrehm)
@@ -158,11 +157,13 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+* added .equals() for URL comparison
+
 ### 1.1.0 ###
 
-* URI.withinSring()
-* added normalizeProtocol() to lowercase protocols
-* made normalizeHostname() lowercase hostnames
+* URI.withinString()
+* added .normalizeProtocol() to lowercase protocols
+* made .normalizeHostname() lowercase hostnames
 * replaced String.substr() by String.substring() (Issue #1)
 * parse "?foo" to `{foo: null}` [Algorithm for collecting URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters)
 * build `{foo: null, bar: ""}` to "?foo&bar=" [Algorithm for serializing URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization)

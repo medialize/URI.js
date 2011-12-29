@@ -646,3 +646,36 @@ test("withinString", function() {
     equal(result, expected, "in string URI identification");
 });
 
+module("comparing URLs");
+test("equals", function() {
+    var u = new URI("http://example.org/foo/bar.html?foo=bar&hello=world&hello=mars#fragment"),
+        e = [
+            "http://example.org/foo/../foo/bar.html?foo=bar&hello=world&hello=mars#fragment",
+            "http://exAmple.org/foo/bar.html?foo=bar&hello=world&hello=mars#fragment",
+            "http://exAmple.org:80/foo/bar.html?foo=bar&hello=world&hello=mars#fragment",
+            "http://example.org/foo/bar.html?foo=bar&hello=mars&hello=world#fragment",
+            "http://example.org/foo/bar.html?hello=mars&hello=world&foo=bar&#fragment"
+            // TODO: test equality of resolved path names
+        ],
+        d = [
+            "http://example.org/foo/../bar.html?foo=bar&hello=world&hello=mars#fragment",
+            "http://example.org/foo/bar.html?foo=bar&hello=world&hello=mars#frAgment",
+            "http://example.org/foo/bar.html?foo=bar&hello=world&hello=mArs#fragment",
+            "http://example.org/foo/bar.hTml?foo=bar&hello=world&hello=mars#fragment",
+            "http://example.org:8080/foo/bar.html?foo=bar&hello=world&hello=mars#fragment",
+            "http://user:pass@example.org/foo/bar.html?foo=bar&hello=world&hello=mars#fragment",
+            "ftp://example.org/foo/bar.html?foo=bar&hello=world&hello=mars#fragment",
+            "http://example.org/foo/bar.html?foo=bar&hello=world&hello=mars&hello=jupiter#fragment"
+        ],
+        i, c;
+    
+    for (i = 0; c = e[i]; i++) {
+        equal(u.equals(c), true, "equality " + i);
+    }
+    
+    for (i = 0; c = d[i]; i++) {
+        equal(u.equals(c), false, "different " + i);
+    }
+    
+});
+

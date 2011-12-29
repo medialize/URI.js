@@ -114,6 +114,15 @@ Hello <strong>&lt;a&gt;www.example.com&lt;/a&gt;</strong>,
 links can also be in parens (<strong>&lt;a&gt;http://example.org&lt;/a&gt;</strong>) or quotes &raquo;<strong>&lt;a&gt;http://example.org&lt;/a&gt;</strong>&laquo;.
 */
 </pre>
+
+    <p>How do you like comparing URLs?</p>
+    <pre class="prettyprint lang-js">var a = "http://example.org/foo/bar.html"
+        + "?foo=bar&amp;hello=world&amp;hello=mars#fragment",
+    b = "http://exAMPle.org:80/foo/../foo/bar.html"
+        + "?hello=mars&amp;foo=bar&amp;hello=world&amp;#fragment";
+
+a !== b;
+URI(a).<a href="docs.html#equals">equals</a>(b) === true;</pre>
     
     <h2 id="authors">Authors</h2>
 	<ul>
