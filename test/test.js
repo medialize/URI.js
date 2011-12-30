@@ -184,6 +184,12 @@ test("query", function() {
     u.query('?foo');
     equal(u.query(), "foo", "search: ''");
     equal(u.search(), "?foo", "search: '' - query");
+    
+    // parsing empty query
+    var t;
+    t = u.query('?').query(true);
+    t = u.query('').query(true);
+    t = u.href("http://example.org").query(true);
 });
 test("fragment", function() { 
     var u = new URI("http://example.org/foo.html");

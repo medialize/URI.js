@@ -166,6 +166,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 * added .subdomain() convenience accessor
 * improved internal deferred build handling
+* fixed thrown Error for `URI("http://example.org").query(true)` (Issue #6)
 
 ### 1.2.0 ###
 

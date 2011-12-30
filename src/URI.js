@@ -240,9 +240,17 @@ URI.parseAuthority = function(string, parts) {
     return URI.parseHost(string, parts);
 };
 URI.parseQuery = function(string) {
+    if (!string) {
+        return {};
+    }
+    
     // throw out the funky business - "?"[name"="value"&"]+
     string = string.replace(/&+/g, '&').replace(/^\?*&*|&+$/g, '');
-
+    
+    if (!string) {
+        return {};
+    }
+    
     var items = {},
         splits = string.split('&'),
         length = splits.length;
