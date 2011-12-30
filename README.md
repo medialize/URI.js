@@ -164,9 +164,12 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.3.0 ###
+
 * added .subdomain() convenience accessor
 * improved internal deferred build handling
 * fixed thrown Error for `URI("http://example.org").query(true)` (Issue #6)
+* added examples for extending URI.js for fragment abuse, see src/URI.fragmentQuery.js and src/URI.fragmentURI.js (Issue #2)
 
 ### 1.2.0 ###
 
