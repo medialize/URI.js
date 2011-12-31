@@ -112,7 +112,8 @@ If you don't like URI.js, you may like one of these:
 * [URL.js](https://github.com/ericf/urljs)
 * [furl (Python)](https://github.com/gruns/furl)
 * [mediawiki Uri](https://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/resources/mediawiki/mediawiki.Uri.js?view=markup) (needs mw and jQuery)
-* [Google Closure Uri](http://www.google.com/codesearch#epIciakqvFc/trunk/closure/goog/uri/uri.js)
+* [Google Closure Uri](http://closure-library.googlecode.com/svn/docs/closure_goog_uri_uri.js.html)
+* [URI.js by Gary Court](https://github.com/garycourt/uri-js)
 
 ### HTML5 URL Draft ###
 
