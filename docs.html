@@ -740,9 +740,9 @@ links can also be in parens (<strong>&lt;a&gt;http://example.org&lt;/a&gt;</stro
 var escapeHtml = function(string) { 
         return string
             .replace(/&amp;/g, '&amp;amp;')
-            .replace(/</g, '&amp;lt;')
-            .replace(/>/g, '&amp;gt;')
-            .replace(/"/g, '&amp;quot;');
+            .replace(/&lt;/g, '&amp;lt;')
+            .replace(/&gt;/g, '&amp;gt;')
+            .replace(/&quot;/g, '&amp;quot;');
     }
     result = URI.withinString(source, function(url) {
         var uri = new URI(url);
