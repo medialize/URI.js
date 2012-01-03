@@ -165,6 +165,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.3.1 ###
+
 * Updated Punycode.js to version 0.3.0
 * added edge-case tests ("jim")
 * fixed edge-cases in .protocol(), .port(), .subdomain(), .domain(), .tld(), .filename()
