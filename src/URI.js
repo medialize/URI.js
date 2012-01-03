@@ -86,7 +86,10 @@ URI.defaultPorts = {
     https: "443", 
     ftp: "21"
 };
-
+// allowed hostname characters according to RFC 3986
+// ALPHA DIGIT "-" "." "_" "~" "!" "$" "&" "'" "(" ")" "*" "+" "," ";" "=" %encoded
+// I've never seen a (non-IDN) hostname other than: ALPHA DIGIT . -
+URI.invalid_hostname_characters = /[^a-zA-Z0-9\.-]/;
 // encoding / decoding according to RFC3986
 URI.encode = encodeURIComponent;
 URI.decode = decodeURIComponent;
@@ -206,6 +209,7 @@ URI.parseHost = function(string, parts) {
         parts.port = string.substring(bracketPos+2, pos) || null;
     } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
         // IPv6 host contains multiple colons - but no port
+        // this notation is actually not allowed by RFC 3986, but we're a liberal parser
         parts.hostname = string.substring(0, pos) || null;
         parts.port = null;
     } else {
@@ -457,6 +461,22 @@ URI.withinString = function(string, callback) {
     return string.replace(URI.find_uri_expression, callback);
 };
 
+URI.ensureValidHostname = function(v) {
+    // Theoretically URIs allow percent-encoding in Hostnames (according to RFC 3986)
+    // they are not part of DNS and therefore ignored by URI.js
+    
+    if (v.match(URI.invalid_hostname_characters)) {
+        // test punycode
+        if (!window.punycode) {
+            throw new TypeError("Hostname '" + v + "' contains characters other than [A-Z0-9.-] and Punycode.js is not available");
+        }
+        
+        if (punycode.toASCII(v).match(URI.invalid_hostname_characters)) {
+            throw new TypeError("Hostname '" + v + "' contains characters other than [A-Z0-9.-]");
+        }
+    }
+};
+
 p.build = function(deferBuild) {
     if (deferBuild === true) {
         this._deferred_build = true;
@@ -627,6 +647,52 @@ p.is = function(what) {
     return null;
 };
 
+// component specific input validation
+var _protocol = p.protocol,
+    _port = p.port,
+    _hostname = p.hostname;
+
+p.protocol = function(v, build) {
+    if (v !== undefined) {
+        // accept trailing :
+        if (v) {
+            if (v[v.length - 1] === ":") {
+                v = v.substring(0, v.length - 1);
+            } else if (v.match(/[^a-zA-z0-9\.+-]/)) {
+                throw new TypeError("Protocol '" + v + "' contains characters other than [A-Z0-9.+-]");
+            }
+        }
+    }
+    return _protocol.call(this, v, build);
+};
+p.port = function(v, build) {
+    if (v !== undefined) {
+        if (v === 0) {
+            v = null;
+        }
+        
+        if (v) {
+            v += "";
+            if (v[0] === ":") {
+                v = v.substring(1);
+            }
+            
+            if (v.match(/[^0-9]/)) {
+                throw new TypeError("Port '" + v + "' contains characters other than [0-9]");
+            }
+        }
+    }
+    return _port.call(this, v, build);
+};
+p.hostname = function(v, build) {
+    if (v !== undefined) {
+        var x = {};
+        URI.parseHost(v, x);
+        v = x.hostname;
+    }
+    return _hostname.call(this, v, build);
+};
+
 // combination accessors
 p.host = function(v, build) {
     if (v === undefined) {
@@ -666,6 +732,10 @@ p.subdomain = function(v, build) {
             v += ".";
         }
         
+        if (v) {
+            URI.ensureValidHostname(v);
+        }
+        
         this._parts.hostname = this._parts.hostname.replace(replace, v);
         this.build(!build);
         return this;
@@ -683,7 +753,11 @@ p.domain = function(v, build) {
     } else {
         if (!v) {
             throw new TypeError("cannot set domain empty");
-        } else if (!this._parts.hostname || this.is('IP')) {
+        }
+        
+        URI.ensureValidHostname(v);
+        
+        if (!this._parts.hostname || this.is('IP')) {
             this._parts.hostname = v;
         } else {
             var replace = new RegExp(escapeRegEx(this.domain()) + "$");
@@ -706,6 +780,8 @@ p.tld = function(v, build) {
     } else {
         if (!v) {
             throw new TypeError("cannot set TLD empty");
+        } else if (v.match(/[^a-zA-Z0-9-]/)) {
+            throw new TypeError("TLD '" + v + "' contains characters other than [A-Z0-9]");
         } else if (!this._parts.hostname || this.is('IP')) {
             throw new ReferenceError("cannot set TLD on non-domain host");
         } else {
@@ -766,15 +842,25 @@ p.filename = function(v, build) {
         
         return v ? URI.decodePathSegment(res) : res;
     } else {
-
+        var mutatedDirectory = false;
         if (v[0] === '/') {
             v = v.substring(1);
+        }
+        
+        if (v.match(/\.?\//)) {
+            mutatedDirectory = true;
         }
         
         var replace = new RegExp(escapeRegEx(this.filename()) + "$");
         v = URI.recodePath(v);
         this._parts.path = this._parts.path.replace(replace, v);
-        this.build(!build);
+        
+        if (mutatedDirectory) {
+            this.normalizePath(build);
+        } else {
+            this.build(!build);
+        }
+        
         return this;
     }
 };
