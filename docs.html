@@ -116,6 +116,8 @@
                 
                 <li><a href="#static-commonPath">URI.commonPath()</a></li>
                 <li><a href="#static-withinString">URI.withinString()</a></li>
+    		<li><a href="#static-iso8859">URI.iso8859()</a></li>
+    		<li><a href="#static-unicode">URI.unicode()</a></li>
             </ul>
         </li>
     </ul>
@@ -756,6 +758,20 @@ var escapeHtml = function(string) {
             + escapeHtml(url.<a href="#readable">readable</a>()) + '&lt;/a&gt;';
     });
 </pre>
+    
+    <h3 id="static-iso8859">URI.iso8859()</h3>
+    <p>URI.iso8859() tells URI.js to use the older escape/unescape methods, for backwards compatibility with older platforms.</p>
+    <pre class="prettyprint lang-js">URI.iso8859();
+
+var uri = new URI("http://example.org/foo/æ.html");
+// http://example.org/foo/%E6.html</pre>
+    
+    <h3 id="static-unicode">URI.unicode()</h3>
+    <p>URI.unicode() restores the default unicode-encoded URLs.</p>
+    <pre class="prettyprint lang-js">URI.unicode();
+
+var uri = new URI("http://example.org/foo/æ.html");
+// http://example.org/foo/%C3%A6.html</pre>
     
     </div>
 </body>
