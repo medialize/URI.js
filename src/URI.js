@@ -65,8 +65,18 @@ var URI = function(url, base) {
         }
         
         return this;
-    },
-    p = URI.prototype;
+    };
+var p = URI.prototype;
+
+URI.iso8859 = function() {
+	URI.encode = escape;
+	URI.decode = unescape;
+}
+
+URI.unicode = function() {
+	URI.encode = encodeURIComponent;
+	URI.decode = decodeURIComponent;
+}
 
 // static properties
 URI.idn_expression = /[^a-z0-9\.-]/i;
@@ -122,10 +132,10 @@ URI.characters = {
     }
 };
 URI.encodeQuery = function(string) {
-    return encodeURIComponent(string + "").replace(/%20/g, '+');
+    return URI.encode(string + "").replace(/%20/g, '+');
 };
 URI.decodeQuery = function(string) {
-    return decodeURIComponent((string + "").replace(/\+/g, '%20'));
+    return URI.decode((string + "").replace(/\+/g, '%20'));
 };
 URI.recodePath = function(string) {
     var segments = (string + "").split('/');
