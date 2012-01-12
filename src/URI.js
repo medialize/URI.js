@@ -68,16 +68,6 @@ var URI = function(url, base) {
     };
 var p = URI.prototype;
 
-URI.iso8859 = function() {
-	URI.encode = escape;
-	URI.decode = unescape;
-}
-
-URI.unicode = function() {
-	URI.encode = encodeURIComponent;
-	URI.decode = decodeURIComponent;
-}
-
 // static properties
 URI.idn_expression = /[^a-z0-9\.-]/i;
 URI.punycode_expression = /(xn--)/i;
@@ -103,6 +93,14 @@ URI.invalid_hostname_characters = /[^a-zA-Z0-9\.-]/;
 // encoding / decoding according to RFC3986
 URI.encode = encodeURIComponent;
 URI.decode = decodeURIComponent;
+URI.iso8859 = function() {
+    URI.encode = escape;
+    URI.decode = unescape;
+};
+URI.unicode = function() {
+    URI.encode = encodeURIComponent;
+    URI.decode = decodeURIComponent;
+};
 URI.characters = {
     pathname: {
         encode: {
@@ -160,7 +158,7 @@ var _parts = {'encode':'encode', 'decode':'decode'},
 for (_part in _parts) {
     URI[_part + "PathSegment"] = (function(_part){
         return function(string) {
-            return window[_part + 'URIComponent'](string + "").replace(URI.characters.pathname[_part].expression, function(c) {
+            return URI[_part](string + "").replace(URI.characters.pathname[_part].expression, function(c) {
                 return URI.characters.pathname[_part].map[c];
             });
         };
@@ -1078,6 +1076,32 @@ p.normalizeFragment = function(build) {
 };
 p.normalizeSearch = p.normalizeQuery;
 p.normalizeHash = p.normalizeFragment;
+
+p.iso8859 = function() {
+    // expect unicode input, iso8859 output
+    var e = URI.encode,
+        d = URI.decode;
+        
+    URI.encode = escape;
+    URI.decode = decodeURIComponent;
+    this.normalize();
+    URI.encode = e;
+    URI.decode = d;
+    return this;
+};
+
+p.unicode = function() {
+    // expect iso8859 input, unicode output
+    var e = URI.encode,
+        d = URI.decode;
+        
+    URI.encode = encodeURIComponent;
+    URI.decode = unescape;
+    this.normalize();
+    URI.encode = e;
+    URI.decode = d;
+    return this;
+};
 
 p.readable = function() {
     var uri = new URI(this);

@@ -737,3 +737,30 @@ test("equals", function() {
     }
 });
 
+module("Charset");
+test("iso8859", function() {
+    var u = new URI("/ä.html");
+    u.normalizePath();
+    equal(u.path(), "/%C3%A4.html", 'Unicode');
+
+    URI.iso8859();
+    u = new URI("/ä.html");
+    u.normalizePath();
+    equal(u.path(), "/%E4.html", 'ISO8859');
+    u.path('/ö.html');
+    equal(u.path(), "/%F6.html", 'ISO8859');
+    
+    URI.unicode();
+    u = new URI("/ä.html");
+    u.normalizePath();
+    equal(u.path(), "/%C3%A4.html", 'Unicode again');
+    
+    u = new URI("/ä.html");
+    u.normalizePath();
+    equal(u.path(), "/%C3%A4.html", 'convert unicode start');
+    u.iso8859();
+    equal(u.path(), "/%E4.html", 'convert iso8859');
+    u.unicode();
+    equal(u.path(), "/%C3%A4.html", 'convert unicode');
+});
+

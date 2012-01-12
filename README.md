@@ -165,6 +165,9 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+* added URI.iso8859() and URI.unicode() to switch base charsets (Issue #10, mortenn)
+* added .iso8859() and .unicode() to convert an URI's escape encoding
+
 ### 1.3.1 ###
 
 * Updated Punycode.js to version 0.3.0
