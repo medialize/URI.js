@@ -1292,9 +1292,9 @@ p.equals = function(uri) {
     return true;
 };
 
-if (window !== undefined && window !== null) {
+if (typeof window !== "undefined" && window !== null) {
     window.URI = URI;
-} else if ((module !== undefined && module !== null ? module.exports : void 0) != null) {
+} else if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
     module.exports = URI;
 }
 })();
