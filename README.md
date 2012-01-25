@@ -14,7 +14,7 @@ var url = "http://example.org/foo?bar=baz",
 url += separator + encodeURIComponent("foo") + "=" + encodeURIComponent("bar");
 ```
 
-I still can't believe javascript - the f**ing backbone-language of the web - doesn't offer an API for mutating URLs. Browsers (Firefox) don't expose the `Location` object (the structure behind window.location). Yes, one could think of [decomposed IDL attributes](http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#url-decomposition-idl-attributes) as a native URL management library. But it relies on the DOM element &lt;a&gt;, it's slow and doesn't offer any convenienve at all. 
+I still can't believe javascript - the f**ing backbone-language of the web - doesn't offer an API for mutating URLs. Browsers (Firefox) don't expose the `Location` object (the structure behind window.location). Yes, one could think of [decomposed IDL attributes](http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#url-decomposition-idl-attributes) as a native URL management library. But it relies on the DOM element &lt;a&gt;, it's slow and doesn't offer any convenienve at all.
 
 How about a nice, clean and simple API for mutating URIs:
 
@@ -31,17 +31,17 @@ URI.js is here to help with that.
 ```javascript
 // mutating URLs
 URI("http://example.org/foo.html?hello=world")
-    .username("rodneyrehm") 
+    .username("rodneyrehm")
         // -> http://rodneyrehm@example.org/foo.html?hello=world
-    .username("") 
+    .username("")
         // -> http://example.org/foo.html?hello=world
     .directory("bar")
         // -> http://example.org/bar/foo.html?hello=world
-    .suffix("xml")    
+    .suffix("xml")
         // -> http://example.org/bar/foo.xml?hello=world
-    .query("")       
+    .query("")
         // -> http://example.org/bar/foo.xml
-    .tld("com")      
+    .tld("com")
         // -> http://example.com/bar/foo.xml
     .query({ foo: "bar", hello: ["world", "mars"] });
         // -> http://example.com/bar/foo.xml?foo=bar&hello=world&hello=mars
@@ -65,6 +65,22 @@ URI("/foo/bar/baz.html")
 
 See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://medialize.github.com/URI.js/docs.html) for more stuff.
 
+## npm ##
+
+```
+    npm install URIjs
+```
+
+
+## Server-side JS ##
+
+```javascript
+var URI = require('URIJS');
+
+URI("/foo/bar/baz.html")
+    .relativeTo("/foo/bar/sub/world.html")
+// -> ../baz.html
+```
 
 ## Minify ##
 
@@ -77,7 +93,7 @@ use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 // @code_url http://medialize.github.com/URI.js/src/IPv6.js
 // @code_url http://medialize.github.com/URI.js/src/punycode.js
 // @code_url http://medialize.github.com/URI.js/src/URI.js
-// ==/ClosureCompiler==    
+// ==/ClosureCompiler==
 ```
 
 ## Resources ##
@@ -152,7 +168,7 @@ I built this sucker during Christmas 2011. It was a nice excuse to get away from
 
 ```
 Quote from java doc:
-A URI is a uniform resource identifier while a URL is a uniform resource locator. Hence every URL is a URI, abstractly speaking, but not every URI is a URL. This is because there is another subcategory of URIs, uniform resource names (URNs), which name resources but do not specify how to locate them. The mailto, news, and isbn URIs shown above are examples of URNs. 
+A URI is a uniform resource identifier while a URL is a uniform resource locator. Hence every URL is a URI, abstractly speaking, but not every URI is a URL. This is because there is another subcategory of URIs, uniform resource names (URNs), which name resources but do not specify how to locate them. The mailto, news, and isbn URIs shown above are examples of URNs.
 ```
 
 URI.js only handles URLs - but since Firefox already used window.URL for some (yet undocumented) MozURLProperty, I named it URI anyways.
@@ -179,7 +195,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * Updated Punycode.js to version 0.3.0
 * added edge-case tests ("jim")
 * fixed edge-cases in .protocol(), .port(), .subdomain(), .domain(), .tld(), .filename()
-* fixed parsing of hostname in .hostname() 
+* fixed parsing of hostname in .hostname()
 
 ### 1.3.0 ###
 
