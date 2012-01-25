@@ -26,8 +26,11 @@
         "unified resource identifier",
         "query string"
     ],
+    "main": "./src/URI",
     "homepage": "http://medialize.github.com/URI.js/",
-    "contributors": [],
+    "contributors": [
+        "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com)"
+    ],
     "files": [
         "src/URI.js",
         "src/IPv6.js",
