@@ -1,8 +1,8 @@
 (function(undefined){
 
-var global = typeof module !== 'undefined' && module.exports ?
-                module.exports
-                : window
+var global = typeof module !== 'undefined' && module.exports
+    ? module.exports
+    : window;
 
 
 var best = function(address) {
