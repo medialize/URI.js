@@ -4,7 +4,7 @@
 
 // --------------------------------------------------------------------------------
 // EXAMPLE: storing application/x-www-form-urlencoded data in the fragment
-// possibly helpful for Google's hashbangs 
+// possibly helpful for Google's hashbangs
 // see http://code.google.com/web/ajaxcrawling/
 // --------------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ p.addFragment = function(name, value, build) {
     if (typeof name !== "string") {
         build = value;
     }
-    
+
     this.build(!build);
     return this;
 };
@@ -57,7 +57,7 @@ p.removeFragment = function(name, value, build) {
     if (typeof name !== "string") {
         build = value;
     }
-    
+
     this.build(!build);
     return this;
 };
