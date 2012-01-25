@@ -1302,7 +1302,7 @@ p.equals = function(uri) {
 };
 
 (typeof module !== 'undefined' && module.exports ?
-        module.exports
-        : window
-).URI = URI;
+        module.exports = URI
+        : window.URI = URI
+);
 })();

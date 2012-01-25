@@ -1,5 +1,5 @@
 {
-    "name": "URI.js",
+    "name": "URIjs",
     "version": "1.4.1",
     "title": "URI.js - Mutating URLs",
     "author": {
@@ -14,7 +14,7 @@
         {
             "type": "GPL",
             "url": "http://opensource.org/licenses/GPL-3.0"
-        }
+        }   
     ],
     "description": "URI.js is a Javascript library for working with URLs.",
     "keywords": [
