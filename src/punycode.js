@@ -506,11 +506,7 @@
 		define('punycode', punycode);
 	} else {
 		// in a browser or Rhino
-
-		(typeof module !== 'undefined' && module.exports ?
-	    module.exports
-	    : window
-	  ).punycode = punycode;
+		root.punycode = punycode;
 	}
 
 }(this));
