@@ -181,13 +181,17 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.4.2 ###
+
+* improved CommonJS compatibility (Issue #14 [FGRibreau](https://github.com/FGRibreau))
+
 ### 1.4.1 ###
 
-* added CommonJS compatibility (Issue #11, Evangenieur)
+* added CommonJS compatibility (Issue #11, [Evangenieur](https://github.com/Evangenieur))
 
 ### 1.4.0 ###
 
-* added URI.iso8859() and URI.unicode() to switch base charsets (Issue #10, mortenn)
+* added URI.iso8859() and URI.unicode() to switch base charsets (Issue #10, [mortenn](https://github.com/))
 * added .iso8859() and .unicode() to convert an URI's escape encoding
 
 ### 1.3.1 ###
