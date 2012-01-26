@@ -212,7 +212,7 @@ URI.parse = function(string) {
 };
 URI.parseHost = function(string, parts) {
     // extract host:port
-    var pos = string.indexOf('/');
+    var pos = string.indexOf('/'), t;
     if (pos === -1) {
         pos = string.length;
     }
@@ -245,7 +245,8 @@ URI.parseHost = function(string, parts) {
 URI.parseAuthority = function(string, parts) {
     // extract username:password
     var pos = string.indexOf('@'),
-        firstSlash = string.indexOf('/');
+        firstSlash = string.indexOf('/'),
+        t;
 
     // authority@ must come before /path
     if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
@@ -889,7 +890,7 @@ p.suffix = function(v, build) {
 
         var filename = this.filename(),
             pos = filename.lastIndexOf('.'),
-            s;
+            s, res;
 
         if (pos === -1) {
             return "";
