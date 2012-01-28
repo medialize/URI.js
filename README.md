@@ -181,6 +181,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.4.3 ###
+
+* fixed global scope leakage (Issue #15 [mark-rushakoff](https://github.com/mark-rushakoff))
+
 ### 1.4.2 ###
 
 * improved CommonJS compatibility (Issue #14 [FGRibreau](https://github.com/FGRibreau))
