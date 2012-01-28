@@ -212,7 +212,9 @@ URI.parse = function(string) {
 };
 URI.parseHost = function(string, parts) {
     // extract host:port
-    var pos = string.indexOf('/'), t;
+    var pos = string.indexOf('/'), 
+        t;
+    
     if (pos === -1) {
         pos = string.length;
     }
