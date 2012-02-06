@@ -75,7 +75,7 @@ See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://
 ## Server-side JS ##
 
 ```javascript
-var URI = require('URIJS');
+var URI = require('URIjs');
 
 URI("/foo/bar/baz.html")
     .relativeTo("/foo/bar/sub/world.html")
