@@ -181,21 +181,25 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.5.0 ###
+
+* adding Second Level Domain (SLD) Support ([Issue #17](https://github.com/medialize/URI.js/issues/17))
+
 ### 1.4.3 ###
 
-* fixed global scope leakage (Issue #15 [mark-rushakoff](https://github.com/mark-rushakoff))
+* fixed global scope leakage ([Issue #15](https://github.com/medialize/URI.js/issues/15) [mark-rushakoff](https://github.com/mark-rushakoff))
 
 ### 1.4.2 ###
 
-* improved CommonJS compatibility (Issue #14 [FGRibreau](https://github.com/FGRibreau))
+* improved CommonJS compatibility ([Issue #14](https://github.com/medialize/URI.js/issues/14) [FGRibreau](https://github.com/FGRibreau))
 
 ### 1.4.1 ###
 
-* added CommonJS compatibility (Issue #11, [Evangenieur](https://github.com/Evangenieur))
+* added CommonJS compatibility ([Issue #11](https://github.com/medialize/URI.js/issues/11), [Evangenieur](https://github.com/Evangenieur))
 
 ### 1.4.0 ###
 
-* added URI.iso8859() and URI.unicode() to switch base charsets (Issue #10, [mortenn](https://github.com/))
+* added URI.iso8859() and URI.unicode() to switch base charsets ([Issue #10](https://github.com/medialize/URI.js/issues/10), [mortenn](https://github.com/))
 * added .iso8859() and .unicode() to convert an URI's escape encoding
 
 ### 1.3.1 ###
@@ -209,8 +213,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 * added .subdomain() convenience accessor
 * improved internal deferred build handling
-* fixed thrown Error for `URI("http://example.org").query(true)` (Issue #6)
-* added examples for extending URI.js for fragment abuse, see src/URI.fragmentQuery.js and src/URI.fragmentURI.js (Issue #2)
+* fixed thrown Error for `URI("http://example.org").query(true)` ([Issue #6](https://github.com/medialize/URI.js/issues/6))
+* added examples for extending URI.js for fragment abuse, see src/URI.fragmentQuery.js and src/URI.fragmentURI.js ([Issue #2](https://github.com/medialize/URI.js/issues/2))
 
 ### 1.2.0 ###
 
@@ -227,7 +231,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * URI.withinString()
 * added .normalizeProtocol() to lowercase protocols
 * made .normalizeHostname() lowercase hostnames
-* replaced String.substr() by String.substring() (Issue #1)
+* replaced String.substr() by String.substring() ([Issue #1](https://github.com/medialize/URI.js/issues/1))
 * parse "?foo" to `{foo: null}` [Algorithm for collecting URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters)
 * build `{foo: null, bar: ""}` to "?foo&bar=" [Algorithm for serializing URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization)
 * fixed RegExp escaping
