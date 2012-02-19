@@ -168,22 +168,25 @@ var SLD = {
     get: function(domain) {
         var t = domain.match(SLD.has_expression);
         return t && t[1] || null;
+    },
+    init: function() {
+        var t = '';
+        for (var tld in SLD.list) {
+            if (!Object.prototype.hasOwnProperty.call(SLD.list, tld)) {
+                continue;
+            }
+
+            var expression = '(' + SLD.list[tld] + ')\.' + tld;
+            //SLD.expressions[tld] = new RegExp('\.' + expression + '$', 'i');
+            t += '|(' + expression + ')';
+        }
+
+        SLD.has_expression = new RegExp('\.(' + t.substr(1) + ')$', 'i');
+        SLD.is_expression = new RegExp('^(' + t.substr(1) + ')$', 'i');
     }
 };
 
-var t = '';
-for (var tld in SLD.list) {
-    if (!Object.prototype.hasOwnProperty.call(SLD.list, tld)) {
-        continue;
-    }
-
-    var expression = '(' + SLD.list[tld] + ')\.' + tld;
-    //SLD.expressions[tld] = new RegExp('\.' + expression + '$', 'i');
-    t += '|(' + expression + ')';
-}
-
-SLD.has_expression = new RegExp('\.(' + t.substr(1) + ')$', 'i');
-SLD.is_expression = new RegExp('^(' + t.substr(1) + ')$', 'i');
+SLD.init();
 
 (typeof module !== 'undefined' && module.exports 
     ? module.exports = SLD
