@@ -4,7 +4,6 @@ var global = typeof module !== 'undefined' && module.exports
     ? module.exports
     : window;
 
-
 var best = function(address) {
     // based on:
     // Javascript to test an IPv6 address for proper format, and to
@@ -136,7 +135,6 @@ var best = function(address) {
 
     return result;
 };
-
 
 global.IPv6 = {
     best: best

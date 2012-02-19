@@ -29,7 +29,7 @@ test("port", function() {
 
     u.port(false);
     equal(u.port(), "", "port() has set an invalid port");
-  
+
     // RFC 3986 says nothing about "16-bit unsigned" http://tools.ietf.org/html/rfc3986#section-3.2.3
     // u.href(new URI("http://example.com/"))
     // u.port(65536);
@@ -41,37 +41,37 @@ test("port", function() {
 });
 test("domain", function() {
     var u = new URI("http://example.com/dir1/dir2/?query1=value1&query2=value2#hash");
-    
+
     raises(function() {
         u.domain("example.org/dir0/");
     }, TypeError, "Failing invalid characters");
-    
+
     raises(function() {
         u.domain("example.org:80");
     }, TypeError, "Failing invalid characters");
-    
+
     raises(function() {
         u.domain("foo@example.org");
     }, TypeError, "Failing invalid characters");
 });
 test("subdomain", function() {
     var u = new URI("http://example.com/dir1/dir2/?query1=value1&query2=value2#hash");
-    
+
     raises(function() {
         u.subdomain("example.org/dir0/");
     }, TypeError, "Failing invalid characters");
-    
+
     raises(function() {
         u.subdomain("example.org:80");
     }, TypeError, "Failing invalid characters");
-    
+
     raises(function() {
         u.subdomain("foo@example.org");
     }, TypeError, "Failing invalid characters");
 });
 test("tld", function() {
     var u = new URI("http://example.com/dir1/dir2/?query1=value1&query2=value2#hash");
-    
+
     raises(function() {
         u.tld("foo/bar.html");
     }, TypeError, "Failing invalid characters");
@@ -102,8 +102,7 @@ test("addQuery", function() {
     equal(u.query(), "query1=value1&query2=value2&query3=value3%23got", "addQuery() has set invalid query");
     equal(u.fragment(), "hash", "addQuery() has modified fragment");
 });
-    
- 
+
 /*
 // RFC 3986 says "…and should limit these names to no more than 255 characters in length."
 // SHOULD is not MUST therefore not the responsibility of URI.js

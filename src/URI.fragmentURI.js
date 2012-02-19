@@ -39,7 +39,7 @@ p.fragment = function(v, build) {
     } else if (typeof v === "string") {
         this._furi = undefined;
     }
-    
+
     return f.call(this, v, build);
 };
 
@@ -48,7 +48,7 @@ p.build = function(deferBuild) {
     if (this._furi) {
         this._parts.fragment = prefix + this._furi.toString();
     }
-    
+
     return b.call(this, deferBuild);
 };
 
