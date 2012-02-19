@@ -1,6 +1,6 @@
 {
     "name": "URIjs",
-    "version": "1.4.3",
+    "version": "1.5.0",
     "title": "URI.js - Mutating URLs",
     "author": {
         "name": "Rodney Rehm",
@@ -34,6 +34,7 @@
     "files": [
         "src/URI.js",
         "src/IPv6.js",
+        "src/SecondLevelDomains.js",
         "src/punycode.js"
     ]
 }
