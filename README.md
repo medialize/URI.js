@@ -2,6 +2,7 @@
 
 * [About](http://medialize.github.com/URI.js/)
 * [Documentation](http://medialize.github.com/URI.js/docs.html)
+* [Author](http://rodneyrehm.de/en/)
 
 ---
 
