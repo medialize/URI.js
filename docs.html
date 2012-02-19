@@ -242,7 +242,12 @@ uri.authority("user:pass@example.org:80"); // returns the URI instance for chain
 // get domain
 uri.domain(); // returns string "example.org"
 // set domain
-uri.domain("otherdomain.com"); // returns the URI instance for chaining</pre>
+uri.domain("otherdomain.com"); // returns the URI instance for chaining
+
+// Second Level Domain (SLD) Support (as of URI.js 1.5.0)
+uri = new URI("http://example.co.uk/foo/hello.html");
+uri.domain(); // return string "example.co.uk"
+uri.domain(true); // return string "co.uk"</pre>
     <p>NOTE: .domain() will throw an error if you pass it an empty string.</p>
     <p>NOTE: Throws a <code>TypeError</code> on illegal input</p>
     
@@ -261,7 +266,12 @@ uri.subdomain("other.subdomain"); // returns the URI instance for chaining</pre>
 // get tld
 uri.tld(); // returns string "org"
 // set tld
-uri.tld("com"); // returns the URI instance for chaining</pre>
+uri.tld("com"); // returns the URI instance for chaining
+
+// Second Level Domain (SLD) Support (as of URI.js 1.5.0)
+uri = new URI("http://example.co.uk/foo/hello.html");
+uri.tld(); // return string "co.uk"
+uri.tld(true); // return string "uk"</pre>
     <p>NOTE: Throws an <code>Error</code> if you pass it an empty string or use it on an IP-host.</p>
 
     <h3 id="accessors-pathname">pathname(), path()</h3>
