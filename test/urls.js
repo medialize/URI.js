@@ -35,6 +35,7 @@ var urls = [{
         is: {
             relative: false,
             name: true,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -42,6 +43,50 @@ var urls = [{
             punycode: false
         }
     }, {
+        name: 'second level domain',
+        url: 'http://www.example.co.uk',
+        _url: 'http://www.example.co.uk/',
+        parts: {
+            protocol: 'http',
+            username: null,
+            password: null,
+            hostname: 'www.example.co.uk',
+            port: null,
+            path: '/',
+            query: null,
+            fragment: null
+        },
+        accessors: {
+            protocol: 'http',
+            username: '',
+            password: '',
+            port: '',
+            path: '/',
+            query: '',
+            fragment: '',
+            authority: 'www.example.co.uk',
+            subdomain: 'www',
+            domain: 'example.co.uk',
+            tld: 'co.uk',
+            directory: '/',
+            filename: '',
+            suffix: '',
+            hash: '', // location.hash style
+            search: '', // location.search style
+            host: 'www.example.co.uk',
+            hostname: 'www.example.co.uk'
+        },
+        is: {
+            relative: false,
+            name: true,
+            sld: true,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    },{
         name: 'qualified HTTP',
         url: 'http://www.example.org/some/directory/file.html?query=string#fragment',
         parts: {
@@ -77,6 +122,7 @@ var urls = [{
         is: {
             relative: false,
             name: true,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -119,6 +165,7 @@ var urls = [{
         is: {
             relative: false,
             name: true,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -161,6 +208,7 @@ var urls = [{
         is: {
             relative: false,
             name: true,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -203,6 +251,7 @@ var urls = [{
         is: {
             relative: true,
             name: false,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -245,6 +294,7 @@ var urls = [{
         is: {
             relative: true,
             name: false,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -287,6 +337,7 @@ var urls = [{
         is: {
             relative: true,
             name: false,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -330,6 +381,7 @@ var urls = [{
         is: {
             relative: false,
             name: true,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -372,6 +424,7 @@ var urls = [{
         is: {
             relative: false,
             name: false,
+            sld: false,
             ip: true,
             ip4: true,
             ip6: false,
@@ -414,6 +467,7 @@ var urls = [{
         is: {
             relative: false,
             name: false,
+            sld: false,
             ip: true,
             ip4: false,
             ip6: true,
@@ -456,6 +510,7 @@ var urls = [{
         is: {
             relative: false,
             name: false,
+            sld: false,
             ip: true,
             ip4: false,
             ip6: true,
@@ -498,6 +553,7 @@ var urls = [{
         is: {
             relative: false,
             name: true,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -540,6 +596,7 @@ var urls = [{
         is: {
             relative: false,
             name: true,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -582,6 +639,7 @@ var urls = [{
         is: {
             relative: true,
             name: false,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,
@@ -624,6 +682,7 @@ var urls = [{
         is: {
             relative: false,
             name: true,
+            sld: false,
             ip: false,
             ip4: false,
             ip6: false,

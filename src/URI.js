@@ -22,6 +22,9 @@ var IPv6 = typeof module !== "undefined" && module.exports
     ? require('./IPv6')
     : window.IPv6;
 
+var SLD = typeof module !== "undefined" && module.exports 
+    ? require('./SecondLevelDomains')
+    : window.SecondLevelDomains;
 
 function escapeRegEx(string) {
     // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
@@ -214,7 +217,7 @@ URI.parseHost = function(string, parts) {
     // extract host:port
     var pos = string.indexOf('/'), 
         t;
-    
+
     if (pos === -1) {
         pos = string.length;
     }
@@ -621,6 +624,7 @@ p.is = function(what) {
         ip4 = false,
         ip6 = false,
         name = false,
+        sld = false,
         idn = false,
         punycode = false,
         relative = true;
@@ -631,6 +635,7 @@ p.is = function(what) {
         ip6 = URI.ip6_expression.test(this._parts.hostname);
         ip = ip4 || ip6;
         name = !ip;
+        sld = name && SLD && SLD.has(this._parts.hostname);
         idn = name && URI.idn_expression.test(this._parts.hostname);
         punycode = name && URI.punycode_expression.test(this._parts.hostname);
     }
@@ -643,6 +648,9 @@ p.is = function(what) {
         case 'domain':
         case 'name':
             return name;
+
+        case 'sld':
+            return sld;
 
         case 'ip':
             return ip;
@@ -735,12 +743,13 @@ p.authority = function(v, build) {
 
 // fraction accessors
 p.subdomain = function(v, build) {
-    // convenience, return "example.org" from "www.example.org"
+    // convenience, return "www" from "www.example.org"
     if (v === undefined) {
         if (!this._parts.hostname || this.is('IP')) {
             return "";
         }
 
+        // grab domain and add another segment
         var end = this._parts.hostname.length - this.domain().length - 1;
         return this._parts.hostname.substring(0, end) || "";
     } else {
@@ -762,14 +771,27 @@ p.subdomain = function(v, build) {
     }
 };
 p.domain = function(v, build) {
+    if (typeof v == 'boolean') {
+        build = v;
+        v = undefined;
+    }
+
     // convenience, return "example.org" from "www.example.org"
     if (v === undefined) {
         if (!this._parts.hostname || this.is('IP')) {
             return "";
         }
 
-        // "localhost" is a domain, too
-        return this._parts.hostname.match(/\.?([^\.]+\.[^\.]+)$/)[1] || this._parts.hostname;
+        // if hostname consists of 1 or 2 segments, it must be the domain
+        var t = this._parts.hostname.match(/\./g);
+        if (t.length < 2) {
+            return this._parts.hostname;
+        }
+
+        // grab tld and add another segment
+        var end = this._parts.hostname.length - this.tld(build).length - 1;
+        end = this._parts.hostname.lastIndexOf('.', end -1) + 1;
+        return this._parts.hostname.substring(end) || "";
     } else {
         if (!v) {
             throw new TypeError("cannot set domain empty");
@@ -789,23 +811,40 @@ p.domain = function(v, build) {
     }
 };
 p.tld = function(v, build) {
+    if (typeof v == 'boolean') {
+        build = v;
+        v = undefined;
+    }
+
     // return "org" from "www.example.org"
     if (v === undefined) {
         if (!this._parts.hostname || this.is('IP')) {
             return "";
         }
 
-        var pos = this._parts.hostname.lastIndexOf('.');
-        return this._parts.hostname.substring(pos + 1);
+        var pos = this._parts.hostname.lastIndexOf('.'),
+            tld = this._parts.hostname.substring(pos + 1);
+
+        if (build !== true && SLD && SLD.list[tld.toLowerCase()]) {
+            return SLD.get(this._parts.hostname) || tld;
+        }
+
+        return tld;
     } else {
+        var replace;
         if (!v) {
             throw new TypeError("cannot set TLD empty");
         } else if (v.match(/[^a-zA-Z0-9-]/)) {
-            throw new TypeError("TLD '" + v + "' contains characters other than [A-Z0-9]");
+            if (SLD && SLD.is(v)) {
+                replace = new RegExp(escapeRegEx(this.tld()) + "$");
+                this._parts.hostname = this._parts.hostname.replace(replace, v);
+            } else {
+                throw new TypeError("TLD '" + v + "' contains characters other than [A-Z0-9]");
+            }
         } else if (!this._parts.hostname || this.is('IP')) {
             throw new ReferenceError("cannot set TLD on non-domain host");
         } else {
-            var replace = new RegExp(escapeRegEx(this.tld()) + "$");
+            replace = new RegExp(escapeRegEx(this.tld()) + "$");
             this._parts.hostname = this._parts.hostname.replace(replace, v);
         }
 

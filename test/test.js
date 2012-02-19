@@ -302,6 +302,20 @@ test("domain", function() {
     raises(function() {
         u.domain("");
     }, TypeError, "Failing empty input");
+
+    u.hostname("www.example.co.uk");
+    equal(u.domain(), "example.co.uk", "domain after changed hostname www.example.co.uk");
+    equal(u+"", "http://www.example.co.uk/foo.html", "url after changed hostname www.example.co.uk");
+    equal(u.domain(true), "co.uk", "domain after changed hostname www.example.co.uk (TLD of SLD)");
+    
+    u.domain('example.org');
+    equal(u.domain(), "example.org", "domain after changed domain example.org");
+    equal(u+"", "http://www.example.org/foo.html", "url after changed domain example.org");
+    
+    u.domain('example.co.uk');
+    equal(u.domain(), "example.co.uk", "domain after changed domain example.co.uk");
+    equal(u+"", "http://www.example.co.uk/foo.html", "url after changed domain example.co.uk");
+    
 });
 test("tld", function() {
     var u = new URI("http://www.example.org/foo.html");
@@ -312,6 +326,19 @@ test("tld", function() {
     raises(function() {
         u.tld("");
     }, TypeError, "Failing empty input");
+    
+    raises(function() {
+        u.tld("foo.bar");
+    }, TypeError, "Failing 'foo.bar'");
+    
+    u.tld('co.uk');
+    equal(u.tld(), "co.uk", "tld changed to sld");
+    equal(u+"", "http://www.example.co.uk/foo.html", "changed url to sld");
+    equal(u.tld(true), "uk", "TLD of SLD");
+
+    u.tld('org');
+    equal(u.tld(), "org", "sld changed to tld");
+    equal(u+"", "http://www.example.org/foo.html", "changed url to tld");
 });
 test("directory", function() {
     var u = new URI("http://www.example.org/some/directory/foo.html");
