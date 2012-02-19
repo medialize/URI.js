@@ -92,6 +92,7 @@ use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 // @output_file_name URI.min.js
 // @code_url http://medialize.github.com/URI.js/src/IPv6.js
 // @code_url http://medialize.github.com/URI.js/src/punycode.js
+// @code_url http://medialize.github.com/URI.js/src/SecondLevelDomains.js
 // @code_url http://medialize.github.com/URI.js/src/URI.js
 // ==/ClosureCompiler==
 ```
@@ -112,6 +113,13 @@ Docs where you get more info on parsing and working with URLs
 * [Java Inet6Address Class](http://docs.oracle.com/javase/1.5.0/docs/api/java/net/Inet6Address.html)
 * [Node.js URL API](http://nodejs.org/docs/latest/api/url.html)
 
+[Discussion on Hacker News](https://news.ycombinator.com/item?id=3398837)
+
+### HTML5 URL Draft ###
+
+* [W3C URL Draft](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html)
+* [Webkit #71968 - Implement URL API](https://bugs.webkit.org/show_bug.cgi?id=71968)
+
 ### MozURLProperty ###
 
 * https://www.w3.org/Bugs/Public/show_bug.cgi?id=14148
@@ -131,21 +139,12 @@ If you don't like URI.js, you may like one of these:
 * [Google Closure Uri](http://closure-library.googlecode.com/svn/docs/closure_goog_uri_uri.js.html)
 * [URI.js by Gary Court](https://github.com/garycourt/uri-js)
 
-### HTML5 URL Draft ###
-
-* [W3C URL Draft](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html)
-* [Webkit #71968 - Implement URL API](https://bugs.webkit.org/show_bug.cgi?id=71968)
-
-[Discussion on Hacker News](https://news.ycombinator.com/item?id=3398837)
-
 
 ## TODO ##
 
 if you want to get involved, these are things you could help out with…
 
-* AMD stuff
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
-* accept all [IPv6 notations](http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6)
 * accept [URNs](http://tools.ietf.org/html/rfc3986#section-3) (so URI.js truly is URI, not only URL)
 
 
