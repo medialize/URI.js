@@ -1,5 +1,5 @@
 /*
- * URL.js - Mutating URLs
+ * URI.js - Mutating URLs
  *
  * Version: 1.4.3
  *

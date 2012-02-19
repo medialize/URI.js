@@ -1,5 +1,5 @@
 /*
- * Extending URL.js for fragment abuse
+ * Extending URI.js for fragment abuse
  */
 
 // --------------------------------------------------------------------------------

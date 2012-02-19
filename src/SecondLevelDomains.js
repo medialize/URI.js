@@ -1,5 +1,5 @@
 /*
- * URL.js - Mutating URLs
+ * URI.js - Mutating URLs
  * Second Level Domain (SLD) Support
  *
  * Version: 1.4.3
