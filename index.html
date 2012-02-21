@@ -128,6 +128,21 @@ links can also be in parens (<strong>&lt;a&gt;http://example.org&lt;/a&gt;</stro
 a !== b;
 URI(a).<a href="docs.html#equals">equals</a>(b) === true;</pre>
     
+    <p>How do you like fiddling with the fragment?</p>
+    <pre class="prettyprint lang-js">// <strong>storing values in the fragment (hash):</strong>
+var uri = URI('#hello-world');
+uri.fragment({foo: "bar", bar: ['hello', 'world']});
+uri.fragment() === 'foo=bar&amp;bar=hello&amp;bar=world';
+// required src/URI.fragmentQuery.js to be loaded
+
+// <strong>storing URLs in the fragment (hash):</strong>
+var uri = URI("http://example.org/#!/foo/bar/baz.html"),
+    furi = uri.fragment(true);
+furi.pathname() === '/foo/bar/baz.html';
+furi.pathname('/hello.html');
+uri.toString() === "http://example.org/#!/hello.html"
+// required src/URI.fragmentURI.js to be loaded</pre>
+    
     <h2 id="authors">Authors</h2>
 	<ul>
 		<li><a href="http://rodneyrehm.de/en/">Rodney Rehm</a></li>

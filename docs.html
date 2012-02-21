@@ -75,6 +75,13 @@
             </ul>
         </li>
         <li>
+            <a href="#fragment-abuse">Working with the Fragment (Hash)</a>
+            <ul>
+                <li><a href="#fragment-abuse-query">Data in Fragments (Hash)</a></li>
+                <li><a href="#fragment-abuse-uri">URLs in Fragments (Hash)</a></li>
+            </ul>
+        </li>
+        <li>
             Normalizing an URL
             <ul>
                 <li><a href="#normalize">normalize()</a></li>
@@ -455,8 +462,36 @@ uri.removeSearch(["hello", "foo"]);
 uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true&amp;a=1&amp;a=2&amp;a=3");
 uri.removeSearch({hello: "world", foo: undefined, a: ["1", "3"]});
 // uri == "?hello=mars&amp;mine=true&amp;a=2"</pre>
+
+    <h2 id="fragment-abuse">Working with the Fragment (Hash)</h2>
+
+    <p>
+        There are virtually no limits to what you might do with fragments (hash). 
+        Every system has their own bag of tricks. 
+        As a result URI.js cannot offer any of the following tools right out of the box.
+        The most common <em>abuse of fragments</em> are storing URLs or query string like data.
+    </p>
+
+    <h3 id="fragment-abuse-query">Query String Fragments</h3>
+    <p>The file <a href="https://github.com/medialize/URI.js/blob/gh-pages/src/URI.fragmentQuery.js">src/URI.fragmentQuery.js</a> is a "plugin" that allows you to store data in hashes in the same manner the .query() functions provide.</p>
     
+    <pre class="prettyprint lang-js">var uri = new URI("#?hello=world");
+uri.addFragment("hello", "mars"); // returns the URI instance for chaining
+// uri == "#?hello=world&amp;hello=mars"</pre>
+
+
+    <h3 id="fragment-abuse-uri">URL Fragments</h3>
+    <p>The file <a href="https://github.com/medialize/URI.js/blob/gh-pages/src/URI.fragmentURI.js">src/URI.fragmentURI.js</a> is a "plugin" that allows you to store URLs in hashes.</p>
     
+    <pre class="prettyprint lang-js">var uri = URI("http://example.org/#!/foo/bar/baz.html"),
+    furi = uri.fragment(true);
+
+// manipulating the fragment URI
+furi.pathname() === '/foo/bar/baz.html';
+furi.pathname('/hello.html');
+
+// has direct effect on the actual URI
+uri.toString() === "http://example.org/#!/hello.html"</pre>
     
     <h2 id="normalizing">Normalizing URLs</h2>
     
