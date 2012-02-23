@@ -392,6 +392,7 @@ uri.hash("mars"); // returns the URI instance for chaining
     <dl>
         <dt><code>relative<code></dt><dd><code>true</code> if URL doesn't have a hostname</dd>
         <dt><code>domain</code>, <code>name</code></dt><dd><code>true</code> if hostname is not an IP</dd>
+        <dt><code>sld</code></dt><dd><code>true</code> if hostname is a second level domain (i.e. "example.co.uk")</dd>
         <dt><code>idn</code></dt><dd><code>true</code> if hostname contains non-alphanumeric characters and is not an IP</dd>
         <dt><code>punycode</code></dt><dd><code>true</code> if hostname contains <code>xn--</code></dd>
         <dt><code>ip</code></dt><dd><code>true</code> if hostname is IPv4 or IPv6</dd>
@@ -401,6 +402,7 @@ uri.hash("mars"); // returns the URI instance for chaining
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/");
 uri.is('relative') === false;
 uri.is('name') === true;
+uri.is('sld') === false;
 uri.is('punycode') === false;
 uri.is('IDN') === false; // case doesn't matter
 uri.is('idn') === false; // case doesn't matter
@@ -409,6 +411,7 @@ uri.is('ip') === false;
 var uri = new URI("http://123.123.123.123/");
 uri.is('relative') === false;
 uri.is('name') === false;
+uri.is('sld') === false;
 uri.is('IP') === true;
 uri.is('IPv4') === true;
 uri.is('IPv6') === false;
@@ -421,7 +424,11 @@ uri.is('IPv6') === true;
 var uri = new URI("/hello/world.html");
 uri.is('relative') === true;
 uri.is('name') === false;
-uri.is('IP') === false;</pre>
+uri.is('IP') === false;
+
+var uri = new URI("http://example.co.uk/");
+uri.is('name') === true;
+uri.is('sld') === true;</pre>
     
     
     <h2 id="querystrings">Working with the query string</h2>
