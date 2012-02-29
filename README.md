@@ -108,7 +108,7 @@ Docs where you get more info on parsing and working with URLs
 * [Punycode - Internationalized Domain Name (IDN)](http://www.ietf.org/rfc/rfc3492.txt) ([html version](http://tools.ietf.org/html/rfc3492))
 * [URI - Reference Resolution](http://tools.ietf.org/html/rfc3986#section-5)
 * [Parsing URLs for Fun and Profit](http://tools.ietf.org/html/draft-abarth-url-01)
-* [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type) (Query String Parameters)
+* [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type) (Query String Parameters) and [application/x-www-form-urlencoded encoding algorithm](http://www.whatwg.org/specs/web-apps/current-work/multipage/association-of-controls-and-forms.html#application/x-www-form-urlencoded-encoding-algorithm)
 * [Naming URL components](http://tantek.com/2011/238/b1/many-ways-slice-url-name-pieces)
 * [Java URI Class](http://docs.oracle.com/javase/7/docs/api/java/net/URI.html)
 * [Java Inet6Address Class](http://docs.oracle.com/javase/1.5.0/docs/api/java/net/Inet6Address.html)
