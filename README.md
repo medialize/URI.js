@@ -203,6 +203,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### 1.6.0 (March ??? 2012) ###
 
 * adding [URN](http://tools.ietf.org/html/rfc3986#section-3) (`javascript:`, `mailto:`, ...) support
+* adding `.scheme()` as alias of `.protocol()`
+* adding jQuery Plugin `src/jquery.URI.js`
 
 ### 1.5.0 (February 19th 2012) ###
 

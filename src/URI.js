@@ -652,6 +652,9 @@ p.is = function(what) {
     switch (what.toLowerCase()) {
         case 'relative':
             return relative;
+        
+        case 'absolute':
+            return !relative;
 
         // hostname identification
         case 'domain':
