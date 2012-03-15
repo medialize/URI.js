@@ -198,13 +198,18 @@ URI.parse = function(string) {
     }
 
     // extract protocol
-    pos = string.indexOf('://');
+    pos = string.indexOf(':');
     if (pos > -1) {
         parts.protocol = string.substring(0, pos);
-        string = string.substring(pos + 3);
+        if (string.substring(pos + 1, pos + 3) === '//') {
+            string = string.substring(pos + 3);
 
-        // extract "user:pass@host:port"
-        string = URI.parseAuthority(string, parts);
+            // extract "user:pass@host:port"
+            string = URI.parseAuthority(string, parts);
+        } else {
+            string = string.substring(pos + 1);
+            parts.urn = true;
+        }
     }
 
     // what's left must be the path
@@ -306,7 +311,10 @@ URI.build = function(parts) {
     var t = '';
 
     if (typeof parts.protocol === "string" && parts.protocol.length) {
-        t += parts.protocol + "://";
+        t += parts.protocol + ":";
+        if (!parts.urn) {
+            t += '//';
+        }
     }
 
     t += (URI.buildAuthority(parts) || '');
@@ -571,7 +579,7 @@ for (_part in _parts) {
 
 p.pathname = function(v, build) {
     if (v === undefined || v === true) {
-        var res = this._parts.path || "/";
+        var res = this._parts.path || (this._parts.urn ? '' : '/');
         return v ? URI.decodePath(res) : res;
     } else {
         this._parts.path = v ? URI.recodePath(v) : "/";
@@ -590,6 +598,7 @@ p.href = function(href, build) {
             username: null,
             password: null,
             hostname: null,
+            urn: null,
             port: null,
             path: null,
             query: null,
@@ -627,7 +636,7 @@ p.is = function(what) {
         sld = false,
         idn = false,
         punycode = false,
-        relative = true;
+        relative = !this._parts.urn;
 
     if (this._parts.hostname) {
         relative = false;
@@ -667,6 +676,12 @@ p.is = function(what) {
 
         case 'idn':
             return idn;
+            
+        case 'url':
+            return !this._parts.urn;
+
+        case 'urn':
+            return !!this._parts.urn;
 
         case 'punycode':
             return punycode;
@@ -694,6 +709,10 @@ p.protocol = function(v, build) {
     return _protocol.call(this, v, build);
 };
 p.port = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     if (v !== undefined) {
         if (v === 0) {
             v = null;
@@ -713,6 +732,10 @@ p.port = function(v, build) {
     return _port.call(this, v, build);
 };
 p.hostname = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     if (v !== undefined) {
         var x = {};
         URI.parseHost(v, x);
@@ -723,6 +746,10 @@ p.hostname = function(v, build) {
 
 // combination accessors
 p.host = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     if (v === undefined) {
         return this._parts.hostname ? URI.buildHost(this._parts) : "";
     } else {
@@ -732,6 +759,10 @@ p.host = function(v, build) {
     }
 };
 p.authority = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     if (v === undefined) {
         return this._parts.hostname ? URI.buildAuthority(this._parts) : "";
     } else {
@@ -743,6 +774,10 @@ p.authority = function(v, build) {
 
 // fraction accessors
 p.subdomain = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     // convenience, return "www" from "www.example.org"
     if (v === undefined) {
         if (!this._parts.hostname || this.is('IP')) {
@@ -771,6 +806,10 @@ p.subdomain = function(v, build) {
     }
 };
 p.domain = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     if (typeof v == 'boolean') {
         build = v;
         v = undefined;
@@ -811,6 +850,10 @@ p.domain = function(v, build) {
     }
 };
 p.tld = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     if (typeof v == 'boolean') {
         build = v;
         v = undefined;
@@ -853,6 +896,10 @@ p.tld = function(v, build) {
     }
 };
 p.directory = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     if (v === undefined || v === true) {
         if (!this._parts.path || this._parts.path === '/') {
             return '/';
@@ -891,6 +938,10 @@ p.directory = function(v, build) {
     }
 };
 p.filename = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     if (v === undefined || v === true) {
         if (!this._parts.path || this._parts.path === '/') {
             return "";
@@ -924,6 +975,10 @@ p.filename = function(v, build) {
     }
 };
 p.suffix = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
     if (v === undefined || v === true) {
         if (!this._parts.path || this._parts.path === '/') {
             return "";
@@ -1200,6 +1255,10 @@ p.readable = function() {
 
 // resolving relative and absolute URLs
 p.absoluteTo = function(base) {
+    if (this._parts.urn) {
+        throw new Error('URNs do not have any generally defined hierachical components');
+    }
+    
     if (!this.is('relative')) {
         throw new Error('Cannot resolve non-relative URL');
     }
@@ -1224,6 +1283,10 @@ p.absoluteTo = function(base) {
     return resolved;
 };
 p.relativeTo = function(base) {
+    if (this._parts.urn) {
+        throw new Error('URNs do not have any generally defined hierachical components');
+    }
+    
     if (!(base instanceof URI)) {
         base = new URI(base);
     }

@@ -783,3 +783,8 @@ test("iso8859", function() {
     equal(u.path(), "/%C3%A4.html", 'convert unicode');
 });
 
+module("URN");
+
+
+
+

@@ -98,6 +98,25 @@ use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 // ==/ClosureCompiler==
 ```
 
+## Understanding URIs ##
+
+The following describes the structure of an URI ([source](http://tools.ietf.org/html/rfc3986#section-3)):
+
+```
+Structure of an URI:
+
+URL:      foo://example.com:8042/over/there?name=ferret#nose
+          \_/   \______________/\_________/ \_________/ \__/
+           |           |            |            |        |
+        scheme     authority       path        query   fragment
+           |   _____________________|__
+          / \ /                        \
+URN:      urn:example:animal:ferret:nose
+```
+
+
+
+
 ## Resources ##
 
 Docs where you get more info on parsing and working with URLs
@@ -149,10 +168,7 @@ if you want to get involved, these are things you could help out with…
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * add [Media Fragments](https://github.com/medialize/URI.js/issues/18)
 * add `.scheme()` alias for `.protocol()`
-* accept [URNs](http://tools.ietf.org/html/rfc3986#section-3) (so URI.js truly is URI, not only URL)
-  * `javascript:alert('world');` -> `{protocol: 'spotify', pathname: 'track:foobar'}`
-  * `spotify:track:foobar` -> `{protocol: 'spotify', pathname: 'track:foobar'}`
-  * `mailto:mail@example.org?subject=foobar` -> `{protocol: 'mailto', pathname: 'mail@example.org', query: {subject: 'foobar'}}`
+* add `.userinfo()` to comply with http://tools.ietf.org/html/rfc3986#section-3.2.1
 * add jQuery method for `$('a').URI()` to return an `URI` instance that automatically updates the (first) element's `href` or `src`
 * add jQuery `$(':uri(suffix=pdf)')` (normalize?)
   * `jQuery.expr.filters.uri = function(){}`
@@ -177,15 +193,6 @@ if you want to get involved, these are things you could help out with…
 
 I built this sucker during Christmas 2011. It was a nice excuse to get away from the annual family terror. You should try it some time…
 
-### Naming Libraries sucks ###
-
-```
-Quote from java doc:
-A URI is a uniform resource identifier while a URL is a uniform resource locator. Hence every URL is a URI, abstractly speaking, but not every URI is a URL. This is because there is another subcategory of URIs, uniform resource names (URNs), which name resources but do not specify how to locate them. The mailto, news, and isbn URIs shown above are examples of URNs.
-```
-
-URI.js only handles URLs - but since Firefox already used window.URL for some (yet undocumented) MozURLProperty, I named it URI anyways.
-
 
 ## License ##
 
@@ -193,6 +200,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 
 ## Changelog ##
+
+### 1.6.0 (March ??? 2012) ###
+
+* adding [URN](http://tools.ietf.org/html/rfc3986#section-3) (`javascript:`, `mailto:`, ...) support
 
 ### 1.5.0 (February 19th 2012) ###
 

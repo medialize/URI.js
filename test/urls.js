@@ -33,6 +33,8 @@ var urls = [{
             hostname: 'www.example.org'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: true,
             sld: false,
@@ -77,6 +79,8 @@ var urls = [{
             hostname: 'www.example.co.uk'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: true,
             sld: true,
@@ -120,6 +124,8 @@ var urls = [{
             hostname: 'www.example.org'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: true,
             sld: false,
@@ -163,6 +169,8 @@ var urls = [{
             hostname: 'www.example.org'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: true,
             sld: false,
@@ -206,6 +214,8 @@ var urls = [{
             hostname: 'www.example.org'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: true,
             sld: false,
@@ -249,6 +259,8 @@ var urls = [{
             hostname: ''
         },
         is: {
+            urn: false,
+            url: true,
             relative: true,
             name: false,
             sld: false,
@@ -292,6 +304,8 @@ var urls = [{
             hostname: ''
         },
         is: {
+            urn: false,
+            url: true,
             relative: true,
             name: false,
             sld: false,
@@ -305,37 +319,39 @@ var urls = [{
         name: 'missing scheme',
         url: 'user:pass@www.example.org:123/some/directory/file.html?query=string#fragment',
         parts: {
-            protocol: null,
+            protocol: 'user',
             username: null,
             password: null,
             hostname: null,
             port: null,
-            path: 'user:pass@www.example.org:123/some/directory/file.html',
+            path: 'pass@www.example.org:123/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment'
         },
         accessors: {
-            protocol: '',
+            protocol: 'user',
             username: '',
             password: '',
             port: '',
-            path: 'user:pass@www.example.org:123/some/directory/file.html',
+            path: 'pass@www.example.org:123/some/directory/file.html',
             query: 'query=string',
             fragment: 'fragment',
             authority: '',
             subdomain: '',
             domain: '',
             tld: '',
-            directory: 'user:pass@www.example.org:123/some/directory',
-            filename: 'file.html',
-            suffix: 'html',
+            directory: '',
+            filename: '',
+            suffix: '',
             hash: '#fragment',
             search: '?query=string',
             host: '',
             hostname: ''
         },
         is: {
-            relative: true,
+            urn: true,
+            url: false,
+            relative: false,
             name: false,
             sld: false,
             ip: false,
@@ -379,6 +395,8 @@ var urls = [{
             hostname: 'example.org'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: true,
             sld: false,
@@ -422,6 +440,8 @@ var urls = [{
             hostname: '123.123.123.123'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: false,
             sld: false,
@@ -465,6 +485,8 @@ var urls = [{
             hostname: 'fe80:0000:0000:0000:0204:61ff:fe9d:f156'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: false,
             sld: false,
@@ -508,6 +530,8 @@ var urls = [{
             hostname: 'fe80:0000:0000:0000:0204:61ff:fe9d:f156'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: false,
             sld: false,
@@ -551,6 +575,8 @@ var urls = [{
             hostname: 'xn--exmple-cua.org'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: true,
             sld: false,
@@ -594,6 +620,8 @@ var urls = [{
             hostname: 'exämple.org'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: true,
             sld: false,
@@ -637,6 +665,8 @@ var urls = [{
             hostname: ''
         },
         is: {
+            urn: false,
+            url: true,
             relative: true,
             name: false,
             sld: false,
@@ -680,8 +710,148 @@ var urls = [{
             hostname: 'www.example.org'
         },
         is: {
+            urn: false,
+            url: true,
             relative: false,
             name: true,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    }, {
+        name: 'mailto:',
+        url: 'mailto:hello@example.org?subject=hello',
+        _url: 'mailto:hello@example.org?subject=hello',
+        parts: {
+            protocol: 'mailto',
+            username: null,
+            password: null,
+            hostname: null,
+            port: null,
+            path: 'hello@example.org',
+            query: 'subject=hello',
+            fragment: null
+        },
+        accessors: {
+            protocol: 'mailto',
+            username: '',
+            password: '',
+            port: '',
+            path: 'hello@example.org',
+            query: 'subject=hello',
+            fragment: '',
+            authority: '',
+            subdomain: '',
+            domain: '',
+            tld: '',
+            directory: '',
+            filename: '',
+            suffix: '',
+            hash: '',
+            search: '?subject=hello',
+            host: '',
+            hostname: ''
+        },
+        is: {
+            urn: true,
+            url: false,
+            relative: false,
+            name: false,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    }, {
+        name: 'magnet:',
+        url: 'magnet:?xt=urn:btih:f8c020dac7a083defda1769a1196a13facc38ef6&dn=Linux+64x+server+11.10+Pt+Pt&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Ftracker.publicbt.com%3A80&tr=udp%3A%2F%2Ftracker.ccc.de%3A80',
+        _url: 'magnet:?xt=urn:btih:f8c020dac7a083defda1769a1196a13facc38ef6&dn=Linux+64x+server+11.10+Pt+Pt&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Ftracker.publicbt.com%3A80&tr=udp%3A%2F%2Ftracker.ccc.de%3A80',
+        parts: {
+            protocol: 'magnet',
+            username: null,
+            password: null,
+            hostname: null,
+            port: null,
+            path: '',
+            query: 'xt=urn:btih:f8c020dac7a083defda1769a1196a13facc38ef6&dn=Linux+64x+server+11.10+Pt+Pt&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Ftracker.publicbt.com%3A80&tr=udp%3A%2F%2Ftracker.ccc.de%3A80',
+            fragment: null
+        },
+        accessors: {
+            protocol: 'magnet',
+            username: '',
+            password: '',
+            port: '',
+            path: '',
+            query: 'xt=urn:btih:f8c020dac7a083defda1769a1196a13facc38ef6&dn=Linux+64x+server+11.10+Pt+Pt&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Ftracker.publicbt.com%3A80&tr=udp%3A%2F%2Ftracker.ccc.de%3A80',
+            fragment: '',
+            authority: '',
+            subdomain: '',
+            domain: '',
+            tld: '',
+            directory: '',
+            filename: '',
+            suffix: '',
+            hash: '',
+            search: '?xt=urn:btih:f8c020dac7a083defda1769a1196a13facc38ef6&dn=Linux+64x+server+11.10+Pt+Pt&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Ftracker.publicbt.com%3A80&tr=udp%3A%2F%2Ftracker.ccc.de%3A80',
+            host: '',
+            hostname: ''
+        },
+        is: {
+            urn: true,
+            url: false,
+            relative: false,
+            name: false,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    }, {
+        name: 'javascript:',
+        url: 'javascript:alert("hello world");',
+        _url: 'javascript:alert("hello world");',
+        parts: {
+            protocol: 'javascript',
+            username: null,
+            password: null,
+            hostname: null,
+            port: null,
+            path: 'alert("hello world");',
+            query: null,
+            fragment: null
+        },
+        accessors: {
+            protocol: 'javascript',
+            username: '',
+            password: '',
+            port: '',
+            path: 'alert("hello world");',
+            query: '',
+            fragment: '',
+            authority: '',
+            subdomain: '',
+            domain: '',
+            tld: '',
+            directory: '',
+            filename: '',
+            suffix: '',
+            hash: '',
+            search: '',
+            host: '',
+            hostname: ''
+        },
+        is: {
+            urn: true,
+            url: false,
+            relative: false,
+            name: false,
             sld: false,
             ip: false,
             ip4: false,
