@@ -139,6 +139,7 @@ If you don't like URI.js, you may like one of these:
 * [mediawiki Uri](https://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/resources/mediawiki/mediawiki.Uri.js?view=markup) (needs mw and jQuery)
 * [Google Closure Uri](http://closure-library.googlecode.com/svn/docs/closure_goog_uri_uri.js.html)
 * [URI.js by Gary Court](https://github.com/garycourt/uri-js)
+* [jurlp](https://github.com/tombonner/jurlp)
 
 
 ## TODO ##
@@ -146,7 +147,19 @@ If you don't like URI.js, you may like one of these:
 if you want to get involved, these are things you could help out with…
 
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
+* add [Media Fragments](https://github.com/medialize/URI.js/issues/18)
+* add `.scheme()` alias for `.protocol()`
 * accept [URNs](http://tools.ietf.org/html/rfc3986#section-3) (so URI.js truly is URI, not only URL)
+  * `javascript:alert('world');` -> `{protocol: 'spotify', pathname: 'track:foobar'}`
+  * `spotify:track:foobar` -> `{protocol: 'spotify', pathname: 'track:foobar'}`
+  * `mailto:mail@example.org?subject=foobar` -> `{protocol: 'mailto', pathname: 'mail@example.org', query: {subject: 'foobar'}}`
+* add jQuery method for `$('a').URI()` to return an `URI` instance that automatically updates the (first) element's `href` or `src`
+* add jQuery `$(':uri(suffix=pdf)')` (normalize?)
+  * `jQuery.expr.filters.uri = function(){}`
+  * `function(element, index, matches){ return true; }`
+  * `match[1] == 'uri'`, `match[3] == 'suffix=pdf'`
+* add `$.propHooks.uri`, `$.attrHooks.uri` (getter, setter) (for each [`protocol`, `hostname`, …])
+
 
 
 ## Authors ##
@@ -181,42 +194,42 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-### 1.5.0 ###
+### 1.5.0 (February 19th 2012) ###
 
 * adding Second Level Domain (SLD) Support ([Issue #17](https://github.com/medialize/URI.js/issues/17))
 
-### 1.4.3 ###
+### 1.4.3 (January 28th 2012) ###
 
 * fixed global scope leakage ([Issue #15](https://github.com/medialize/URI.js/issues/15) [mark-rushakoff](https://github.com/mark-rushakoff))
 
-### 1.4.2 ###
+### 1.4.2 (January 25th 2012) ###
 
 * improved CommonJS compatibility ([Issue #14](https://github.com/medialize/URI.js/issues/14) [FGRibreau](https://github.com/FGRibreau))
 
-### 1.4.1 ###
+### 1.4.1 (January 21st 2012) ###
 
 * added CommonJS compatibility ([Issue #11](https://github.com/medialize/URI.js/issues/11), [Evangenieur](https://github.com/Evangenieur))
 
-### 1.4.0 ###
+### 1.4.0 (January 12th 2012) ###
 
 * added URI.iso8859() and URI.unicode() to switch base charsets ([Issue #10](https://github.com/medialize/URI.js/issues/10), [mortenn](https://github.com/))
 * added .iso8859() and .unicode() to convert an URI's escape encoding
 
-### 1.3.1 ###
+### 1.3.1 (January 3rd 2011) ###
 
 * Updated Punycode.js to version 0.3.0
 * added edge-case tests ("jim")
 * fixed edge-cases in .protocol(), .port(), .subdomain(), .domain(), .tld(), .filename()
 * fixed parsing of hostname in .hostname()
 
-### 1.3.0 ###
+### 1.3.0 (December 30th 2011) ###
 
 * added .subdomain() convenience accessor
 * improved internal deferred build handling
 * fixed thrown Error for `URI("http://example.org").query(true)` ([Issue #6](https://github.com/medialize/URI.js/issues/6))
 * added examples for extending URI.js for fragment abuse, see src/URI.fragmentQuery.js and src/URI.fragmentURI.js ([Issue #2](https://github.com/medialize/URI.js/issues/2))
 
-### 1.2.0 ###
+### 1.2.0 (December 29th 2011) ###
 
 * added .equals() for URL comparison
 * proper encoding/decoding for .pathname(), .directory(), .filename() and .suffix() according to [RFC 3986 3.3](http://tools.ietf.org/html/rfc3986#section-3.3)
@@ -226,7 +239,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * added .readable() for humanly readable representation of encoded URIs
 * fixed bug where @ in pathname would be parsed as part of the authority
 
-### 1.1.0 ###
+### 1.1.0 (December 28th 2011) ###
 
 * URI.withinString()
 * added .normalizeProtocol() to lowercase protocols
@@ -236,6 +249,6 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * build `{foo: null, bar: ""}` to "?foo&bar=" [Algorithm for serializing URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization)
 * fixed RegExp escaping
 
-### 1.0.0 ###
+### 1.0.0 (December 27th 2011) ###
 
 * Initial URI.js
