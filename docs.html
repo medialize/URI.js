@@ -45,7 +45,7 @@
         <li>
             Working with URI parts
             <ul>
-                <li><a href="#accessors-protocol">protocol()</a></li>
+                <li><a href="#accessors-protocol">protocol(), scheme()</a></li>
                 <li><a href="#accessors-username">username()</a></li>
                 <li><a href="#accessors-password">password()</a></li>
                 <li><a href="#accessors-hostname">hostname()</a></li>
@@ -187,7 +187,8 @@ var uri = new URI("#call-me-hash");
 
 // and any combination of the above…</pre>
     
-    <h3 id="accessors-protocol">protocol()</h3>
+    <h3 id="accessors-protocol">protocol(), scheme()</h3>
+    <p>.scheme() is an alias of .protocol()</p>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
 // get protocol
 uri.protocol(); // returns string "http"

@@ -708,6 +708,7 @@ p.protocol = function(v, build) {
     }
     return _protocol.call(this, v, build);
 };
+p.scheme = p.protocol;
 p.port = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;

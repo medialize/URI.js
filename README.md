@@ -167,7 +167,6 @@ if you want to get involved, these are things you could help out with…
 
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * add [Media Fragments](https://github.com/medialize/URI.js/issues/18)
-* add `.scheme()` alias for `.protocol()`
 * add `.userinfo()` to comply with http://tools.ietf.org/html/rfc3986#section-3.2.1
 * add jQuery method for `$('a').URI()` to return an `URI` instance that automatically updates the (first) element's `href` or `src`
 * add jQuery `$(':uri(suffix=pdf)')` (normalize?)
