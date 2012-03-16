@@ -1070,6 +1070,14 @@ p.removeSearch = p.removeQuery;
 
 // sanitizing URLs
 p.normalize = function() {
+    if (this._parts.urn) {
+        return this
+            .normalizeProtocol(false)
+            .normalizeQuery(false)
+            .normalizeFragment(false)
+            .build();
+    }
+    
     return this
         .normalizeProtocol(false)
         .normalizeHostname(false)
@@ -1111,6 +1119,10 @@ p.normalizePort = function(build) {
     return this;
 };
 p.normalizePath = function(build) {
+    if (this._parts.urn) {
+        return this;
+    }
+    
     if (!this._parts.path || this._parts.path === '/') {
         return this;
     }

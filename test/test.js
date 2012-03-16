@@ -89,7 +89,7 @@ test("protocol", function() {
     equal(u.protocol(), "", "missing protocol");
     equal(u+"", "example.org/foo.html", "no-scheme url");
 });
-test("username", function() { 
+test("username", function() {
     var u = new URI("http://example.org/foo.html");
     u.username("hello");
     equal(u.username(), "hello", "changed username hello");
@@ -101,7 +101,7 @@ test("username", function() {
     equal(u.password(), "", "changed passowrd ''");
     equal(u+"", "http://example.org/foo.html", "changed url ''");
 });
-test("password", function() { 
+test("password", function() {
     var u = new URI("http://hello@example.org/foo.html");
     u.password("world");
     equal(u.username(), "hello", "changed username world");
@@ -782,9 +782,4 @@ test("iso8859", function() {
     u.unicode();
     equal(u.path(), "/%C3%A4.html", 'convert unicode');
 });
-
-module("URN");
-
-
-
 
