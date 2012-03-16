@@ -1,0 +1,192 @@
+/*
+ * URI.js - Mutating URLs
+ * jQuery Plugin
+ *
+ * Version: 1.5.0
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.com/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *   GPL v3 http://opensource.org/licenses/GPL-3.0
+ *
+ */
+
+(function($){
+
+var URI = typeof module !== "undefined" && module.exports
+    ? require('./URIjs')
+    : window.URI;
+
+function escapeRegEx(string) {
+    // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
+    return string.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+}
+
+var pseudo = /^([a-zA-Z]+)\s*([\^\$*]?=)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/,
+    // https://developer.mozilla.org/en/CSS/Attribute_selectors
+    comparable = {},
+    compare = {
+        // equals 
+        '=': function(value, target) {
+            return value === target;
+        },
+        // ~= translates to value.match((?:^|\s)target(?:\s|$)) which is useless for URIs
+        // |= translates to value.match((?:\b)target(?:-|\s|$)) which is useless for URIs
+        // begins with
+        '^=': function(value, target) {
+            return !!(value + "").match(new RegExp('^' + escapeRegEx(target), 'i'));
+        },
+        // ends with
+        '$=': function(value, target) {
+            return !!(value + "").match(new RegExp(escapeRegEx(target) + '$', 'i'));
+        },
+        // contains
+        '*=': function(value, target) {
+            return !!(value + "").match(new RegExp(escapeRegEx(target), 'i'));
+        }
+    };
+
+$.each('authority directory domain filename fragment hash host hostname href password path pathname port protocol query scheme search subdomain suffix tld username'.split(" "), function(k, v) {
+    comparable[v] = true;
+    
+    (function(property){
+        $.attrHooks['uri:' + property] = {
+            get: function(elem) {
+                return $(elem).uri()[property]();
+            },
+            set: function(elem, value) {
+                $(elem).uri()[property](value);
+                return value;
+            }
+        };
+    })(v);
+});
+
+
+// general URI accessor
+$.fn.uri = function(uri) {
+    // TODO: add element detection?
+    var $this = this.first(),
+        elem = $this.get(0),
+        property;
+    
+    $.each(['href', 'src', 'action'], function(k, v) {
+        if (v in elem) {
+            property = v;
+            return false;
+        }
+        
+        return true;
+    });
+    
+    if (!property) {
+        throw new Error('Element "' + elem.nodeName + '" does not have either property: href, src, action');
+    }
+    
+    if (uri !== undefined) {
+        var old = $this.data('uri', uri);
+        if (old) {
+            old._dom_element = undefined;
+            old._dom_attribute = undefined;
+        }
+        
+        if (!(uri instanceof URI)) {
+            uri = URI(uri);
+        }
+    } else {
+        uri = $this.data('uri');
+        if (uri) {
+            return uri;
+        } else {
+            // Make sure that URLs aren't manipulated
+    		// (IE normalizes it by default)
+            uri = URI($.support.hrefNormalized 
+                ? elem.getAttribute(property) 
+                : elem.getAttribute(property, 2));
+        }
+    }
+    
+    uri._dom_element = elem;
+    uri._dom_attribute = property;
+    uri.normalize();
+    $this.data('uri', uri);
+    return uri;
+};
+
+// overwrite URI.build() to update associated DOM element if necessary
+URI.prototype.build = function(deferBuild) {
+    if (this._dom_element) {
+        // cannot defer building when hooked into a DOM element
+        this._string = URI.build(this._parts);
+        this._deferred_build = false;
+        this._dom_element.setAttribute(this._dom_attribute, this._string);
+        this._dom_element[this._dom_attribute] = this._string;
+    } else if (deferBuild === true) {
+        this._deferred_build = true;
+    } else if (deferBuild === undefined || this._deferred_build) {
+        this._string = URI.build(this._parts);
+        this._deferred_build = false;
+    }
+    
+    return this;
+};
+
+
+// :uri() pseudo-selector for $.find(), $.filter() $.is(), et al.
+$.expr.filters.uri = function(elem, index, matches) {
+    // documentation on this is scarce, look into
+    //  - https://github.com/jquery/sizzle/wiki/Sizzle-Home
+    //  - https://github.com/jquery/sizzle/blob/master/sizzle.js#L626
+
+    // skip anything without src|href|action
+    if (!('src' in elem || 'href' in elem  || 'action' in elem)) {
+        return false;
+    }
+    
+    // <input type="image" src=""> - facepalm!
+    if (elem.nodeName.toLowerCase() === 'input' && elem.type !== 'image') {
+        return false;
+    }
+    
+    var t = matches[3].match(pseudo),
+        property,
+        uri;
+
+    if (!t || (!t[5] && !compare[t[2]])) {
+        // abort because the given selector cannot be executed
+        // TODO: maybe this should throw an error?
+        return false;
+    }
+
+    uri = $(elem).uri();
+    
+    if (t[5]) {
+        return uri.is(t[5]);
+    } else {
+        property = t[1].toLowerCase();
+        if (!comparable[property]) {
+            // TODO: maybe this should throw an error?
+            return false;
+        }
+        
+        return compare[t[2]](uri[property](), t[4]);
+    }
+
+    return false;
+};
+
+// pipe $.attr('src') and $.attr('href') through URI.js
+$.each(['src', 'href', 'uri'], function(k, v) {
+    $.attrHooks[v] = {
+        get: function(elem) {
+            return $(elem).uri().toString();
+        },
+        set: function(elem, value) {
+            return $(elem).uri().href(value).toString();
+        }
+    };
+});
+        
+})(jQuery);
