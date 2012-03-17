@@ -152,7 +152,7 @@ if you want to get involved, these are things you could help out with…
 
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * add [Media Fragments](https://github.com/medialize/URI.js/issues/18)
-* add [URI Templates]()
+* add [URI Templating](https://github.com/medialize/URI.js/pull/12)
 
 ## Authors ##
 
