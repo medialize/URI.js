@@ -5,7 +5,7 @@
  * Version: 1.5.0
  *
  * Author: Rodney Rehm
- * Web: http://medialize.github.com/URI.js/
+ * Web: http://medialize.github.com/URI.js/jquery-uri-plugin.html
  *
  * Licensed under
  *   MIT License http://www.opensource.org/licenses/mit-license
@@ -24,9 +24,29 @@ function escapeRegEx(string) {
     return string.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 }
 
+function getUriProperty(elem) {
+    var property;
+
+    $.each(['href', 'src', 'action'], function(k, v) {
+        if (v in elem) {
+            property = v;
+            return false;
+        }
+    
+        return true;
+    });
+    
+    // compensate ambiguous <input>
+    if (elem.nodeName.toLowerCase() === 'input' && elem.type !== 'image') {
+        return undefined;
+    }
+    
+    return property;
+}
+
 var pseudo = /^([a-zA-Z]+)\s*([\^\$*]?=)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/,
-    // https://developer.mozilla.org/en/CSS/Attribute_selectors
     comparable = {},
+    // https://developer.mozilla.org/en/CSS/Attribute_selectors
     compare = {
         // equals 
         '=': function(value, target) {
@@ -48,6 +68,7 @@ var pseudo = /^([a-zA-Z]+)\s*([\^\$*]?=)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/
         }
     };
 
+// populate lookup table and register $.attr('uri:accessor') handlers
 $.each('authority directory domain filename fragment hash host hostname href password path pathname port protocol query scheme search subdomain suffix tld username'.split(" "), function(k, v) {
     comparable[v] = true;
     
@@ -64,22 +85,11 @@ $.each('authority directory domain filename fragment hash host hostname href pas
     })(v);
 });
 
-
 // general URI accessor
 $.fn.uri = function(uri) {
-    // TODO: add element detection?
     var $this = this.first(),
         elem = $this.get(0),
-        property;
-    
-    $.each(['href', 'src', 'action'], function(k, v) {
-        if (v in elem) {
-            property = v;
-            return false;
-        }
-        
-        return true;
-    });
+        property = getUriProperty(elem);
     
     if (!property) {
         throw new Error('Element "' + elem.nodeName + '" does not have either property: href, src, action');
@@ -133,7 +143,6 @@ URI.prototype.build = function(deferBuild) {
     return this;
 };
 
-
 // :uri() pseudo-selector for $.find(), $.filter() $.is(), et al.
 $.expr.filters.uri = function(elem, index, matches) {
     // documentation on this is scarce, look into
@@ -141,12 +150,7 @@ $.expr.filters.uri = function(elem, index, matches) {
     //  - https://github.com/jquery/sizzle/blob/master/sizzle.js#L626
 
     // skip anything without src|href|action
-    if (!('src' in elem || 'href' in elem  || 'action' in elem)) {
-        return false;
-    }
-    
-    // <input type="image" src=""> - facepalm!
-    if (elem.nodeName.toLowerCase() === 'input' && elem.type !== 'image') {
+    if (!getUriProperty(elem)) {
         return false;
     }
     
@@ -156,7 +160,7 @@ $.expr.filters.uri = function(elem, index, matches) {
 
     if (!t || (!t[5] && !compare[t[2]])) {
         // abort because the given selector cannot be executed
-        // TODO: maybe this should throw an error?
+        // filers seem to fail silently
         return false;
     }
 
@@ -167,7 +171,7 @@ $.expr.filters.uri = function(elem, index, matches) {
     } else {
         property = t[1].toLowerCase();
         if (!comparable[property]) {
-            // TODO: maybe this should throw an error?
+            // filers seem to fail silently
             return false;
         }
         
@@ -178,7 +182,7 @@ $.expr.filters.uri = function(elem, index, matches) {
 };
 
 // pipe $.attr('src') and $.attr('href') through URI.js
-$.each(['src', 'href', 'uri'], function(k, v) {
+$.each(['src', 'href', 'action', 'uri'], function(k, v) {
     $.attrHooks[v] = {
         get: function(elem) {
             return $(elem).uri().toString();
