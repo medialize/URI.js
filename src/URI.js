@@ -205,6 +205,13 @@ URI.parse = function(string) {
 
         // extract "user:pass@host:port"
         string = URI.parseAuthority(string, parts);
+    } else if (string.slice(0, 2) === '//') {
+        // Scheme relative URI like //example.com/file.html
+        parts.protocol = null;
+        string = string.substring(2);
+
+        // extract "user:pass@host:port"
+        string = URI.parseAuthority(string, parts);
     }
 
     // what's left must be the path
@@ -305,11 +312,15 @@ URI.parseQuery = function(string) {
 URI.build = function(parts) {
     var t = '';
 
+    var authority = URI.buildAuthority(parts) || '';
+
     if (typeof parts.protocol === "string" && parts.protocol.length) {
         t += parts.protocol + "://";
+    } else if (authority) {
+        t += '//';
     }
 
-    t += (URI.buildAuthority(parts) || '');
+    t += authority
 
     if (typeof parts.path === "string") {
         if (parts.path[0] !== '/' && typeof parts.hostname === "string") {
