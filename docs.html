@@ -403,6 +403,9 @@ uri.hash("mars"); // returns the URI instance for chaining
     <p>.is() tells what a URL is. It responds with a boolean and can be asked the following questions:</p>
     <dl>
         <dt><code>relative<code></dt><dd><code>true</code> if URL doesn't have a hostname</dd>
+        <dt><code>absolute<code></dt><dd><code>true</code> if URL has a hostname</dd>
+        <dt><code>urn<code></dt><dd><code>true</code> if URI is a URN</dd>
+        <dt><code>url<code></dt><dd><code>true</code> if URI is a URL</dd>
         <dt><code>domain</code>, <code>name</code></dt><dd><code>true</code> if hostname is not an IP</dd>
         <dt><code>sld</code></dt><dd><code>true</code> if hostname is a second level domain (i.e. "example.co.uk")</dd>
         <dt><code>idn</code></dt><dd><code>true</code> if hostname contains non-alphanumeric characters and is not an IP</dd>
@@ -413,6 +416,9 @@ uri.hash("mars"); // returns the URI instance for chaining
     </dl>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/");
 uri.is('relative') === false;
+uri.is('absolute') === true;
+uri.is('urn') === false;
+uri.is('url') === true;
 uri.is('name') === true;
 uri.is('sld') === false;
 uri.is('punycode') === false;
@@ -422,6 +428,9 @@ uri.is('ip') === false;
 
 var uri = new URI("http://123.123.123.123/");
 uri.is('relative') === false;
+uri.is('absolute') === true;
+uri.is('urn') === false;
+uri.is('url') === true;
 uri.is('name') === false;
 uri.is('sld') === false;
 uri.is('IP') === true;
@@ -435,12 +444,26 @@ uri.is('IPv6') === true;
 
 var uri = new URI("/hello/world.html");
 uri.is('relative') === true;
+uri.is('absolute') === false;
+uri.is('urn') === false;
+uri.is('url') === true;
 uri.is('name') === false;
 uri.is('IP') === false;
 
 var uri = new URI("http://example.co.uk/");
 uri.is('name') === true;
-uri.is('sld') === true;</pre>
+uri.is('sld') === true;
+
+var uri = new URI("mailto:mail@example.org");
+uri.is('relative') === false;
+uri.is('absolute') === false;
+uri.is('urn') === true;
+uri.is('url') === false;
+uri.is('name') === false;
+uri.is('sld') === false;
+uri.is('punycode') === false;
+uri.is('idn') === false;
+uri.is('ip') === false;</pre>
     
     
     <h2 id="querystrings">Working with the query string</h2>
