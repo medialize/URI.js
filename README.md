@@ -1,7 +1,9 @@
 # URI.js #
 
 * [About](http://medialize.github.com/URI.js/)
+* [Understanding URIs](http://medialize.github.com/URI.js/about-uris.html)
 * [Documentation](http://medialize.github.com/URI.js/docs.html)
+* [jQuery URI Plugin](http://medialize.github.com/URI.js/jquery-uri-plugin.html)
 * [Author](http://rodneyrehm.de/en/)
 
 ---
@@ -66,10 +68,11 @@ URI("/foo/bar/baz.html")
 
 See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://medialize.github.com/URI.js/docs.html) for more stuff.
 
+
 ## npm ##
 
 ```
-    npm install URIjs
+npm install URIjs
 ```
 
 
@@ -98,26 +101,8 @@ use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 // ==/ClosureCompiler==
 ```
 
-## Understanding URIs ##
 
-The following describes the structure of an URI ([source](http://tools.ietf.org/html/rfc3986#section-3)):
-
-```
-Structure of an URI:
-
-URL:      foo://example.com:8042/over/there?name=ferret#nose
-          \_/   \______________/\_________/ \_________/ \__/
-           |           |            |            |        |
-        scheme     authority       path        query   fragment
-           |   _____________________|__
-          / \ /                        \
-URN:      urn:example:animal:ferret:nose
-```
-
-
-
-
-## Resources ##
+## Resources ## {#resources}
 
 Docs where you get more info on parsing and working with URLs
 
@@ -146,7 +131,7 @@ Docs where you get more info on parsing and working with URLs
 * http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html#workerlocation
 * MozURLProperty (not documented yet?!) https://developer.mozilla.org/User:trevorh/Interface_documentation_status
 
-### Alternatives ###
+### Alternatives ### {#alternatives}
 
 If you don't like URI.js, you may like one of these:
 
@@ -168,13 +153,6 @@ if you want to get involved, these are things you could help out with…
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * add [Media Fragments](https://github.com/medialize/URI.js/issues/18)
 * add `.userinfo()` to comply with http://tools.ietf.org/html/rfc3986#section-3.2.1
-* add jQuery method for `$('a').URI()` to return an `URI` instance that automatically updates the (first) element's `href` or `src`
-* add jQuery `$(':uri(suffix=pdf)')` (normalize?)
-  * `jQuery.expr.filters.uri = function(){}`
-  * `function(element, index, matches){ return true; }`
-  * `match[1] == 'uri'`, `match[3] == 'suffix=pdf'`
-* add `$.propHooks.uri`, `$.attrHooks.uri` (getter, setter) (for each [`protocol`, `hostname`, …])
-
 
 
 ## Authors ##
@@ -188,17 +166,12 @@ if you want to get involved, these are things you could help out with…
 * [IPv6.js](http://intermapper.com/support/tools/IPV6-Validator.aspx) - Rich Brown - (rewrite of the original)
 
 
-## Useless Information ##
-
-I built this sucker during Christmas 2011. It was a nice excuse to get away from the annual family terror. You should try it some time…
-
-
 ## License ##
 
 URI.js is published under the [MIT license](http://www.opensource.org/licenses/mit-license) and [GPL v3](http://opensource.org/licenses/GPL-3.0).
 
 
-## Changelog ##
+## Changelog ## {#changelog}
 
 ### 1.6.0 (March ??? 2012) ###
 
