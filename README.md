@@ -154,6 +154,7 @@ if you want to get involved, these are things you could help out with…
 * add [Media Fragments](https://github.com/medialize/URI.js/issues/18)
 * add [URI Templating](https://github.com/medialize/URI.js/pull/12)
 
+
 ## Authors ##
 
 * [Rodney Rehm](https://github.com/rodneyrehm)

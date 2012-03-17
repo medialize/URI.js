@@ -157,3 +157,11 @@ ul.plain-list > li {
 .menu-injected { background-color: #C87958; }
 .box.context-menu-disabled { background-color: red; }
 
+.ascii-art .line {
+    color: #999;
+}
+
+.ascii-art .label {
+    color: #2C879B;
+    font-weight: bold;
+}

@@ -43,16 +43,73 @@
         <li><a href="http://rodneyrehm.de/en/">Author</a></li>
     </ul>
     
-    <p>TODO: document the nature of URIs</p>
-
-    <p><a href="http://tools.ietf.org/html/rfc3986#section-3">RFC 3986</a> visualizes the structure of <abbr title="Uniform Resource Indicator">URI</abbr>s as follows:</p>
-    <pre>URL:      foo://example.com:8042/over/there?name=ferret#nose
-          \_/   \______________/\_________/ \_________/ \__/
+    <h2>Understanding URIs</h2>
+    
+    <p>
+        Uniform Resource Identifiers (URI) can be one of two things, a Uniform Resource Locator (URL) or a Uniform Resource Name (URN).
+        You likely deal with URLs most of the time. See RFC 3986 for a proper definition of the terms <a href="http://tools.ietf.org/html/rfc3986#section-1.1.3">URI, URL and URN</a>
+    </p>
+    
+    <p>
+        URLs are used to address the individual resources of your website. 
+        URNs are usually used for hooking into other applications, as <code>mailto:</code>, <code>magnet:</code> or <code>spotify:</code> suggest. 
+        While RFC 3986 defines the structure of an URL in depth, URNs are not. The structure (and meaning) of URNs are up to their distinct specifications.
+    </p>
+    
+    <h2>Components of an URI</h2>
+    <p><a href="http://tools.ietf.org/html/rfc3986#section-3">RFC 3986 Section 3</a> visualizes the structure of <abbr title="Uniform Resource Indicator">URI</abbr>s as follows:</p>
+    <pre class="ascii-art">
+URL:      foo://example.com:8042/over/there?name=ferret#nose
+<span class="line">          \_/   \______________/\_________/ \_________/ \__/
            |           |            |            |        |
-        scheme     authority       path        query   fragment
-           |   _____________________|__
+</span><span class="label">        scheme     authority       path        query   fragment
+</span><span class="line">           |   _____________________|__
           / \ /                        \
-URN:      urn:example:animal:ferret:nose</pre>
+</span>URN:      urn:example:animal:ferret:nose</pre>
+
+    <h3>Components of an <abbr title="Uniform Resource Locator">URL</abbr> in URI.js</h3>
+
+    <pre class="ascii-art">
+                         <a href="docs.html#accessors-authority">authority</a>
+<span class="line">                   __________|_________
+                  /                    \
+</span>              <a href="docs.html#accessors-userinfo">userinfo</a>                <a href="docs.html#accessors-host">host</a>
+<span class="line">               __|___                ___|___
+              /      \              /       \
+</span>         <a href="docs.html#accessors-username">username</a>  <a href="docs.html#accessors-password">password</a>     <a href="docs.html#accessors-hostname">hostname</a>    <a href="docs.html#accessors-port">port</a>          <a href="docs.html#accessors-pathname">path</a>           <a href="docs.html#accessors-search">query</a>   <a href="docs.html#accessors-hash">fragment</a>
+<span class="line">           __|___   __|__    ______|______   |   __________|_________   ____|____   |
+          /      \ /     \  /             \ / \ /                    \ /         \ / \
+</span>    foo://username:password@www.example.com:123/hello/world/there.html?name=ferret#foo
+<span class="line">    \_/                     \ / \       \ /    \__________/ \     \__/
+     |                       |   \       |           |       \      |
+</span>  <a href="docs.html#accessors-protocol">scheme</a>               <a href="docs.html#accessors-subdomain">subdomain</a>  <span class="line">\</span>     <a href="docs.html#accessors-tld">tld</a>      <a href="docs.html#accessors-directory">directory</a>    <span class="line">\</span>   <a href="docs.html#accessors-suffix">suffix</a>
+<span class="line">                                   \____/                      \___/
+                                      |                          |
+</span>                                    <a href="docs.html#accessors-domain">domain</a>                   <a href="docs.html#accessors-filename">filename</a>
+
+</pre>
+    
+    <p>
+        In Javascript the <em>query</em> is often referred to as the <em>search</em>. 
+        URI.js provides both accessors with the subtle difference of <a href="docs.html#accessors-search">.search()</a> beginning with the <code>?</code>-character
+        and <a href="docs.html#accessors-search">.query()</a> not.
+    </p>
+    <p>
+        In Javascript the <em>fragment</em> is often referred to as the <em>hash</em>. 
+        URI.js provides both accessors with the subtle difference of <a href="docs.html#accessors-hash">.hash()</a> beginning with the <code>#</code>-character
+        and <a href="docs.html#accessors-hash">.fragment()</a> not.
+    </p>
+    
+    <h3>Components of an <abbr title="Uniform Resource Name">URN</abbr> in URI.js</h3>
+    
+    <pre class="ascii-art">
+    urn:example:animal:ferret:nose?name=ferret#foo
+<span class="line">    \ / \________________________/ \_________/ \ /
+     |               |                  |       |
+</span>  <a href="docs.html#accessors-protocol">scheme</a>           <a href="docs.html#accessors-path">path</a>               <a href="docs.html#accessors-query">query</a>   <a href="docs.html#accessors-fragment">fragment</a>
+    </pre>
+    
+    <p>While <a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a> does not define URNs having a query or fragment component, URI.js enables these accessors for convenience.</p>
     
     </div>
 </body>
