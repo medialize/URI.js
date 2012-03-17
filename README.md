@@ -152,8 +152,7 @@ if you want to get involved, these are things you could help out with…
 
 * modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
 * add [Media Fragments](https://github.com/medialize/URI.js/issues/18)
-* add `.userinfo()` to comply with http://tools.ietf.org/html/rfc3986#section-3.2.1
-
+* add [URI Templates]()
 
 ## Authors ##
 
@@ -177,6 +176,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 * adding [URN](http://tools.ietf.org/html/rfc3986#section-3) (`javascript:`, `mailto:`, ...) support
 * adding `.scheme()` as alias of `.protocol()`
+* adding `.userinfo()` to comply with terminology of [RFC 3986](http://tools.ietf.org/html/rfc3986#section-3.2.1)
 * adding jQuery Plugin `src/jquery.URI.js`
 
 ### 1.5.0 (February 19th 2012) ###

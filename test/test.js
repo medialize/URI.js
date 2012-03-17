@@ -246,6 +246,24 @@ test("authority", function() {
     equal(u.port(), "", "authority removed port");
     equal(u+"", "http://some-domain.com/foo.html", "authority modified url");
 });
+test("authority", function() {
+    var u = new URI("http://foo.bar/foo.html");
+
+    u.userinfo('username:password');
+    equal(u.username(), "username", "userinfo changed username-only");
+    equal(u.password(), "password", "userinfo changed password");
+    equal(u+"", "http://username:password@foo.bar/foo.html", "userinfo changed url");
+
+    u.userinfo('walter');
+    equal(u.username(), "walter", "userinfo removed password");
+    equal(u.password(), "", "userinfo removed password");
+    equal(u+"", "http://walter@foo.bar/foo.html", "userinfo changed url");
+    
+    u.userinfo('');
+    equal(u.username(), "", "userinfo removed username");
+    equal(u.password(), "", "userinfo removed password");
+    equal(u+"", "http://foo.bar/foo.html", "userinfo changed url");
+});
 test("href", function() {
     var u = new URI("http://foo.bar/foo.html");
 

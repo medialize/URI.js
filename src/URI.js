@@ -253,6 +253,10 @@ URI.parseHost = function(string, parts) {
     return string.substring(pos) || '/';
 };
 URI.parseAuthority = function(string, parts) {
+    string = URI.parseUserinfo(string, parts);
+    return URI.parseHost(string, parts);
+};
+URI.parseUserinfo = function(string, parts) {
     // extract username:password
     var pos = string.indexOf('@'),
         firstSlash = string.indexOf('/'),
@@ -268,8 +272,8 @@ URI.parseAuthority = function(string, parts) {
         parts.username = null;
         parts.password = null;
     }
-
-    return URI.parseHost(string, parts);
+    
+    return string;
 };
 URI.parseQuery = function(string) {
     if (!string) {
@@ -359,6 +363,9 @@ URI.buildHost = function(parts) {
     return t;
 };
 URI.buildAuthority = function(parts) {
+    return URI.buildUserinfo(parts) + URI.buildHost(parts);
+};
+URI.buildUserinfo = function(parts) {
     var t = '';
 
     if (parts.username) {
@@ -370,9 +377,7 @@ URI.buildAuthority = function(parts) {
 
         t += "@";
     }
-
-    t += URI.buildHost(parts);
-
+    
     return t;
 };
 URI.buildQuery = function(data, duplicates) {
@@ -771,6 +776,28 @@ p.authority = function(v, build) {
         return this._parts.hostname ? URI.buildAuthority(this._parts) : "";
     } else {
         URI.parseAuthority(v, this._parts);
+        this.build(!build);
+        return this;
+    }
+};
+p.userinfo = function(v, build) {
+    if (this._parts.urn) {
+        return v === undefined ? '' : this;
+    }
+    
+    if (v === undefined) {
+        if (!this._parts.username) {
+            return "";
+        }
+        
+        var t = URI.buildUserinfo(this._parts);
+        return t.substring(0, t.length -1);
+    } else {
+        if (v[v.length-1] !== '@') {
+            v += '@';
+        }
+        
+        URI.parseUserinfo(v, this._parts);
         this.build(!build);
         return this;
     }

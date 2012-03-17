@@ -53,6 +53,7 @@
                 <li><a href="#accessors-hostname">hostname()</a></li>
                 <li><a href="#accessors-port">port()</a></li>
                 <li><a href="#accessors-host">host()</a></li>
+                <li><a href="#accessors-userinfo">userinfo()</a></li>
                 <li><a href="#accessors-authority">authority()</a></li>
                 <li><a href="#accessors-subdomain">subdomain()</a></li>
                 <li><a href="#accessors-domain">domain()</a></li>
@@ -236,6 +237,14 @@ uri.host(); // returns string "example.org:80"
 // set host
 uri.host("example.org:80"); // returns the URI instance for chaining</pre>
     <p>NOTE: <a href="#accessors-hostname">.hostname()</a> returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
+
+    <h3 id="accessors-userinfo">userinfo()</h3>
+    <p>Userinfo is comprised of username and password</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://user:pass@example.org:88/foo/hello.html");
+// get userinfo
+uri.userinfo(); // returns string "user:pass"
+// set userinfo
+uri.userinfo("user:pass"); // returns the URI instance for chaining</pre>
     
     <h3 id="accessors-authority">authority()</h3>
     <p>Authority is comprised of username, password, hostname and port</p>
