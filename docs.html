@@ -122,10 +122,12 @@
             <ul>
                 <li><a href="#static-parse">URI.parse()</a></li>
                 <li><a href="#static-parseAuthority">URI.parseAuthority()</a></li>
+                <li><a href="#static-parseUserinfo">URI.parseUserinfo()</a></li>
                 <li><a href="#static-parseHost">URI.parseHost()</a></li>
                 <li><a href="#static-parseQuery">URI.parseQuery()</a></li>
                 <li><a href="#static-build">URI.build()</a></li>
                 <li><a href="#static-buildAuthority">URI.buildAuthority()</a></li>
+                <li><a href="#static-buildUserinfo">URI.buildUserinfo()</a></li>
                 <li><a href="#static-buildHost">URI.buildHost()</a></li>
                 <li><a href="#static-buildQuery">URI.buildQuery()</a></li>
                 <li><a href="#static-addQuery">URI.addQuery()</a></li>
@@ -698,6 +700,18 @@ parts === {
     port: "8080"
 };</pre>
     
+    <h3 id="static-parseUserinfo">URI.parseUserinfo(<em>string</em> url, <em>object</em> parts)</h3>
+    <p>parses a string's beginning into its URI components username, password. 
+        Found components are appended to the <code>parts</code> parameter.
+        Remaining string is returned</p>
+    <pre class="prettyprint lang-js">var parts = {},
+    result = URI.parseUserinfo("user:pass@example.org:8080/foo.html", parts);
+result === "example.org:8080/foo.html";
+parts === {
+    username: "user", 
+    password: "pass"
+};</pre>
+    
     <h3 id="static-parseHost">URI.parseHost(<em>string</em> url, <em>object</em> parts)</h3>
     <p>parses a string's beginning into its URI components hostname, port. 
         Found components are appended to the <code>parts</code> parameter.
@@ -743,6 +757,14 @@ URI.build(parts) === "http://example.org/foo.html";</pre>
     port: "8080"
 };
 URI.buildAuthority(parts) === "user:pass@example.org:8080";</pre>
+
+    <h3 id="static-buildUserinfo">URI.buildUserinfo(<em>object</em> parts)</h3>
+    <p>serializes the URI components username, password passed in <code>parts</code> into a URI string</p>
+    <pre class="prettyprint lang-js">var parts = {
+    username: "user", 
+    password: "pass"
+};
+URI.buildUserinfo(parts) === "user:pass@";</pre>
     
     <h3 id="static-buildHost">URI.buildHost(<em>object</em> parts)</h3>
     <p>serializes the URI components hostname, port passed in <code>parts</code> into a URI string</p>
