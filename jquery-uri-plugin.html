@@ -49,6 +49,8 @@
         
         // selectors
         $('a:uri(fragment^=accessor)')
+        $('a:uri(equals:http://example.org/hello/foo/../world.html)
+        // ) may not be used in match-expression!
         
         // access to (transparently updating) URI
         var uri = $('a').uri();

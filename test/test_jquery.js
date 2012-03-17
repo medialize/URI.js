@@ -3,7 +3,7 @@ module("jQuery.URI", {
         var links = [
                 '<a href="http://example.org/">an HTTP link</a>',
                 '<a href="https://example.org/">an HTTPS link</a>',
-                '<a href="http://example.org/some.pdf">some pdf</a>',
+                '<a href="http://example.org/so)me.pdf">some pdf</a>',
                 '<a href="http://example.org/hello/world.html">hello world</a>',
                 '<a href="mailto:mail@example.org?subject=Hello+World">Mail me</a>',
                 '<a href="javascript:alert(\'ugly!\');">some javascript</a>',
@@ -48,7 +48,13 @@ test("filtering with :uri()", function() {
     
     // find using URI.is()
     equal($links.find(':uri(relative)').length, 5, ":uri(relative)");
-    
+    equal($links.find(':uri(is:relative)').length, 5, ":uri(is:relative)");
+
+    // find using URI.equal()
+    equal($links.find(':uri(equals:http://example.org/hello/foo/../world.html)').length, 1, ":uri(equals:$url$)");
+    equal($links.find(':uri(equals:"http://example.org/hello/foo/../world.html")').length, 1, ":uri(equals:$url$)");
+    equal($links.find(':uri(equals: "http://example.org/hello/foo/../world.html")').length, 1, ":uri(equals:$url$)");
+        
     // find URNs
     equal($links.find(':uri(urn)').length, 2, ":uri(urn)");
 

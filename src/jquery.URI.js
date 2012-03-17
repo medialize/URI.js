@@ -44,7 +44,7 @@ function getUriProperty(elem) {
     return property;
 }
 
-var pseudo = /^([a-zA-Z]+)\s*([\^\$*]?=)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/,
+var pseudo = /^([a-zA-Z]+)\s*([\^\$*]?=|:)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/,
     comparable = {},
     // https://developer.mozilla.org/en/CSS/Attribute_selectors
     compare = {
@@ -65,6 +65,12 @@ var pseudo = /^([a-zA-Z]+)\s*([\^\$*]?=)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/
         // contains
         '*=': function(value, target) {
             return !!(value + "").match(new RegExp(escapeRegEx(target), 'i'));
+        },
+        'equals:': function(uri, target) {
+            return uri.equals(target);
+        },
+        'is:': function(uri, target) {
+            return uri.is(target);
         }
     };
 
@@ -145,8 +151,8 @@ $.expr.filters.uri = function(elem, index, matches) {
     //  - https://github.com/jquery/sizzle/wiki/Sizzle-Home
     //  - https://github.com/jquery/sizzle/blob/master/sizzle.js#L626
 
-    // skip anything without src|href|action
-    if (!getUriProperty(elem)) {
+    // skip anything without src|href|action and bad :uri() syntax
+    if (!getUriProperty(elem) || !matches[3]) {
         return false;
     }
     
@@ -154,7 +160,7 @@ $.expr.filters.uri = function(elem, index, matches) {
         property,
         uri;
 
-    if (!t || (!t[5] && !compare[t[2]])) {
+    if (!t || (!t[5] && t[2] !== ':' && !compare[t[2]])) {
         // abort because the given selector cannot be executed
         // filers seem to fail silently
         return false;
@@ -164,6 +170,14 @@ $.expr.filters.uri = function(elem, index, matches) {
     
     if (t[5]) {
         return uri.is(t[5]);
+    } else if (t[2] === ':') {
+        property = t[1].toLowerCase() + ':';
+        if (!compare[property]) {
+            // filers seem to fail silently
+            return false;
+        }
+        
+        return compare[property](uri, t[4]);
     } else {
         property = t[1].toLowerCase();
         if (!comparable[property]) {
