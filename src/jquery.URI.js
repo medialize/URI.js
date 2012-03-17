@@ -110,11 +110,7 @@ $.fn.uri = function(uri) {
         if (uri) {
             return uri;
         } else {
-            // Make sure that URLs aren't manipulated
-    		// (IE normalizes it by default)
-            uri = URI($.support.hrefNormalized 
-                ? elem.getAttribute(property) 
-                : elem.getAttribute(property, 2));
+    		uri = URI($this.attr(property));
         }
     }
     
@@ -182,15 +178,19 @@ $.expr.filters.uri = function(elem, index, matches) {
 };
 
 // pipe $.attr('src') and $.attr('href') through URI.js
+var _attrHooks = {
+    get: function(elem) {
+        return $(elem).uri();
+    },
+    set: function(elem, value) {
+        return $(elem).uri().href(value).toString();
+    }
+};
 $.each(['src', 'href', 'action', 'uri'], function(k, v) {
     $.attrHooks[v] = {
-        get: function(elem) {
-            return $(elem).uri().toString();
-        },
-        set: function(elem, value) {
-            return $(elem).uri().href(value).toString();
-        }
+        set: _attrHooks.set
     };
 });
+$.attrHooks.uri.get = _attrHooks.get;
         
 })(jQuery);

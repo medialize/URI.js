@@ -45,6 +45,21 @@
     
     <p>TODO: document jQuery URI plugin</p>
     
+    <pre>
+        
+        // selectors
+        $('a:uri(fragment^=accessor)')
+        
+        // access to (transparently updating) URI
+        var uri = $('a').uri();
+        uri.hostname('example.org');
+        
+        // attributes
+        $('a').attr('uri:hostname', 'example.org');
+        
+    </pre>
+    
+    
     </div>
 </body>
 </html>
