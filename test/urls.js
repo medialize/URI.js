@@ -371,9 +371,9 @@ var urls = [{
     }, {
         name: 'ignoring scheme',
         url: '://user:pass@example.org:123/some/directory/file.html?query=string#fragment',
-        _url: 'user:pass@example.org:123/some/directory/file.html?query=string#fragment',
+        _url: '//user:pass@example.org:123/some/directory/file.html?query=string#fragment',
         parts: {
-            protocol: "", // not null
+            protocol: "",
             username: 'user',
             password: 'pass',
             hostname: 'example.org',
@@ -402,6 +402,52 @@ var urls = [{
             search: '?query=string',
             host: 'example.org:123',
             hostname: 'example.org'
+        },
+        is: {
+            urn: false,
+            url: true,
+            relative: false,
+            name: true,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    }, {
+        name: 'scheme-relative URL',
+        url: '//www.example.org/',
+        parts: {
+            protocol: '', // not null
+            username: null,
+            password: null,
+            hostname: 'www.example.org',
+            port: null,
+            path: '/',
+            query: null,
+            fragment: null
+        },
+        accessors: {
+            protocol: '',
+            username: '',
+            password: '',
+            port: '',
+            path: '/',
+            query: '',
+            fragment: '',
+            authority: 'www.example.org',
+            userinfo: '',
+            subdomain: 'www',
+            domain: 'example.org',
+            tld: 'org',
+            directory: '/',
+            filename: '',
+            suffix: '',
+            hash: '',
+            search: '',
+            host: 'www.example.org',
+            hostname: 'www.example.org'
         },
         is: {
             urn: false,

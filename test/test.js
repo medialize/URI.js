@@ -82,12 +82,12 @@ test("protocol", function() {
     equal(u+"", "ftp://example.org/foo.html", "ftp url");
 
     u.protocol('');
-    equal(u.protocol(), "", "missing protocol");
-    equal(u+"", "example.org/foo.html", "no-scheme url");
+    equal(u.protocol(), "", "relative protocol");
+    equal(u+"", "//example.org/foo.html", "relative-scheme url");
 
     u.protocol(null);
     equal(u.protocol(), "", "missing protocol");
-    equal(u+"", "example.org/foo.html", "no-scheme url");
+    equal(u+"", "example.org/foo.html", "missing-scheme url");
 });
 test("username", function() {
     var u = new URI("http://example.org/foo.html");

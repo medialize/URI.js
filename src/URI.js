@@ -198,17 +198,25 @@ URI.parse = function(string) {
     }
 
     // extract protocol
-    pos = string.indexOf(':');
-    if (pos > -1) {
-        parts.protocol = string.substring(0, pos);
-        if (string.substring(pos + 1, pos + 3) === '//') {
-            string = string.substring(pos + 3);
+    if (string.substring(0, 2) === '//') {
+        // relative-scheme
+        parts.protocol = '';
+        string = string.substring(2);
+        // extract "user:pass@host:port"
+        string = URI.parseAuthority(string, parts);
+    } else {
+        pos = string.indexOf(':');
+        if (pos > -1) {
+            parts.protocol = string.substring(0, pos);
+            if (string.substring(pos + 1, pos + 3) === '//') {
+                string = string.substring(pos + 3);
 
-            // extract "user:pass@host:port"
-            string = URI.parseAuthority(string, parts);
-        } else {
-            string = string.substring(pos + 1);
-            parts.urn = true;
+                // extract "user:pass@host:port"
+                string = URI.parseAuthority(string, parts);
+            } else {
+                string = string.substring(pos + 1);
+                parts.urn = true;
+            }
         }
     }
 
@@ -316,9 +324,10 @@ URI.build = function(parts) {
 
     if (typeof parts.protocol === "string" && parts.protocol.length) {
         t += parts.protocol + ":";
-        if (!parts.urn) {
-            t += '//';
-        }
+    }
+    
+    if ((t || parts.protocol === '') && !parts.urn) {
+        t += '//';
     }
 
     t += (URI.buildAuthority(parts) || '');
@@ -705,11 +714,11 @@ var _protocol = p.protocol,
 
 p.protocol = function(v, build) {
     if (v !== undefined) {
-        // accept trailing :
         if (v) {
-            if (v[v.length - 1] === ":") {
-                v = v.substring(0, v.length - 1);
-            } else if (v.match(/[^a-zA-z0-9\.+-]/)) {
+            // accept trailing ://
+            v = v.replace(/:(\/\/)?$/, '');
+
+            if (v.match(/[^a-zA-z0-9\.+-]/)) {
                 throw new TypeError("Protocol '" + v + "' contains characters other than [A-Z0-9.+-]");
             }
         }
