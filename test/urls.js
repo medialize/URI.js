@@ -302,6 +302,49 @@ var urls = [{
             punycode: false
         }
     }, {
+        name: 'scheme-relative: URL',
+        url: '//example.com/some/directory/file.html?query=string#fragment',
+        parts: {
+            protocol: null,
+            username: null,
+            password: null,
+            hostname: 'example.com',
+            port: null,
+            path: '/some/directory/file.html',
+            query: 'query=string',
+            fragment: 'fragment'
+        },
+        accessors: {
+            protocol: '',
+            username: '',
+            password: '',
+            port: '',
+            path: '/some/directory/file.html',
+            query: 'query=string',
+            fragment: 'fragment',
+            authority: 'example.com',
+            subdomain: '',
+            domain: 'example.com',
+            tld: 'com',
+            directory: '/some/directory',
+            filename: 'file.html',
+            suffix: 'html',
+            hash: '#fragment',
+            search: '?query=string',
+            host: 'example.com',
+            hostname: 'example.com'
+        },
+        is: {
+            relative: false,
+            name: true,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    }, {
         name: 'missing scheme',
         url: 'user:pass@www.example.org:123/some/directory/file.html?query=string#fragment',
         parts: {
@@ -347,7 +390,7 @@ var urls = [{
     }, {
         name: 'ignoring scheme',
         url: '://user:pass@example.org:123/some/directory/file.html?query=string#fragment',
-        _url: 'user:pass@example.org:123/some/directory/file.html?query=string#fragment',
+        _url: '//user:pass@example.org:123/some/directory/file.html?query=string#fragment',
         parts: {
             protocol: "", // not null
             username: 'user',

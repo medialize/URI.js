@@ -83,11 +83,11 @@ test("protocol", function() {
 
     u.protocol('');
     equal(u.protocol(), "", "missing protocol");
-    equal(u+"", "example.org/foo.html", "no-scheme url");
+    equal(u+"", "//example.org/foo.html", "no-scheme url");
 
     u.protocol(null);
     equal(u.protocol(), "", "missing protocol");
-    equal(u+"", "example.org/foo.html", "no-scheme url");
+    equal(u+"", "//example.org/foo.html", "no-scheme url");
 });
 test("username", function() { 
     var u = new URI("http://example.org/foo.html");
