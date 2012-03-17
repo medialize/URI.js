@@ -179,6 +179,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * adding `.scheme()` as alias of `.protocol()`
 * adding `.userinfo()` to comply with terminology of [RFC 3986](http://tools.ietf.org/html/rfc3986#section-3.2.1)
 * adding jQuery Plugin `src/jquery.URI.js`
+* Fixing relative scheme URLs ([Issue #19](https://github.com/medialize/URI.js/issues/19) [byroot](https://github.com/byroot))
 
 ### 1.5.0 (February 19th 2012) ###
 
