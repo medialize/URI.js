@@ -326,7 +326,7 @@ URI.build = function(parts) {
         t += parts.protocol + ":";
     }
     
-    if (!parts.urn && (t || (!parts.protocol && parts.hostname))) {
+    if (!parts.urn && (t || parts.hostname)) {
         t += '//';
     }
 
