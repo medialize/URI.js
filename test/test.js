@@ -87,7 +87,7 @@ test("protocol", function() {
 
     u.protocol(null);
     equal(u.protocol(), "", "missing protocol");
-    equal(u+"", "example.org/foo.html", "missing-scheme url");
+    equal(u+"", "//example.org/foo.html", "missing-scheme url");
 });
 test("username", function() {
     var u = new URI("http://example.org/foo.html");

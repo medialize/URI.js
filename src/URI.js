@@ -322,11 +322,11 @@ URI.parseQuery = function(string) {
 URI.build = function(parts) {
     var t = '';
 
-    if (typeof parts.protocol === "string" && parts.protocol.length) {
+    if (parts.protocol) {
         t += parts.protocol + ":";
     }
     
-    if ((t || parts.protocol === '') && !parts.urn) {
+    if (!parts.urn && (t || (!parts.protocol && parts.hostname))) {
         t += '//';
     }
 
