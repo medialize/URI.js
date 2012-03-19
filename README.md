@@ -173,7 +173,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ## {#changelog}
 
-### 1.6.0 (March ??? 2012) ###
+### 1.6.0 (March 19th 2012) ###
 
 * adding [URN](http://tools.ietf.org/html/rfc3986#section-3) (`javascript:`, `mailto:`, ...) support
 * adding `.scheme()` as alias of `.protocol()`
