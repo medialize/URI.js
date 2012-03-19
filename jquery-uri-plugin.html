@@ -43,24 +43,150 @@
         <li><a href="http://rodneyrehm.de/en/">Author</a></li>
     </ul>
     
-    <p>TODO: document jQuery URI plugin</p>
+    <h2>URI.js jQuery Plugin</h2>
+    <p>As of version 1.6.0 URI.js offers a simple jQuery integration. For the plugin to work, you need to regularly load <code>URI.js</code>, as well as <code>jquery.URI.js</code>.</p>
+    <p>URI.js does not depend on jQuery unless you want to use the URI.js jQuery Plugin</p>
     
-    <pre>
-        
-        // selectors
-        $('a:uri(fragment^=accessor)')
-        $('a:uri(equals:http://example.org/hello/foo/../world.html)
-        // ) may not be used in match-expression!
-        
-        // access to (transparently updating) URI
-        var uri = $('a').uri();
-        uri.hostname('example.org');
-        
-        // attributes
-        $('a').attr('uri:hostname', 'example.org');
-        
+    <h2>Accessing the URI Instance</h2>    
+    <pre class="prettyprint lang-js">
+var $a = $('&lt;a href=&quot;http://google.com/hello.html&quot;&gt;Demo&lt;/a&gt;'),
+    uri = $a.uri();
+
+// URI instance and DOMElement are always in sync
+uri.domain() == 'google.com';
+uri.domain('example.org');
+$a.attr('href') == 'http://example.org/hello.html';
+
+// access to <strong>href</strong>, <strong>src</strong> and <strong>action</strong>
+// transparently update the URI instance
+$a.attr('href', '/other.file');
+uri.href() == '/other.file';
+
+// $.fn.uri() passes values to DOM and URI
+$a.uri('/hello/world.html');
+$a.attr('href') == '/hello/world.html';
+uri.href() == '/hello/world.html';</pre>
+    
+    <h2>Accessing URI components</h2>
+    <pre class="prettyprint lang-js">
+        var $a = $('&lt;a href=&quot;http://www.google.com/hello.html&quot;&gt;Demo&lt;/a&gt;');
+
+// read
+$a.attr('uri:domain') == 'google.com';
+
+// write
+$a.attr('uri:domain', 'example.org');
+$a.attr('href') == 'http://www.example.org/hello.html';
     </pre>
+    <p>All URI-component accessors can be used:
+           <a href="docs.html#accessors-authority">authority</a>,
+           <a href="docs.html#accessors-directory">directory</a>,
+           <a href="docs.html#accessors-domain">domain</a>,
+           <a href="docs.html#accessors-filename">filename</a>,
+           <a href="docs.html#accessors-hash">fragment</a>,
+           <a href="docs.html#accessors-hash">hash</a>,
+           <a href="docs.html#accessors-host">host</a>,
+           <a href="docs.html#accessors-hostname">hostname</a>,
+           <a href="docs.html#accessors-href">href</a>,
+           <a href="docs.html#accessors-password">password</a>,
+           <a href="docs.html#accessors-path">path</a>,
+           <a href="docs.html#accessors-pathname">pathname</a>,
+           <a href="docs.html#accessors-port">port</a>,
+           <a href="docs.html#accessors-protocol">protocol</a>,
+           <a href="docs.html#accessors-search">query</a>,
+           <a href="docs.html#accessors-protocol">scheme</a>,
+           <a href="docs.html#accessors-search">search</a>,
+           <a href="docs.html#accessors-subdomain">subdomain</a>,
+           <a href="docs.html#accessors-suffix">suffix</a>,
+           <a href="docs.html#accessors-tld">tld</a>,
+           <a href="docs.html#accessors-username">username</a>.
+       </p>
     
+    <h2>Selectors</h2>
+    <p>You may find yourself wanting to select all links to a certain file-type or a specific domain. <code>:uri()</code> is a pseudo-class filter that will help you with that:</p>
+    <pre class="prettyprint lang-html">
+&lt;div class=&quot;first&quot;&gt;
+  &lt;a href=&quot;/my.pdf?with=query&quot;&gt;PDF&lt;/a&gt;
+  &lt;a href=&quot;http://google.com/&quot;&gt;Google1&lt;/a&gt;
+&lt;/div&gt;
+&lt;div class=&quot;second&quot;&gt;
+  &lt;a href=&quot;http://www.google.com/&quot;&gt;Google2&lt;/a&gt;
+  &lt;a href=&quot;https://github.com/some/directory/help.html&quot;&gt;Github&lt;/a&gt;
+&lt;/div&gt;
+</pre>
+    <pre class="prettyprint lang-js">// finding links to a given file-type
+$('a:uri(suffix = pdf)'); 
+// -&gt; finds PDF
+
+// selecting links to a directory (or child thereof)
+$('a:uri(directory *= /directory/)'); 
+// -&gt; finds Github
+
+// selecting links to google.com
+$('a:uri(domain = google.com)'); 
+// -&gt; finds Google1, Google2
+
+// selecting all relative links
+$('a:uri(is: relative)'); 
+// -&gt; finds PDF
+
+// selecting links regardless of their representation
+$('a:uri(equals: http://github.com/some/other/../directory/help.html)'); 
+// -&gt; finds Github
+
+// finding elements containing a link to github
+$('div').has('a:uri(domain = github)')
+// -&gt; finds div.second
+
+// testing if the protocol matches
+$('a').eq(1).is(':uri(protocol = http)');
+// -&gt; is true</pre>
+
+    <h3>The :uri() pseudo selector</h3>
+    <p><code>:uri()</code> accepts the following three argument patterns:</p>
+    
+    <ul>
+        <li><code>:uri(<em>accessor</em> operator <strong>string</strong>)</code> to compare a single URI-component</li>
+        <li><code>:uri(is: <strong>string</strong>)</code> to compare against <a href="docs.html#is">.is()</a></li>
+        <li><code>:uri(equals: <strong>string</strong>)</code> to compare URLs using <a href="docs.html#equals">.equals()</a></li>
+    </ul>
+    
+    <p>Note: It is a good idea to prepend the element(s) you're looking for. <code>a:uri(is: relative)</code> is much faster than <code>:uri(is: relative)</code>.</p>
+    <p>Note: <code>")"</code> may not be used in your comparison-<code>string</code>, as jQuery (Sizzle, actually) can't handle that properly.</p>
+    
+    <h3>Comparison Accessors</h3>
+    <p>All URI-component accessors can be used:
+        <a href="docs.html#accessors-authority">authority</a>,
+        <a href="docs.html#accessors-directory">directory</a>,
+        <a href="docs.html#accessors-domain">domain</a>,
+        <a href="docs.html#accessors-filename">filename</a>,
+        <a href="docs.html#accessors-hash">fragment</a>,
+        <a href="docs.html#accessors-hash">hash</a>,
+        <a href="docs.html#accessors-host">host</a>,
+        <a href="docs.html#accessors-hostname">hostname</a>,
+        <a href="docs.html#accessors-href">href</a>,
+        <a href="docs.html#accessors-password">password</a>,
+        <a href="docs.html#accessors-path">path</a>,
+        <a href="docs.html#accessors-pathname">pathname</a>,
+        <a href="docs.html#accessors-port">port</a>,
+        <a href="docs.html#accessors-protocol">protocol</a>,
+        <a href="docs.html#accessors-search">query</a>,
+        <a href="docs.html#accessors-protocol">scheme</a>,
+        <a href="docs.html#accessors-search">search</a>,
+        <a href="docs.html#accessors-subdomain">subdomain</a>,
+        <a href="docs.html#accessors-suffix">suffix</a>,
+        <a href="docs.html#accessors-tld">tld</a>,
+        <a href="docs.html#accessors-username">username</a>.
+    </p>
+    
+    <h3>Comparison Operators</h3>
+    <p>Comparison operators are derived from CSS attribute match operators:</p>
+    <dl>
+        <dt>=</dt><dd>Exact match of <code>accessor</code> and <code>string</code></dd>
+        <dt>^=</dt><dd><code>accessor</code> begins with <code>string</code> (case-insensitive)</dd>
+        <dt>$=</dt><dd><code>accessor</code> ends with <code>string</code> (case-insensitive)</dd>
+        <dt>*=</dt><dd><code>accessor</code> contains <code>string</code> (case-insensitive)</dd>
+    </dl>
     
     </div>
 </body>
