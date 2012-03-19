@@ -55,15 +55,20 @@ var pseudo = /^([a-zA-Z]+)\s*([\^\$*]?=|:)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*
         // ~= translates to value.match((?:^|\s)target(?:\s|$)) which is useless for URIs
         // |= translates to value.match((?:\b)target(?:-|\s|$)) which is useless for URIs
         // begins with
-        '^=': function(value, target) {
+        '^=': function(value, target, property) {
             return !!(value + "").match(new RegExp('^' + escapeRegEx(target), 'i'));
         },
         // ends with
-        '$=': function(value, target) {
+        '$=': function(value, target, property) {
             return !!(value + "").match(new RegExp(escapeRegEx(target) + '$', 'i'));
         },
         // contains
-        '*=': function(value, target) {
+        '*=': function(value, target, property) {
+            if (property == 'directory') {
+                // add trailing slash so /dir/ will match the deep-end as well
+                value += '/';
+            }
+            
             return !!(value + "").match(new RegExp(escapeRegEx(target), 'i'));
         },
         'equals:': function(uri, target) {
@@ -102,10 +107,9 @@ $.fn.uri = function(uri) {
     }
     
     if (uri !== undefined) {
-        var old = $this.data('uri', uri);
+        var old = $this.data('uri');
         if (old) {
-            old._dom_element = undefined;
-            old._dom_attribute = undefined;
+            return old.href(uri);
         }
         
         if (!(uri instanceof URI)) {
@@ -185,7 +189,7 @@ $.expr.filters.uri = function(elem, index, matches) {
             return false;
         }
         
-        return compare[t[2]](uri[property](), t[4]);
+        return compare[t[2]](uri[property](), t[4], property);
     }
 
     return false;
@@ -206,5 +210,6 @@ $.each(['src', 'href', 'action', 'uri'], function(k, v) {
     };
 });
 $.attrHooks.uri.get = _attrHooks.get;
-        
+
+
 })(jQuery);

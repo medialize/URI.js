@@ -5,6 +5,8 @@ module("jQuery.URI", {
                 '<a href="https://example.org/">an HTTPS link</a>',
                 '<a href="http://example.org/so)me.pdf">some pdf</a>',
                 '<a href="http://example.org/hello/world.html">hello world</a>',
+                '<a href="ftp://localhost/one/two/three/file.ext">directories</a>',
+                '<a href="ftp://localhost/one/two/file.ext">directories</a>',
                 '<a href="mailto:mail@example.org?subject=Hello+World">Mail me</a>',
                 '<a href="javascript:alert(\'ugly!\');">some javascript</a>',
                 '<a href="#anchor">jump to anchor</a>',
@@ -29,6 +31,19 @@ module("jQuery.URI", {
         t.remove();
     }
 });
+test(".uri()", function() {
+    var $links = $('#testestest'),
+        $first = $links.children().first(),
+        uri = $first.uri(),
+        _uri = URI('/hello.world');
+    
+    ok(uri !== _uri, "different URI instances");
+    var __uri = $first.uri(_uri);
+    ok(uri !== _uri, "different URI instances");
+    ok(uri === __uri, "same URI instances");
+    equals($first.attr('href'), _uri.toString(), "equal URI");
+    
+});
 test("filtering with :uri()", function() {
     var $links = $('#testestest');
 
@@ -45,6 +60,9 @@ test("filtering with :uri()", function() {
     // find using accessor and "equals" comparison
     equal($links.find(':uri(protocol=https)').length, 1, ":uri(protocol=https)");
     equal($links.find(':uri(protocol=http)').length, 3, ":uri(protocol=http)");
+    
+    // directory match with trailing slash
+    equal($links.find(':uri(directory *= /two/)').length, 2, ":uri(directory *= /two/)");
     
     // find using URI.is()
     equal($links.find(':uri(relative)').length, 5, ":uri(relative)");
