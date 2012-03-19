@@ -102,7 +102,7 @@ use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 ```
 
 
-## Resources ## {#resources}
+## Resources ##
 
 Docs where you get more info on parsing and working with URLs
 
@@ -131,7 +131,7 @@ Docs where you get more info on parsing and working with URLs
 * http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html#workerlocation
 * MozURLProperty (not documented yet?!) https://developer.mozilla.org/User:trevorh/Interface_documentation_status
 
-### Alternatives ### {#alternatives}
+### Alternatives ###
 
 If you don't like URI.js, you may like one of these:
 
@@ -171,7 +171,7 @@ if you want to get involved, these are things you could help out with…
 URI.js is published under the [MIT license](http://www.opensource.org/licenses/mit-license) and [GPL v3](http://opensource.org/licenses/GPL-3.0).
 
 
-## Changelog ## {#changelog}
+## Changelog ##
 
 ### 1.6.0 (March 19th 2012) ###
 
