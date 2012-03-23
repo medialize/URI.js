@@ -140,7 +140,15 @@ $('div').has('a:uri(domain = github)')
 
 // testing if the protocol matches
 $('a').eq(1).is(':uri(protocol = http)');
-// -&gt; is true</pre>
+// -&gt; is true
+
+// event delegation
+$(document).on('click', 'a:uri(scheme=javscript)', function(e) {
+    if (!confirm("do you really want to execute this script?\n\n" + this.href)) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+    }
+});</pre>
 
     <h3>The :uri() pseudo selector</h3>
     <p><code>:uri()</code> accepts the following three argument patterns:</p>
