@@ -30,9 +30,13 @@
       // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
       return string.replace(/([.*+?\^=!:${}()|\[\]\/\\])/g, '\\$1');
     },
-    toString = Object.prototype.toString.call,
+    tostr = function (obj) {
+      var str = '';
+      return (obj + str);
+    },
+    toString = Object.prototype.toString,
     typeOf = function (obj) {
-      return toString(obj).slice(8, -1);
+      return toString.call(obj).slice(8, -1);
     },
     isArray = function (obj) {
       return typeOf(obj) === "Array";
@@ -65,7 +69,7 @@
       }
 
       if (url === undef) {
-        url = String(window.location.href);
+        url = tostr(window.location.href);
       }
 
       this.href(url);
@@ -135,13 +139,13 @@
     }
   };
   URI.encodeQuery = function (string) {
-    return URI.encode(String(string)).replace(/%20/g, '+');
+    return URI.encode(tostr(string)).replace(/%20/g, '+');
   };
   URI.decodeQuery = function (string) {
-    return URI.decode(String(string).replace(/\+/g, '%20'));
+    return URI.decode(tostr(string).replace(/\+/g, '%20'));
   };
   URI.codePath = function (transform, string) {
-    var segments = String(string).split('/'), i, length;
+    var segments = tostr(string).split('/'), i, length;
 
     for (i = 0, length = segments.length; i < length; i += 1) {
       segments[i] = transform(segments[i]);
@@ -165,7 +169,7 @@
 
     process = function (_part) {
       return function (string) {
-        return URI[_part](String(string)).replace(
+        return URI[_part](tostr(string)).replace(
           URI.characters.pathname[_part].expression,
           function (c) {
             return URI.characters.pathname[_part].map[c];
@@ -406,10 +410,10 @@
         if (isArray(data[key])) {
           unique = {};
           for (i = 0, length = data[key].length; i < length; i += 1) {
-            if (data[key][i] !== undef && unique[data[key][i]] === undef) {
+            if (data[key][i] !== undef && unique[tostr(data[key][i])] === undef) {
               t += "&" + URI.buildQueryParameter(key, data[key][i]);
               if (duplicates !== true) {
-                unique[data[key][i]] = true;
+                unique[tostr(data[key][i])] = true;
               }
             }
           }
@@ -577,7 +581,7 @@
           return this._parts[_part] || "";
         }
         if (v !== null) {
-          v = String(v);
+          v = tostr(v);
           if (v[0] === _key) {
             v = v.substring(1);
           }
@@ -1084,6 +1088,7 @@
   (function () {
     // mutating query string
     var q = p.query;
+
     p.query = function (v, build) {
       if (v === true) {
         return URI.parseQuery(this._parts.query);
