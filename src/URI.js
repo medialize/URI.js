@@ -14,17 +14,33 @@
 
 (function(undefined) {
 
-var punycode = typeof module !== "undefined" && module.exports
-    ? require('./punycode')
-    : window.punycode;
+var _use_module = typeof module !== "undefined" && module.exports,
+    _load_module = function(module) {
+        return _use_module ? require('./' + module) : window[module];
+    },
+    punycode = _load_module('punycode'),
+    IPv6 = _load_module('IPv6'),
+    SLD = _load_module('SecondLevelDomains'),
+    URI = function(url, base) {
+        // Allow instantiation without the 'new' keyword
+        if (!(this instanceof URI)) {
+            return new URI(url);
+        }
 
-var IPv6 = typeof module !== "undefined" && module.exports 
-    ? require('./IPv6')
-    : window.IPv6;
+        if (url === undefined) {
+            url = location.href + "";
+        }
 
-var SLD = typeof module !== "undefined" && module.exports 
-    ? require('./SecondLevelDomains')
-    : window.SecondLevelDomains;
+        this.href(url);
+
+        // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
+        if (base !== undefined) {
+            return this.absoluteTo(base);
+        }
+
+        return this;
+    },
+    p = URI.prototype;
 
 function escapeRegEx(string) {
     // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
@@ -57,28 +73,6 @@ function filterArrayValues(data, value) {
 
     return data;
 }
-
-// constructor
-var URI = function(url, base) {
-        // Allow instantiation without the 'new' keyword
-        if (!(this instanceof URI)) {
-            return new URI(url);
-        }
-
-        if (url === undefined) {
-            url = location.href + "";
-        }
-
-        this.href(url);
-
-        // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
-        if (base !== undefined) {
-            return this.absoluteTo(base);
-        }
-
-        return this;
-    };
-var p = URI.prototype;
 
 // static properties
 URI.idn_expression = /[^a-z0-9\.-]/i;
