@@ -8,6 +8,8 @@
 // inspired by https://github.com/medialize/URI.js/pull/2
 // --------------------------------------------------------------------------------
 
+// Note: make sure this is the last file loaded!
+
 // USAGE:
 // var uri = URI("http://example.org/#!/foo/bar/baz.html"),
 //     furi = uri.fragment(true);

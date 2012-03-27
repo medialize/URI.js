@@ -8,6 +8,8 @@
 // see http://code.google.com/web/ajaxcrawling/
 // --------------------------------------------------------------------------------
 
+// Note: make sure this is the last file loaded!
+
 // USAGE:
 // var uri = URI("http://example.org/#?foo=bar");
 // uri.fragment(true) === {foo: "bar"};
