@@ -77,14 +77,9 @@ var pseudo = /^([a-zA-Z]+)\s*([\^\$*]?=|:)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*
         'is:': function(uri, target) {
             return uri.is(target);
         }
-    };
-
-// populate lookup table and register $.attr('uri:accessor') handlers
-$.each('authority directory domain filename fragment hash host hostname href password path pathname port protocol query scheme search subdomain suffix tld username'.split(" "), function(k, v) {
-    comparable[v] = true;
-    
-    (function(property){
-        $.attrHooks['uri:' + property] = {
+    },
+    generateAccessor = function(property) {
+        return {
             get: function(elem) {
                 return $(elem).uri()[property]();
             },
@@ -93,7 +88,12 @@ $.each('authority directory domain filename fragment hash host hostname href pas
                 return value;
             }
         };
-    })(v);
+    };
+
+// populate lookup table and register $.attr('uri:accessor') handlers
+$.each('authority directory domain filename fragment hash host hostname href password path pathname port protocol query scheme search subdomain suffix tld username'.split(" "), function(k, v) {
+    comparable[v] = true;
+    $.attrHooks['uri:' + v] = generateAccessor(v);
 });
 
 // general URI accessor

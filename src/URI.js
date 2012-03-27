@@ -165,16 +165,17 @@ URI.decodePath = function(string) {
 };
 // generate encode/decode path functions
 var _parts = {'encode':'encode', 'decode':'decode'},
-    _part;
-
-for (_part in _parts) {
-    URI[_part + "PathSegment"] = (function(_part){
+    _part,
+    generateAccessor = function(_part){
         return function(string) {
             return URI[_part](string + "").replace(URI.characters.pathname[_part].expression, function(c) {
                 return URI.characters.pathname[_part].map[c];
             });
         };
-    })(_parts[_part]);
+    };
+
+for (_part in _parts) {
+    URI[_part + "PathSegment"] = generateAccessor(_parts[_part]);
 }
 
 URI.parse = function(string) {
@@ -542,53 +543,58 @@ p.valueOf = function() {
 
 // generate simple accessors
 _parts = {protocol: 'protocol', username: 'username', password: 'password', hostname: 'hostname',  port: 'port'};
+generateAccessor = function(_part){
+    return function(v, build) {
+        if (v === undefined) {
+            return this._parts[_part] || "";
+        } else {
+            this._parts[_part] = v;
+            this.build(!build);
+            return this;
+        }
+    };
+};
 
 for (_part in _parts) {
-    p[_part] = (function(_part){
-        return function(v, build) {
-            if (v === undefined) {
-                return this._parts[_part] || "";
-            } else {
-                this._parts[_part] = v;
-                this.build(!build);
-                return this;
-            }
-        };
-    })(_parts[_part]);
+    p[_part] = generateAccessor(_parts[_part]);
 }
 
 // generate accessors with optionally prefixed input
 _parts = {query: '?', fragment: '#'};
-for (_part in _parts) {
-    p[_part] = (function(_part, _key){
-        return function(v, build) {
-            if (v === undefined) {
-                return this._parts[_part] || "";
-            } else {
-                if (v !== null) {
-                    v = v + "";
-                    if (v[0] === _key) {
-                        v = v.substring(1);
-                    }
+generateAccessor = function(_part, _key){
+    return function(v, build) {
+        if (v === undefined) {
+            return this._parts[_part] || "";
+        } else {
+            if (v !== null) {
+                v = v + "";
+                if (v[0] === _key) {
+                    v = v.substring(1);
                 }
-
-                this._parts[_part] = v;
-                this.build(!build);
-                return this;
             }
-        };
-    })(_part, _parts[_part]);
+
+            this._parts[_part] = v;
+            this.build(!build);
+            return this;
+        }
+    };
+};
+
+for (_part in _parts) {
+    p[_part] = generateAccessor(_part, _parts[_part]);
 }
 
 // generate accessors with prefixed output
 _parts = {search: ['?', 'query'], hash: ['#', 'fragment']};
+generateAccessor = function(_part, _key){
+    return function(v, build) {
+        var t = this[_part](v, build);
+        return typeof t === "string" && t.length ? (_key + t) : t;
+    };
+};
+
 for (_part in _parts) {
-    p[_part] = (function(_part, _key){
-        return function(v, build) {
-            var t = this[_part](v, build);
-            return typeof t === "string" && t.length ? (_key + t) : t;
-        };
-    })(_parts[_part][1], _parts[_part][0]);
+    p[_part] = generateAccessor(_parts[_part][1], _parts[_part][0]);
 }
 
 p.pathname = function(v, build) {
