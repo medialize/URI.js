@@ -1,4 +1,4 @@
-/*
+/*!
  * URI.js - Mutating URLs
  *
  * Version: 1.6.0

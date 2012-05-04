@@ -1,4 +1,4 @@
-/*
+/*!
  * URI.js - Mutating URLs
  * Second Level Domain (SLD) Support
  *
