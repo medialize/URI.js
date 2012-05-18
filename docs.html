@@ -199,11 +199,7 @@ uri.protocol("ftp"); // returns the URI instance for chaining
 
 // relative scheme
 uri.protocol("");
-uri.toString() === '//example.org/foo/hello.html';
-
-// remove scheme
-uri.protocol(null);
-uri.toString() === 'example.org/foo/hello.html';</pre>
+uri.toString() === '//example.org/foo/hello.html';</pre>
     <p>NOTE: Throws a <code>TypeError</code> on illegal input, that is anything but <code>[a-z0-9.+-]</code> and <code>[empty string]</code> and <code>null</code></p>
 
     <h3 id="accessors-username">username()</h3>
