@@ -863,7 +863,7 @@ p.domain = function(v, build) {
 
         // if hostname consists of 1 or 2 segments, it must be the domain
         var t = this._parts.hostname.match(/\./g);
-        if (t.length < 2) {
+        if (t && t.length < 2) {
             return this._parts.hostname;
         }
 
