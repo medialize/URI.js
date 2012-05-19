@@ -174,7 +174,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-### 1.6.1 (March 19th 2012) ###
+### 1.6.1 (May 19th 2012) ###
 
 * fixing TypeError on domain() with dot-less hostnames ([Issue #27](https://github.com/medialize/URI.js/issues/27))
 
