@@ -328,7 +328,13 @@ test("domain", function() {
     u.domain('example.co.uk');
     equal(u.domain(), "example.co.uk", "domain after changed domain example.co.uk");
     equal(u+"", "http://www.example.co.uk/foo.html", "url after changed domain example.co.uk");
+    
+    u.href('http://test/');
+    equal(u.domain(), "test", "domain (dot-less)");
+    equal(u.subdomain(), "", "subdomain (dot-less)");
 
+    u.subdomain('foo');
+    equal(u.href(), "http://foo.test/", "subdomain set on (dot-less)");
 });
 test("tld", function() {
     var u = new URI("http://www.example.org/foo.html");
