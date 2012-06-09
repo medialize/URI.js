@@ -21,6 +21,7 @@ var _use_module = typeof module !== "undefined" && module.exports,
     punycode = _load_module('punycode'),
     IPv6 = _load_module('IPv6'),
     SLD = _load_module('SecondLevelDomains'),
+    hooks = _load_module('URIhooks'),
     URI = function(url, base) {
         // Allow instantiation without the 'new' keyword
         if (!(this instanceof URI)) {
@@ -73,6 +74,8 @@ function filterArrayValues(data, value) {
 
     return data;
 }
+
+URI.hooks = hooks;
 
 // static properties
 URI.idn_expression = /[^a-z0-9\.-]/i;
@@ -299,7 +302,12 @@ URI.parseQuery = function(string) {
             name = URI.decodeQuery(v.shift()),
             // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
             value = v.length ? URI.decodeQuery(v.join('=')) : null;
-
+        
+        // run queryHook
+        if (URI.queryHook && URI.queryHook.parse(name, value, items)) {
+            continue;
+        }
+        
         if (items[name]) {
             if (typeof items[name] === "string") {
                 items[name] = [items[name]];
@@ -309,6 +317,10 @@ URI.parseQuery = function(string) {
         } else {
             items[name] = value;
         }
+    }
+    
+    if (URI.queryHook) {
+        items = URI.queryHook.clean(items);
     }
 
     return items;
@@ -393,7 +405,17 @@ URI.buildQuery = function(data, duplicates) {
 
     var t = "";
     for (var key in data) {
-        if (Object.hasOwnProperty.call(data, key) && key) {
+        if (Object.prototype.hasOwnProperty.call(data, key) && key) {
+            
+            // run queryHook
+            if (URI.queryHook) {
+                var res = URI.queryHook.toString(key, data[key], duplicates);
+                if (typeof res === 'string') {
+                    t += res;
+                    continue;
+                }
+            }
+            
             if (isArray(data[key])) {
                 var unique = {};
                 for (var i = 0, length = data[key].length; i < length; i++) {
@@ -628,7 +650,7 @@ p.href = function(href, build) {
         } else if (_URI || _object) {
             var src = _URI ? href._parts : href;
             for (key in src) {
-                if (Object.hasOwnProperty.call(this._parts, key)) {
+                if (Object.prototype.hasOwnProperty.call(this._parts, key)) {
                     this._parts[key] = src[key];
                 }
             }
