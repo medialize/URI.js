@@ -941,12 +941,16 @@ p.directory = function(v, build) {
     }
     
     if (v === undefined || v === true) {
-        if (!this._parts.path || this._parts.path === '/') {
+        if (!this._parts.path && !this._parts.hostname) {
+            return '';
+        }
+        
+        if (this._parts.path === '/') {
             return '/';
         }
 
         var end = this._parts.path.length - this.filename().length - 1,
-            res = this._parts.path.substring(0, end) || "/";
+            res = this._parts.path.substring(0, end) || (this._parts.hostname ? "/" : "");
 
         return v ? URI.decodePath(res) : res;
 
@@ -1310,24 +1314,23 @@ p.absoluteTo = function(base) {
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
     }
-    
-    if (!this.is('relative')) {
-        throw new Error('Cannot resolve non-relative URL');
-    }
 
     if (!(base instanceof URI)) {
         base = new URI(base);
     }
 
     var resolved = new URI(this),
-        properties = ['protocol', 'username', 'password', 'hostname', 'port'];
+        properties = ['protocol', 'username', 'password', 'hostname', 'port'],
+        basedir;
 
     for (var i = 0, p; p = properties[i]; i++) {
         resolved._parts[p] = base._parts[p];
     }
 
     if (resolved.path()[0] !== '/') {
-        resolved._parts.path = base.directory() + '/' + resolved._parts.path;
+        basedir = base.directory();
+        resolved._parts.path = (basedir ? (basedir + '/') : '') + resolved._parts.path;
+        console.log(resolved._parts.path);
         resolved.normalizePath();
     }
 

@@ -678,6 +678,48 @@ test("absoluteTo", function() {
             url: '../relative/path?blubber=1#hash3',
             base: '/path/to/file?some=query#hash',
             result: '/path/relative/path?blubber=1#hash3'
+        }, {
+            name: 'relative path - urljoin',
+            url: 'the_relative_url',
+            base: 'rel/path/',
+            result: 'rel/path/the_relative_url'
+        }, {
+            name: 'relative path file - urljoin',
+            url: 'the_relative_url',
+            base: 'rel/path/something',
+            result: 'rel/path/the_relative_url'
+        }, {
+            name: 'relative path file - urljoin',
+            url: '../the_relative_url',
+            base: 'rel/path/',
+            result: 'rel/the_relative_url'
+        }, {
+            name: 'relative path file - urljoin',
+            url: '/the_relative_url',
+            base: 'rel/path/',
+            result: '/the_relative_url'
+        }, {
+            name: 'relative path file - urljoin',
+            url: '/the_relative_url',
+            base: 'http://example.com/rel/path/',
+            result: 'http://example.com/the_relative_url'
+        }, {
+            name: 'relative path file - urljoin',
+            url: '/the_relative_url',
+            base: 'http://github.com//the_relative_url',
+            // result is sanitized, so a double slashes are eradicated!
+            //result: 'http://github.com//the_relative_url'
+            result: 'http://github.com/the_relative_url'
+        }, {
+            name: 'file paths - urljoin',
+            url: 'anotherFile',
+            base: 'aFile',
+            result: 'anotherFile'
+        }, {
+            name: 'absolute URL to absolute URL',
+            url: 'http://example.com/some/other/path/file',
+            base: 'http://example.org/rel/path/foo',
+            result: 'http://example.org/some/other/path/file'
         }
     ];
 
