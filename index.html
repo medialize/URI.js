@@ -144,7 +144,7 @@ uri.toString() === "http://example.org/#!/hello.html"
 // required src/URI.fragmentURI.js to be loaded</pre>
 
     <p>How do you like parsing URNs?</p>
-    <pre class="prettyprint lang-js">var a = URI("mailto:hello@example.org?subject=hello");
+    <pre class="prettyprint lang-js">var uri = URI("mailto:hello@example.org?subject=hello");
 uri.protocol() == 'mailto';
 uri.path() == 'hello@example.org';
 uri.query() == 'subject=hello';</pre>
