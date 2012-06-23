@@ -174,7 +174,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-### 1.6.2 (???) ###
+### 1.6.2 (June 23rd 2012) ###
 
 * `.directory()` now returns empty string if there is no directory
 * fixed `.absoluteTo()` to join two relative paths properly ([Issue #29](https://github.com/medialize/URI.js/issues/29))
