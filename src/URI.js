@@ -1314,11 +1314,15 @@ p.absoluteTo = function(base) {
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
     }
+    
+    if (this._parts.hostname) {
+        return new URI(this);
+    }
 
     if (!(base instanceof URI)) {
         base = new URI(base);
     }
-
+    
     var resolved = new URI(this),
         properties = ['protocol', 'username', 'password', 'hostname', 'port'],
         basedir;
