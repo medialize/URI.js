@@ -149,8 +149,8 @@ var uri = new URI(new URI("http://example.org"));
 
 // URI parts object
 var uri = new URI({
-    protocol: 'http',
-    host: 'example.org'
+    protocol: "http",
+    host: "example.org"
 });
 
 // without new keyword
@@ -164,17 +164,17 @@ URI("../foobar.html").absoluteTo("http://example.org/hello/world.html");
     
     <p>The following parts can be specified in an object:</p>
     <pre class="prettyprint lang-js">var uri = new URI({
-    protocol: 'http', // no trailing :
-    username: 'user',
-    password: 'pass',
-    hostname: 'example.org',
-    port: '80', // string, please
+    protocol: "http", // no trailing :
+    username: "user",
+    password: "pass",
+    hostname: "example.org",
+    port: "80", // string, please
     // "path", not "pathname", sorry
-    path: '/foo/bar.html',
+    path: "/foo/bar.html",
     // "query", not "search", sorry
-    query: 'foo=bar&amp;bar=baz', // no leading ?
+    query: "foo=bar&amp;bar=baz", // no leading ?
     // "fragment", not "hash", sorry
-    fragment: 'frag' // no leading #
+    fragment: "frag" // no leading #
 });</pre>
 
     <p>using only components of URIs:</p>
@@ -199,7 +199,7 @@ uri.protocol("ftp"); // returns the URI instance for chaining
 
 // relative scheme
 uri.protocol("");
-uri.toString() === '//example.org/foo/hello.html';</pre>
+uri.toString() === "//example.org/foo/hello.html";</pre>
     <p>NOTE: Throws a <code>TypeError</code> on illegal input, that is anything but <code>[a-z0-9.+-]</code> and <code>[empty string]</code> and <code>null</code></p>
 
     <h3 id="accessors-username">username()</h3>
@@ -305,10 +305,10 @@ uri.pathname(); // returns string "/foo/hello.html"
 uri.pathname("/foo/hello.html"); // returns the URI instance for chaining
 
 // will encode for you
-uri.pathname('/hello world/');
-uri.pathname() === '/hello%20world/';
+uri.pathname("/hello world/");
+uri.pathname() === "/hello%20world/";
 // will decode for you
-uri.pathname(true) === '/hello world/';</pre>
+uri.pathname(true) === "/hello world/";</pre>
     
     <h3 id="accessors-directory">directory()</h3>
     <p>.directory() is an convenience method for mutating the directory part of a path</p>
@@ -320,16 +320,16 @@ uri.directory("/bar"); // returns the URI instance for chaining
 // uri == "http://example.org/bar/hello.html"
 
 // will encode for you
-uri.directory('/hello world/');
-uri.directory() === '/hello%20world';
+uri.directory("/hello world/");
+uri.directory() === "/hello%20world";
 // will decode for you
-uri.directory(true) === '/hello world';
+uri.directory(true) === "/hello world";
 
-uri.href('http://example.com/foo').directory()
+uri.href("http://example.com/foo").directory()
 // -&t; "/"
-uri.href('/foo').directory()
+uri.href("/foo").directory()
 // -&t; "/"
-uri.href('foo').directory()
+uri.href("foo").directory()
 // -&t; ""</pre>
     
     <h3 id="accessors-filename">filename()</h3>
@@ -342,10 +342,10 @@ uri.filename("world.xml"); // returns the URI instance for chaining
 // uri == "http://example.org/bar/world.xml"
 
 // will encode for you
-uri.filename('hello world.html');
-uri.filename() === 'hello%20world.html';
+uri.filename("hello world.html");
+uri.filename() === "hello%20world.html";
 // will decode for you
-uri.filename(true) === 'hello world.html';</pre>
+uri.filename(true) === "hello world.html";</pre>
     <p>NOTE: If you pass <code>../file.html</code>, the directory will be changed accordingly</p>
     
     <h3 id="accessors-suffix">suffix()</h3>
@@ -358,10 +358,10 @@ uri.suffix("xml"); // returns the URI instance for chaining
 // uri == "http://example.org/bar/world.xml"
 
 // will encode for you
-uri.suffix('würgh');
-uri.suffix() === 'w%C3%BCrgh';
+uri.suffix("würgh");
+uri.suffix() === "w%C3%BCrgh";
 // will decode for you
-uri.suffix(true) === 'würgh';</pre>
+uri.suffix(true) === "würgh";</pre>
     
     <h3 id="accessors-search">search(), query()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html?foo=bar&amp;bar=baz");
@@ -425,55 +425,55 @@ uri.hash("mars"); // returns the URI instance for chaining
         <dt><code>ip6</code>, <code>ipv6</code>, <code>inet6</code></dt><dd><code>true</code> if hostname is IPv6</dd>
     </dl>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/");
-uri.is('relative') === false;
-uri.is('absolute') === true;
-uri.is('urn') === false;
-uri.is('url') === true;
-uri.is('name') === true;
-uri.is('sld') === false;
-uri.is('punycode') === false;
-uri.is('IDN') === false; // case doesn't matter
-uri.is('idn') === false; // case doesn't matter
-uri.is('ip') === false;
+uri.is("relative") === false;
+uri.is("absolute") === true;
+uri.is("urn") === false;
+uri.is("url") === true;
+uri.is("name") === true;
+uri.is("sld") === false;
+uri.is("punycode") === false;
+uri.is("IDN") === false; // case doesn't matter
+uri.is("idn") === false; // case doesn't matter
+uri.is("ip") === false;
 
 var uri = new URI("http://123.123.123.123/");
-uri.is('relative') === false;
-uri.is('absolute') === true;
-uri.is('urn') === false;
-uri.is('url') === true;
-uri.is('name') === false;
-uri.is('sld') === false;
-uri.is('IP') === true;
-uri.is('IPv4') === true;
-uri.is('IPv6') === false;
+uri.is("relative") === false;
+uri.is("absolute") === true;
+uri.is("urn") === false;
+uri.is("url") === true;
+uri.is("name") === false;
+uri.is("sld") === false;
+uri.is("IP") === true;
+uri.is("IPv4") === true;
+uri.is("IPv6") === false;
 
 var uri = new URI("http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/");
-uri.is('IP') === true;
-uri.is('IPv4') === false;
-uri.is('IPv6') === true;
+uri.is("IP") === true;
+uri.is("IPv4") === false;
+uri.is("IPv6") === true;
 
 var uri = new URI("/hello/world.html");
-uri.is('relative') === true;
-uri.is('absolute') === false;
-uri.is('urn') === false;
-uri.is('url') === true;
-uri.is('name') === false;
-uri.is('IP') === false;
+uri.is("relative") === true;
+uri.is("absolute") === false;
+uri.is("urn") === false;
+uri.is("url") === true;
+uri.is("name") === false;
+uri.is("IP") === false;
 
 var uri = new URI("http://example.co.uk/");
-uri.is('name') === true;
-uri.is('sld') === true;
+uri.is("name") === true;
+uri.is("sld") === true;
 
 var uri = new URI("mailto:mail@example.org");
-uri.is('relative') === false;
-uri.is('absolute') === false;
-uri.is('urn') === true;
-uri.is('url') === false;
-uri.is('name') === false;
-uri.is('sld') === false;
-uri.is('punycode') === false;
-uri.is('idn') === false;
-uri.is('ip') === false;</pre>
+uri.is("relative") === false;
+uri.is("absolute") === false;
+uri.is("urn") === true;
+uri.is("url") === false;
+uri.is("name") === false;
+uri.is("sld") === false;
+uri.is("punycode") === false;
+uri.is("idn") === false;
+uri.is("ip") === false;</pre>
     
     
     <h2 id="querystrings">Working with the query string</h2>
@@ -539,8 +539,8 @@ uri.addFragment("hello", "mars"); // returns the URI instance for chaining
     furi = uri.fragment(true);
 
 // manipulating the fragment URI
-furi.pathname() === '/foo/bar/baz.html';
-furi.pathname('/hello.html');
+furi.pathname() === "/foo/bar/baz.html";
+furi.pathname("/hello.html");
 
 // has direct effect on the actual URI
 uri.toString() === "http://example.org/#!/hello.html"</pre>
@@ -565,12 +565,12 @@ uri.normalizeHostname(); // returns the URI instance for chaining
 // uri == "http://www.xn--exmple-cua.org/"
 
 // normalize IPv6 host
-uri.hostname('fe80:0000:0000:0000:0204:61ff:fe9d:f156');
+uri.hostname("fe80:0000:0000:0000:0204:61ff:fe9d:f156");
 uri.normalizeHostname(); // returns the URI instance for chaining
 // uri == "http://fe80::204:61ff:fe9d:f156/"
 
 // normalize hostname to lower case
-uri.hostname('wWw.eXample.Org');
+uri.hostname("wWw.eXample.Org");
 uri.normalizeHostname(); // returns the URI instance for chaining
 // uri == "http://www.example.org/"</pre>
     <p>There is no .normalizeHost(), as <a href="#accessors-host">.host()</a> is a property comprised of <a href="#accessors-hostname">.hostname()</a> and <a href="#accessors-port">.port()</a></p>
@@ -821,17 +821,17 @@ uri.query(URI.buildQuery(data, true));</pre>
     <pre class="prettyprint lang-js">var data = {};
 
 URI.addQuery(data, "hello", "mars");
-data === {hello: 'mars'};
+data === {hello: "mars"};
 
 URI.addQuery(data, "hello", "world");
-data === {hello: ['mars', 'world']};
+data === {hello: ["mars", "world"]};
 
 URI.addQuery(data, {foo: "bar", goodbye : ["world", "mars"]});
-data === {hello: ['mars', 'world'], foo: "bar", goodbye : ["world", "mars"]};</pre>
+data === {hello: ["mars", "world"], foo: "bar", goodbye : ["world", "mars"]};</pre>
     
     <h3 id="static-removeQuery">URI.removeQuery()</h3>
     <p>removes data from a map</p>
-    <pre class="prettyprint lang-js">var data === {hello: ['mars', 'world'], foo: "bar", goodbye : ["world", "mars"]};
+    <pre class="prettyprint lang-js">var data === {hello: ["mars", "world"], foo: "bar", goodbye : ["world", "mars"]};
 
 URI.removeQuery(data, "hello");
 data === {foo: "bar", goodbye : ["world", "mars"]};
@@ -853,16 +853,16 @@ data === {hello: ["mars"], mine: "true", a: ["2"]}</pre>
 
     <h3 id="static-commonPath">URI.commonPath()</h3>
     <p>URI.commonPath() determines the common base directory of two paths.</p>
-    <pre class="prettyprint lang-js">URI.commonPath('/foo/bar/baz.html', '/foo/bar/world.html');
+    <pre class="prettyprint lang-js">URI.commonPath("/foo/bar/baz.html", "/foo/bar/world.html");
 // returns "/foo/bar/"
 
-URI.commonPath('/foo/bar/baz.html', '/foo/bazz/world.html');
+URI.commonPath("/foo/bar/baz.html", "/foo/bazz/world.html");
 // returns "/foo/"
 
-URI.commonPath('/foo/bar/baz.html', '/other/world.html');
+URI.commonPath("/foo/bar/baz.html", "/other/world.html");
 // returns "/"
 
-URI.commonPath('/foo', 'bar');
+URI.commonPath("/foo", "bar");
 // returns ""</pre>
     
     <h3 id="static-withinString">URI.withinString()</h3>
@@ -878,7 +878,7 @@ URI.commonPath('/foo', 'bar');
 var result = URI.withinString(source, function(url) {
     // callback needs to return a string
     // feel free to URI(url).normalize().toString() or something
-    return '&lt;a&gt;' + url + '&lt;/a&gt;';
+    return "&lt;a&gt;" + url + "&lt;/a&gt;";
 });
 
 /* result is:
@@ -892,16 +892,16 @@ links can also be in parens (<strong>&lt;a&gt;http://example.org&lt;/a&gt;</stro
 // a proper replacement could look like the following:
 var escapeHtml = function(string) { 
         return string
-            .replace(/&amp;/g, '&amp;amp;')
-            .replace(/&lt;/g, '&amp;lt;')
-            .replace(/&gt;/g, '&amp;gt;')
-            .replace(/&quot;/g, '&amp;quot;');
+            .replace(/&amp;/g, "&amp;amp;")
+            .replace(/&lt;/g, "&amp;lt;")
+            .replace(/&gt;/g, "&amp;gt;")
+            .replace(/&quot;/g, "&amp;quot;");
     }
     result = URI.withinString(source, function(url) {
         var uri = new URI(url);
         uri.normalize();
-        return '&lt;a href="' + escapeHtml(uri) + '"&gt;' 
-            + escapeHtml(url.<a href="#readable">readable</a>()) + '&lt;/a&gt;';
+        return "&lt;a href="" + escapeHtml(uri) + ""&gt;" 
+            + escapeHtml(url.<a href="#readable">readable</a>()) + "&lt;/a&gt;";
     });
 </pre>
     
