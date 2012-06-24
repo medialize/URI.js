@@ -1330,7 +1330,6 @@ p.absoluteTo = function(base) {
     if (resolved.path()[0] !== '/') {
         basedir = base.directory();
         resolved._parts.path = (basedir ? (basedir + '/') : '') + resolved._parts.path;
-        console.log(resolved._parts.path);
         resolved.normalizePath();
     }
 
