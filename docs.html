@@ -323,7 +323,14 @@ uri.directory("/bar"); // returns the URI instance for chaining
 uri.directory('/hello world/');
 uri.directory() === '/hello%20world';
 // will decode for you
-uri.directory(true) === '/hello world';</pre>
+uri.directory(true) === '/hello world';
+
+uri.href('http://example.com/foo').directory()
+// -&t; "/"
+uri.href('/foo').directory()
+// -&t; "/"
+uri.href('foo').directory()
+// -&t; ""</pre>
     
     <h3 id="accessors-filename">filename()</h3>
     <p>.filename() is an convenience method for mutating the filename part of a path</p>
