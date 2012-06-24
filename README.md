@@ -174,10 +174,15 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.6.3 (June 24th 2012) ###
+
+* fixing `.absoluteTo()` to join two relative paths properly ([Issue #29](https://github.com/medialize/URI.js/issues/29))
+* adding `.clone()` to copy an URI instance
+
 ### 1.6.2 (June 23rd 2012) ###
 
 * `.directory()` now returns empty string if there is no directory
-* fixed `.absoluteTo()` to join two relative paths properly ([Issue #29](https://github.com/medialize/URI.js/issues/29))
+* fixing `.absoluteTo()` to join two relative paths properly ([Issue #29](https://github.com/medialize/URI.js/issues/29))
 
 ### 1.6.1 (May 19th 2012) ###
 
