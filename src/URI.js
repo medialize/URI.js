@@ -528,6 +528,10 @@ p.build = function(deferBuild) {
     return this;
 };
 
+p.clone = function() {
+    return new URI(this);
+};
+
 p.toString = function() {
     return this.build(false)._string;
 };
@@ -1266,7 +1270,7 @@ p.unicode = function() {
 };
 
 p.readable = function() {
-    var uri = new URI(this);
+    var uri = this.clone();
     // removing username, password, because they shouldn't be displayed according to RFC 3986
     uri.username("").password("").normalize();
     var t = '';
@@ -1311,21 +1315,21 @@ p.readable = function() {
 
 // resolving relative and absolute URLs
 p.absoluteTo = function(base) {
+    var resolved = this.clone(),
+        properties = ['protocol', 'username', 'password', 'hostname', 'port'],
+        basedir;
+    
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
     }
     
     if (this._parts.hostname) {
-        return new URI(this);
+        return resolved;
     }
 
     if (!(base instanceof URI)) {
         base = new URI(base);
     }
-    
-    var resolved = new URI(this),
-        properties = ['protocol', 'username', 'password', 'hostname', 'port'],
-        basedir;
 
     for (var i = 0, p; p = properties[i]; i++) {
         resolved._parts[p] = base._parts[p];
@@ -1341,6 +1345,11 @@ p.absoluteTo = function(base) {
     return resolved;
 };
 p.relativeTo = function(base) {
+    var relative = this.clone(),
+        properties = ['protocol', 'username', 'password', 'hostname', 'port'],
+        common,
+        _base;
+    
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
     }
@@ -1353,11 +1362,9 @@ p.relativeTo = function(base) {
         throw new Error('Cannot calculate common path from non-relative URLs');
     }
 
-    var relative = new URI(this),
-        properties = ['protocol', 'username', 'password', 'hostname', 'port'],
-        common = URI.commonPath(relative.path(), base.path()),
-        _base = base.directory();
-
+    common = URI.commonPath(relative.path(), base.path());
+    _base = base.directory();
+    
     for (var i = 0, p; p = properties[i]; i++) {
         relative._parts[p] = null;
     }
@@ -1386,7 +1393,7 @@ p.relativeTo = function(base) {
 
 // comparing URIs
 p.equals = function(uri) {
-    var one = new URI(this),
+    var one = this.clone(),
         two = new URI(uri),
         one_map = {},
         two_map = {},

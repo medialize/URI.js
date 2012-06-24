@@ -40,7 +40,12 @@
     </ul>
     
     <ul class="toc">
-        <li><a href="#constructor">Constructing an URI</a></li>
+        <li>
+            <a href="#constructor">Constructing an URI</a>
+            <ul>
+                <li><a href="#clone">cloning an URI instance</a></li>
+            </ul>
+        </li>
         <li>
             Working with URI parts
             <ul>
@@ -188,6 +193,16 @@ var uri = new URI("?foo=bar");
 var uri = new URI("#call-me-hash");
 
 // and any combination of the above…</pre>
+
+    <h3 id="clone">cloning URIs</h3>
+    <p>Get a copy of the current URI instance</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org"),
+    uri2 = uri.clone();
+
+uri2.tld("com");
+uri == "http://example.org";
+uri2 == "http://example.com";</pre>
+    
     
     <h3 id="accessors-protocol">protocol(), scheme()</h3>
     <p>.scheme() is an alias of .protocol()</p>
