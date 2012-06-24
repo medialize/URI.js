@@ -662,7 +662,12 @@ URI("../world.html").absoluteTo("foo/bar/baz.html");
 
 // absolute URLs are passed through unchanged
 URI("http://example.org/world.html").absoluteTo("http://google.com/baz");
-// -&gt; "http://example.org/world.html"</pre>
+// -&gt; "http://example.org/world.html"
+
+// absolute URLs relative to absolute URLs
+URI("http://example.org/world.html").clone().authority("").absoluteTo("http://google.com/baz");
+// -&gt; "http://google.com/world.html"
+</pre>
     <p>.relativeTo() and .absoluteTo() reverse each other.</p>
 
     <h3 id="absoluteto">absoluteTo()</h3>
