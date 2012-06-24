@@ -639,7 +639,15 @@ u.readable() === "http://www.exämple.org/"
     <pre class="prettyprint lang-js">var uri = new URI("/relative/path");
 // make path relative
 var relUri = uri.relativeTo("/relative/sub/foo/sub/file"); // returns a new URI instance
-// relUri == "../../../path"</pre>
+// relUri == "../../../path"
+
+// also works for relative directories
+URI("../world.html").absoluteTo("foo/bar/baz.html");
+// -&gt; "foo/world.html"
+
+// absolute URLs are passed through unchanged
+URI("http://example.org/world.html").absoluteTo("http://google.com/baz");
+// -&gt; "http://example.org/world.html"</pre>
     <p>.relativeTo() and .absoluteTo() reverse each other.</p>
 
     <h3 id="absoluteto">absoluteTo()</h3>
