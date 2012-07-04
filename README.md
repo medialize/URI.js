@@ -144,6 +144,7 @@ If you don't like URI.js, you may like one of these:
 * [Google Closure Uri](http://closure-library.googlecode.com/svn/docs/closure_goog_uri_uri.js.html)
 * [URI.js by Gary Court](https://github.com/garycourt/uri-js)
 * [jurlp](https://github.com/tombonner/jurlp)
+* [jsUri](http://code.google.com/p/jsuri/)
 
 
 ## TODO ##
