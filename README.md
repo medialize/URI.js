@@ -22,7 +22,7 @@ I still can't believe javascript - the f**ing backbone-language of the web - doe
 How about a nice, clean and simple API for mutating URIs:
 
 ```javascript
-var url = new URL("http://example.org/foo?bar=baz");
+var url = new URI("http://example.org/foo?bar=baz");
 url.addQuery("foo", "bar");
 ```
 
