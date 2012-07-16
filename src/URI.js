@@ -335,7 +335,7 @@ URI.build = function(parts) {
         t += parts.path;
     }
 
-    if (typeof parts.query == "string") {
+    if (typeof parts.query === "string") {
         t += '?' + parts.query;
     }
 
@@ -854,7 +854,7 @@ p.domain = function(v, build) {
         return v === undefined ? '' : this;
     }
     
-    if (typeof v == 'boolean') {
+    if (typeof v === 'boolean') {
         build = v;
         v = undefined;
     }
@@ -898,7 +898,7 @@ p.tld = function(v, build) {
         return v === undefined ? '' : this;
     }
     
-    if (typeof v == 'boolean') {
+    if (typeof v === 'boolean') {
         build = v;
         v = undefined;
     }
