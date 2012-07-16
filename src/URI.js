@@ -335,11 +335,11 @@ URI.build = function(parts) {
         t += parts.path;
     }
 
-    if (typeof parts.query == "string") {
+    if (typeof parts.query === "string" && '' !== parts.query) {
         t += '?' + parts.query;
     }
 
-    if (typeof parts.fragment === "string") {
+    if (typeof parts.fragment === "string" && '' !== parts.fragment) {
         t += '#' + parts.fragment;
     }
     return t;
