@@ -1073,6 +1073,50 @@ p.suffix = function(v, build) {
         return this;
     }
 };
+p.segment = function(segment, v, build) {
+    var separator = this._parts.urn ? ':' : '/',
+        path = this.path(),
+        absolute = path.substring(0, 1) === '/',
+        segments = path.split(separator);
+    
+    if (typeof segment !== 'number') {
+        build = v;
+        v = segment;
+        segment = undefined;
+    }
+    
+    if (segment !== undefined && typeof segment !== 'number') {
+        throw new Error("Bad segment '" + segment + "', must be 0-based integer");
+    }
+    
+    if (absolute) {
+        segments.shift();
+    }
+    
+    if (v === undefined) {
+        return segment === undefined 
+            ? segments 
+            : segments[segment];
+    } else if (segment === null || segments[segment] === undefined) {
+        if (isArray(v)) {
+            segments = v;
+        } else if (v || (typeof v === "string" && v.length)) {
+            segments.push(v);
+        }
+    } else {
+        if (v || (typeof v === "string" && v.length)) {
+            segments[segment] = v;
+        } else {
+            segments.splice(segment, 1);
+        }
+    }
+    
+    if (absolute) {
+        segments.unshift("");
+    }
+    
+    return this.path(segments.join(separator), build);
+};
 
 // mutating query string
 var q = p.query;

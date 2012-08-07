@@ -65,6 +65,8 @@
                 <li><a href="#accessors-directory">directory()</a></li>
                 <li><a href="#accessors-filename">filename()</a></li>
                 <li><a href="#accessors-suffix">suffix()</a></li>
+                <li><a href="#accessors-segment">segment()</a></li>
+                
                 <li><a href="#accessors-search">search(), query()</a></li>
                 <li><a href="#accessors-hash">hash(), fragment()</a></li>
                 
@@ -377,6 +379,25 @@ uri.suffix("würgh");
 uri.suffix() === "w%C3%BCrgh";
 // will decode for you
 uri.suffix(true) === "würgh";</pre>
+    
+    <h3 id="accessors-segment">segment()</h3>
+    <p>.segment() allows convenient access to directory levels / URN segments within the path</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
+// get segments
+uri.segment(); // returns array ["foo", "hello.html"]
+// set segments
+uri.segment(["foo", "foobar.html"]); // -> http://example.org/foo/foobar.html
+
+// get specific level
+uri.segment(0); // returns "foo"
+// set specific level
+uri.segment(0, "bar"); // -> http://example.org/bar/foobar.html
+// remove specific level
+uri.segment(0, ""); // -> http://example.org/foobar.html
+
+// append level
+uri.segment("appendthis"); // -> http://example.org/foobar.html/appendthis</pre>
+    
     
     <h3 id="accessors-search">search(), query()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html?foo=bar&amp;bar=baz");

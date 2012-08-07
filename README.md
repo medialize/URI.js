@@ -175,6 +175,11 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### upcomming (work in progress...) ###
+
+* fixing URI() constructor passing of `base` ([Issue #33](https://github.com/medialize/URI.js/issues/33) [LarryBattle](https://github.com/LarryBattle))
+* adding `segment()` accessor ([Issue #34](https://github.com/medialize/URI.js/issues/34))
+
 ### 1.6.3 (June 24th 2012) ###
 
 * fixing `.absoluteTo()` to join two relative paths properly ([Issue #29](https://github.com/medialize/URI.js/issues/29))

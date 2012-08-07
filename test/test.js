@@ -449,6 +449,39 @@ test("suffix", function() {
     equal(u.suffix(), 'c%C3%B6rt', "suffix encoded"); // suffix is expected to be alnum!
     equal(u.suffix(true), 'cört', "suffix decoded"); // suffix is expected to be alnum!
 });
+test("segment", function() {
+    var u = new URI("http://www.example.org/some/directory/foo.html"),
+        s = u.segment();
+
+    equal(s.join('||'), "some||directory||foo.html", "segment get array");
+    
+    u.segment(['hello', 'world', 'foo.html']);
+    equal(u.path(), "/hello/world/foo.html", "segment set array");
+    
+    equal(u.segment(0), "hello", "segment get 0");
+    equal(u.segment(2), "foo.html", "segment get 2");
+    equal(u.segment(3), undefined, "segment get 3");
+
+    u.segment(0, "goodbye");
+    equal(u.path(), "/goodbye/world/foo.html", "segment set 0");
+    u.segment(2, "bar.html");
+    equal(u.path(), "/goodbye/world/bar.html", "segment set 2");
+    u.segment(3, "zupp");
+    equal(u.path(), "/goodbye/world/bar.html/zupp", "segment set 3");
+    u.segment("zapp");
+    equal(u.path(), "/goodbye/world/bar.html/zupp/zapp", "segment append");
+    
+    u.segment(3, "");
+    equal(u.path(), "/goodbye/world/bar.html/zapp", "segment del 3 ''");
+    u.segment(3, null);
+    equal(u.path(), "/goodbye/world/bar.html", "segment del 3 null");
+    
+    u = new URI("someurn:foo:bar:baz"),
+    equal(u.segment().join('||'), "foo||bar||baz", "segment get array URN");
+    u.segment(1, 'mars');
+    equal(u.path(), "foo:mars:baz", "segment set 1 URN");
+    equal(u.toString(), "someurn:foo:mars:baz", "segment set 1 URN");
+});
 
 module("mutating query strings");
 test("mutating object", function() {
