@@ -24,7 +24,7 @@ var _use_module = typeof module !== "undefined" && module.exports,
     URI = function(url, base) {
         // Allow instantiation without the 'new' keyword
         if (!(this instanceof URI)) {
-            return new URI(url);
+            return new URI(url, base);
         }
 
         if (url === undefined) {
