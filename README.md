@@ -179,6 +179,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 * fixing URI() constructor passing of `base` ([Issue #33](https://github.com/medialize/URI.js/issues/33) [LarryBattle](https://github.com/LarryBattle))
 * adding `segment()` accessor ([Issue #34](https://github.com/medialize/URI.js/issues/34))
+* upgrading `URI.encode()` to strict URI encoding according to RFC3986
+* adding `URI.encodeReserved()` to exclude reserved characters (according to RFC3986) from being encoded
 
 ### 1.6.3 (June 24th 2012) ###
 

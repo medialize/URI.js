@@ -97,14 +97,18 @@ URI.defaultPorts = {
 // I've never seen a (non-IDN) hostname other than: ALPHA DIGIT . -
 URI.invalid_hostname_characters = /[^a-zA-Z0-9\.-]/;
 // encoding / decoding according to RFC3986
-URI.encode = encodeURIComponent;
+function strictEncodeURIComponent(string) {
+    // see https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/encodeURIComponent
+    return encodeURIComponent(string).replace(/[!'()*]/g, escape);
+}
+URI.encode = strictEncodeURIComponent;
 URI.decode = decodeURIComponent;
 URI.iso8859 = function() {
     URI.encode = escape;
     URI.decode = unescape;
 };
 URI.unicode = function() {
-    URI.encode = encodeURIComponent;
+    URI.encode = strictEncodeURIComponent;
     URI.decode = decodeURIComponent;
 };
 URI.characters = {
@@ -149,13 +153,13 @@ URI.characters = {
                 "%5D": "]",
                 "%40": "@",
                 // sub-delims
-                "%21": "!", // not encoded by encodeURIComponent()
+                "%21": "!",
                 "%24": "$",
                 "%26": "&",
-                "%27": "'", // not encoded by encodeURIComponent()
-                "%28": "(", // not encoded by encodeURIComponent()
-                "%29": ")", // not encoded by encodeURIComponent()
-                "%2A": "*", // not encoded by encodeURIComponent()
+                "%27": "'",
+                "%28": "(",
+                "%29": ")",
+                "%2A": "*",
                 "%2B": "+",
                 "%2C": ",",
                 "%3B": ";",
@@ -1336,7 +1340,7 @@ p.unicode = function() {
     var e = URI.encode,
         d = URI.decode;
 
-    URI.encode = encodeURIComponent;
+    URI.encode = strictEncodeURIComponent;
     URI.decode = unescape;
     this.normalize();
     URI.encode = e;
