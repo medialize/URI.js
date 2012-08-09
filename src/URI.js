@@ -133,6 +133,35 @@ URI.characters = {
                 "#": "%23"
             }
         }
+    },
+    reserved: {
+        encode: {
+            // RFC3986 2.1: For consistency, URI producers and normalizers should
+            // use uppercase hexadecimal digits for all percent-encodings.
+            expression: /%(21|23|24|26|27|28|29|2A|2B|2C|2F|3A|3B|3D|3F|40|5B|5D)/ig,
+            map: {
+                // gen-delims
+                "%3A": ":",
+                "%2F": "/",
+                "%3F": "?",
+                "%23": "#",
+                "%5B": "[",
+                "%5D": "]",
+                "%40": "@",
+                // sub-delims
+                "%21": "!", // not encoded by encodeURIComponent()
+                "%24": "$",
+                "%26": "&",
+                "%27": "'", // not encoded by encodeURIComponent()
+                "%28": "(", // not encoded by encodeURIComponent()
+                "%29": ")", // not encoded by encodeURIComponent()
+                "%2A": "*", // not encoded by encodeURIComponent()
+                "%2B": "+",
+                "%2C": ",",
+                "%3B": ";",
+                "%3D": "="
+            }
+        }
     }
 };
 URI.encodeQuery = function(string) {
@@ -160,17 +189,19 @@ URI.decodePath = function(string) {
 // generate encode/decode path functions
 var _parts = {'encode':'encode', 'decode':'decode'},
     _part,
-    generateAccessor = function(_part){
+    generateAccessor = function(_group, _part){
         return function(string) {
-            return URI[_part](string + "").replace(URI.characters.pathname[_part].expression, function(c) {
-                return URI.characters.pathname[_part].map[c];
+            return URI[_part](string + "").replace(URI.characters[_group][_part].expression, function(c) {
+                return URI.characters[_group][_part].map[c];
             });
         };
     };
 
 for (_part in _parts) {
-    URI[_part + "PathSegment"] = generateAccessor(_parts[_part]);
+    URI[_part + "PathSegment"] = generateAccessor("pathname", _parts[_part]);
 }
+
+URI.encodeReserved = generateAccessor("reserved", "encode");
 
 URI.parse = function(string) {
     var pos, t, parts = {};

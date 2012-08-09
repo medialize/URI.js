@@ -476,7 +476,7 @@ test("segment", function() {
     u.segment(3, null);
     equal(u.path(), "/goodbye/world/bar.html", "segment del 3 null");
     
-    u = new URI("someurn:foo:bar:baz"),
+    u = new URI("someurn:foo:bar:baz");
     equal(u.segment().join('||'), "foo||bar||baz", "segment get array URN");
     u.segment(1, 'mars');
     equal(u.path(), "foo:mars:baz", "segment set 1 URN");
@@ -875,3 +875,7 @@ test("iso8859", function() {
     equal(u.path(), "/%C3%A4.html", 'convert unicode');
 });
 
+module("Encoding");
+test("encodeReserved", function() {
+    equal(URI.encodeReserved("ä:/?#[]@!$&'()*+,;="), "%C3%A4:/?#[]@!$&'()*+,;=");
+});
