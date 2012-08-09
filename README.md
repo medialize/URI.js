@@ -181,6 +181,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * adding `segment()` accessor ([Issue #34](https://github.com/medialize/URI.js/issues/34))
 * upgrading `URI.encode()` to strict URI encoding according to RFC3986
 * adding `URI.encodeReserved()` to exclude reserved characters (according to RFC3986) from being encoded
+* adding [URI Template (RFC 6570)](http://tools.ietf.org/html/rfc6570) support with `URITemplate()`
 
 ### 1.6.3 (June 24th 2012) ###
 
