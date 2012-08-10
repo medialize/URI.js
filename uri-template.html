@@ -45,10 +45,95 @@
     
     <p>As of version 1.7.0 URI.js includes an implementation of URI Templates, as specified in <a href="http://tools.ietf.org/html/rfc6570">RFC 6570</a>.</p>
     
-    <hr>
-    <p>TODO: yep, I still need to write the introduction to URI Templating.</p>
-    <p>Meanwhile you can have a look at <a href="http://tools.ietf.org/html/rfc6570">RFC 6570</a>, if you're desperate enough…</p>
-    <hr>
+
+    <h2>Juggling Data Types, Operators and Modifiers</h2>
+
+<table>
+    <tr><th>Operator</th><th>Description</th></tr>
+    <tr><td></td><td>Simple String Expansion;</td></tr>
+    <tr><td>+</td><td>Reserved character strings;</td></tr>
+    <tr><td>#</td><td>Fragment identifiers prefixed by "#";</td></tr>
+    <tr><td>.</td><td>Name labels or extensions prefixed by ".";</td></tr>
+    <tr><td>/</td><td>Path segments prefixed by "/";</td></tr>
+    <tr><td>;</td><td>Path parameter name or name=value pairs prefixed by ";";</td></tr>
+    <tr><td>?</td><td>Query component beginning with "?" and consisting of name=value pairs separated by "&amp;"; and,</td></tr>
+    <tr><td>&amp;</td><td>Continuation of query-style &amp;name=value pairs within a literal query component.</td></tr>
+</table>
+
+    <h3>Strings and Numbers</h3>
+    <p>
+        Given <code>{"var": "hello[world]"}</code>, the expression <code>{var}</code> expands to <code>hello%5Bworld%5D</code>. 
+        The following table shows an output matrix for every possible operator/modifier combination produced for <code>array</code> input.
+    </p>
+    <table>
+        <tr><th></th><th colspan="3">Modifier</th></tr>
+        <tr><th>Operator</th><th><em>None</em></th><th>*</th><th>:2</th></tr>
+        <tr><td><em>None</em></td><td>hello%5Bworld%5D</td><td>hello%5Bworld%5D</td><td>he</td></tr>
+        <tr><td><em>+</em></td><td>hello[world]</td><td>hello[world]</td><td>he</td></tr>
+        <tr><td>#</td><td>#hello[world]</td><td>#hello[world]</td><td>#he</td></tr>
+        <tr><td>.</td><td>.hello%5Bworld%5D</td><td>.hello%5Bworld%5D</td><td>.he</td></tr>
+        <tr><td>/</td><td>/hello%5Bworld%5D</td><td>/hello%5Bworld%5D</td><td>/he</td></tr>
+        <tr><td>;</td><td>;var=hello%5Bworld%5D</td><td>;var=hello%5Bworld%5D</td><td>;var=he</td></tr>
+        <tr><td>?</td><td>?var=hello%5Bworld%5D</td><td>?var=hello%5Bworld%5D</td><td>?var=he</td></tr>
+        <tr><td>&amp;</td><td>&amp;var=hello%5Bworld%5D</td><td>&amp;var=hello%5Bworld%5D</td><td>&amp;var=he</td></tr>
+    </table>
+
+
+    <h3>Arrays</h3>
+    <p>
+        Given <code>{"var": ["one", "two", "three"]}</code>, the expression <code>{var}</code> expands to <code>one,two,three</code>. 
+        The following table shows an output matrix for every possible operator/modifier combination produced for <code>array</code> input.
+    </p>
+    <table>
+        <tr><th></th><th colspan="3">Modifier</th></tr>
+        <tr><th>Operator</th><th><em>None</em></th><th>*</th><th>:2</th></tr>
+        <tr><td><em>None</em></td><td>one,two,three</td><td>one,two,three</td><td>on,tw,th</td></tr>
+        <tr><td><em>+</em></td><td>one,two,three</td><td>one,two,three</td><td>on,tw,th</td></tr>
+        <tr><td>#</td><td>#one,two,three</td><td>#one,two,three</td><td>#on,tw,th</td></tr>
+        <tr><td>.</td><td>.one,two,three</td><td>.one.two.three</td><td>.on,tw,th</td></tr>
+        <tr><td>/</td><td>/one,two,three</td><td>/one/two/three</td><td>/on,tw,th</td></tr>
+        <tr><td>;</td><td>;var=one,two,three</td><td>;var=one;var=two;var=three</td><td>;var=on,tw,th</td></tr>
+        <tr><td>?</td><td>?var=one,two,three</td><td>?var=one&amp;var=two&amp;var=three</td><td>?var=on,tw,th</td></tr>
+        <tr><td>&amp;</td><td>&amp;var=one,two,three</td><td>&amp;var=one&amp;var=two&amp;var=three</td><td>&amp;var=on,tw,th</td></tr>
+    </table>
+
+    <h3>Objects ("plain objects" / "hash maps")</h3>
+    <p>
+        Given <code>{"var": {"one": "alpha", "two": "bravo", "three": "charlie"}}</code>, the expression <code>{var}</code> expands to <code>one,two,three</code>. 
+        The following table shows an output matrix for every possible operator/modifier combination produced for <code>object</code> input.
+    </p>
+    <table>
+        <tr><th></th><th colspan="3">Modifier</th></tr>
+        <tr><th>Operator</th><th><em>None</em></th><th>*</th><th>:2</th></tr>
+        <tr><td><em>None</em></td><td>one,alpha,two,bravo,three,charlie</td><td>one=alpha,two=bravo,three=charlie</td><td>on,al,tw,br,th,ch</td></tr>
+        <tr><td><em>+</em></td><td>one,alpha,two,bravo,three,charlie</td><td>one=alpha,two=bravo,three=charlie</td><td>on,al,tw,br,th,ch</td></tr>
+        <tr><td>#</td><td>#one,alpha,two,bravo,three,charlie</td><td>#one=alpha,two=bravo,three=charlie</td><td>#on,al,tw,br,th,ch</td></tr>
+        <tr><td>.</td><td>.one,alpha,two,bravo,three,charlie</td><td>.one=alpha.two=bravo.three=charlie</td><td>.on,al,tw,br,th,ch</td></tr>
+        <tr><td>/</td><td>/one,alpha,two,bravo,three,charlie</td><td>/one=alpha/two=bravo/three=charlie</td><td>/on,al,tw,br,th,ch</td></tr>
+        <tr><td>;</td><td>;var=one,alpha,two,bravo,three,charlie</td><td>;one=alpha;two=bravo;three=charlie</td><td>;var=on,al,tw,br,th,ch</td></tr>
+        <tr><td>?</td><td>?var=one,alpha,two,bravo,three,charlie</td><td>?one=alpha&amp;two=bravo&amp;three=charlie</td><td>?var=on,al,tw,br,th,ch</td></tr>
+        <tr><td>&amp;</td><td>&amp;var=one,alpha,two,bravo,three,charlie</td><td>&amp;one=alpha&amp;two=bravo&amp;three=charlie</td><td>&amp;var=on,al,tw,br,th,ch</td></tr>
+    </table>
+
+
+
+    <h2>Limitations</h2>
+    <p>URI Template is a <em>Proposed Standard</em> and because of that I did not want to deviate from it. That said I'm not at all happy with how the specification turned out. Here are some of my thoughts:</p>
+    <ul>
+        <li>The <em>explode modifier</em> works the wrong way. <code>{?some_object}</code> should lead to <code>?foo=bar&amp;hello=world</code>, as this is the common expansion</li>
+        <li>The <em>prefix modifier</em> (which I would've named <em>truncate modifier</em>) only has an end-offset. 
+            The specification says it's »used to partition an identifier space hierarchically«. <code>abc</code> may become <code>a/bc</code> or <code>a/ab/abc</code>. 
+            But there is no way of modifying output to <code>a/b/c</code> or <code>a/b/abc</code>. Whenever I had to partition identifier spaces, I used one of the latter patterns.</li>
+        <li>Operators like <code>.</code> automatically prefix the expansion. So <code>{"var": ["filename", "extension"]}</code> and <code>{.var*}</code> results in <code>.filename.extension</code> - obviously not what I wanted.</li>
+        <li>Variable names (<em>varname</em>) may only contain <code>ALPHA / DIGIT / "_" / pct-encoded</code> and may not be decoded for resolving the reference. This simply feels weird, especially the "may not be decoded" part.</li>
+        <li>Other possible modifiers could include some simple character-munging like <em>UPPERCASE</em>, <em>LOWERCASE</em>, <em>CAPITALCASE</em></li>
+        <li><code>{/var,empty,empty}</code> results in <code>/foobar//</code> - clearly not what one intended</li>
+        <li><code>{var}</code> and <code>{"var" : {"a": "1", "b": "2"}}</code> results in <code>a,1,b,2</code> - excusemewhat? I would've expected <code>a=1,b=2</code> or <code>a:1,b:2</code> (in a perverse parallel universe).</li>
+        <li>Spaces in the <em>query string</em> should be encoded to <code>+</code>, not <code>%20</code> according to <a href="http://www.w3.org/TR/html401/interact/forms.html#form-content-type">application/x-www-form-urlencoded</a></li>
+    </ul>
+
+
+
     
     </div>
 </body>
