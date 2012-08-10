@@ -328,5 +328,24 @@ for (var i in levels) {
             }
         });
     })(i, levels[i]);
-};
+}
+
+test("Parse errors", function() {
+    raises(function() {
+        URITemplate("AB{var$}IJ").parse();
+    }, Error, "Failing invalid variable name");
+    
+    raises(function() {
+        URITemplate("AB{$var}IJ").parse();
+    }, Error, "Failing invalid operator");
+
+    raises(function() {
+        URITemplate("AB{var:3IJ").parse();
+    }, Error, "Failing missing closing }");
+
+    raises(function() {
+        URITemplate("AB{var:3*}IJ").parse();
+    }, Error, "Failing invalid modifier");
+});
+
 })();
