@@ -36,6 +36,7 @@
         <li><a href="/URI.js/about-uris.html">Understanding URIs</a></li>
         <li class="active"><a href="docs.html">API-Documentation</a></li>
         <li><a href="jquery-uri-plugin.html">jQuery Plugin</a></li>
+        <li><a href="uri-template.html">URI Template</a></li>
         <li><a href="http://rodneyrehm.de/en/">Author</a></li>
     </ul>
     
@@ -140,6 +141,7 @@
                 <li><a href="#static-withinString">URI.withinString()</a></li>
                 <li><a href="#static-iso8859">URI.iso8859()</a></li>
                 <li><a href="#static-unicode">URI.unicode()</a></li>
+                <li><a href="#static-expand">URI.expand()</a></li>
             </ul>
         </li>
     </ul>
@@ -958,6 +960,17 @@ var uri = new URI("http://example.org/foo/æ.html");
 
 var uri = new URI("http://example.org/foo/æ.html");
 // http://example.org/foo/%C3%A6.html</pre>
+    
+    <h3 id="static-expand">URI.expand()</h3>
+    <p>URI.expand() is a convenience wrapper for <a href="uri-template.html"><code>URITemplate</code></a>. 
+        While <code>URITemplate#expand</code> returns a string, <code>URI.expand()</code> returns an <code>URI</code> instance.</p>
+    <pre class="prettyprint lang-js">URI.expand("/foo/{var}/{iable}", {
+  "var": "bar",
+  "iable": "hello world.html"
+});
+
+// returns URI("/foo/bar/hello%20world.html")</pre>
+
     
     </div>
 </body>

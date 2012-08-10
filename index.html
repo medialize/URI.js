@@ -38,6 +38,7 @@
         <li><a href="about-uris.html">Understanding URIs</a></li>
         <li><a href="docs.html">API-Documentation</a></li>
         <li><a href="jquery-uri-plugin.html">jQuery Plugin</a></li>
+        <li><a href="uri-template.html">URI Template</a></li>
         <li><a href="http://rodneyrehm.de/en/">Author</a></li>
     </ul>
     
@@ -148,6 +149,13 @@ uri.toString() === "http://example.org/#!/hello.html"
 uri.protocol() == "mailto";
 uri.path() == "hello@example.org";
 uri.query() == "subject=hello";</pre>
+    
+    <p>How do you like URI Templating?</p>
+    <pre class="prettyprint lang-js">URI.expand("/foo/{dir}/{file}", {
+  dir: "bar",
+  file: "world.html"
+});
+// -> /foo/bar/world.html</pre>
     
     <h2 id="authors">Authors</h2>
 	<ul>
