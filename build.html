@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>URI.js - Custom Build</title>
+    <meta name="description" content="URI.js is a Javascript library for working with URLs." />
+    
+    <script src="jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="screen.js" type="text/javascript"></script>
+    <script src="build.js" type="text/javascript"></script>
+    <link href="screen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    
+    <a id="github-forkme" href="https://github.com/medialize/URI.js"><img src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+        <div id="container">
+        <h1><a href="https://github.com/medialize/URI.js">URI.js</a></h1>
+
+        <ul class="menu">
+            <li><a href="/URI.js/">Intro</a></li>
+            <li><a href="about-uris.html">Understanding URIs</a></li>
+            <li><a href="docs.html">API-Documentation</a></li>
+            <li><a href="jquery-uri-plugin.html">jQuery Plugin</a></li>
+            <li><a href="uri-template.html">URI Template</a></li>
+            <li class="active"><a href="build.html">Build</a></li>
+            <li><a href="http://rodneyrehm.de/en/">Author</a></li>
+        </ul>
+
+        <h2>Building URI.js</h2>
+        <p>Choose the Modules you want to include in your custom build of URI.js:</p>
+        <form id="builder">
+            <ul>
+                <li><label><input type="checkbox" value="IPv6.js" checked> IPv6.js - Support for IPv6 Addresses</label></li>
+                <li><label><input type="checkbox" value="punycode.js" checked> punycode.js - Support for IDN Addresses</label></li>
+                <li><label><input type="checkbox" value="SecondLevelDomains.js" checked> SecondLevelDomains.js - Support for resolving SLDs</label></li>
+                <li><label><input type="checkbox" value="URI.js" checked readonly disabled> URI.js - Base URI.js</label></li>
+                <li><label><input type="checkbox" value="URITemplate.js" checked> URITemplate.js - Support for URI Templates</label></li>
+            </ul>
+            <input type="submit" value="Build!">
+            <progress id="prog" value="0" max="3" style="display:none"></progress>
+            <div style="display:none;">
+                <h2>Custom Built URI.js</h2>
+                <p class="download"> your custom built <code>URI.js</code> or copy the following code:</p>
+                <textarea id="output" cols="50" rows="5" style="width: 100%; height: 200px;"></textarea>
+                <p>Thank you for flying <em>the lamest build tool ever</em> and have a good day</p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

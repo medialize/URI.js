@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -38,27 +38,32 @@
         <li><a href="docs.html">API-Documentation</a></li>
         <li><a href="jquery-uri-plugin.html">jQuery Plugin</a></li>
         <li class="active"><a href="uri-template.html">URI Template</a></li>
+        <li><a href="build.html">Build</a></li>
         <li><a href="http://rodneyrehm.de/en/">Author</a></li>
     </ul>
     
     <h2>URI Template</h2>
     
-    <p>As of version 1.7.0 URI.js includes an implementation of URI Templates, as specified in <a href="http://tools.ietf.org/html/rfc6570">RFC 6570</a>.</p>
+    <p>As of version 1.7.0 URI.js includes an implementation of URI Templates, as specified in <a href="http://tools.ietf.org/html/rfc6570">RFC 6570</a> (Level 4, March 2012).</p>
     
 
-    <h2>Juggling Data Types, Operators and Modifiers</h2>
-
-<table>
-    <tr><th>Operator</th><th>Description</th></tr>
-    <tr><td></td><td>Simple String Expansion;</td></tr>
-    <tr><td>+</td><td>Reserved character strings;</td></tr>
-    <tr><td>#</td><td>Fragment identifiers prefixed by "#";</td></tr>
-    <tr><td>.</td><td>Name labels or extensions prefixed by ".";</td></tr>
-    <tr><td>/</td><td>Path segments prefixed by "/";</td></tr>
-    <tr><td>;</td><td>Path parameter name or name=value pairs prefixed by ";";</td></tr>
-    <tr><td>?</td><td>Query component beginning with "?" and consisting of name=value pairs separated by "&amp;"; and,</td></tr>
-    <tr><td>&amp;</td><td>Continuation of query-style &amp;name=value pairs within a literal query component.</td></tr>
-</table>
+    <h2>Using URI Templates</h2>
+    <p>TODO: how can it be accessed? what do I have to load… remember the callbacks</p>
+    
+    
+    <h2>URI Template Syntax</h2>
+    <p>TODO: Some introduction to URI Template syntax</p>
+    <table>
+        <tr><th>Operator</th><th>Description</th></tr>
+        <tr><td><em>None</em></td><td>Simple String Expansion;</td></tr>
+        <tr><td>+</td><td>Reserved character strings;</td></tr>
+        <tr><td>#</td><td>Fragment identifiers prefixed by "#";</td></tr>
+        <tr><td>.</td><td>Name labels or extensions prefixed by ".";</td></tr>
+        <tr><td>/</td><td>Path segments prefixed by "/";</td></tr>
+        <tr><td>;</td><td>Path parameter name or name=value pairs prefixed by ";";</td></tr>
+        <tr><td>?</td><td>Query component beginning with "?" and consisting of name=value pairs separated by "&amp;"; and,</td></tr>
+        <tr><td>&amp;</td><td>Continuation of query-style &amp;name=value pairs within a literal query component.</td></tr>
+    </table>
 
     <h3>Strings and Numbers</h3>
     <p>

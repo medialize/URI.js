@@ -95,7 +95,7 @@ URI("/foo/bar/baz.html")
 
 ## Minify ##
 
-use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
+See the [build tool](http://medialize.github.com/URI.js/build.html) or use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 
 ```
 // ==ClosureCompiler==
