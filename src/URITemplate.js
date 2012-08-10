@@ -185,7 +185,7 @@ URITemplate.expandNamed = function(d, options, explode, separator, length, name)
         } else {
             _value = d[encode][i][1];
             if (d.type === 2) {
-                _name = d.name[encode][i][0];
+                _name = d[encode][i][0];
             }
         }
         

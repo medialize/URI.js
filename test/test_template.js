@@ -318,14 +318,24 @@ module("URITemplate");
 for (var i in levels) {
     (function(level, data){
         test(level, function() {
-            var template, expression, expansion;
+            var combined_expression = "",
+                combined_expansion = "",
+                template, expression, expansion;
+            
             for (type in data.expressions) {
                 for (expression in data.expressions[type]) {
+                    combined_expression += "/" + expression;
+                    combined_expansion += "/" + data.expressions[type][expression];
+                    
                     template = new URITemplate(expression);
                     expansion = template.expand(data.values);
                     equal(expansion, data.expressions[type][expression], type + ": " + expression);
                 }
             }
+            
+            template = new URITemplate(combined_expression);
+            expansion = template.expand(data.values);
+            equal(expansion, combined_expansion, type + ": combined");
         });
     })(i, levels[i]);
 }
