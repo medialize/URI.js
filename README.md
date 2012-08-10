@@ -64,6 +64,13 @@ URI("/foo/bar/baz.html")
         // -> ../baz.html
     .absoluteTo("/foo/bar/sub/world.html");
         // -> /foo/bar/baz.html
+
+// URI Templates
+URI.expand("/foo/{dir}/{file}", {
+  dir: "bar",
+  file: "world.html"
+});
+// -> /foo/bar/world.html
 ```
 
 See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://medialize.github.com/URI.js/docs.html) for more stuff.
@@ -98,6 +105,7 @@ use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 // @code_url http://medialize.github.com/URI.js/src/punycode.js
 // @code_url http://medialize.github.com/URI.js/src/SecondLevelDomains.js
 // @code_url http://medialize.github.com/URI.js/src/URI.js
+// @code_url http://medialize.github.com/URI.js/src/URITemplate.js
 // ==/ClosureCompiler==
 ```
 
@@ -145,6 +153,7 @@ If you don't like URI.js, you may like one of these:
 * [URI.js by Gary Court](https://github.com/garycourt/uri-js)
 * [jurlp](https://github.com/tombonner/jurlp)
 * [jsUri](http://code.google.com/p/jsuri/)
+* [uri-templates](https://github.com/marc-portier/uri-templates) [jsperf comparison](http://jsperf.com/uri-templates)
 
 
 ## TODO ##
