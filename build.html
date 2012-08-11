@@ -36,7 +36,14 @@
                 <li><label><input type="checkbox" value="punycode.js" checked> punycode.js - Support for IDN Addresses</label></li>
                 <li><label><input type="checkbox" value="SecondLevelDomains.js" checked> SecondLevelDomains.js - Support for resolving SLDs</label></li>
                 <li><label><input type="checkbox" value="URI.js" checked readonly disabled> URI.js - Base URI.js</label></li>
-                <li><label><input type="checkbox" value="URITemplate.js" checked> URITemplate.js - Support for URI Templates</label></li>
+                <li><label><input type="checkbox" value="URITemplate.js" checked> URITemplate.js - Support for <a href="uri-template.html">URI Templates</a></label></li>
+                <li><label><input type="checkbox" value="jquery.URI.js" checked> jquery.URI.js - <a href="jquery-uri-plugin.html">jQuery Plugin</a></label></li>
+            </ul>
+            <p>Optional "Fragment Abuse" plugins:</p>
+            <ul>
+                <li><label><input type="radio" name="fragments" value="" checked> No Fragment abuse</label></li>
+                <li><label><input type="radio" name="fragments" value="URI.fragmentQuery.js"> URI.fragmentQuery.js - support for <a href="docs.html#fragment-abuse-query">Query String Fragments</a></label></li>
+                <li><label><input type="radio" name="fragments" value="URI.fragmentQuery.js"> URI.fragmentURI.js - support for <a href="docs.html#fragment-abuse-uri">URI Fragments</a></label></li>
             </ul>
             <input type="submit" value="Build!">
             <progress id="prog" value="0" max="3" style="display:none"></progress>
@@ -44,8 +51,15 @@
                 <h2>Custom Built URI.js</h2>
                 <p class="download"> your custom built <code>URI.js</code> or copy the following code:</p>
                 <textarea id="output" cols="50" rows="5" style="width: 100%; height: 200px;"></textarea>
-                <p>Thank you for flying <em>the lamest build tool ever</em> and have a good day</p>
             </div>
+            
+            <hr>
+            
+            <p>
+                This "build tool" does nothing but downloading the selected files, concatenating them and pushing them through <a href="http://closure-compiler.appspot.com/home">Closure Compiler</a>.
+                Since Closure Compiler is running on a different domain, this trick will only work on modern browsers. 
+                I'm sorry for the ~2% of you IE users. You'll have to do this <a href="https://github.com/medialize/URI.js#minify">manually</a>.
+            </p>
         </form>
     </div>
 </body>

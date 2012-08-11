@@ -34,6 +34,8 @@ function build(files) {
             $out.val(code).parent().show();
             $out.prev().find('a').remove();
             $out.prev().prepend(download(code));
+        }).error(function() { 
+            alert("Your browser is incapable of cross-domain communication.\nPlease see instructions for manual build below."); 
         });
     });
 };
@@ -66,7 +68,8 @@ $(function(){
         }
 
         $files.each(function() {
-            files.push($(this).val());
+            var val = $(this).val();
+            val.length && files.push(val);
         });
         
         build(files);
