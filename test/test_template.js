@@ -339,6 +339,19 @@ for (var i in levels) {
         });
     })(i, levels[i]);
 }
+test("Data Callbacks", function() {
+    var template = new URITemplate("{var}"),
+        global = function(key) {
+            var data = {"var": "hello world.html"};
+            return data[key];
+        },
+        local = function(key) {
+            return "hello world.html";
+        };
+        
+        equal(template.expand(global), "hello%20world.html", "global callback");
+        equal(template.expand({"var": local}), "hello%20world.html", "local callback");
+});
 
 test("Parse errors", function() {
     raises(function() {
