@@ -40,6 +40,7 @@ var hasOwn = Object.prototype.hasOwnProperty,
         this.cache = {};
     },
     p = URITemplate.prototype,
+    // list of operators and their defined options
     operators = {
         // Simple string expansion
         '' : {
@@ -121,26 +122,32 @@ URITemplate.VARIABLE_PATTERN = /^([^*:]+)((\*)|:(\d+))?$/;
 // pattern to verify variable name integrity
 URITemplate.VARIABLE_NAME_PATTERN = /[^a-zA-Z0-9%_]/;
 
+// expand parsed expression (expression, not template!)
 URITemplate.expand = function(expression, data) {
+    // container for defined options for the given operator
     var options = operators[expression.operator],
+        // expansion type (include keys or not)
+        type = options.named ? "Named" : "Unnamed",
+        // list of variables within the expression
         variables = expression.variables,
+        // result buffer for evaluating the expression
         buffer = [],
-        d, variable, i, l, value, type;
-
+        d, variable, i, l, value;
+    
     for (i = 0; variable = variables[i]; i++) {
         // fetch simplified data source
         d = data.get(variable.name);
         if (!d.val.length) {
             if (d.type) {
-                // empty variable
+                // empty variables (empty string)
+                // still lead to a separator being appended!
                 buffer.push("");
             }
-            
+            // no data, no action
             continue;
         }
         
-        type = options.named ? "Named" : "Unnamed";
-
+        // expand the given variable
         buffer.push(URITemplate["expand" + type](
             d, 
             options, 
@@ -154,35 +161,45 @@ URITemplate.expand = function(expression, data) {
     if (buffer.length) {
         return options.prefix + buffer.join(options.separator);
     } else {
+        // prefix is not prepended for empty expressions
         return "";
     }    
 };
-
+// expand a named variable
 URITemplate.expandNamed = function(d, options, explode, separator, length, name) {
+    // variable result buffer
     var result = "",
+        // peformance crap
         encode = options.encode,
         empty_name_separator = options.empty_name_separator,
+        // flag noting if values are already encoded
         _encode = !d[encode].length,
+        // key for named expansion
         _name = d.type === 2 ? '': URI[encode](name),
-        _value,
-        i, l;
-
+        _value, i, l;
+    
+    // for each found value
     for (i = 0, l = d.val.length; i < l; i++) {
         if (length) {
+            // maxlength must be determined before encoding can happen
             _value = URI[encode](d.val[i][1].substring(0, length));
             if (d.type === 2) {
+                // apply maxlength to keys of objects as well
                 _name = URI[encode](d.val[i][0].substring(0, length));
             }
         } else if (_encode) {
+            // encode value
             _value = URI[encode](d.val[i][1]);
             if (d.type === 2) {
+                // encode name and cache encoded value
                 _name = URI[encode](d.val[i][0]);
                 d[encode].push([_name, _value]);
             } else {
+                // cache encoded value
                 d[encode].push([undefined, _value]);
             }
-
         } else {
+            // values are already encoded and can be pulled from cache
             _value = d[encode][i][1];
             if (d.type === 2) {
                 _name = d[encode][i][0];
@@ -190,6 +207,7 @@ URITemplate.expandNamed = function(d, options, explode, separator, length, name)
         }
         
         if (result) {
+            // unless we're the first value, prepend the separator
             result += separator;
         }
         
@@ -200,54 +218,67 @@ URITemplate.expandNamed = function(d, options, explode, separator, length, name)
             }
             
             if (d.type === 2) {
+                // without explode-modifier, keys of objects are returned comma-separated
                 result += _name + ",";
             }
             
             result += _value;
         } else {
+            // only add the = if it is either default (?&) or there actually is a value (;)
             result += _name + (empty_name_separator || _value ? "=" : "") + _value;
         }
     }
     
     return result;
 };
+// expand an unnamed variable
 URITemplate.expandUnnamed = function(d, options, explode, separator, length, name) {
+    // variable result buffer
     var result = "",
+        // performance crap
         encode = options.encode,
         empty_name_separator = options.empty_name_separator,
+        // flag noting if values are already encoded
         _encode = !d[encode].length,
-        _name,
-        _value,
-        i, l;
+        _name, _value, i, l;
 
+    // for each found value
     for (i = 0, l = d.val.length; i < l; i++) {
         if (length) {
+            // maxlength must be determined before encoding can happen
             _value = URI[encode](d.val[i][1].substring(0, length));
         } else if (_encode) {
+            // encode and cache value
             _value = URI[encode](d.val[i][1]);
             d[encode].push([
                 d.type === 2 ? URI[encode](d.val[i][0]) : undefined,
                 _value
             ]);
         } else {
+            // value already encoded, pull from cache
             _value = d[encode][i][1];
         }
         
         if (result) {
+            // unless we're the first value, prepend the separator
             result += separator;
         }
         
         if (d.type === 2) {
             if (length) {
+                // maxlength also applies to keys of objects
                 _name = URI[encode](d.val[i][0].substring(0, length));
             } else {
+                // at this point the name must already be encoded
                 _name = d[encode][i][0];
             }
             
             result += _name;
             if (explode) {
+                // explode-modifier separates name and value by "="
                 result += (empty_name_separator || _value ? "=" : "");
             } else {
+                // no explode-modifier separates name and value by ","
                 result += ",";
             }
         }
@@ -258,37 +289,49 @@ URITemplate.expandUnnamed = function(d, options, explode, separator, length, nam
     return result;
 };
 
+// expand template through given data map
 p.expand = function(data) {
     var result = "";
     
     if (!this.parts || !this.parts.length) {
+        // lazilyy parse the template
         this.parse();
     }
     
     if (!(data instanceof Data)) {
+        // make given data available through the
+        // optimized data handling thingie
         data = new Data(data);
     }
     
     for (var i = 0, l = this.parts.length; i < l; i++) {
         result += typeof this.parts[i] === "string"
+            // literal string
             ? this.parts[i]
+            // expression
             : URITemplate.expand(this.parts[i], data);
     }
     
     return result;
 };
+// parse template into action tokens
 p.parse = function() {
+    // performance crap
     var expression = this.expression,
         ePattern = URITemplate.EXPRESSION_PATTERN,
         vPattern = URITemplate.VARIABLE_PATTERN,
         nPattern = URITemplate.VARIABLE_NAME_PATTERN,
+        // token result buffer
         parts = [],
+        // position within source template
         pos = 0,
-        variables,
-        eMatch,
-        vMatch;
+        variables, eMatch, vMatch;
     
+    // RegExp is shared accross all templates,
+    // which requires a manual reset 
     ePattern.lastIndex = 0;
+    // I don't like while(foo = bar()) loops,
+    // to make things simpler I go while(true) and break when required
     while (true) {
         eMatch = ePattern.exec(expression);
         if (eMatch === null) {
@@ -313,9 +356,7 @@ p.parse = function() {
             vMatch = variables[i].match(vPattern);
             if (vMatch === null) {
                 throw new Error('Invalid Variable "' + variables[i] + '" in "' + eMatch[0] + '"');
-            }
-            
-            if (vMatch[1].match(nPattern)) {
+            } else if (vMatch[1].match(nPattern)) {
                 throw new Error('Invalid Variable Name "' + vMatch[1] + '" in "' + eMatch[0] + '"');
             }
             
@@ -339,6 +380,8 @@ p.parse = function() {
     
     if (!parts.length) {
         // template doesn't contain any expressions
+        // so it is a simple literal string
+        // this probably should fire a warning or something?
         parts.push(expression);
     }
     
@@ -348,10 +391,15 @@ p.parse = function() {
 
 // simplify data structures
 Data.prototype.get = function(key) {
+    // performance crap
     var data = this.data,
+        // cache for processed data-point
         d = {
+            // type of data 0: undefined/null, 1: string, 2: object, 3: array
             type: 0,
+            // original values (except undefined/null)
             val: [],
+            // cache for encoded values (only for non-maxlength expansion)
             encode: [],
             encodeReserved: []
         },
@@ -365,48 +413,55 @@ Data.prototype.get = function(key) {
     this.cache[key] = d;
     
     if (String(Object.prototype.toString.call(data)) === "[object Function]") {
-        // data itself is a callback
+        // data itself is a callback (global callback)
         value = data(key);
     } else if (String(Object.prototype.toString.call(data[key])) === "[object Function]") {
-        // data is a map of callbacks
+        // data is a map of callbacks (local callback)
         value = data[key](key);
     } else {
         // data is a map of data
         value = data[key];
     }
     
-    // generalize input
+    // generalize input into [ [name1, value1], [name2, value2], … ]
+    // so expansion has to deal with a single data structure only
     if (value === undefined || value === null) {
+        // undefined and null values are to be ignored completely
         return d;
     } else if (String(Object.prototype.toString.call(value)) === "[object Array]") {
         for (i = 0, l = value.length; i < l; i++) {
             if (value[i] !== undefined && value[i] !== null) {
+                // arrays don't have names
                 d.val.push([undefined, String(value[i])]);
             }
         }
         
         if (d.val.length) {
+            // only treat non-empty arrays as arrays
             d.type = 3; // array
         }
     } else if (String(Object.prototype.toString.call(value)) === "[object Object]") {
         for (i in value) {
             if (hasOwn.call(value, i) && value[i] !== undefined && value[i] !== null) {
+                // objects have keys, remember them for named expansion
                 d.val.push([i, String(value[i])]);
             }
         }
         
         if (d.val.length) {
-            d.type = 2; // array
+            // only treat non-empty objects as objects
+            d.type = 2; // object
         }
     } else {
-        d.type = 1; // primitive
+        d.type = 1; // primitive string (could've been string, number, boolean and objects with a toString())
+        // arrays don't have names
         d.val.push([undefined, String(value)]);
     }
     
     return d;
 };
 
-
+// hook into URI for fluid access
 URI.expand = function(expression, data) {
     var template = new URITemplate(expression),
         expansion = template.expand(data);
