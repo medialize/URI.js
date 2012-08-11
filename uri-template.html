@@ -25,6 +25,39 @@
       })();
 
     </script>
+    <style type="text/css">
+        .tpl-operator {
+            font-weight: bold;
+            color: #669933;
+        }
+        .tpl-variable {
+            font-weight: bold;
+            color: #336699;
+        }
+        .tpl-modifier {
+            font-weight: bold;
+            color: #663399;
+        }
+        
+        pre {
+            padding: 10px;
+            background: #EEE;
+        }
+        
+        table {
+            width: 100%;
+            border: 1px solid #AAA;
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 1px solid #AAA;
+            text-align: left;
+            padding: 3px;
+        }
+        th {
+            background: #EEE;
+        }
+    </style>
 </head>
 <body>
     <a id="github-forkme" href="https://github.com/medialize/URI.js"><img src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
@@ -48,21 +81,77 @@
     
 
     <h2>Using URI Templates</h2>
-    <p>TODO: how can it be accessed? what do I have to load… remember the callbacks</p>
+    
+    <pre class="prettyprint lang-js">
+// creating a new URI Template
+var template = new URITemplate("http://example.org/{file}");
+var result = template.expand({file: "hello world.html"});
+result === "http://example.org/hello%20world.html";
+
+// of course you can call the constructor like a function and chain things:
+result = URITemplate("http://example.org/{file}")
+  .expand({file: "hello world.html"});
+result === "http://example.org/hello%20world.html";
+
+// access via URI
+result = URI.expand("http://example.org/{file}", {file: "hello world.html"});
+// result == new URI("http://example.org/hello%20world.html");
+
+// expand() accepts data-callbacks:
+template.expand(function(key) {
+    var data = {file: "hello world.html"};
+    return data[key];
+});
+
+// expand() accepts key-callbacks:
+template.expand({file : function(key) {
+    return "hello world.html";
+}});
+</pre>
+    
     
     
     <h2>URI Template Syntax</h2>
-    <p>TODO: Some introduction to URI Template syntax</p>
+    
+    <p><em>Expressions</em> are placeholders which are to be substituted by the values their variables reference.</p>
+    <ul>
+        <li><code>http://example.org/~<strong>{<em class="tpl-variable">username</em>}</strong>/</code></li>
+        <li><code>http://example.org/dictionary/<strong>{<em class="tpl-variable">term</em><span class="tpl-modifier">:1</span>}</strong>/<strong>{<em class="tpl-variable">term</em>}</strong></code></li>
+        <li><code>http://example.org/search<strong>{<span class="tpl-operator">?</span><em class="tpl-variable">q</em><span class="tpl-modifier">*</span>,<em class="tpl-variable">lang</em>}</strong></code></li>
+    </ul>
+    <p>
+        An expression consists of an <span class="tpl-operator">operator</span> and a (comma-separated) list of <em>variable-specifications</em>.
+        A variable-specification consists of a <em class="tpl-variable">variable</em> and an optional <em class="tpl-modifier">modifier</em>.
+    </p>
+    
+    <hr>
+    <p>Given the template</p>
+    <pre><code>http://example.org/~<strong>{<em class="tpl-variable">username</em>}</strong>/<strong>{<em class="tpl-variable">term</em><span class="tpl-modifier">:1</span>}</strong>/<strong>{<em class="tpl-variable">term</em>}</strong><strong>{<span class="tpl-operator">?</span><em class="tpl-variable">q</em><span class="tpl-modifier">*</span>,<em class="tpl-variable">lang</em>}</strong></code></pre>
+    <p>and the following data: </p>
+    <pre><code>{username: "rodneyrehm", term: "hello world", q: {a: "mars", b: "jupiter"}, lang: "en"}</code></pre>
+    <p>the expansion looks as follows:
+    <pre><code>"http://example.org/~rodneyrehm/h/hello%20world?a=mars&amp;b=jupiter&amp;lang=en"</code></pre>
+    <hr>
+    
+    <p>List of supported <span class="tpl-operator">operators</span>:</p>
     <table>
         <tr><th>Operator</th><th>Description</th></tr>
-        <tr><td><em>None</em></td><td>Simple String Expansion;</td></tr>
-        <tr><td>+</td><td>Reserved character strings;</td></tr>
-        <tr><td>#</td><td>Fragment identifiers prefixed by "#";</td></tr>
-        <tr><td>.</td><td>Name labels or extensions prefixed by ".";</td></tr>
-        <tr><td>/</td><td>Path segments prefixed by "/";</td></tr>
-        <tr><td>;</td><td>Path parameter name or name=value pairs prefixed by ";";</td></tr>
-        <tr><td>?</td><td>Query component beginning with "?" and consisting of name=value pairs separated by "&amp;"; and,</td></tr>
-        <tr><td>&amp;</td><td>Continuation of query-style &amp;name=value pairs within a literal query component.</td></tr>
+        <tr><td><code><em>None</em></code></td><td>Simple String Expansion;</td></tr>
+        <tr><td><code>+</code></td><td>Reserved character strings;</td></tr>
+        <tr><td><code>#</code></td><td>Fragment identifiers prefixed by "#";</td></tr>
+        <tr><td><code>.</code></td><td>Name labels or extensions prefixed by ".";</td></tr>
+        <tr><td><code>/</code></td><td>Path segments prefixed by "/";</td></tr>
+        <tr><td><code>;</code></td><td>Path parameter name or name=value pairs prefixed by ";";</td></tr>
+        <tr><td><code>?</code></td><td>Query component beginning with "?" and consisting of name=value pairs separated by "&amp;"; and,</td></tr>
+        <tr><td><code>&amp;</code></td><td>Continuation of query-style &amp;name=value pairs within a literal query component.</td></tr>
+    </table>
+    
+    <p>List of supported <span class="tpl-modifier">modifiers</span>:</p>
+    <table>
+        <tr><th>Modifier</th><th>Description</th></tr>
+        <tr><td><code><em>None</em></code></td><td>No modification, arrays and objects are joined with ","</td></tr>
+        <tr><td><code>*</code></td><td>Explode arrays and objects (see tables below)</td></tr>
+        <tr><td><code>:3</code></td><td>Substring of the first 3 characters of the variable's value</td></tr>
     </table>
 
     <h3>Strings and Numbers</h3>
@@ -73,14 +162,14 @@
     <table>
         <tr><th></th><th colspan="3">Modifier</th></tr>
         <tr><th>Operator</th><th><em>None</em></th><th>*</th><th>:2</th></tr>
-        <tr><td><em>None</em></td><td>hello%5Bworld%5D</td><td>hello%5Bworld%5D</td><td>he</td></tr>
-        <tr><td><em>+</em></td><td>hello[world]</td><td>hello[world]</td><td>he</td></tr>
-        <tr><td>#</td><td>#hello[world]</td><td>#hello[world]</td><td>#he</td></tr>
-        <tr><td>.</td><td>.hello%5Bworld%5D</td><td>.hello%5Bworld%5D</td><td>.he</td></tr>
-        <tr><td>/</td><td>/hello%5Bworld%5D</td><td>/hello%5Bworld%5D</td><td>/he</td></tr>
-        <tr><td>;</td><td>;var=hello%5Bworld%5D</td><td>;var=hello%5Bworld%5D</td><td>;var=he</td></tr>
-        <tr><td>?</td><td>?var=hello%5Bworld%5D</td><td>?var=hello%5Bworld%5D</td><td>?var=he</td></tr>
-        <tr><td>&amp;</td><td>&amp;var=hello%5Bworld%5D</td><td>&amp;var=hello%5Bworld%5D</td><td>&amp;var=he</td></tr>
+        <tr><td><code><em>None</em></code></td><td><code>hello%5Bworld%5D</code></td><td><code>hello%5Bworld%5D</code></td><td><code>he</code></td></tr>
+        <tr><td><code><em>+</em></code></td><td><code>hello[world]</code></td><td><code>hello[world]</code></td><td><code>he</code></td></tr>
+        <tr><td><code>#</code></td><td><code>#hello[world]</code></td><td><code>#hello[world]</code></td><td><code>#he</code></td></tr>
+        <tr><td><code>.</code></td><td><code>.hello%5Bworld%5D</code></td><td><code>.hello%5Bworld%5D</code></td><td><code>.he</code></td></tr>
+        <tr><td><code>/</code></td><td><code>/hello%5Bworld%5D</code></td><td><code>/hello%5Bworld%5D</code></td><td><code>/he</code></td></tr>
+        <tr><td><code>;</code></td><td><code>;var=hello%5Bworld%5D</code></td><td><code>;var=hello%5Bworld%5D</code></td><td><code>;var=he</code></td></tr>
+        <tr><td><code>?</code></td><td><code>?var=hello%5Bworld%5D</code></td><td><code>?var=hello%5Bworld%5D</code></td><td><code>?var=he</code></td></tr>
+        <tr><td><code>&amp;</code></td><td><code>&amp;var=hello%5Bworld%5D</code></td><td><code>&amp;var=hello%5Bworld%5D</code></td><td><code>&amp;var=he</code></td></tr>
     </table>
 
 
@@ -92,32 +181,32 @@
     <table>
         <tr><th></th><th colspan="3">Modifier</th></tr>
         <tr><th>Operator</th><th><em>None</em></th><th>*</th><th>:2</th></tr>
-        <tr><td><em>None</em></td><td>one,two,three</td><td>one,two,three</td><td>on,tw,th</td></tr>
-        <tr><td><em>+</em></td><td>one,two,three</td><td>one,two,three</td><td>on,tw,th</td></tr>
-        <tr><td>#</td><td>#one,two,three</td><td>#one,two,three</td><td>#on,tw,th</td></tr>
-        <tr><td>.</td><td>.one,two,three</td><td>.one.two.three</td><td>.on,tw,th</td></tr>
-        <tr><td>/</td><td>/one,two,three</td><td>/one/two/three</td><td>/on,tw,th</td></tr>
-        <tr><td>;</td><td>;var=one,two,three</td><td>;var=one;var=two;var=three</td><td>;var=on,tw,th</td></tr>
-        <tr><td>?</td><td>?var=one,two,three</td><td>?var=one&amp;var=two&amp;var=three</td><td>?var=on,tw,th</td></tr>
-        <tr><td>&amp;</td><td>&amp;var=one,two,three</td><td>&amp;var=one&amp;var=two&amp;var=three</td><td>&amp;var=on,tw,th</td></tr>
+        <tr><td><code><em>None</em></code></td><td><code>one,two,three</code></td><td><code>one,two,three</code></td><td><code>on,tw,th</code></td></tr>
+        <tr><td><code><em>+</em></code></td><td><code>one,two,three</code></td><td><code>one,two,three</code></td><td><code>on,tw,th</code></td></tr>
+        <tr><td><code>#</code></td><td><code>#one,two,three</code></td><td><code>#one,two,three</code></td><td><code>#on,tw,th</code></td></tr>
+        <tr><td><code>.</code></td><td><code>.one,two,three</code></td><td><code>.one.two.three</code></td><td><code>.on,tw,th</code></td></tr>
+        <tr><td><code>/</code></td><td><code>/one,two,three</code></td><td><code>/one/two/three</code></td><td><code>/on,tw,th</code></td></tr>
+        <tr><td><code>;</code></td><td><code>;var=one,two,three</code></td><td><code>;var=one;var=two;var=three</code></td><td><code>;var=on,tw,th</code></td></tr>
+        <tr><td><code>?</code></td><td><code>?var=one,two,three</code></td><td><code>?var=one&amp;var=two&amp;var=three</code></td><td><code>?var=on,tw,th</code></td></tr>
+        <tr><td><code>&amp;</code></td><td><code>&amp;var=one,two,three</code></td><td><code>&amp;var=one&amp;var=two&amp;var=three</code></td><td><code>&amp;var=on,tw,th</code></td></tr>
     </table>
 
     <h3>Objects ("plain objects" / "hash maps")</h3>
     <p>
-        Given <code>{"var": {"one": "alpha", "two": "bravo", "three": "charlie"}}</code>, the expression <code>{var}</code> expands to <code>one,two,three</code>. 
+        Given <code>{"var": {"one": "alpha", "two": "bravo"}}</code>, the expression <code>{var}</code> expands to <code>one,two,three</code>. 
         The following table shows an output matrix for every possible operator/modifier combination produced for <code>object</code> input.
     </p>
     <table>
         <tr><th></th><th colspan="3">Modifier</th></tr>
         <tr><th>Operator</th><th><em>None</em></th><th>*</th><th>:2</th></tr>
-        <tr><td><em>None</em></td><td>one,alpha,two,bravo,three,charlie</td><td>one=alpha,two=bravo,three=charlie</td><td>on,al,tw,br,th,ch</td></tr>
-        <tr><td><em>+</em></td><td>one,alpha,two,bravo,three,charlie</td><td>one=alpha,two=bravo,three=charlie</td><td>on,al,tw,br,th,ch</td></tr>
-        <tr><td>#</td><td>#one,alpha,two,bravo,three,charlie</td><td>#one=alpha,two=bravo,three=charlie</td><td>#on,al,tw,br,th,ch</td></tr>
-        <tr><td>.</td><td>.one,alpha,two,bravo,three,charlie</td><td>.one=alpha.two=bravo.three=charlie</td><td>.on,al,tw,br,th,ch</td></tr>
-        <tr><td>/</td><td>/one,alpha,two,bravo,three,charlie</td><td>/one=alpha/two=bravo/three=charlie</td><td>/on,al,tw,br,th,ch</td></tr>
-        <tr><td>;</td><td>;var=one,alpha,two,bravo,three,charlie</td><td>;one=alpha;two=bravo;three=charlie</td><td>;var=on,al,tw,br,th,ch</td></tr>
-        <tr><td>?</td><td>?var=one,alpha,two,bravo,three,charlie</td><td>?one=alpha&amp;two=bravo&amp;three=charlie</td><td>?var=on,al,tw,br,th,ch</td></tr>
-        <tr><td>&amp;</td><td>&amp;var=one,alpha,two,bravo,three,charlie</td><td>&amp;one=alpha&amp;two=bravo&amp;three=charlie</td><td>&amp;var=on,al,tw,br,th,ch</td></tr>
+        <tr><td><code><em>None</em></code></td><td><code>one,alpha,two,bravo</code></td><td><code>one=alpha,two=bravo</code></td><td><code>on,al,tw,br</code></td></tr>
+        <tr><td><code><em>+</em></code></td><td><code>one,alpha,two,bravo</code></td><td><code>one=alpha,two=bravo</code></td><td><code>on,al,tw,br</code></td></tr>
+        <tr><td><code>#</code></td><td><code>#one,alpha,two,bravo</code></td><td><code>#one=alpha,two=bravo</code></td><td><code>#on,al,tw,br</code></td></tr>
+        <tr><td><code>.</code></td><td><code>.one,alpha,two,bravo</code></td><td><code>.one=alpha.two=bravo</code></td><td><code>.on,al,tw,br</code></td></tr>
+        <tr><td><code>/</code></td><td><code>/one,alpha,two,bravo</code></td><td><code>/one=alpha/two=bravo</code></td><td><code>/on,al,tw,br</code></td></tr>
+        <tr><td><code>;</code></td><td><code>;var=one,alpha,two,bravo</code></td><td><code>;one=alpha;two=bravo</code></td><td><code>;var=on,al,tw,br</code></td></tr>
+        <tr><td><code>?</code></td><td><code>?var=one,alpha,two,bravo</code></td><td><code>?one=alpha&amp;two=bravo</code></td><td><code>?var=on,al,tw,br</code></td></tr>
+        <tr><td><code>&amp;</code></td><td><code>&amp;var=one,alpha,two,bravo</code></td><td><code>&amp;one=alpha&amp;two=bravo</code></td><td><code>&amp;var=on,al,tw,br</code></td></tr>
     </table>
 
 
