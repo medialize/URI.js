@@ -476,6 +476,11 @@ test("segment", function() {
     u.segment(3, null);
     equal(u.path(), "/goodbye/world/bar.html", "segment del 3 null");
     
+    u = new URI("http://www.example.org/some/directory/foo.html");
+    equal(u.segment(-1), "foo.html", "segment get -1");
+    u.segment(-1, "world.html");
+    equal(u.path(), "/some/directory/world.html", "segment set -1");
+    
     u = new URI("someurn:foo:bar:baz");
     equal(u.segment().join('||'), "foo||bar||baz", "segment get array URN");
     u.segment(1, 'mars');

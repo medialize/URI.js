@@ -396,17 +396,20 @@ uri.suffix(true) === "würgh";</pre>
 // get segments
 uri.segment(); // returns array ["foo", "hello.html"]
 // set segments
-uri.segment(["foo", "foobar.html"]); // -> http://example.org/foo/foobar.html
+uri.segment(["foo", "bar", "foobar.html"]); // -> http://example.org/foo/bar/foobar.html
 
 // get specific level
 uri.segment(0); // returns "foo"
+uri.segment(1); // returns "bar"
+uri.segment(-1); // returns "foobar.html"
 // set specific level
-uri.segment(0, "bar"); // -> http://example.org/bar/foobar.html
+uri.segment(0, "bar"); // -> http://example.org/bar/bar/foobar.html
 // remove specific level
-uri.segment(0, ""); // -> http://example.org/foobar.html
+uri.segment(0, ""); // -> http://example.org/bar/foobar.html
+
 
 // append level
-uri.segment("appendthis"); // -> http://example.org/foobar.html/appendthis</pre>
+uri.segment("appendthis"); // -> http://example.org/bar/foobar.html/appendthis</pre>
     
     
     <h3 id="accessors-search">search(), query()</h3>

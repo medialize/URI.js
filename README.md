@@ -194,7 +194,6 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 TODO: before releasing
 
 * document encode/decode functions
-* add negative indexing to segment(-1)
 * split alternative links into groups of parsers / mutators / extra
 
 ### 1.6.3 (June 24th 2012) ###

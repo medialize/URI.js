@@ -1128,6 +1128,11 @@ p.segment = function(segment, v, build) {
         segments.shift();
     }
     
+    if (segment < 0) {
+        // allow negative indexes to address from the end
+        segment = Math.max(segments.length + segment, 0);
+    }
+    
     if (v === undefined) {
         return segment === undefined 
             ? segments 
