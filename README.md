@@ -143,26 +143,26 @@ Docs where you get more info on parsing and working with URLs
 
 If you don't like URI.js, you may like one of these:
 
+#### URL Manipulation ####
+
 * [The simple <a> URL Mutation "Hack"](http://jsfiddle.net/rodneyrehm/KkGUJ/) ([jsPerf comparison](http://jsperf.com/idl-attributes-vs-uri-js))
-* [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
-* [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
 * [URL.js](https://github.com/ericf/urljs)
 * [furl (Python)](https://github.com/gruns/furl)
 * [mediawiki Uri](https://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/resources/mediawiki/mediawiki.Uri.js?view=markup) (needs mw and jQuery)
-* [Google Closure Uri](http://closure-library.googlecode.com/svn/docs/closure_goog_uri_uri.js.html)
-* [URI.js by Gary Court](https://github.com/garycourt/uri-js)
 * [jurlp](https://github.com/tombonner/jurlp)
 * [jsUri](http://code.google.com/p/jsuri/)
+
+#### URL Parsers ####
+
+* [The simple <a> URL Mutation "Hack"](http://jsfiddle.net/rodneyrehm/KkGUJ/) ([jsPerf comparison](http://jsperf.com/idl-attributes-vs-uri-js))
+* [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
+* [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
+* [Google Closure Uri](http://closure-library.googlecode.com/svn/docs/closure_goog_uri_uri.js.html)
+* [URI.js by Gary Court](https://github.com/garycourt/uri-js)
+
+#### Other ####
+
 * [uri-templates](https://github.com/marc-portier/uri-templates) [jsperf comparison](http://jsperf.com/uri-templates)
-
-
-## TODO ##
-
-if you want to get involved, these are things you could help out with…
-
-* modifiers for domain, tld, directory, file, suffix are hardly the most performant solutions
-* add [Media Fragments](https://github.com/medialize/URI.js/issues/18)
-* add [:local-link](http://dev.w3.org/csswg/selectors4/#local-pseudo) to jquery.URI.js
 
 
 ## Authors ##
@@ -183,18 +183,13 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-### upcomming (work in progress...) ###
+### 1.7.0 (August 11th 2012) ###
 
 * fixing URI() constructor passing of `base` ([Issue #33](https://github.com/medialize/URI.js/issues/33) [LarryBattle](https://github.com/LarryBattle))
 * adding `segment()` accessor ([Issue #34](https://github.com/medialize/URI.js/issues/34))
 * upgrading `URI.encode()` to strict URI encoding according to RFC3986
 * adding `URI.encodeReserved()` to exclude reserved characters (according to RFC3986) from being encoded
 * adding [URI Template (RFC 6570)](http://tools.ietf.org/html/rfc6570) support with [`URITemplate()`](http://medialize.github.com/URI.js/uri-template.html)
-
-TODO: before releasing
-
-* document encode/decode functions
-* split alternative links into groups of parsers / mutators / extra
 
 ### 1.6.3 (June 24th 2012) ###
 
