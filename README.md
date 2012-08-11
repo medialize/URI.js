@@ -160,10 +160,11 @@ If you don't like URI.js, you may like one of these:
 * [Google Closure Uri](http://closure-library.googlecode.com/svn/docs/closure_goog_uri_uri.js.html)
 * [URI.js by Gary Court](https://github.com/garycourt/uri-js)
 
-#### Other ####
+#### URI Template ####
 
-* [uri-templates](https://github.com/marc-portier/uri-templates) ([jsperf comparison](http://jsperf.com/uri-templates))
-
+* [uri-templates](https://github.com/marc-portier/uri-templates) by Marc Portier
+* [URI Template JS](https://github.com/fxa/uritemplate-js) by Franz Antesberger
+* ([jsperf comparison](http://jsperf.com/uri-templates/2))
 
 ## Authors ##
 
