@@ -162,7 +162,7 @@ If you don't like URI.js, you may like one of these:
 
 #### Other ####
 
-* [uri-templates](https://github.com/marc-portier/uri-templates) [jsperf comparison](http://jsperf.com/uri-templates)
+* [uri-templates](https://github.com/marc-portier/uri-templates) ([jsperf comparison](http://jsperf.com/uri-templates))
 
 
 ## Authors ##
@@ -186,32 +186,32 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### 1.7.0 (August 11th 2012) ###
 
 * fixing URI() constructor passing of `base` ([Issue #33](https://github.com/medialize/URI.js/issues/33) [LarryBattle](https://github.com/LarryBattle))
-* adding `segment()` accessor ([Issue #34](https://github.com/medialize/URI.js/issues/34))
+* adding [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment) accessor ([Issue #34](https://github.com/medialize/URI.js/issues/34))
 * upgrading `URI.encode()` to strict URI encoding according to RFC3986
 * adding `URI.encodeReserved()` to exclude reserved characters (according to RFC3986) from being encoded
 * adding [URI Template (RFC 6570)](http://tools.ietf.org/html/rfc6570) support with [`URITemplate()`](http://medialize.github.com/URI.js/uri-template.html)
 
 ### 1.6.3 (June 24th 2012) ###
 
-* fixing `.absoluteTo()` to join two relative paths properly ([Issue #29](https://github.com/medialize/URI.js/issues/29))
-* adding `.clone()` to copy an URI instance
+* fixing [`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to join two relative paths properly ([Issue #29](https://github.com/medialize/URI.js/issues/29))
+* adding [`.clone()`](http://medialize.github.com/URI.js/docs.html#clone) to copy an URI instance
 
 ### 1.6.2 (June 23rd 2012) ###
 
-* `.directory()` now returns empty string if there is no directory
-* fixing `.absoluteTo()` to join two relative paths properly ([Issue #29](https://github.com/medialize/URI.js/issues/29))
+* [`.directory()`](http://medialize.github.com/URI.js/docs.html#accessors-directory) now returns empty string if there is no directory
+* fixing `[`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to join two relative paths properly ([Issue #29](https://github.com/medialize/URI.js/issues/29))
 
 ### 1.6.1 (May 19th 2012) ###
 
-* fixing TypeError on domain() with dot-less hostnames ([Issue #27](https://github.com/medialize/URI.js/issues/27))
+* fixing TypeError on [`.domain()`](http://medialize.github.com/URI.js/docs.html#accessors-domain) with dot-less hostnames ([Issue #27](https://github.com/medialize/URI.js/issues/27))
 
 ### 1.6.0 (March 19th 2012) ###
 
 * adding [URN](http://tools.ietf.org/html/rfc3986#section-3) (`javascript:`, `mailto:`, ...) support
-* adding `.scheme()` as alias of `.protocol()`
-* adding `.userinfo()` to comply with terminology of [RFC 3986](http://tools.ietf.org/html/rfc3986#section-3.2.1)
-* adding jQuery Plugin `src/jquery.URI.js`
-* Fixing relative scheme URLs ([Issue #19](https://github.com/medialize/URI.js/issues/19) [byroot](https://github.com/byroot))
+* adding [`.scheme()`](http://medialize.github.com/URI.js/docs.html#accessors-protocol) as alias of [`.protocol()`](http://medialize.github.com/URI.js/docs.html#accessors-protocol)
+* adding [`.userinfo()`](http://medialize.github.com/URI.js/docs.html#accessors-userinfo) to comply with terminology of [RFC 3986](http://tools.ietf.org/html/rfc3986#section-3.2.1)
+* adding [jQuery Plugin](http://medialize.github.com/URI.js/jquery-uri-plugin.html) `src/jquery.URI.js`
+* fixing relative scheme URLs ([Issue #19](https://github.com/medialize/URI.js/issues/19) [byroot](https://github.com/byroot))
 
 ### 1.5.0 (February 19th 2012) ###
 
@@ -219,54 +219,54 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### 1.4.3 (January 28th 2012) ###
 
-* fixed global scope leakage ([Issue #15](https://github.com/medialize/URI.js/issues/15) [mark-rushakoff](https://github.com/mark-rushakoff))
+* fixing global scope leakage ([Issue #15](https://github.com/medialize/URI.js/issues/15) [mark-rushakoff](https://github.com/mark-rushakoff))
 
 ### 1.4.2 (January 25th 2012) ###
 
-* improved CommonJS compatibility ([Issue #14](https://github.com/medialize/URI.js/issues/14) [FGRibreau](https://github.com/FGRibreau))
+* improving CommonJS compatibility ([Issue #14](https://github.com/medialize/URI.js/issues/14) [FGRibreau](https://github.com/FGRibreau))
 
 ### 1.4.1 (January 21st 2012) ###
 
-* added CommonJS compatibility ([Issue #11](https://github.com/medialize/URI.js/issues/11), [Evangenieur](https://github.com/Evangenieur))
+* adding CommonJS compatibility ([Issue #11](https://github.com/medialize/URI.js/issues/11), [Evangenieur](https://github.com/Evangenieur))
 
 ### 1.4.0 (January 12th 2012) ###
 
-* added URI.iso8859() and URI.unicode() to switch base charsets ([Issue #10](https://github.com/medialize/URI.js/issues/10), [mortenn](https://github.com/))
-* added .iso8859() and .unicode() to convert an URI's escape encoding
+* adding [`URI.iso8859()`](http://medialize.github.com/URI.js/docs.html#static-iso8859) and [`URI.unicode()`](http://medialize.github.com/URI.js/docs.html#static-unicode) to switch base charsets ([Issue #10](https://github.com/medialize/URI.js/issues/10), [mortenn](https://github.com/))
+* adding [`.iso8859()`](http://medialize.github.com/URI.js/docs.html#iso8859) and [`.unicode()`](http://medialize.github.com/URI.js/docs.html#unicode) to convert an URI's escape encoding
 
 ### 1.3.1 (January 3rd 2011) ###
 
-* Updated Punycode.js to version 0.3.0
-* added edge-case tests ("jim")
-* fixed edge-cases in .protocol(), .port(), .subdomain(), .domain(), .tld(), .filename()
-* fixed parsing of hostname in .hostname()
+* updating Punycode.js to version 0.3.0
+* adding edge-case tests ("jim")
+* fixing edge-cases in .protocol(), .port(), .subdomain(), .domain(), .tld(), .filename()
+* fixing parsing of hostname in [`.hostname()`](http://medialize.github.com/URI.js/docs.html#accessors-hostname)
 
 ### 1.3.0 (December 30th 2011) ###
 
-* added .subdomain() convenience accessor
-* improved internal deferred build handling
-* fixed thrown Error for `URI("http://example.org").query(true)` ([Issue #6](https://github.com/medialize/URI.js/issues/6))
-* added examples for extending URI.js for fragment abuse, see src/URI.fragmentQuery.js and src/URI.fragmentURI.js ([Issue #2](https://github.com/medialize/URI.js/issues/2))
+* adding [`.subdomain()`](http://medialize.github.com/URI.js/docs.html#accessors-subdomain) convenience accessor
+* improving internal deferred build handling
+* fixing thrown Error for `URI("http://example.org").query(true)` ([Issue #6](https://github.com/medialize/URI.js/issues/6))
+* adding examples for extending URI.js for [fragment abuse](http://medialize.github.com/URI.js/docs.html#fragment-abuse), see src/URI.fragmentQuery.js and src/URI.fragmentURI.js ([Issue #2](https://github.com/medialize/URI.js/issues/2))
 
 ### 1.2.0 (December 29th 2011) ###
 
-* added .equals() for URL comparison
-* proper encoding/decoding for .pathname(), .directory(), .filename() and .suffix() according to [RFC 3986 3.3](http://tools.ietf.org/html/rfc3986#section-3.3)
-* escape spaces in query strings with `+` according to [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type)
-* allow URI.buildQuery() to build duplicate key=value combinations
-* added URI(string, string) constructor to conform with the [specification](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor)
-* added .readable() for humanly readable representation of encoded URIs
-* fixed bug where @ in pathname would be parsed as part of the authority
+* adding [`.equals()`](http://medialize.github.com/URI.js/docs.html#equals) for URL comparison
+* fixing encoding/decoding for [`.pathname()`](http://medialize.github.com/URI.js/docs.html#accessors-pathname), [`.directory()`](http://medialize.github.com/URI.js/docs.html#accessors-directory), [`.filename()`](http://medialize.github.com/URI.js/docs.html#accessors-filename) and [`.suffix()`](http://medialize.github.com/URI.js/docs.html#accessors-suffix) according to [RFC 3986 3.3](http://tools.ietf.org/html/rfc3986#section-3.3)
+* fixing escape spaces in query strings with `+` according to [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type)
+* fixing to allow [`URI.buildQuery()`](http://medialize.github.com/URI.js/docs.html#static-buildQuery) to build duplicate key=value combinations
+* fixing [`URI(string, string)`](http://medialize.github.com/URI.js/docs.html#constructor) constructor to conform with the [specification](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor)
+* adding [`.readable()`](http://medialize.github.com/URI.js/docs.html#readable) for humanly readable representation of encoded URIs
+* fixing bug where @ in pathname would be parsed as part of the authority
 
 ### 1.1.0 (December 28th 2011) ###
 
-* URI.withinString()
-* added .normalizeProtocol() to lowercase protocols
-* made .normalizeHostname() lowercase hostnames
-* replaced String.substr() by String.substring() ([Issue #1](https://github.com/medialize/URI.js/issues/1))
-* parse "?foo" to `{foo: null}` [Algorithm for collecting URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters)
-* build `{foo: null, bar: ""}` to "?foo&bar=" [Algorithm for serializing URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization)
-* fixed RegExp escaping
+* adding [`URI.withinString()`](http://medialize.github.com/URI.js/docs.html#static-withinString)
+* adding [`.normalizeProtocol()`](http://medialize.github.com/URI.js/docs.html#normalize-protocol) to lowercase protocols
+* fixing [`.normalizeHostname()`](http://medialize.github.com/URI.js/docs.html#normalize-host) to lowercase hostnames
+* fixing String.substr() to be replaced by String.substring() ([Issue #1](https://github.com/medialize/URI.js/issues/1))
+* fixing parsing "?foo" to `{foo: null}` [Algorithm for collecting URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters)
+* fixing building `{foo: null, bar: ""}` to "?foo&bar=" [Algorithm for serializing URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization)
+* fixing RegExp escaping
 
 ### 1.0.0 (December 27th 2011) ###
 
