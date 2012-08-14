@@ -1141,7 +1141,13 @@ p.segment = function(segment, v, build) {
         if (isArray(v)) {
             segments = v;
         } else if (v || (typeof v === "string" && v.length)) {
-            segments.push(v);
+            if (segments[segments.length -1] === "") {
+                // empty trailing elements have to be overwritten
+                // to prefent results such as /foo//bar
+                segments[segments.length -1] = v;
+            } else {
+                segments.push(v);
+            }
         }
     } else {
         if (v || (typeof v === "string" && v.length)) {

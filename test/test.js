@@ -486,6 +486,12 @@ test("segment", function() {
     u.segment(1, 'mars');
     equal(u.path(), "foo:mars:baz", "segment set 1 URN");
     equal(u.toString(), "someurn:foo:mars:baz", "segment set 1 URN");
+    
+    u = new URI('/foo/');
+    equal(u.segment().join('||'), "foo||", "segment get array trailing empty");
+    
+    u.segment('test');
+    equal(u.path(), "/foo/test", "segment append trailing empty");
 });
 
 module("mutating query strings");

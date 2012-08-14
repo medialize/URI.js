@@ -184,6 +184,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### next release ###
+
+* fixing [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment)'s append operation ([Issue #39](https://github.com/medialize/URI.js/issues/39)
+
 ### 1.7.0 (August 11th 2012) ###
 
 * fixing URI() constructor passing of `base` ([Issue #33](https://github.com/medialize/URI.js/issues/33) [LarryBattle](https://github.com/LarryBattle))
