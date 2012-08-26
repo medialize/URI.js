@@ -181,7 +181,7 @@ var SLD = {
             t += '|(' + expression + ')';
         }
 
-        SLD.has_expression = new RegExp('\.(' + t.substr(1) + ')$', 'i');
+        SLD.has_expression = new RegExp('\\.(' + t.substr(1) + ')$', 'i');
         SLD.is_expression = new RegExp('^(' + t.substr(1) + ')$', 'i');
     }
 };

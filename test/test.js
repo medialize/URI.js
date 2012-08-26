@@ -358,6 +358,10 @@ test("tld", function() {
     u.tld('org');
     equal(u.tld(), "org", "sld changed to tld");
     equal(u+"", "http://www.example.org/foo.html", "changed url to tld");
+    
+    u.hostname('www.examplet.se');
+    equal(u.tld(), "se", "se tld");
+    
 });
 test("directory", function() {
     var u = new URI("http://www.example.org/some/directory/foo.html");
