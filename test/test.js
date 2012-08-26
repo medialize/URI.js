@@ -727,6 +727,11 @@ test("absoluteTo", function() {
             base: '/path/to/file?some=query#hash',
             result: '/path/relative/path?blubber=1#hash3'
         }, {
+            name: 'base query string',
+            url: '#hash3',
+            base: '/path/to/file?some=query#hash',
+            result: '/path/to/file?some=query#hash3'
+        }, {
             name: 'relative path - urljoin',
             url: 'the_relative_url',
             base: 'rel/path/',

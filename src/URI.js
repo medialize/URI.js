@@ -1407,7 +1407,7 @@ p.readable = function() {
 p.absoluteTo = function(base) {
     var resolved = this.clone(),
         properties = ['protocol', 'username', 'password', 'hostname', 'port'],
-        basedir;
+        basedir, i, p;
     
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
@@ -1421,8 +1421,15 @@ p.absoluteTo = function(base) {
         base = new URI(base);
     }
 
-    for (var i = 0, p; p = properties[i]; i++) {
+    for (i = 0, p; p = properties[i]; i++) {
         resolved._parts[p] = base._parts[p];
+    }
+    
+    properties = ['query', 'path'];
+    for (i = 0, p; p = properties[i]; i++) {
+        if (!resolved._parts[p] && base._parts[p]) {
+            resolved._parts[p] = base._parts[p];
+        }
     }
 
     if (resolved.path()[0] !== '/') {
