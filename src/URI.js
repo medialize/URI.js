@@ -28,7 +28,11 @@ var _use_module = typeof module !== "undefined" && module.exports,
         }
 
         if (url === undefined) {
-            url = location.href + "";
+            if (typeof location !== 'undefined') {
+                url = location.href + "";
+            } else {
+                url = "";
+            }
         }
 
         this.href(url);
@@ -258,7 +262,7 @@ URI.parse = function(string) {
 };
 URI.parseHost = function(string, parts) {
     // extract host:port
-    var pos = string.indexOf('/'), 
+    var pos = string.indexOf('/'),
         t;
 
     if (pos === -1) {
@@ -310,7 +314,7 @@ URI.parseUserinfo = function(string, parts) {
         parts.username = null;
         parts.password = null;
     }
-    
+
     return string;
 };
 URI.parseQuery = function(string) {
@@ -355,7 +359,7 @@ URI.build = function(parts) {
     if (parts.protocol) {
         t += parts.protocol + ":";
     }
-    
+
     if (!parts.urn && (t || parts.hostname)) {
         t += '//';
     }
@@ -416,7 +420,7 @@ URI.buildUserinfo = function(parts) {
 
         t += "@";
     }
-    
+
     return t;
 };
 URI.buildQuery = function(data, duplicates) {
@@ -705,7 +709,7 @@ p.is = function(what) {
     switch (what.toLowerCase()) {
         case 'relative':
             return relative;
-        
+
         case 'absolute':
             return !relative;
 
@@ -732,7 +736,7 @@ p.is = function(what) {
 
         case 'idn':
             return idn;
-            
+
         case 'url':
             return !this._parts.urn;
 
@@ -769,7 +773,7 @@ p.port = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (v !== undefined) {
         if (v === 0) {
             v = null;
@@ -792,7 +796,7 @@ p.hostname = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (v !== undefined) {
         var x = {};
         URI.parseHost(v, x);
@@ -806,7 +810,7 @@ p.host = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (v === undefined) {
         return this._parts.hostname ? URI.buildHost(this._parts) : "";
     } else {
@@ -819,7 +823,7 @@ p.authority = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (v === undefined) {
         return this._parts.hostname ? URI.buildAuthority(this._parts) : "";
     } else {
@@ -832,19 +836,19 @@ p.userinfo = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (v === undefined) {
         if (!this._parts.username) {
             return "";
         }
-        
+
         var t = URI.buildUserinfo(this._parts);
         return t.substring(0, t.length -1);
     } else {
         if (v[v.length-1] !== '@') {
             v += '@';
         }
-        
+
         URI.parseUserinfo(v, this._parts);
         this.build(!build);
         return this;
@@ -856,7 +860,7 @@ p.subdomain = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     // convenience, return "www" from "www.example.org"
     if (v === undefined) {
         if (!this._parts.hostname || this.is('IP')) {
@@ -888,7 +892,7 @@ p.domain = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (typeof v === 'boolean') {
         build = v;
         v = undefined;
@@ -932,7 +936,7 @@ p.tld = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (typeof v === 'boolean') {
         build = v;
         v = undefined;
@@ -978,12 +982,12 @@ p.directory = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (v === undefined || v === true) {
         if (!this._parts.path && !this._parts.hostname) {
             return '';
         }
-        
+
         if (this._parts.path === '/') {
             return '/';
         }
@@ -1024,7 +1028,7 @@ p.filename = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (v === undefined || v === true) {
         if (!this._parts.path || this._parts.path === '/') {
             return "";
@@ -1061,7 +1065,7 @@ p.suffix = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
     }
-    
+
     if (v === undefined || v === true) {
         if (!this._parts.path || this._parts.path === '/') {
             return "";
@@ -1113,29 +1117,29 @@ p.segment = function(segment, v, build) {
         path = this.path(),
         absolute = path.substring(0, 1) === '/',
         segments = path.split(separator);
-    
+
     if (typeof segment !== 'number') {
         build = v;
         v = segment;
         segment = undefined;
     }
-    
+
     if (segment !== undefined && typeof segment !== 'number') {
         throw new Error("Bad segment '" + segment + "', must be 0-based integer");
     }
-    
+
     if (absolute) {
         segments.shift();
     }
-    
+
     if (segment < 0) {
         // allow negative indexes to address from the end
         segment = Math.max(segments.length + segment, 0);
     }
-    
+
     if (v === undefined) {
-        return segment === undefined 
-            ? segments 
+        return segment === undefined
+            ? segments
             : segments[segment];
     } else if (segment === null || segments[segment] === undefined) {
         if (isArray(v)) {
@@ -1156,11 +1160,11 @@ p.segment = function(segment, v, build) {
             segments.splice(segment, 1);
         }
     }
-    
+
     if (absolute) {
         segments.unshift("");
     }
-    
+
     return this.path(segments.join(separator), build);
 };
 
@@ -1211,7 +1215,7 @@ p.normalize = function() {
             .normalizeFragment(false)
             .build();
     }
-    
+
     return this
         .normalizeProtocol(false)
         .normalizeHostname(false)
@@ -1256,7 +1260,7 @@ p.normalizePath = function(build) {
     if (this._parts.urn) {
         return this;
     }
-    
+
     if (!this._parts.path || this._parts.path === '/') {
         return this;
     }
@@ -1408,11 +1412,11 @@ p.absoluteTo = function(base) {
     var resolved = this.clone(),
         properties = ['protocol', 'username', 'password', 'hostname', 'port'],
         basedir;
-    
+
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
     }
-    
+
     if (this._parts.hostname) {
         return resolved;
     }
@@ -1439,11 +1443,11 @@ p.relativeTo = function(base) {
         properties = ['protocol', 'username', 'password', 'hostname', 'port'],
         common,
         _base;
-    
+
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
     }
-    
+
     if (!(base instanceof URI)) {
         base = new URI(base);
     }
@@ -1454,7 +1458,7 @@ p.relativeTo = function(base) {
 
     common = URI.commonPath(relative.path(), base.path());
     _base = base.directory();
-    
+
     for (var i = 0, p; p = properties[i]; i++) {
         relative._parts[p] = null;
     }
@@ -1561,7 +1565,7 @@ p.equals = function(uri) {
     return true;
 };
 
-(typeof module !== 'undefined' && module.exports 
+(typeof module !== 'undefined' && module.exports
     ? module.exports = URI
     : window.URI = URI
 );
