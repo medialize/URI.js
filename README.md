@@ -184,6 +184,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+* fixing `strictEncodeURIComponent()` to properly encode `*` to `%2A`
+
 ### 1.7.2 (August 28th 2012) ###
 
 * fixing SLD detection in [`.tld()`](http://medialize.github.com/URI.js/docs.html#accessors-tld) - `foot.se` would detect `t.se` - ([Issue #42](https://github.com/medialize/URI.js/issues/42))

@@ -103,7 +103,9 @@ URI.invalid_hostname_characters = /[^a-zA-Z0-9\.-]/;
 // encoding / decoding according to RFC3986
 function strictEncodeURIComponent(string) {
     // see https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/encodeURIComponent
-    return encodeURIComponent(string).replace(/[!'()*]/g, escape);
+    return encodeURIComponent(string)
+        .replace(/[!'()*]/g, escape)
+        .replace(/\*/g, "%2A");
 }
 URI.encode = strictEncodeURIComponent;
 URI.decode = decodeURIComponent;
