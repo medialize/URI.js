@@ -184,7 +184,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.7.3 (October 11th 2012) ###
+
 * fixing `strictEncodeURIComponent()` to properly encode `*` to `%2A`
+* fixing IE9's incorrect report of `img.href` being available - ([Issue #48](https://github.com/medialize/URI.js/issues/48))
 
 ### 1.7.2 (August 28th 2012) ###
 
