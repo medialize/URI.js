@@ -26,9 +26,10 @@ function escapeRegEx(string) {
 
 function getUriProperty(elem) {
     var property;
-
-    $.each(['href', 'src', 'action'], function(k, v) {
-        if (v in elem) {
+    
+    // Note: IE9 will report img.href, so check img.src first (Issue #48)
+    $.each(['src', 'href', 'action'], function(k, v) {
+        if (v in elem ) {
             property = v;
             return false;
         }
