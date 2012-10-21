@@ -79,6 +79,7 @@ function filterArrayValues(data, value) {
 }
 
 // static properties
+URI.protocol_expression = /^[a-z][a-z0-9-+-]*$/i;
 URI.idn_expression = /[^a-z0-9\.-]/i;
 URI.punycode_expression = /(xn--)/i;
 // well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
@@ -244,7 +245,10 @@ URI.parse = function(string) {
         pos = string.indexOf(':');
         if (pos > -1) {
             parts.protocol = string.substring(0, pos);
-            if (string.substring(pos + 1, pos + 3) === '//') {
+            if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
+                // : may be within the path
+                parts.protocol = undefined;
+            } else if (string.substring(pos + 1, pos + 3) === '//') {
                 string = string.substring(pos + 3);
 
                 // extract "user:pass@host:port"

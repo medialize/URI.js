@@ -924,6 +924,100 @@ var urls = [{
             idn: false,
             punycode: false
         }
+    }, {
+        name: 'colon in path',
+        url: 'http://en.wikipedia.org/wiki/Help:IPA',
+        _url: 'http://en.wikipedia.org/wiki/Help:IPA',
+        parts: {
+            protocol: 'http',
+            username: null,
+            password: null,
+            hostname: 'en.wikipedia.org',
+            port: null,
+            path: '/wiki/Help:IPA',
+            query: null,
+            fragment: null
+        },
+        accessors: {
+            protocol: 'http',
+            username: '',
+            password: '',
+            port: '',
+            path: '/wiki/Help:IPA',
+            query: '',
+            fragment: '',
+            authority: 'en.wikipedia.org',
+            userinfo: '',
+            subdomain: 'en',
+            domain: 'wikipedia.org',
+            tld: 'org',
+            directory: '/wiki',
+            filename: 'Help:IPA',
+            suffix: '',
+            hash: '',
+            search: '',
+            host: 'en.wikipedia.org',
+            hostname: 'en.wikipedia.org'
+        },
+        is: {
+            urn: false,
+            url: true,
+            relative: false,
+            name: true,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    }, {
+        name: 'colon in path without protocol',
+        url: '/wiki/Help:IPA',
+        _url: '/wiki/Help:IPA',
+        parts: {
+            protocol: null,
+            username: null,
+            password: null,
+            hostname: null,
+            port: null,
+            path: '/wiki/Help:IPA',
+            query: null,
+            fragment: null
+        },
+        accessors: {
+            protocol: '',
+            username: '',
+            password: '',
+            port: '',
+            path: '/wiki/Help:IPA',
+            query: '',
+            fragment: '',
+            authority: '',
+            userinfo: '',
+            subdomain: '',
+            domain: '',
+            tld: '',
+            directory: '/wiki',
+            filename: 'Help:IPA',
+            suffix: '',
+            hash: '',
+            search: '',
+            host: '',
+            hostname: ''
+        },
+        is: {
+            urn: false,
+            url: true,
+            relative: true,
+            name: false,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
     }
 ];
 
