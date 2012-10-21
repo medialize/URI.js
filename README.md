@@ -184,6 +184,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.7.4 (October 21st 2012) ###
+
+* fixing parsing of `/wiki/Help:IPA` - ([Issue #49](https://github.com/medialize/URI.js/issues/49))
+
 ### 1.7.3 (October 11th 2012) ###
 
 * fixing `strictEncodeURIComponent()` to properly encode `*` to `%2A`
