@@ -231,6 +231,53 @@ var urls = [{
             punycode: false
         }
     }, {
+        name: 'badly encoded userinfo',
+        url: 'scheme://user:pass:word@www.example.org/',
+        _url: 'scheme://user:pass%3Aword@www.example.org/',
+        parts: {
+            protocol: 'scheme',
+            username: 'user',
+            password: 'pass:word',
+            hostname: 'www.example.org',
+            port: null,
+            path: '/',
+            query: null,
+            fragment: null
+        },
+        accessors: {
+            protocol: 'scheme',
+            username: 'user',
+            password: 'pass:word',
+            port: '',
+            path: '/',
+            query: '',
+            fragment: '',
+            authority: 'user:pass%3Aword@www.example.org',
+            userinfo: 'user:pass%3Aword',
+            subdomain: 'www',
+            domain: 'example.org',
+            tld: 'org',
+            directory: '/',
+            filename: '',
+            suffix: '',
+            hash: '',
+            search: '',
+            host: 'www.example.org',
+            hostname: 'www.example.org'
+        },
+        is: {
+            urn: false,
+            url: true,
+            relative: false,
+            name: true,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    }, {
         name: 'host-relative: URL',
         url: '/some/directory/file.html?query=string#fragment',
         parts: {

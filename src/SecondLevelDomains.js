@@ -18,6 +18,7 @@
 var SLD = {
     // list of known Second Level Domains
     // converted list of SLDs from https://github.com/gavingmiller/second-level-domains
+    // TODO: switch to http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1
     list: {
         "ac":"com|gov|mil|net|org",
         "ae":"ac|co|gov|mil|name|net|org|pro|sch",

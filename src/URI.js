@@ -314,7 +314,8 @@ URI.parseUserinfo = function(string, parts) {
     if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
         t = string.substring(0, pos).split(':');
         parts.username = t[0] ? URI.decode(t[0]) : null;
-        parts.password = t[1] ? URI.decode(t[1]) : null;
+        t.shift();
+        parts.password = t[0] ? URI.decode(t.join(':')) : null;
         string = string.substring(pos + 1);
     } else {
         parts.username = null;

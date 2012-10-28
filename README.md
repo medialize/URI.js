@@ -164,7 +164,13 @@ If you don't like URI.js, you may like one of these:
 
 * [uri-templates](https://github.com/marc-portier/uri-templates) by Marc Portier
 * [URI Template JS](https://github.com/fxa/uritemplate-js) by Franz Antesberger
+* [Temple](https://github.com/brettstimmerman/temple) by Brett Stimmerman
 * ([jsperf comparison](http://jsperf.com/uri-templates/2))
+
+#### Various ####
+
+* [TLD.js](https://github.com/oncletom/tld.js) - second level domain names
+* [Public Suffic](http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1) - second level domain names
 
 ## Authors ##
 
@@ -183,6 +189,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 
 ## Changelog ##
+
+* fixing parsing of badly formatted userinfo `http://username:pass:word@hostname`
 
 ### 1.7.4 (October 21st 2012) ###
 
