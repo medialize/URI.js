@@ -71,7 +71,7 @@
                 
                 <li><a href="#accessors-search">search(), query()</a></li>
                 <li><a href="#accessors-hash">hash(), fragment()</a></li>
-                
+                <li><a href="#accessors-resource">resource()</a></li>                
                 <li><a href="#is">determine URL types</a></li>
             </ul>
         </li>
@@ -458,6 +458,15 @@ uri.hash("#mars"); // returns the URI instance for chaining
 uri.hash("mars"); // returns the URI instance for chaining
 // uri == "http://example.org/bar/world.xml#mars"</pre>
     
+    <h3 id="accessors-resource">resource()</h3>
+    <p>Resource is comprised of path, query and fragment</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html?query=string#hash");
+// get resource
+uri.resource(); // returns string "/foo/hello.html?query=string#hash"
+// set resource
+uri.resource("/mars.txt?query=foo#other"); // returns the URI instance for chaining</pre>
+    <p>NOTE: .resource() will reset any of path, query and fragment if they're not specified.</p>
+
     <h3 id="is">is()</h3>
     <p>.is() tells what a URL is. It responds with a boolean and can be asked the following questions:</p>
     <dl>
