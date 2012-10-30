@@ -95,7 +95,10 @@ URI.find_uri_expression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]
 URI.defaultPorts = {
     http: "80",
     https: "443",
-    ftp: "21"
+    ftp: "21",
+    gopher: "70",
+    ws: "80",
+    wss: "443"
 };
 // allowed hostname characters according to RFC 3986
 // ALPHA DIGIT "-" "." "_" "~" "!" "$" "&" "'" "(" ")" "*" "+" "," ";" "=" %encoded
