@@ -566,6 +566,14 @@ test("addQuery", function() {
     u.addQuery({'bam': null, 'baz': ''});
     equal(u.query(), 'foo=bar&bam&baz=', "add {name: null}");
 
+    u.query('?foo=bar');
+    u.addQuery('empty');
+    equal(u.query(), 'foo=bar&empty', "add undefined");
+    
+    u.query('?foo=bar');
+    u.addQuery('empty', "");
+    equal(u.query(), 'foo=bar&empty=', "add empty string");
+
     u.query('');
     u.addQuery('some value', "must be encoded because of = and ? and #");
     equal(u.query(), 'some+value=must+be+encoded+because+of+%3D+and+%3F+and+%23', "encoding");

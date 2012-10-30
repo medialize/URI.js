@@ -815,7 +815,7 @@ p.hostname = function(v, build) {
     return _hostname.call(this, v, build);
 };
 
-// combination accessors
+// compound accessors
 p.host = function(v, build) {
     if (this._parts.urn) {
         return v === undefined ? '' : this;
@@ -1207,7 +1207,7 @@ p.query = function(v, build) {
 };
 p.addQuery = function(name, value, build) {
     var data = URI.parseQuery(this._parts.query);
-    URI.addQuery(data, name, value);
+    URI.addQuery(data, name, value === undefined ? null : value);
     this._parts.query = URI.buildQuery(data);
     if (typeof name !== "string") {
         build = value;

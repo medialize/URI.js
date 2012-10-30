@@ -545,6 +545,9 @@ uri.addSearch("hello", "mars"); // returns the URI instance for chaining
 uri.addSearch({ foo: "bar", goodbye : ["world", "mars"] });
 // uri == "?hello=world&amp;hello=mars&amp;foo=bar&amp;goodbye=world&amp;goodbye=mars"
 
+uri.addSearch("no-value");
+// uri == "?hello=world&amp;hello=mars&amp;foo=bar&amp;goodbye=world&amp;goodbye=mars&amp;no-value"
+
 // CAUTION: beware of arrays, the following are not quite the same
 // If you're dealing with PHP, you probably want the latter…
 uri.addSearch("foo", ["bar", "baz"]);
