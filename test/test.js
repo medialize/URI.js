@@ -246,7 +246,7 @@ test("authority", function() {
     equal(u.port(), "", "authority removed port");
     equal(u+"", "http://some-domain.com/foo.html", "authority modified url");
 });
-test("authority", function() {
+test("userinfo", function() {
     var u = new URI("http://foo.bar/foo.html");
 
     u.userinfo('username:password');
@@ -288,6 +288,38 @@ test("href", function() {
     equal(u.search(), "", "href removed search");
     equal(u.hash(), "", "href removed hash");
     equal(u.href(), '../path/index.html', "href removed url");
+});
+test("resource", function() {
+    var u = new URI("http://foo.bar/foo.html?hello#world");
+
+    equal(u.resource(), "/foo.html?hello#world", "get resource");
+
+    u.resource("/foo.html?hello#world");
+    equal(u.href(), "http://foo.bar/foo.html?hello#world", "set resource");
+    
+    u.resource("/world.html");
+    equal(u.href(), "http://foo.bar/world.html", "set resource path");
+    equal(u.resource(), "/world.html", "get resource path");
+
+    u.resource("?query");
+    equal(u.href(), "http://foo.bar/?query", "set resource query");
+    equal(u.resource(), "/?query", "get resource query");
+
+    u.resource("#fragment");
+    equal(u.href(), "http://foo.bar/#fragment", "set resource fragment");
+    equal(u.resource(), "/#fragment", "get resource fragment");
+
+    u.resource("?hello#world");
+    equal(u.href(), "http://foo.bar/?hello#world", "set resource query+fragment");
+    equal(u.resource(), "/?hello#world", "get resource query+fragment");
+
+    u.resource("/mars.txt?planet=123");
+    equal(u.href(), "http://foo.bar/mars.txt?planet=123", "set resource path+query");
+    equal(u.resource(), "/mars.txt?planet=123", "get resource path+query");
+    
+    u.resource("/neptune.txt#foo");
+    equal(u.href(), "http://foo.bar/neptune.txt#foo", "set resource path+fragment");
+    equal(u.resource(), "/neptune.txt#foo", "get resource path+fragment");
 });
 
 module("mutating fractions");

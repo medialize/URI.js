@@ -864,6 +864,20 @@ p.userinfo = function(v, build) {
         return this;
     }
 };
+p.resource = function(v, build) {
+    var parts;
+    
+    if (v === undefined) {
+        return this.path() + this.search() + this.hash();
+    }
+    
+    parts = URI.parse(v);
+    this._parts.path = parts.path;
+    this._parts.query = parts.query;
+    this._parts.fragment = parts.fragment;
+    this.build(!build);
+    return this;
+};
 
 // fraction accessors
 p.subdomain = function(v, build) {
