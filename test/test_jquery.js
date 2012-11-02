@@ -41,7 +41,7 @@ test(".uri()", function() {
     var __uri = $first.uri(_uri);
     ok(uri !== _uri, "different URI instances");
     ok(uri === __uri, "same URI instances");
-    equals($first.attr('href'), _uri.toString(), "equal URI");
+    equal($first.attr('href'), _uri.toString(), "equal URI");
     
 });
 test("filtering with :uri()", function() {
@@ -101,17 +101,17 @@ test(".attr('href')", function() {
     }
     
     ok(uri instanceof URI, "instanceof URI");
-    equals(href(first), uri.toString(), "URI equals href");
+    equal(href(first), uri.toString(), "URI equals href");
 
     // test feedback to DOM element
     uri.hostname('example.com');
     ok($first.uri() === uri, "URI persisted");        
-    equals(href(first), uri.toString(), "transparent href update");
+    equal(href(first), uri.toString(), "transparent href update");
 
     // test feedback from DOM element
     $first.attr('href', 'http://example.net/');
     ok($first.uri() === uri, "URI persisted");        
-    equals(href(first), uri.toString(), "transparent href update");
+    equal(href(first), uri.toString(), "transparent href update");
 });
 test(".attr('uri:accessor')", function() {
     var $links = $('#testestest'),
@@ -127,10 +127,10 @@ test(".attr('uri:accessor')", function() {
         };
     }
     
-    equals($first.attr('uri:hostname'), 'example.org', 'reading uri:hostname');
+    equal($first.attr('uri:hostname'), 'example.org', 'reading uri:hostname');
     $first.attr('uri:hostname', 'example.com');
-    equals($first.attr('uri:hostname'), 'example.com', 'changed uri:hostname');
-    equals($first.is(':uri(hostname=example.com)'), true, ':uri() after changed uri:hostname');
+    equal($first.attr('uri:hostname'), 'example.com', 'changed uri:hostname');
+    equal($first.is(':uri(hostname=example.com)'), true, ':uri() after changed uri:hostname');
     ok($first.uri() === uri, "URI persisted");
 });
 
