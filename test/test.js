@@ -12,6 +12,9 @@ test("new URI(object)", function() {
     var u = new URI({protocol: "http", hostname: 'example.org'});
     ok(u instanceof URI, "instanceof URI");
     ok(u._parts.hostname !== undefined, "host undefined");
+    
+    u = new URI(location);
+    equal(u.href(), String(location.href), "location object");
 });
 test("new URI(URI)", function() {
     var u = new URI(new URI({protocol: "http", hostname: 'example.org'}));

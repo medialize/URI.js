@@ -675,6 +675,17 @@ p.href = function(href, build) {
         var _URI = href instanceof URI,
             _object = typeof href === "object" && (href.hostname || href.path),
             key;
+        
+        // window.location is reported to be an object, but it's not the sort
+        // of object we're looking for: 
+        // * location.protocol ends with a colon
+        // * location.query != object.search
+        // * location.hash != object.fragment
+        // simply serializing the unknown object should do the trick 
+        // (for location, not for everything...)
+        if (_object && String(href) !== "[object Object]") {
+            href = href.toString();
+        }
 
         if (typeof href === "string") {
             this._parts = URI.parse(href);
