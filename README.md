@@ -191,6 +191,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ## Changelog ##
 
 * fixing parsing of badly formatted userinfo `http://username:pass:word@hostname`
+* adding default ports for gopher, ws, wss
+* adding [`.resource()`](http://medialize.github.com/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]
+* fixing `.addQuery("empty")` to properly add `?empty` - ([Issue #46](https://github.com/medialize/URI.js/issues/46))
+* adding jQuery 1.8.x compatibility for jQuery.URI.js
 
 ### 1.7.4 (October 21st 2012) ###
 

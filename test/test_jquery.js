@@ -67,9 +67,11 @@ test("filtering with :uri()", function() {
     // find using URI.is()
     equal($links.find(':uri(relative)').length, 5, ":uri(relative)");
     equal($links.find(':uri(is:relative)').length, 5, ":uri(is:relative)");
+    equal($links.find(':uri(is: relative)').length, 5, ":uri(is:relative)");
 
     // find using URI.equal()
-    equal($links.find(':uri(equals:http://example.org/hello/foo/../world.html)').length, 1, ":uri(equals:$url$)");
+    // This syntax breaks Sizzle, probably because it's looking for a nested pseudo ":http"
+    //equal($links.find(':uri(equals:http://example.org/hello/foo/../world.html)').length, 1, ":uri(equals:$url$)");
     equal($links.find(':uri(equals:"http://example.org/hello/foo/../world.html")').length, 1, ":uri(equals:$url$)");
     equal($links.find(':uri(equals: "http://example.org/hello/foo/../world.html")').length, 1, ":uri(equals:$url$)");
         

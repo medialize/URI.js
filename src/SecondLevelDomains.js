@@ -18,7 +18,11 @@
 var SLD = {
     // list of known Second Level Domains
     // converted list of SLDs from https://github.com/gavingmiller/second-level-domains
-    // TODO: switch to http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1
+    // ----
+    // publicsuffix.org is more current and actually used by a couple of browsers internally.
+    // downside is it also contains domains like "dyndns.org" - which is fine for the security
+    // issues browser have to deal with (SOP for cookies, etc) - but is way overboard for URI.js
+    // ----
     list: {
         "ac":"com|gov|mil|net|org",
         "ae":"ac|co|gov|mil|name|net|org|pro|sch",
