@@ -21,6 +21,7 @@
 // uri.toString() === "http://example.org/#?bar=foo";
 
 (function(URI, undefined){
+"use strict";
 
 var p = URI.prototype,
     // old fragment handler we need to wrap

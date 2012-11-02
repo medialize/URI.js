@@ -13,7 +13,8 @@
  *
  */
 (function(undefined) {
-    
+"use strict";
+
 var hasOwn = Object.prototype.hasOwnProperty,
     _use_module = typeof module !== "undefined" && module.exports,
     _load_module = function(module) {

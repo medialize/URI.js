@@ -18,6 +18,7 @@
 // uri.toString() === "http://example.org/#!/hello.html"
 
 (function(URI, undefined){
+"use strict";
 
 var p = URI.prototype,
     // old handlers we need to wrap

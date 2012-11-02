@@ -13,6 +13,7 @@
  */
 
 (function(undefined) {
+"use strict";
 
 var _use_module = typeof module !== "undefined" && module.exports,
     _load_module = function(module) {

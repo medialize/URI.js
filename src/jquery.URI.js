@@ -14,6 +14,7 @@
  */
 
 (function($, undefined){
+"use strict";
 
 var URI = typeof module !== "undefined" && module.exports
     ? require('./URIjs')

@@ -14,6 +14,7 @@
  */
 
 (function(undefined){
+"use strict";
 
 var global = typeof module !== 'undefined' && module.exports
     ? module.exports

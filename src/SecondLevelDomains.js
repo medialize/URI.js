@@ -14,6 +14,7 @@
  */
 
 (function(undefined){
+"use strict";
 
 var SLD = {
     // list of known Second Level Domains
