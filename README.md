@@ -17,7 +17,7 @@ var url = "http://example.org/foo?bar=baz",
 url += separator + encodeURIComponent("foo") + "=" + encodeURIComponent("bar");
 ```
 
-I still can't believe javascript - the f**ing backbone-language of the web - doesn't offer an API for mutating URLs. Browsers (Firefox) don't expose the `Location` object (the structure behind window.location). Yes, one could think of [decomposed IDL attributes](http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#url-decomposition-idl-attributes) as a native URL management library. But it relies on the DOM element &lt;a&gt;, it's slow and doesn't offer any convenienve at all.
+I still can't believe javascript - the f**ing backbone-language of the web - doesn't offer an API for mutating URLs. Browsers (Firefox) don't expose the `Location` object (the structure behind window.location). Yes, one could think of [decomposed IDL attributes](http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#url-decomposition-idl-attributes) as a native URL management library. But it relies on the DOM element &lt;a&gt;, it's slow and doesn't offer any convenience at all.
 
 How about a nice, clean and simple API for mutating URIs:
 
@@ -134,32 +134,27 @@ See the [build tool](http://medialize.github.com/URI.js/build.html) or use [Goog
 
 ## Resources ##
 
-Docs where you get more info on parsing and working with URLs
+Documents specifying how URLs work:
 
-* [Uniform Resource Identifiers (URI): Generic Syntax](http://www.ietf.org/rfc/rfc2396.txt) ([superseded by 3986](http://tools.ietf.org/html/rfc3986))
-* [Internationalized Resource Identifiers (IRI)](http://tools.ietf.org/html/rfc3987)
-* [IPv6 Literal Addresses in URL's](http://www.ietf.org/rfc/rfc2732.txt) ([superseded by 3986](http://tools.ietf.org/html/rfc3986))
-* [Punycode - Internationalized Domain Name (IDN)](http://www.ietf.org/rfc/rfc3492.txt) ([html version](http://tools.ietf.org/html/rfc3492))
-* [URI - Reference Resolution](http://tools.ietf.org/html/rfc3986#section-5)
-* [Parsing URLs for Fun and Profit](http://tools.ietf.org/html/draft-abarth-url-01)
+* [URL - Living Standard](http://url.spec.whatwg.org/)
+* [RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax](http://tools.ietf.org/html/rfc3986)
+* [RFC 3987 - Internationalized Resource Identifiers (IRI)](http://tools.ietf.org/html/rfc3987)
+* [Punycode: A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)](http://tools.ietf.org/html/rfc3492)
 * [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type) (Query String Parameters) and [application/x-www-form-urlencoded encoding algorithm](http://www.whatwg.org/specs/web-apps/current-work/multipage/association-of-controls-and-forms.html#application/x-www-form-urlencoded-encoding-algorithm)
+
+Informal and other stuff
+
+* [Parsing URLs for Fun and Profit](http://tools.ietf.org/html/draft-abarth-url-01)
 * [Naming URL components](http://tantek.com/2011/238/b1/many-ways-slice-url-name-pieces)
+
+How other environments do things
+
 * [Java URI Class](http://docs.oracle.com/javase/7/docs/api/java/net/URI.html)
 * [Java Inet6Address Class](http://docs.oracle.com/javase/1.5.0/docs/api/java/net/Inet6Address.html)
 * [Node.js URL API](http://nodejs.org/docs/latest/api/url.html)
 
 [Discussion on Hacker News](https://news.ycombinator.com/item?id=3398837)
 
-### HTML5 URL Draft ###
-
-* [W3C URL Draft](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html)
-* [Webkit #71968 - Implement URL API](https://bugs.webkit.org/show_bug.cgi?id=71968)
-
-### MozURLProperty ###
-
-* https://www.w3.org/Bugs/Public/show_bug.cgi?id=14148
-* http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html#workerlocation
-* MozURLProperty (not documented yet?!) https://developer.mozilla.org/User:trevorh/Interface_documentation_status
 
 ### Alternatives ###
 
