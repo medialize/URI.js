@@ -195,6 +195,16 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * adding [`.resource()`](http://medialize.github.com/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]
 * fixing `.addQuery("empty")` to properly add `?empty` - ([Issue #46](https://github.com/medialize/URI.js/issues/46))
 * adding jQuery 1.8.x compatibility for jQuery.URI.js
+* fixing `URI(location)` to properly parse the URL - ([Issue #50](https://github.com/medialize/URI.js/issues/50))
+* updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.1.1
+
+// TODO: remaining for 1.8.0
+
+* improving AMD/Node using [UMD returnExportsGlobal](https://github.com/umdjs/umd/blob/master/returnExportsGlobal.js)
+* add to jam.js
+* run tests in node.js
+* document encode/decode functions
+* IE8 compliance
 
 ### 1.7.4 (October 21st 2012) ###
 

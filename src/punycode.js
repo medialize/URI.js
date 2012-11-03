@@ -1,9 +1,4 @@
-/*!
- * Punycode.js <http://mths.be/punycode>
- * Copyright 2011 Mathias Bynens <http://mathiasbynens.be/>
- * Available under MIT license <http://mths.be/mit>
- */
-
+/*! http://mths.be/punycode by @mathias */
 ;(function(root) {
 
 	/**
@@ -34,14 +29,12 @@
 	delimiter = '-', // '\x2D'
 
 	/** Regular expressions */
-	regexNonASCII = /[^ -~]/, // matches unprintable ASCII chars + non-ASCII chars
+	regexNonASCII = /[^ -~]/, // unprintable ASCII chars + non-ASCII chars
 	regexPunycode = /^xn--/,
 
 	/** Error messages */
 	errors = {
 		'overflow': 'Overflow: input needs wider integers to process.',
-		'ucs2decode': 'UCS-2(decode): illegal sequence',
-		'ucs2encode': 'UCS-2(encode): illegal value',
 		'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
 		'invalid-input': 'Invalid input'
 	},
@@ -97,13 +90,17 @@
 	}
 
 	/**
-	 * Creates an array containing the decimal code points of each character in
-	 * the string.
+	 * Creates an array containing the decimal code points of each Unicode
+	 * character in the string. While JavaScript uses UCS-2 internally,
+	 * this function will convert a pair of surrogate halves (each of which
+	 * UCS-2 exposes as separate characters) into a single code point,
+	 * matching UTF-16.
 	 * @see `punycode.ucs2.encode`
+	 * @see <http://mathiasbynens.be/notes/javascript-encoding>
 	 * @memberOf punycode.ucs2
 	 * @name decode
-	 * @param {String} string The Unicode input string.
-	 * @returns {Array} The new array.
+	 * @param {String} string The Unicode input string (UCS-2).
+	 * @returns {Array} The new array of code points.
 	 */
 	function ucs2decode(string) {
 		var output = [],
@@ -113,14 +110,17 @@
 		    extra;
 		while (counter < length) {
 			value = string.charCodeAt(counter++);
-			if ((value & 0xF800) == 0xD800) {
+			if ((value & 0xF800) == 0xD800 && counter < length) {
+				// high surrogate, and there is a next character
 				extra = string.charCodeAt(counter++);
-				if ((value & 0xFC00) != 0xD800 || (extra & 0xFC00) != 0xDC00) {
-					error('ucs2decode');
+				if ((extra & 0xFC00) == 0xDC00) { // low surrogate
+					output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+				} else {
+					output.push(value, extra);
 				}
-				value = ((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000;
+			} else {
+				output.push(value);
 			}
-			output.push(value);
 		}
 		return output;
 	}
@@ -131,14 +131,11 @@
 	 * @memberOf punycode.ucs2
 	 * @name encode
 	 * @param {Array} codePoints The array of decimal code points.
-	 * @returns {String} The new string.
+	 * @returns {String} The new Unicode string (UCS-2).
 	 */
 	function ucs2encode(array) {
 		return map(array, function(value) {
 			var output = '';
-			if ((value & 0xF800) == 0xD800) {
-				error('ucs2encode');
-			}
 			if (value > 0xFFFF) {
 				value -= 0x10000;
 				output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
@@ -281,7 +278,7 @@
 				}
 
 				i += digit * w;
-				t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+				t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
 
 				if (digit < t) {
 					break;
@@ -404,7 +401,7 @@
 				if (currentValue == n) {
 					// Represent delta as a generalized variable-length integer
 					for (q = delta, k = base; /* no condition */; k += base) {
-						t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+						t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
 						if (q < t) {
 							break;
 						}
@@ -473,10 +470,11 @@
 		 * @memberOf punycode
 		 * @type String
 		 */
-		'version': '0.3.0',
+		'version': '1.1.1',
 		/**
 		 * An object of methods to convert from JavaScript's internal character
-		 * representation (UCS-2) to Unicode and back.
+		 * representation (UCS-2) to decimal Unicode code points, and back.
+		 * @see <http://mathiasbynens.be/notes/javascript-encoding>
 		 * @memberOf punycode
 		 * @type Object
 		 */
