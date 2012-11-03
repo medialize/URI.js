@@ -103,7 +103,7 @@ Clone the URI.js repository or use a package manager to get URI.js into your pro
 ```javascript
 require.config({
     paths: {
-        URIjs: '../node_modules/URIjs/src'
+        URIjs: 'where-you-put-uri.js/src'
     }
 });
 
@@ -223,7 +223,6 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 // TODO: remaining for 1.8.0
 * add to jam.js
-* run tests in node.js
 * document encode/decode functions
 * IE8 compliance
 
