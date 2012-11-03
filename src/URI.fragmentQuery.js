@@ -35,12 +35,12 @@
 }(this, function (URI) {
 "use strict";
 
-var p = URI.prototype,
-    // old fragment handler we need to wrap
-    f = p.fragment,
-    // NOTE: google want's #! (hashbang), others might want #? others might want plain #
-    // choose the prefix you want to use here
-    prefix = '?';
+var p = URI.prototype;
+// old fragment handler we need to wrap
+var f = p.fragment;
+// NOTE: google want's #! (hashbang), others might want #? others might want plain #
+// choose the prefix you want to use here
+var prefix = '?';
 
 // add fragment(true) and fragment({key: value}) signatures
 p.fragment = function(v, build) {

@@ -220,10 +220,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * fixing `URI(location)` to properly parse the URL - ([Issue #50](https://github.com/medialize/URI.js/issues/50))
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.1.1
 * improving AMD/Node using [UMD returnExports](https://github.com/umdjs/umd/blob/master/returnExports.js) - ([Issue #44](https://github.com/medialize/URI.js/issues/44), [Issue #47](https://github.com/medialize/URI.js/issues/47))
+* adding documentation for various [encode/decode functions](http://medialize.github.com/URI.js/docs.html#encoding-decoding)
 
 // TODO: remaining for 1.8.0
 * add to jam.js
-* document encode/decode functions
 * IE8 compliance
 
 ### 1.7.4 (October 21st 2012) ###

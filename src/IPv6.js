@@ -28,14 +28,14 @@
 "use strict";
 
 /*
-var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156",
-    _out = IPv6.best(_in),
-    _expected = "fe80::204:61ff:fe9d:f156";
+var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156";
+var _out = IPv6.best(_in);
+var _expected = "fe80::204:61ff:fe9d:f156";
 
 console.log(_in, _out, _expected, _out === _expected);
 */
 
-var best = function(address) {
+function best(address) {
     // based on:
     // Javascript to test an IPv6 address for proper format, and to
     // present the "best text representation" according to IETF Draft RFC at
@@ -46,10 +46,10 @@ var best = function(address) {
     // http://intermapper.com/support/tools/IPV6-Validator.aspx
     // http://download.dartware.com/thirdparty/ipv6validator.js
 
-    var _address = address.toLowerCase(),
-        segments = _address.split(':'),
-        length = segments.length,
-        total = 8;
+    var _address = address.toLowerCase();
+    var segments = _address.split(':');
+    var length = segments.length;
+    var total = 8;
 
     // trim colons (:: or ::a:b:c… or …a:b:c::)
     if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
@@ -107,12 +107,12 @@ var best = function(address) {
     }
 
     // find longest sequence of zeroes and coalesce them into one segment
-    var best = -1,
-        _best = 0,
-        _current = 0,
-        current = -1,
-        inzeroes = false;
-        // i; already declared
+    var best = -1;
+    var _best = 0;
+    var _current = 0;
+    var current = -1;
+    var inzeroes = false;
+    // i; already declared
 
     for (i = 0; i < total; i++) {
         if (inzeroes) {

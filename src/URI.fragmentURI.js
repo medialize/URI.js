@@ -11,8 +11,8 @@
 // Note: make sure this is the last file loaded!
 
 // USAGE:
-// var uri = URI("http://example.org/#!/foo/bar/baz.html"),
-//     furi = uri.fragment(true);
+// var uri = URI("http://example.org/#!/foo/bar/baz.html");
+// var furi = uri.fragment(true);
 // furi.pathname() === '/foo/bar/baz.html';
 // furi.pathname('/hello.html');
 // uri.toString() === "http://example.org/#!/hello.html"
@@ -32,13 +32,13 @@
 }(this, function (URI) {
 "use strict";
 
-var p = URI.prototype,
-    // old handlers we need to wrap
-    f = p.fragment,
-    b = p.build,
-    // NOTE: google want's #! (hashbang), others might want plain #
-    // choose the prefix you want to use here
-    prefix = '!';
+var p = URI.prototype;
+// old handlers we need to wrap
+var f = p.fragment;
+var b = p.build;
+// NOTE: google want's #! (hashbang), others might want plain #
+// choose the prefix you want to use here
+var prefix = '!';
 
 // add fragment(true) and fragment(URI) signatures    
 p.fragment = function(v, build) {

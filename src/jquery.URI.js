@@ -123,9 +123,9 @@ $.attrHooks.uri.get = _attrHooks.get;
 
 // general URI accessor
 $.fn.uri = function(uri) {
-    var $this = this.first(),
-        elem = $this.get(0),
-        property = getUriProperty(elem);
+    var $this = this.first();
+    var elem = $this.get(0);
+    var property = getUriProperty(elem);
     
     if (!property) {
         throw new Error('Element "' + elem.nodeName + '" does not have either property: href, src, action');

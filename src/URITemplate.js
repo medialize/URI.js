@@ -27,99 +27,101 @@
 }(this, function (URI) {
 "use strict";
 
-var hasOwn = Object.prototype.hasOwnProperty,
-    URITemplate = function(expression) {
-        // serve from cache where possible
-        if (URITemplate._cache[expression]) {
-            return URITemplate._cache[expression];
-        }
-        
-        // Allow instantiation without the 'new' keyword
-        if (!(this instanceof URITemplate)) {
-            return new URITemplate(expression);
-        }
-        
-        this.expression = expression;
-        URITemplate._cache[expression] = this;
-        return this;
-    },
-    Data = function(data) {
-        this.data = data;
-        this.cache = {};
-    },
-    p = URITemplate.prototype,
-    // list of operators and their defined options
-    operators = {
-        // Simple string expansion
-        '' : {
-            prefix: "",
-            separator: ",",
-            named: false,
-            empty_name_separator: false,
-            encode : "encode"
-        },
-        // Reserved character strings
-        '+' : {
-            prefix: "",
-            separator: ",",
-            named: false,
-            empty_name_separator: false,
-            encode : "encodeReserved"
-        },
-        // Fragment identifiers prefixed by "#"
-        '#' : {
-            prefix: "#",
-            separator: ",",
-            named: false,
-            empty_name_separator: false,
-            encode : "encodeReserved"
-        },
-        // Name labels or extensions prefixed by "."
-        '.' : {
-            prefix: ".",
-            separator: ".",
-            named: false,
-            empty_name_separator: false,
-            encode : "encode"
-        },
-        // Path segments prefixed by "/"
-        '/' : {
-            prefix: "/",
-            separator: "/",
-            named: false,
-            empty_name_separator: false,
-            encode : "encode"
-        },
-        // Path parameter name or name=value pairs prefixed by ";"
-        ';' : {
-            prefix: ";",
-            separator: ";",
-            named: true,
-            empty_name_separator: false,
-            encode : "encode"
-        },
-        // Query component beginning with "?" and consisting 
-        // of name=value pairs separated by "&"; an
-        '?' : {
-            prefix: "?",
-            separator: "&",
-            named: true,
-            empty_name_separator: true,
-            encode : "encode"
-        },
-        // Continuation of query-style &name=value pairs 
-        // within a literal query component.
-        '&' : {
-            prefix: "&",
-            separator: "&",
-            named: true,
-            empty_name_separator: true,
-            encode : "encode"
-        }
+var hasOwn = Object.prototype.hasOwnProperty;
+function URITemplate(expression) {
+    // serve from cache where possible
+    if (URITemplate._cache[expression]) {
+        return URITemplate._cache[expression];
+    }
+    
+    // Allow instantiation without the 'new' keyword
+    if (!(this instanceof URITemplate)) {
+        return new URITemplate(expression);
+    }
+    
+    this.expression = expression;
+    URITemplate._cache[expression] = this;
+    return this;
+}
 
-        // The operator characters equals ("="), comma (","), exclamation ("!"),
-        // at sign ("@"), and pipe ("|") are reserved for future extensions.
-    };
+function Data(data) {
+    this.data = data;
+    this.cache = {};
+}
+
+var p = URITemplate.prototype;
+// list of operators and their defined options
+var operators = {
+    // Simple string expansion
+    '' : {
+        prefix: "",
+        separator: ",",
+        named: false,
+        empty_name_separator: false,
+        encode : "encode"
+    },
+    // Reserved character strings
+    '+' : {
+        prefix: "",
+        separator: ",",
+        named: false,
+        empty_name_separator: false,
+        encode : "encodeReserved"
+    },
+    // Fragment identifiers prefixed by "#"
+    '#' : {
+        prefix: "#",
+        separator: ",",
+        named: false,
+        empty_name_separator: false,
+        encode : "encodeReserved"
+    },
+    // Name labels or extensions prefixed by "."
+    '.' : {
+        prefix: ".",
+        separator: ".",
+        named: false,
+        empty_name_separator: false,
+        encode : "encode"
+    },
+    // Path segments prefixed by "/"
+    '/' : {
+        prefix: "/",
+        separator: "/",
+        named: false,
+        empty_name_separator: false,
+        encode : "encode"
+    },
+    // Path parameter name or name=value pairs prefixed by ";"
+    ';' : {
+        prefix: ";",
+        separator: ";",
+        named: true,
+        empty_name_separator: false,
+        encode : "encode"
+    },
+    // Query component beginning with "?" and consisting 
+    // of name=value pairs separated by "&"; an
+    '?' : {
+        prefix: "?",
+        separator: "&",
+        named: true,
+        empty_name_separator: true,
+        encode : "encode"
+    },
+    // Continuation of query-style &name=value pairs 
+    // within a literal query component.
+    '&' : {
+        prefix: "&",
+        separator: "&",
+        named: true,
+        empty_name_separator: true,
+        encode : "encode"
+    }
+    
+    // The operator characters equals ("="), comma (","), exclamation ("!"),
+    // at sign ("@"), and pipe ("|") are reserved for future extensions.
+};
 
 // storage for already parsed templates
 URITemplate._cache = {};
@@ -133,14 +135,14 @@ URITemplate.VARIABLE_NAME_PATTERN = /[^a-zA-Z0-9%_]/;
 // expand parsed expression (expression, not template!)
 URITemplate.expand = function(expression, data) {
     // container for defined options for the given operator
-    var options = operators[expression.operator],
-        // expansion type (include keys or not)
-        type = options.named ? "Named" : "Unnamed",
-        // list of variables within the expression
-        variables = expression.variables,
-        // result buffer for evaluating the expression
-        buffer = [],
-        d, variable, i, l, value;
+    var options = operators[expression.operator];
+    // expansion type (include keys or not)
+    var type = options.named ? "Named" : "Unnamed";
+    // list of variables within the expression
+    var variables = expression.variables;
+    // result buffer for evaluating the expression
+    var buffer = [];
+    var d, variable, i, l, value;
     
     for (i = 0; variable = variables[i]; i++) {
         // fetch simplified data source
@@ -176,15 +178,15 @@ URITemplate.expand = function(expression, data) {
 // expand a named variable
 URITemplate.expandNamed = function(d, options, explode, separator, length, name) {
     // variable result buffer
-    var result = "",
-        // peformance crap
-        encode = options.encode,
-        empty_name_separator = options.empty_name_separator,
-        // flag noting if values are already encoded
-        _encode = !d[encode].length,
-        // key for named expansion
-        _name = d.type === 2 ? '': URI[encode](name),
-        _value, i, l;
+    var result = "";
+    // peformance crap
+    var encode = options.encode;
+    var empty_name_separator = options.empty_name_separator;
+    // flag noting if values are already encoded
+    var _encode = !d[encode].length;
+    // key for named expansion
+    var _name = d.type === 2 ? '': URI[encode](name);
+    var _value, i, l;
     
     // for each found value
     for (i = 0, l = d.val.length; i < l; i++) {
@@ -242,13 +244,13 @@ URITemplate.expandNamed = function(d, options, explode, separator, length, name)
 // expand an unnamed variable
 URITemplate.expandUnnamed = function(d, options, explode, separator, length, name) {
     // variable result buffer
-    var result = "",
-        // performance crap
-        encode = options.encode,
-        empty_name_separator = options.empty_name_separator,
-        // flag noting if values are already encoded
-        _encode = !d[encode].length,
-        _name, _value, i, l;
+    var result = "";
+    // performance crap
+    var encode = options.encode;
+    var empty_name_separator = options.empty_name_separator;
+    // flag noting if values are already encoded
+    var _encode = !d[encode].length;
+    var _name, _value, i, l;
 
     // for each found value
     for (i = 0, l = d.val.length; i < l; i++) {
@@ -325,15 +327,15 @@ p.expand = function(data) {
 // parse template into action tokens
 p.parse = function() {
     // performance crap
-    var expression = this.expression,
-        ePattern = URITemplate.EXPRESSION_PATTERN,
-        vPattern = URITemplate.VARIABLE_PATTERN,
-        nPattern = URITemplate.VARIABLE_NAME_PATTERN,
-        // token result buffer
-        parts = [],
+    var expression = this.expression;
+    var ePattern = URITemplate.EXPRESSION_PATTERN;
+    var vPattern = URITemplate.VARIABLE_PATTERN;
+    var nPattern = URITemplate.VARIABLE_NAME_PATTERN;
+    // token result buffer
+    var parts = [];
         // position within source template
-        pos = 0,
-        variables, eMatch, vMatch;
+    var pos = 0;
+    var variables, eMatch, vMatch;
     
     // RegExp is shared accross all templates,
     // which requires a manual reset 
@@ -400,18 +402,18 @@ p.parse = function() {
 // simplify data structures
 Data.prototype.get = function(key) {
     // performance crap
-    var data = this.data,
-        // cache for processed data-point
-        d = {
-            // type of data 0: undefined/null, 1: string, 2: object, 3: array
-            type: 0,
-            // original values (except undefined/null)
-            val: [],
-            // cache for encoded values (only for non-maxlength expansion)
-            encode: [],
-            encodeReserved: []
-        },
-        i, l, value;
+    var data = this.data;
+    // cache for processed data-point
+    var d = {
+        // type of data 0: undefined/null, 1: string, 2: object, 3: array
+        type: 0,
+        // original values (except undefined/null)
+        val: [],
+        // cache for encoded values (only for non-maxlength expansion)
+        encode: [],
+        encodeReserved: []
+    };
+    var i, l, value;
     
     if (this.cache[key] !== undefined) {
         // we've already processed this key
@@ -471,8 +473,8 @@ Data.prototype.get = function(key) {
 
 // hook into URI for fluid access
 URI.expand = function(expression, data) {
-    var template = new URITemplate(expression),
-        expansion = template.expand(data);
+    var template = new URITemplate(expression);
+    var expansion = template.expand(data);
     
     return new URI(expansion);
 };

@@ -26,30 +26,31 @@
 }(this, function (punycode, IPv6, SLD) {
 "use strict";
 
-var URI = function(url, base) {
-        // Allow instantiation without the 'new' keyword
-        if (!(this instanceof URI)) {
-            return new URI(url, base);
+function URI(url, base) {
+    // Allow instantiation without the 'new' keyword
+    if (!(this instanceof URI)) {
+        return new URI(url, base);
+    }
+
+    if (url === undefined) {
+        if (typeof location !== 'undefined') {
+            url = location.href + "";
+        } else {
+            url = "";
         }
+    }
 
-        if (url === undefined) {
-            if (typeof location !== 'undefined') {
-                url = location.href + "";
-            } else {
-                url = "";
-            }
-        }
+    this.href(url);
 
-        this.href(url);
+    // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
+    if (base !== undefined) {
+        return this.absoluteTo(base);
+    }
 
-        // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
-        if (base !== undefined) {
-            return this.absoluteTo(base);
-        }
+    return this;
+};
 
-        return this;
-    },
-    p = URI.prototype;
+var p = URI.prototype;
 
 function escapeRegEx(string) {
     // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
@@ -61,8 +62,8 @@ function isArray(obj) {
 }
 
 function filterArrayValues(data, value) {
-    var lookup = {},
-        i, length;
+    var lookup = {};
+    var i, length;
 
     if (isArray(value)) {
         for (i = 0, length = value.length; i < length; i++) {
@@ -206,15 +207,15 @@ URI.decodePath = function(string) {
     return segments.join('/');
 };
 // generate encode/decode path functions
-var _parts = {'encode':'encode', 'decode':'decode'},
-    _part,
-    generateAccessor = function(_group, _part){
-        return function(string) {
-            return URI[_part](string + "").replace(URI.characters[_group][_part].expression, function(c) {
-                return URI.characters[_group][_part].map[c];
-            });
-        };
+var _parts = {'encode':'encode', 'decode':'decode'};
+var _part;
+var generateAccessor = function(_group, _part) {
+    return function(string) {
+        return URI[_part](string + "").replace(URI.characters[_group][_part].expression, function(c) {
+            return URI.characters[_group][_part].map[c];
+        });
     };
+};
 
 for (_part in _parts) {
     URI[_part + "PathSegment"] = generateAccessor("pathname", _parts[_part]);
@@ -223,7 +224,8 @@ for (_part in _parts) {
 URI.encodeReserved = generateAccessor("reserved", "encode");
 
 URI.parse = function(string) {
-    var pos, t, parts = {};
+    var pos, t;
+    var parts = {};
     // [protocol"://"[username[":"password]"@"]hostname[":"port]"/"?][path]["?"querystring]["#"fragment]
 
     // extract fragment
@@ -276,8 +278,9 @@ URI.parse = function(string) {
 };
 URI.parseHost = function(string, parts) {
     // extract host:port
-    var pos = string.indexOf('/'),
-        t;
+    var pos = string.indexOf('/');
+    var bracketPos;
+    var t;
 
     if (pos === -1) {
         pos = string.length;
@@ -287,7 +290,7 @@ URI.parseHost = function(string, parts) {
         // IPv6 host - http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6
         // I claim most client software breaks on IPv6 anyways. To simplify things, URI only accepts
         // IPv6+port in the format [2001:db8::1]:80 (for the time being)
-        var bracketPos = string.indexOf(']');
+        bracketPos = string.indexOf(']');
         parts.hostname = string.substring(1, bracketPos) || null;
         parts.port = string.substring(bracketPos+2, pos) || null;
     } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
@@ -314,9 +317,9 @@ URI.parseAuthority = function(string, parts) {
 };
 URI.parseUserinfo = function(string, parts) {
     // extract username:password
-    var pos = string.indexOf('@'),
-        firstSlash = string.indexOf('/'),
-        t;
+    var pos = string.indexOf('@');
+    var firstSlash = string.indexOf('/');
+    var t;
 
     // authority@ must come before /path
     if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
@@ -344,15 +347,16 @@ URI.parseQuery = function(string) {
         return {};
     }
 
-    var items = {},
-        splits = string.split('&'),
-        length = splits.length;
+    var items = {};
+    var splits = string.split('&');
+    var length = splits.length;
+    var v, name, value;
 
     for (var i = 0; i < length; i++) {
-        var v = splits[i].split('='),
-            name = URI.decodeQuery(v.shift()),
-            // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
-            value = v.length ? URI.decodeQuery(v.join('=')) : null;
+        v = splits[i].split('=');
+        name = URI.decodeQuery(v.shift());
+        // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
+        value = v.length ? URI.decodeQuery(v.join('=')) : null;
 
         if (items[name]) {
             if (typeof items[name] === "string") {
@@ -369,7 +373,7 @@ URI.parseQuery = function(string) {
 };
 
 URI.build = function(parts) {
-    var t = '';
+    var t = "";
 
     if (parts.protocol) {
         t += parts.protocol + ":";
@@ -399,10 +403,10 @@ URI.build = function(parts) {
     return t;
 };
 URI.buildHost = function(parts) {
-    var t = '';
+    var t = "";
 
     if (!parts.hostname) {
-        return '';
+        return "";
     } else if (URI.ip6_expression.test(parts.hostname)) {
         if (parts.port) {
             t += "[" + parts.hostname + "]:" + parts.port;
@@ -424,7 +428,7 @@ URI.buildAuthority = function(parts) {
     return URI.buildUserinfo(parts) + URI.buildHost(parts);
 };
 URI.buildUserinfo = function(parts) {
-    var t = '';
+    var t = "";
 
     if (parts.username) {
         t += URI.encode(parts.username);
@@ -446,11 +450,12 @@ URI.buildQuery = function(data, duplicates) {
     // see http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type
 
     var t = "";
-    for (var key in data) {
+    var unique, key, i, length;
+    for (key in data) {
         if (Object.hasOwnProperty.call(data, key) && key) {
             if (isArray(data[key])) {
-                var unique = {};
-                for (var i = 0, length = data[key].length; i < length; i++) {
+                unique = {};
+                for (i = 0, length = data[key].length; i < length; i++) {
                     if (data[key][i] !== undefined && unique[data[key][i] + ""] === undefined) {
                         t += "&" + URI.buildQueryParameter(key, data[key][i]);
                         if (duplicates !== true) {
@@ -497,12 +502,14 @@ URI.addQuery = function(data, name, value) {
     }
 };
 URI.removeQuery = function(data, name, value) {
+    var i, length, key;
+    
     if (isArray(name)) {
-        for (var i = 0, length = name.length; i < length; i++) {
+        for (i = 0, length = name.length; i < length; i++) {
             data[name[i]] = undefined;
         }
     } else if (typeof name === "object") {
-        for (var key in name) {
+        for (key in name) {
             if (Object.prototype.hasOwnProperty.call(name, key)) {
                 URI.removeQuery(data, key, name[key]);
             }
@@ -523,8 +530,8 @@ URI.removeQuery = function(data, name, value) {
 };
 
 URI.commonPath = function(one, two) {
-    var length = Math.min(one.length, two.length),
-        pos;
+    var length = Math.min(one.length, two.length);
+    var pos;
 
     // find first non-matching character
     for (pos = 0; pos < length; pos++) {
@@ -677,9 +684,9 @@ p.href = function(href, build) {
             fragment: null
         };
 
-        var _URI = href instanceof URI,
-            _object = typeof href === "object" && (href.hostname || href.path),
-            key;
+        var _URI = href instanceof URI;
+        var _object = typeof href === "object" && (href.hostname || href.path);
+        var key;
         
         // window.location is reported to be an object, but it's not the sort
         // of object we're looking for: 
@@ -712,14 +719,14 @@ p.href = function(href, build) {
 
 // identification accessors
 p.is = function(what) {
-    var ip = false,
-        ip4 = false,
-        ip6 = false,
-        name = false,
-        sld = false,
-        idn = false,
-        punycode = false,
-        relative = !this._parts.urn;
+    var ip = false;
+    var ip4 = false;
+    var ip6 = false;
+    var name = false;
+    var sld = false;
+    var idn = false;
+    var punycode = false;
+    var relative = !this._parts.urn;
 
     if (this._parts.hostname) {
         relative = false;
@@ -777,9 +784,9 @@ p.is = function(what) {
 };
 
 // component specific input validation
-var _protocol = p.protocol,
-    _port = p.port,
-    _hostname = p.hostname;
+var _protocol = p.protocol;
+var _port = p.port;
+var _hostname = p.hostname;
 
 p.protocol = function(v, build) {
     if (v !== undefined) {
@@ -911,9 +918,9 @@ p.subdomain = function(v, build) {
         var end = this._parts.hostname.length - this.domain().length - 1;
         return this._parts.hostname.substring(0, end) || "";
     } else {
-        var e = this._parts.hostname.length - this.domain().length,
-            sub = this._parts.hostname.substring(0, e),
-            replace = new RegExp('^' + escapeRegEx(sub));
+        var e = this._parts.hostname.length - this.domain().length;
+        var sub = this._parts.hostname.substring(0, e);
+        var replace = new RegExp('^' + escapeRegEx(sub));
 
         if (v && v[v.length - 1] !== '.') {
             v += ".";
@@ -988,8 +995,8 @@ p.tld = function(v, build) {
             return "";
         }
 
-        var pos = this._parts.hostname.lastIndexOf('.'),
-            tld = this._parts.hostname.substring(pos + 1);
+        var pos = this._parts.hostname.lastIndexOf('.');
+        var tld = this._parts.hostname.substring(pos + 1);
 
         if (build !== true && SLD && SLD.list[tld.toLowerCase()]) {
             return SLD.get(this._parts.hostname) || tld;
@@ -998,6 +1005,7 @@ p.tld = function(v, build) {
         return tld;
     } else {
         var replace;
+        
         if (!v) {
             throw new TypeError("cannot set TLD empty");
         } else if (v.match(/[^a-zA-Z0-9-]/)) {
@@ -1032,15 +1040,15 @@ p.directory = function(v, build) {
             return '/';
         }
 
-        var end = this._parts.path.length - this.filename().length - 1,
-            res = this._parts.path.substring(0, end) || (this._parts.hostname ? "/" : "");
+        var end = this._parts.path.length - this.filename().length - 1;
+        var res = this._parts.path.substring(0, end) || (this._parts.hostname ? "/" : "");
 
         return v ? URI.decodePath(res) : res;
 
     } else {
-        var e = this._parts.path.length - this.filename().length,
-            directory = this._parts.path.substring(0, e),
-            replace = new RegExp('^' + escapeRegEx(directory));
+        var e = this._parts.path.length - this.filename().length;
+        var directory = this._parts.path.substring(0, e);
+        var replace = new RegExp('^' + escapeRegEx(directory));
 
         // fully qualifier directories begin with a slash
         if (!this.is('relative')) {
@@ -1074,12 +1082,13 @@ p.filename = function(v, build) {
             return "";
         }
 
-        var pos = this._parts.path.lastIndexOf('/'),
-            res = this._parts.path.substring(pos+1);
+        var pos = this._parts.path.lastIndexOf('/');
+        var res = this._parts.path.substring(pos+1);
 
         return v ? URI.decodePathSegment(res) : res;
     } else {
         var mutatedDirectory = false;
+        
         if (v[0] === '/') {
             v = v.substring(1);
         }
@@ -1111,9 +1120,9 @@ p.suffix = function(v, build) {
             return "";
         }
 
-        var filename = this.filename(),
-            pos = filename.lastIndexOf('.'),
-            s, res;
+        var filename = this.filename();
+        var pos = filename.lastIndexOf('.');
+        var s, res;
 
         if (pos === -1) {
             return "";
@@ -1128,8 +1137,8 @@ p.suffix = function(v, build) {
             v = v.substring(1);
         }
 
-        var suffix = this.suffix(),
-            replace;
+        var suffix = this.suffix();
+        var replace;
 
         if (!suffix) {
             if (!v) {
@@ -1153,10 +1162,10 @@ p.suffix = function(v, build) {
     }
 };
 p.segment = function(segment, v, build) {
-    var separator = this._parts.urn ? ':' : '/',
-        path = this.path(),
-        absolute = path.substring(0, 1) === '/',
-        segments = path.split(separator);
+    var separator = this._parts.urn ? ':' : '/';
+    var path = this.path();
+    var absolute = path.substring(0, 1) === '/';
+    var segments = path.split(separator);
 
     if (typeof segment !== 'number') {
         build = v;
@@ -1305,10 +1314,10 @@ p.normalizePath = function(build) {
         return this;
     }
 
-    var _was_relative,
-        _was_relative_prefix,
-        _path = this._parts.path,
-        _parent, _pos;
+    var _was_relative;
+    var _was_relative_prefix;
+    var _path = this._parts.path;
+    var _parent, _pos;
 
     // handle relative paths
     if (_path[0] !== '/') {
@@ -1379,8 +1388,8 @@ p.normalizeHash = p.normalizeFragment;
 
 p.iso8859 = function() {
     // expect unicode input, iso8859 output
-    var e = URI.encode,
-        d = URI.decode;
+    var e = URI.encode;
+    var d = URI.decode;
 
     URI.encode = escape;
     URI.decode = decodeURIComponent;
@@ -1392,8 +1401,8 @@ p.iso8859 = function() {
 
 p.unicode = function() {
     // expect iso8859 input, unicode output
-    var e = URI.encode,
-        d = URI.decode;
+    var e = URI.encode;
+    var d = URI.decode;
 
     URI.encode = strictEncodeURIComponent;
     URI.decode = unescape;
@@ -1449,9 +1458,9 @@ p.readable = function() {
 
 // resolving relative and absolute URLs
 p.absoluteTo = function(base) {
-    var resolved = this.clone(),
-        properties = ['protocol', 'username', 'password', 'hostname', 'port'],
-        basedir, i, p;
+    var resolved = this.clone();
+    var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
+    var basedir, i, p;
 
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
@@ -1486,10 +1495,9 @@ p.absoluteTo = function(base) {
     return resolved;
 };
 p.relativeTo = function(base) {
-    var relative = this.clone(),
-        properties = ['protocol', 'username', 'password', 'hostname', 'port'],
-        common,
-        _base;
+    var relative = this.clone();
+    var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
+    var common, _base;
 
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
@@ -1517,9 +1525,9 @@ p.relativeTo = function(base) {
     if (_base + '/' === common) {
         relative._parts.path = './' + relative.filename();
     } else {
-        var parents = '../',
-            _common = new RegExp('^' + escapeRegEx(common)),
-            _parents = _base.replace(_common, '/').match(/\//g).length -1;
+        var parents = '../';
+        var _common = new RegExp('^' + escapeRegEx(common));
+        var _parents = _base.replace(_common, '/').match(/\//g).length -1;
 
         while (_parents--) {
             parents += '../';
@@ -1534,14 +1542,12 @@ p.relativeTo = function(base) {
 
 // comparing URIs
 p.equals = function(uri) {
-    var one = this.clone(),
-        two = new URI(uri),
-        one_map = {},
-        two_map = {},
-        checked = {},
-        one_query,
-        two_query,
-        key;
+    var one = this.clone();
+    var two = new URI(uri);
+    var one_map = {};
+    var two_map = {};
+    var checked = {};
+    var one_query, two_query, key;
 
     one.normalize();
     two.normalize();
