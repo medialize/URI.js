@@ -13,12 +13,20 @@
  *
  */
 
-(function($, undefined){
+(function (root, factory) {
+    // https://github.com/umdjs/umd/blob/master/returnExports.js
+    if (typeof exports === 'object') {
+        // Node
+        module.exports = factory(require('jquery', './URI'));
+    } else if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery', './URI'], factory);
+    } else {
+        // Browser globals (root is window)
+        factory(root.jQuery, root.URI);
+    }
+}(this, function ($, URI) {
 "use strict";
-
-var URI = typeof module !== "undefined" && module.exports
-    ? require('./URIjs')
-    : window.URI;
 
 var comparable = {};
 var compare = {
@@ -224,6 +232,8 @@ if ($.expr.createPseudo) {
     };
 }
 
-jQuery.expr[":"].uri = uriSizzle;
+$.expr[":"].uri = uriSizzle;
 
-})(jQuery);
+// extending existing object rather than defining something new
+return {};
+}));

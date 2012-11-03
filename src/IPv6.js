@@ -12,13 +12,28 @@
  *   GPL v3 http://opensource.org/licenses/GPL-3.0
  *
  */
-
-(function(undefined){
+(function (root, factory) {
+    // https://github.com/umdjs/umd/blob/master/returnExports.js
+    if (typeof exports === 'object') {
+        // Node
+        module.exports = factory();
+    } else if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(factory);
+    } else {
+        // Browser globals (root is window)
+        root.IPv6 = factory();
+    }
+}(this, function () {
 "use strict";
 
-var global = typeof module !== 'undefined' && module.exports
-    ? module.exports
-    : window;
+/*
+var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156",
+    _out = IPv6.best(_in),
+    _expected = "fe80::204:61ff:fe9d:f156";
+
+console.log(_in, _out, _expected, _out === _expected);
+*/
 
 var best = function(address) {
     // based on:
@@ -152,15 +167,7 @@ var best = function(address) {
     return result;
 };
 
-global.IPv6 = {
+return {
     best: best
 };
-})();
-
-/*
-var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156",
-    _out = IPv6.best(_in),
-    _expected = "fe80::204:61ff:fe9d:f156";
-
-console.log(_in, _out, _expected, _out === _expected);
-*/
+}));

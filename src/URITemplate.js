@@ -12,15 +12,22 @@
  *   GPL v3 http://opensource.org/licenses/GPL-3.0
  *
  */
-(function(undefined) {
+(function (root, factory) {
+    // https://github.com/umdjs/umd/blob/master/returnExports.js
+    if (typeof exports === 'object') {
+        // Node
+        module.exports = factory(require('./URI'));
+    } else if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['./URI'], factory);
+    } else {
+        // Browser globals (root is window)
+        root.URITemplate = factory(root.URI);
+    }
+}(this, function (URI) {
 "use strict";
 
 var hasOwn = Object.prototype.hasOwnProperty,
-    _use_module = typeof module !== "undefined" && module.exports,
-    _load_module = function(module) {
-        return _use_module ? require('./' + module) : window[module];
-    },
-    URI = _load_module('URI'),
     URITemplate = function(expression) {
         // serve from cache where possible
         if (URITemplate._cache[expression]) {
@@ -470,9 +477,5 @@ URI.expand = function(expression, data) {
     return new URI(expansion);
 };
 
-(typeof module !== 'undefined' && module.exports 
-    ? module.exports = URITemplate
-    : window.URITemplate = URITemplate
-);
-
-})();
+return URITemplate;
+}));

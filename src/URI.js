@@ -11,18 +11,22 @@
  *   GPL v3 http://opensource.org/licenses/GPL-3.0
  *
  */
-
-(function(undefined) {
+(function (root, factory) {
+    // https://github.com/umdjs/umd/blob/master/returnExports.js
+    if (typeof exports === 'object') {
+        // Node
+        module.exports = factory(require('./punycode'), require('./IPv6'), require('./SecondLevelDomains'));
+    } else if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['./punycode', './IPv6', './SecondLevelDomains'], factory);
+    } else {
+        // Browser globals (root is window)
+        root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains);
+    }
+}(this, function (punycode, IPv6, SLD) {
 "use strict";
 
-var _use_module = typeof module !== "undefined" && module.exports,
-    _load_module = function(module) {
-        return _use_module ? require('./' + module) : window[module];
-    },
-    punycode = _load_module('punycode'),
-    IPv6 = _load_module('IPv6'),
-    SLD = _load_module('SecondLevelDomains'),
-    URI = function(url, base) {
+var URI = function(url, base) {
         // Allow instantiation without the 'new' keyword
         if (!(this instanceof URI)) {
             return new URI(url, base);
@@ -1608,9 +1612,5 @@ p.equals = function(uri) {
     return true;
 };
 
-(typeof module !== 'undefined' && module.exports
-    ? module.exports = URI
-    : window.URI = URI
-);
-
-})();
+return URI;
+}));

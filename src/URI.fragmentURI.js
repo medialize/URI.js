@@ -17,7 +17,19 @@
 // furi.pathname('/hello.html');
 // uri.toString() === "http://example.org/#!/hello.html"
 
-(function(URI, undefined){
+(function (root, factory) {
+    // https://github.com/umdjs/umd/blob/master/returnExports.js
+    if (typeof exports === 'object') {
+        // Node
+        module.exports = factory(require('./URI'));
+    } else if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['./URI'], factory);
+    } else {
+        // Browser globals (root is window)
+        factory(root.URI);
+    }
+}(this, function (URI) {
 "use strict";
 
 var p = URI.prototype,
@@ -55,4 +67,6 @@ p.build = function(deferBuild) {
     return b.call(this, deferBuild);
 };
 
-})(window.URI);
+// extending existing object rather than defining something new
+return {};
+}));

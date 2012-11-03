@@ -75,22 +75,44 @@ URI.expand("/foo/{dir}/{file}", {
 
 See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://medialize.github.com/URI.js/docs.html) for more stuff.
 
+## Using URI.js ##
 
-## npm ##
+### Browser ###
 
-```
-npm install URIjs
-```
+I guess you'll manage to use the [build tool](http://medialize.github.com/URI.js/build.html) or follow the [instructions below](#minify) to combine and minify the various files into URI.min.js - and I'm fairly certain you know how to `<script src=".../URI.min.js"></script>` that sucker, too.
 
+### Node.js and NPM ###
 
-## Server-side JS ##
+Install with `npm install URIjs` or add `"URIjs"` to the dependencies in your `package.json`.
 
 ```javascript
+// load URI.js
 var URI = require('URIjs');
+// load an optional module (e.g. URITemplate)
+var URITemplate = require('URIjs/src/URITemplate');
 
 URI("/foo/bar/baz.html")
     .relativeTo("/foo/bar/sub/world.html")
 // -> ../baz.html
+```
+
+### RequireJS ###
+
+Clone the URI.js repository or use a package manager to get URI.js into your project. 
+
+```javascript
+require.config({
+    paths: {
+        URIjs: '../node_modules/URIjs/src'
+    }
+});
+
+require(['URIjs/URI'], function(URI) {
+    console.log("URI.js and dependencies: ", URI("//amazon.co.uk").is('sld') ? 'loaded' : 'failed');
+});
+require(['URIjs/URITemplate'], function(URITemplate) {
+    console.log("URITemplate.js and dependencies: ", URITemplate._cache ? 'loaded' : 'failed');
+});
 ```
 
 ## Minify ##
@@ -197,10 +219,9 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * adding jQuery 1.8.x compatibility for jQuery.URI.js
 * fixing `URI(location)` to properly parse the URL - ([Issue #50](https://github.com/medialize/URI.js/issues/50))
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.1.1
+* improving AMD/Node using [UMD returnExports](https://github.com/umdjs/umd/blob/master/returnExports.js) - ([Issue #44](https://github.com/medialize/URI.js/issues/44), [Issue #47](https://github.com/medialize/URI.js/issues/47))
 
 // TODO: remaining for 1.8.0
-
-* improving AMD/Node using [UMD returnExportsGlobal](https://github.com/umdjs/umd/blob/master/returnExportsGlobal.js)
 * add to jam.js
 * run tests in node.js
 * document encode/decode functions

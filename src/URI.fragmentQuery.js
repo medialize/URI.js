@@ -20,7 +20,19 @@
 // uri.removeFragment("name");
 // uri.toString() === "http://example.org/#?bar=foo";
 
-(function(URI, undefined){
+(function (root, factory) {
+    // https://github.com/umdjs/umd/blob/master/returnExports.js
+    if (typeof exports === 'object') {
+        // Node
+        module.exports = factory(require('./URI'));
+    } else if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['./URI'], factory);
+    } else {
+        // Browser globals (root is window)
+        factory(root.URI);
+    }
+}(this, function (URI) {
 "use strict";
 
 var p = URI.prototype,
@@ -67,4 +79,6 @@ p.removeFragment = function(name, value, build) {
 p.addHash = p.addFragment;
 p.removeHash = p.removeFragment;
 
-})(window.URI);
+// extending existing object rather than defining something new
+return {};
+}));

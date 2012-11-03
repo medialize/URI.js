@@ -44,6 +44,7 @@
         "src/IPv6.js",
         "src/SecondLevelDomains.js",
         "src/punycode.js",
-        "src/URITemplate.js"
+        "src/URITemplate.js",
+        "src/jquery.URI.js"
     ]
 }
