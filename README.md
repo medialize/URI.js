@@ -142,7 +142,7 @@ Documents specifying how URLs work:
 * [Punycode: A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)](http://tools.ietf.org/html/rfc3492)
 * [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type) (Query String Parameters) and [application/x-www-form-urlencoded encoding algorithm](http://www.whatwg.org/specs/web-apps/current-work/multipage/association-of-controls-and-forms.html#application/x-www-form-urlencoded-encoding-algorithm)
 
-Informal and other stuff
+Informal stuff
 
 * [Parsing URLs for Fun and Profit](http://tools.ietf.org/html/draft-abarth-url-01)
 * [Naming URL components](http://tantek.com/2011/238/b1/many-ways-slice-url-name-pieces)
@@ -209,7 +209,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 
 * adding [`.resource()`](http://medialize.github.com/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]
-* adding jQuery 1.8.x compatibility for jQuery.URI.js
+* adding jQuery 1.8.x compatibility for jQuery.URI.js (remaining backwards compatibility!)
 * adding default ports for gopher, ws, wss
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.1.1
 * improving AMD/Node using [UMD returnExports](https://github.com/umdjs/umd/blob/master/returnExports.js) - ([Issue #44](https://github.com/medialize/URI.js/issues/44), [Issue #47](https://github.com/medialize/URI.js/issues/47))
