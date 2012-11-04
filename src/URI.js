@@ -258,6 +258,9 @@ URI.parse = function(string) {
             if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
                 // : may be within the path
                 parts.protocol = undefined;
+            } else if (parts.protocol === 'file') {
+                // the file scheme: does not contain an authority
+                string = string.substring(pos + 3);
             } else if (string.substring(pos + 1, pos + 3) === '//') {
                 string = string.substring(pos + 3);
 

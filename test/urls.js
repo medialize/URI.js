@@ -802,6 +802,53 @@ var urls = [{
             punycode: false
         }
     }, {
+        name: 'file:// Windows-Drive-Letter',
+        url: 'file://C:/WINDOWS/foo.txt',
+        parts: {
+            protocol: 'file',
+            username: null,
+            password: null,
+            hostname: null,
+            port: null,
+            path: 'C:/WINDOWS/foo.txt',
+            query: null,
+            fragment: null
+        },
+        accessors: {
+            protocol: 'file',
+            username: '',
+            password: '',
+            port: '',
+            path: 'C:/WINDOWS/foo.txt',
+            query: '',
+            fragment: '',
+            resource: 'C:/WINDOWS/foo.txt',
+            authority: '',
+            userinfo: '',
+            subdomain: '',
+            domain: '',
+            tld: '',
+            directory: 'C:/WINDOWS',
+            filename: 'foo.txt',
+            suffix: 'txt',
+            hash: '',
+            search: '',
+            host: '',
+            hostname: ''
+        },
+        is: {
+            urn: false,
+            url: true,
+            relative: true,
+            name: false,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    }, {
         name: 'Path containing @',
         url: 'http://www.example.org/@foobar',
         parts: {
