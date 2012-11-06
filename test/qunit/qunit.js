@@ -453,6 +453,10 @@ QUnit.assert = {
 	 * @example equal( format( "Received {0} bytes.", 2), "Received 2 bytes.", "format() replaces {0} with next argument" );
 	 */
 	equal: function( actual, expected, message ) {
+        var rrehm = config;
+        console.log("equal:" + (config === window._ficken ? "yep" : "nope"));
+        console.log("current: " + String(QUnit.config.current));
+        
 		QUnit.push( expected == actual, actual, expected, message );
 	},
 
@@ -611,6 +615,8 @@ config = {
 
 	// Set of all modules.
 	modules: {},
+	
+	current: null,
 
 	// logging callback queues
 	begin: [],
