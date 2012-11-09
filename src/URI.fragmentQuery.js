@@ -32,6 +32,7 @@ var p = URI.prototype,
 // add fragment(true) and fragment({key: value}) signatures
 p.fragment = function(v, build) {
     if (v === true) {
+        if(this._parts.fragment === null || this._parts.fragment === undefined) { return {}; }
         return URI.parseQuery(this._parts.fragment.substring(prefix.length));
     } else if (v !== undefined && typeof v !== "string") {
         this._parts.fragment = prefix + URI.buildQuery(v);
@@ -42,7 +43,10 @@ p.fragment = function(v, build) {
     }
 };
 p.addFragment = function(name, value, build) {
-    var data = URI.parseQuery(this._parts.fragment.substring(prefix.length));
+    var data;
+    if(this._parts.fragment === null || this._parts.fragment === undefined) { data = {}; }
+    else { data = URI.parseQuery(this._parts.fragment.substring(prefix.length)); }
+
     URI.addQuery(data, name, value);
     this._parts.fragment = prefix + URI.buildQuery(data);
     if (typeof name !== "string") {
@@ -53,7 +57,10 @@ p.addFragment = function(name, value, build) {
     return this;
 };
 p.removeFragment = function(name, value, build) {
-    var data = URI.parseQuery(this._parts.fragment.substring(prefix.length));
+    var data;
+    if(this._parts.fragment === null || this._parts.fragment === undefined) { return this; }
+    else { data = URI.parseQuery(this._parts.fragment.substring(prefix.length)); }
+
     URI.removeQuery(data, name, value);
     this._parts.fragment = prefix + URI.buildQuery(data);
     if (typeof name !== "string") {
