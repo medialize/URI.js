@@ -84,6 +84,8 @@ function filterArrayValues(data, value) {
     return data;
 }
 
+// state: allow duplicate query parameters (a=1&a=1)
+URI.duplicateQueryParameters = false;
 // static properties
 URI.protocol_expression = /^[a-z][a-z0-9-+-]*$/i;
 URI.idn_expression = /[^a-z0-9\.-]/i;
@@ -223,9 +225,11 @@ for (_part in _parts) {
 
 URI.encodeReserved = generateAccessor("reserved", "encode");
 
-URI.parse = function(string) {
+URI.parse = function(string, parts) {
     var pos, t;
-    var parts = {};
+    if (!parts) {
+        parts = {};
+    }
     // [protocol"://"[username[":"password]"@"]hostname[":"port]"/"?][path]["?"querystring]["#"fragment]
 
     // extract fragment
@@ -684,7 +688,9 @@ p.href = function(href, build) {
             port: null,
             path: null,
             query: null,
-            fragment: null
+            fragment: null,
+            // state
+            duplicateQueryParameters: URI.duplicateQueryParameters
         };
 
         var _URI = href instanceof URI;
@@ -703,7 +709,7 @@ p.href = function(href, build) {
         }
 
         if (typeof href === "string") {
-            this._parts = URI.parse(href);
+            this._parts = URI.parse(href, this._parts);
         } else if (_URI || _object) {
             var src = _URI ? href._parts : href;
             for (key in src) {
@@ -1226,7 +1232,7 @@ p.query = function(v, build) {
     if (v === true) {
         return URI.parseQuery(this._parts.query);
     } else if (v !== undefined && typeof v !== "string") {
-        this._parts.query = URI.buildQuery(v);
+        this._parts.query = URI.buildQuery(v, this._parts.duplicateQueryParameters);
         this.build(!build);
         return this;
     } else {
@@ -1236,7 +1242,7 @@ p.query = function(v, build) {
 p.addQuery = function(name, value, build) {
     var data = URI.parseQuery(this._parts.query);
     URI.addQuery(data, name, value === undefined ? null : value);
-    this._parts.query = URI.buildQuery(data);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters);
     if (typeof name !== "string") {
         build = value;
     }
@@ -1247,7 +1253,7 @@ p.addQuery = function(name, value, build) {
 p.removeQuery = function(name, value, build) {
     var data = URI.parseQuery(this._parts.query);
     URI.removeQuery(data, name, value);
-    this._parts.query = URI.buildQuery(data);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters);
     if (typeof name !== "string") {
         build = value;
     }
@@ -1619,6 +1625,12 @@ p.equals = function(uri) {
     }
 
     return true;
+};
+
+// state
+p.duplicateQueryParameters = function(v) {
+    this._parts.duplicateQueryParameters = !!v;
+    return this;
 };
 
 return URI;

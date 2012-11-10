@@ -901,6 +901,24 @@ uri.query(URI.buildQuery(data, true));
 URI.addQuery(data, "hello", "world");
 uri.query(URI.buildQuery(data, true));</pre>
     
+    <p id="setting-duplicateQueryParameters">As of v1.8.0 you can configure query parameter de/duplication:</p>
+    <pre class="prettyprint lang-js">// make all new URI instances allow duplicates:
+URI.duplicateQueryParameters = true; // default is false
+
+// make a specific URI instance allow duplicates:
+var withDuplicates = URI("?bar=1&amp;bar=1")
+  .duplicateQueryParameters(true)
+  .normalizeQuery()
+  .toString();
+
+// make a specific URI instance avoid duplicates (default):
+var noDuplicates = URI("?bar=1&amp;bar=1")
+  .duplicateQueryParameters(false)
+  .normalizeQuery()
+  .toString();
+
+withDuplicates === "?bar=1&amp;bar=1";
+noDuplicates === "?bar=1";</pre>
     
     <h2 id="encoding-decoding">Encoding and Decoding URLs</h2>
     

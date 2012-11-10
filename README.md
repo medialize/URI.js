@@ -211,6 +211,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * adding [`.resource()`](http://medialize.github.com/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]
 * adding jQuery 1.8.x compatibility for jQuery.URI.js (remaining backwards compatibility!)
 * adding default ports for gopher, ws, wss
+* adding [`.duplicateQueryParameters()`](http://medialize.github.com/URI.js/docs.html#setting-duplicateQueryParameters) to control if `key=value` duplicates have to be preserved or reduced ([Issue #51](https://github.com/medialize/URI.js/issues/51)
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.1.1
 * improving AMD/Node using [UMD returnExports](https://github.com/umdjs/umd/blob/master/returnExports.js) - ([Issue #44](https://github.com/medialize/URI.js/issues/44), [Issue #47](https://github.com/medialize/URI.js/issues/47))
 * fixing `.addQuery("empty")` to properly add `?empty` - ([Issue #46](https://github.com/medialize/URI.js/issues/46))
@@ -220,6 +221,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * fixing type error for fragment abuse demos - ([Issue #50](https://github.com/medialize/URI.js/issues/50))
 * adding documentation for various [encode/decode functions](http://medialize.github.com/URI.js/docs.html#encoding-decoding)
 * adding tests for fragment abuse and splitting tests into separate scopes
+
 
 Note: QUnit seems to be having some difficulties on IE8. While the jQuery-plugin tests fail, the plugin itself works. We're still trying to figure out what's making QUnit "lose its config state".
 

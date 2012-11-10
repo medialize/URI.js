@@ -603,6 +603,28 @@ test("removeQuery", function() {
     u.removeQuery({foo: 'bar', obj: undefined, bar: ["1", "2"]});
     equal(u.query(), 'foo=baz&foo=bam&bar=3', 'removing object');
 });
+test("duplicateQueryParameters", function() {
+    var u = new URI('?bar=1&bar=1&bar=1');
+    
+    u.normalizeQuery();
+    equal(u.toString(), '?bar=1', "parameters de-duplicated");
+    
+    u = new URI('?bar=1&bar=1&bar=1')
+    u.duplicateQueryParameters(true);
+    u.normalizeQuery();
+    equal(u.toString(), '?bar=1&bar=1&bar=1', "parameters NOT de-duplicated");
+    
+    u.duplicateQueryParameters(false);
+    u.normalizeQuery();
+    equal(u.toString(), '?bar=1', "parameters de-duplicated again");
+    
+    URI.duplicateQueryParameters = true;
+    u = new URI('?bar=1&bar=1&bar=1');
+    u.normalizeQuery();
+    equal(u.toString(), '?bar=1&bar=1&bar=1', "global configuration");
+    
+    URI.duplicateQueryParameters = false;
+});
 
 module("normalizing");
 test("normalize", function() {
