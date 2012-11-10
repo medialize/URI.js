@@ -119,10 +119,19 @@ var modifiers = {
                 var a = [];
                 keys.sort();
                 for (i=0, length = keys.length; i < length; i++) {
+                    // arrays have consecutive indexes, 
+                    // if the input is not numbered consequtively, it's an object!
+                    if (i && keys[i] -1 != keys[i - 1]) {
+                        console.log(keys, data);
+                        a = undefined;
+                        break;
+                    }
                     a.push(data[keys[i]]);
                 }
                 
-                return a;
+                if (a) {
+                    return a;
+                }
             }
             
             
