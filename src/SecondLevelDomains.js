@@ -28,6 +28,7 @@
 }(this, function () {
 "use strict";
 
+var hasOwn = Object.prototype.hasOwnProperty;
 var SLD = {
     // list of known Second Level Domains
     // converted list of SLDs from https://github.com/gavingmiller/second-level-domains
@@ -190,7 +191,7 @@ var SLD = {
     init: function() {
         var t = '';
         for (var tld in SLD.list) {
-            if (!Object.prototype.hasOwnProperty.call(SLD.list, tld)) {
+            if (!hasOwn.call(SLD.list, tld)) {
                 continue;
             }
 

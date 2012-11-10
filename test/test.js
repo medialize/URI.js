@@ -609,14 +609,17 @@ test("duplicateQueryParameters", function() {
     u.normalizeQuery();
     equal(u.toString(), '?bar=1', "parameters de-duplicated");
     
-    u = new URI('?bar=1&bar=1&bar=1')
+    u = new URI('?bar=1&bar=1&bar=1');
     u.duplicateQueryParameters(true);
+    ok(u._parts.duplicateQueryParameters, "duplicateQueryParameters enabled");
     u.normalizeQuery();
     equal(u.toString(), '?bar=1&bar=1&bar=1', "parameters NOT de-duplicated");
+    ok(u._parts.duplicateQueryParameters, "duplicateQueryParameters still enabled after normalizeQuery()");
     
     u.duplicateQueryParameters(false);
     u.normalizeQuery();
     equal(u.toString(), '?bar=1', "parameters de-duplicated again");
+    ok(!u._parts.duplicateQueryParameters, "duplicateQueryParameters still disabled after normalizeQuery()");
     
     URI.duplicateQueryParameters = true;
     u = new URI('?bar=1&bar=1&bar=1');
@@ -624,6 +627,13 @@ test("duplicateQueryParameters", function() {
     equal(u.toString(), '?bar=1&bar=1&bar=1', "global configuration");
     
     URI.duplicateQueryParameters = false;
+    
+    // test cloning
+    u = new URI('?bar=1&bar=1&bar=1');
+    u = u.duplicateQueryParameters(true).clone();
+    ok(u._parts.duplicateQueryParameters, "duplicateQueryParameters still enabled after clone()");
+    u.normalizeQuery();
+    equal(u.toString(), '?bar=1&bar=1&bar=1', "parameters NOT de-duplicated");
 });
 
 module("normalizing");

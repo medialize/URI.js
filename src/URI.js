@@ -51,6 +51,7 @@ function URI(url, base) {
 };
 
 var p = URI.prototype;
+var hasOwn = Object.prototype.hasOwnProperty;
 
 function escapeRegEx(string) {
     // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
@@ -459,7 +460,7 @@ URI.buildQuery = function(data, duplicates) {
     var t = "";
     var unique, key, i, length;
     for (key in data) {
-        if (Object.hasOwnProperty.call(data, key) && key) {
+        if (hasOwn.call(data, key) && key) {
             if (isArray(data[key])) {
                 unique = {};
                 for (i = 0, length = data[key].length; i < length; i++) {
@@ -487,7 +488,7 @@ URI.buildQueryParameter = function(name, value) {
 URI.addQuery = function(data, name, value) {
     if (typeof name === "object") {
         for (var key in name) {
-            if (Object.prototype.hasOwnProperty.call(name, key)) {
+            if (hasOwn.call(name, key)) {
                 URI.addQuery(data, key, name[key]);
             }
         }
@@ -517,7 +518,7 @@ URI.removeQuery = function(data, name, value) {
         }
     } else if (typeof name === "object") {
         for (key in name) {
-            if (Object.prototype.hasOwnProperty.call(name, key)) {
+            if (hasOwn.call(name, key)) {
                 URI.removeQuery(data, key, name[key]);
             }
         }
@@ -677,53 +678,53 @@ p.path = p.pathname;
 p.href = function(href, build) {
     if (href === undefined) {
         return this.toString();
-    } else {
-        this._string = "";
-        this._parts = {
-            protocol: null,
-            username: null,
-            password: null,
-            hostname: null,
-            urn: null,
-            port: null,
-            path: null,
-            query: null,
-            fragment: null,
-            // state
-            duplicateQueryParameters: URI.duplicateQueryParameters
-        };
-
-        var _URI = href instanceof URI;
-        var _object = typeof href === "object" && (href.hostname || href.path);
-        var key;
-        
-        // window.location is reported to be an object, but it's not the sort
-        // of object we're looking for: 
-        // * location.protocol ends with a colon
-        // * location.query != object.search
-        // * location.hash != object.fragment
-        // simply serializing the unknown object should do the trick 
-        // (for location, not for everything...)
-        if (_object && String(href) !== "[object Object]") {
-            href = href.toString();
-        }
-
-        if (typeof href === "string") {
-            this._parts = URI.parse(href, this._parts);
-        } else if (_URI || _object) {
-            var src = _URI ? href._parts : href;
-            for (key in src) {
-                if (Object.hasOwnProperty.call(this._parts, key)) {
-                    this._parts[key] = src[key];
-                }
-            }
-        } else {
-            throw new TypeError("invalid input");
-        }
-
-        this.build(!build);
-        return this;
     }
+
+    this._string = "";
+    this._parts = {
+        protocol: null,
+        username: null,
+        password: null,
+        hostname: null,
+        urn: null,
+        port: null,
+        path: null,
+        query: null,
+        fragment: null,
+        // state
+        duplicateQueryParameters: URI.duplicateQueryParameters
+    };
+
+    var _URI = href instanceof URI;
+    var _object = typeof href === "object" && (href.hostname || href.path);
+    var key;
+    
+    // window.location is reported to be an object, but it's not the sort
+    // of object we're looking for: 
+    // * location.protocol ends with a colon
+    // * location.query != object.search
+    // * location.hash != object.fragment
+    // simply serializing the unknown object should do the trick 
+    // (for location, not for everything...)
+    if (!_URI && _object && Object.prototype.toString.call(href) !== "[object Object]") {
+        href = href.toString();
+    }
+
+    if (typeof href === "string") {
+        this._parts = URI.parse(href, this._parts);
+    } else if (_URI || _object) {
+        var src = _URI ? href._parts : href;
+        for (key in src) {
+            if (hasOwn.call(this._parts, key)) {
+                this._parts[key] = src[key];
+            }
+        }
+    } else {
+        throw new TypeError("invalid input");
+    }
+
+    this.build(!build);
+    return this;
 };
 
 // identification accessors
@@ -1586,7 +1587,7 @@ p.equals = function(uri) {
     two_map = URI.parseQuery(two_query);
 
     for (key in one_map) {
-        if (Object.prototype.hasOwnProperty.call(one_map, key)) {
+        if (hasOwn.call(one_map, key)) {
             if (!isArray(one_map[key])) {
                 if (one_map[key] !== two_map[key]) {
                     return false;
@@ -1616,7 +1617,7 @@ p.equals = function(uri) {
     }
 
     for (key in two_map) {
-        if (Object.prototype.hasOwnProperty.call(two_map, key)) {
+        if (hasOwn.call(two_map, key)) {
             if (!checked[key]) {
                 // two contains a parameter not present in one
                 return false;
