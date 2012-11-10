@@ -43,16 +43,18 @@ var prefix = '!';
 // add fragment(true) and fragment(URI) signatures    
 p.fragment = function(v, build) {
     if (v === true) {
-        var furi = new URI(this._parts.fragment.substring(prefix.length));
-        this._furi = furi;
+        var furi = new URI((this._parts.fragment || "").substring(prefix.length));
+        this._fragmentURI = furi;
+        furi._parentURI = this;
         return furi;
     } else if (v !== undefined && typeof v !== "string") {
-        this._furi = furi;
+        this._fragmentURI = v;
+        v._parentURI = v;
         this._parts.fragment = prefix + v.toString();
         this.build(!build);
         return this;
     } else if (typeof v === "string") {
-        this._furi = undefined;
+        this._fragmentURI = undefined;
     }
 
     return f.call(this, v, build);
@@ -60,11 +62,14 @@ p.fragment = function(v, build) {
 
 // make .build() of the actual URI aware of the FragmentURI
 p.build = function(deferBuild) {
-    if (this._furi) {
-        this._parts.fragment = prefix + this._furi.toString();
+    var t = b.call(this, deferBuild);
+    
+    if (deferBuild !== false && this._parentURI) {
+        // update the parent
+        this._parentURI.fragment(this);
     }
 
-    return b.call(this, deferBuild);
+    return t;
 };
 
 // extending existing object rather than defining something new
