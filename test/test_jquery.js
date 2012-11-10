@@ -1,3 +1,4 @@
+(function(){
 module("jQuery.URI", {
     setup: function() {
         var links = [
@@ -134,3 +135,4 @@ test(".attr('uri:accessor')", function() {
     ok($first.uri() === uri, "URI persisted");
 });
 
+})();

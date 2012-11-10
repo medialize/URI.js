@@ -5,7 +5,7 @@
  *
  * Note: I have no clue who or what jim is supposed to be. It might be something like the German DAU (dumbest possible user)
  */
-
+(function(){
 module("injection");
 test("protocol", function() {
     var u = new URI("http://example.com/dir1/dir2/?query1=value1&query2=value2#hash");
@@ -140,3 +140,4 @@ test("domain", function() {
     equals(u.hostname() == domain, true, "set domain() with 70-character subdomain  not valid domainname");
 });
 */
+})();

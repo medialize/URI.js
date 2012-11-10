@@ -1,3 +1,4 @@
+(function(){
 test("loaded", function() {
     ok(window.URI);
 });
@@ -942,3 +943,4 @@ module("Encoding");
 test("encodeReserved", function() {
     equal(URI.encodeReserved("ä:/?#[]@!$&'()*+,;="), "%C3%A4:/?#[]@!$&'()*+,;=");
 });
+})();
