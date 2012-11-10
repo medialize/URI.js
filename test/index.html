@@ -4,27 +4,20 @@
 	<meta charset="UTF-8" />
 	<title>URI Test Suite</title>
 	<link rel="stylesheet" href="qunit/qunit.css" type="text/css" media="screen">
-	<script type="text/javascript" src="../src/punycode.js"></script>
-	<script type="text/javascript" src="../src/IPv6.js"></script>
-	<script type="text/javascript" src="../src/SecondLevelDomains.js"></script>
-	<script type="text/javascript" src="../src/URI.js"></script>
-	<script type="text/javascript" src="../src/URITemplate.js"></script>
-	<script type="text/javascript" src="../jquery-1.8.2.min.js"></script>
-	<script type="text/javascript" src="../src/jquery.URI.js"></script>
+	<link rel="stylesheet" href="qunit/qunit-composite.css" type="text/css" media="screen">
 	<script type="text/javascript" src="qunit/qunit.js"></script>
-
-	<script type="text/javascript" src="urls.js"></script>
-    <script type="text/javascript" src="test.js"></script>
-    <script type="text/javascript" src="test_jim.js"></script>
-    <script type="text/javascript" src="test_template.js"></script>
-    <script type="text/javascript" src="test_jquery.js"></script>
+	<script type="text/javascript" src="qunit/qunit-composite.js"></script>
+    <script>
+        QUnit.testSuites([
+            "test.URI.html",
+            "test.jQuery.html",
+            "test.fragmentQuery.html",
+            "test.fragmentURI.html"
+        ]);
+    </script>
 </head>
 <body>
-	<h1 id="qunit-header">QUnit Test Suite</h1>
-	<h2 id="qunit-banner"></h2>
-	<div id="qunit-testrunner-toolbar"></div>
-	<h2 id="qunit-userAgent"></h2>
-	<ol id="qunit-tests"></ol>
-	<div id="qunit-fixture">test markup</div>
+	<div id="qunit"></div>
+    <div id="qunit-fixture"></div>
 </body>
 </html>
