@@ -220,6 +220,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * fixing `URI(location)` to properly parse the URL - ([Issue #50](https://github.com/medialize/URI.js/issues/50))
 * fixing type error for fragment abuse demos - ([Issue #50](https://github.com/medialize/URI.js/issues/50))
 * adding documentation for various [encode/decode functions](http://medialize.github.com/URI.js/docs.html#encoding-decoding)
+* adding some pointers on possible problems with URLs to [About URIs](http://medialize.github.com/URI.js/about-uris.html)
 * adding tests for fragment abuse and splitting tests into separate scopes
 
 Note: QUnit seems to be having some difficulties on IE8. While the jQuery-plugin tests fail, the plugin itself works. We're still trying to figure out what's making QUnit "lose its config state".
