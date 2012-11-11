@@ -55,7 +55,7 @@
         While RFC 3986 defines the structure of an URL in depth, URNs are not. The structure (and meaning) of URNs are up to their distinct specifications.
     </p>
     
-    <h2>Components of an URI</h2>
+    <h2 id="components">Components of an URI</h2>
     <p><a href="http://tools.ietf.org/html/rfc3986#section-3">RFC 3986 Section 3</a> visualizes the structure of <abbr title="Uniform Resource Indicator">URI</abbr>s as follows:</p>
     <pre class="ascii-art">
 URL:      foo://example.com:8042/over/there?name=ferret#nose
@@ -66,7 +66,7 @@ URL:      foo://example.com:8042/over/there?name=ferret#nose
           / \ /                        \
 </span>URN:      urn:example:animal:ferret:nose</pre>
 
-    <h3>Components of an <abbr title="Uniform Resource Locator">URL</abbr> in URI.js</h3>
+    <h3 id="components-url">Components of an <abbr title="Uniform Resource Locator">URL</abbr> in URI.js</h3>
 
     <pre class="ascii-art">
                          <a href="docs.html#accessors-authority">authority</a>
@@ -99,7 +99,7 @@ URL:      foo://example.com:8042/over/there?name=ferret#nose
         and <a href="docs.html#accessors-hash">.fragment()</a> not.
     </p>
     
-    <h3>Components of an <abbr title="Uniform Resource Name">URN</abbr> in URI.js</h3>
+    <h3 id="components-urn">Components of an <abbr title="Uniform Resource Name">URN</abbr> in URI.js</h3>
     
     <pre class="ascii-art">
     urn:example:animal:ferret:nose?name=ferret#foo
@@ -109,6 +109,41 @@ URL:      foo://example.com:8042/over/there?name=ferret#nose
     </pre>
     
     <p>While <a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a> does not define URNs having a query or fragment component, URI.js enables these accessors for convenience.</p>
+    
+    <h2 id="problems">URLs - Man Made Problems</h2>
+    
+    <p>URLs (URIs, whatever) aren't easy. There are a couple of issues that make this simple text representation of a resource a real pain</p>
+    <ul>
+        <li>Look simple but have tricky encoding issues</li>
+        <li>Domains aren't part of the specification</li>
+        <li>Query String Format isn't part of the specification</li>
+        <li>Environments (PHP, JS, Ruby, …) handle Query Strings quite differently</li>
+    </ul>
+    
+    <h3 id="problems-encoding">Parsing (seemingly) invalid URLs</h3>
+    <p>Because URLs look very simple, most people haven't read the formal specification. As a result, most people get URLs wrong on many different levels. The one thing most everybody screws up is proper encoding/escaping.</p>
+    <p><code>http://username:pass:word@example.org/</code> is such a case. Often times homebrew URL handling misses escaping the less frequently used parts such as the userinfo.</p>
+    <p><code>http://example.org/@foo</code> that "@" doesn't have to be escaped according to RFC3986. Homebrew URL handlers often just treat everything between "://" and "@" as the userinfo.</p>
+    <p><code>some/path/:foo</code> is a valid relative path (as URIs don't have to contain scheme and authority). Since homebrew URL handlers usually just look for the first occurence of ":" to delimit the scheme, they'll screw this up as well.</p>
+    <p><code>+</code> is the proper escape-sequence for a space-character within the query string component, while every other component prefers <code>%20</code>. This is due to the fact that the actual format used within the query string component is not defined in RFC 3986, but in the HTML spec.</p>
+    <p>There is encoding and strict encoding - and Javascript won't get them right: <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/encodeURIComponent#Description">encodeURIComponent()</a></p>
+    
+    <h3 id="problems-tld">Top Level Domains</h3>
+    <p>The hostname component can be one of may things. An IPv4 or IPv6 address, an IDN or Punycode domain name, or a regular domain name. While the format (and meaning) of IPv4 and IPv6 addresses is defined in RFC 3986, the meaning of domain names is not.</p>
+    <p>DNS is the base of translating domain names to IP addresses. DNS itself only specifies syntax, not semantics. The missing semantics is what's driving us crazy here.</p> 
+    <p>ICANN provides a <a href="http://www.iana.org/domains/root/db/">list of registered Top Level Domains</a> (TLD). There are country code TLDs (ccTLDs, assigned to each country, like ".uk" for United Kindom) and generic TLDs (gTLDs, like ".xxx" for you know what). Also note that a TLD may be non-ASCII <code>.香港</code> (IDN version of HK, Hong Kong).</p>
+    <p>IDN TLDs such as <code>.香港</code> and the fact that any possible new TLD could pop up next month has lead to a lot of URL/Domain verification tools to fail.</p>
+
+    <h3 id="problems-sld">Second Level Domains</h3>    
+    <p>To make Things worse, people thought it to be a good idea to introduce Second Level Domains (SLD, ".co.uk" - the commercial namespace of United Kingdom). These SLDs are not up to ICANN to define, they're handled individually by each NIC (Network Information Center, the orgianisation responsible for a specific TLD).</p>
+    <p>Since there is no central oversight, things got really messy in this particular space. Germany doesn't do SDLs, Australia does. Australia has different SLDs than the United Kingdom (".csiro.au" but no ".csiro.uk"). The individual NICs are not required to publish their arbitrarily chosen SLDs in a defined syntax anywhere.</p>
+    <p>You can scour each NIC's website to find some hints at their SLDs. You can look them up on Wikipedia and hope they're right. Or you can use <a href="http://publicsuffix.org/">PublicSuffix</a>.</p>
+    <p>Speaking of PublicSuffix, it's time mentioning that browser vendors actually keep a list of known Second Level Domains. They need to know those for security issues. Remember cookies? They can be read and set on a domain level. What do you think would happen if "co.uk" was treated as the domain? <code>amazon.co.uk</code> would be able to read the cookies of <code>google.co.uk</code>. PublicSuffix also contains custom SLDs, such as <code>.dyndns.org</code>. While this makes perfect sense for browser security, it's not what we need for basic URL handling.</p>
+    <p>TL;DR: It's a mess.</p>
+    
+    <h3 id="problems-querystring">The Query String</h3>
+    <p>PHP (<a href="http://php.net/manual/en/function.parse-str.php">parse_str()</a>) will automatically parse the query string and populate the superglobal <code>$_GET</code> for you. <code>?foo=1&amp;foo=2</code> becomes <code>$_GET = array('foo' => 2);</code>, while <code>?foo[]=1&amp;foo[]=2</code> becomes <code>$_GET = array('foo' => array("1", "2"));</code>.</p>
+    <p>Most other languages don't follow the <code>[]</code>-style array-notation and deal with this mess differently.</p>
     
     </div>
 </body>
