@@ -207,7 +207,6 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-
 * adding [`.resource()`](http://medialize.github.com/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]
 * adding jQuery 1.8.x compatibility for jQuery.URI.js (remaining backwards compatibility!)
 * adding default ports for gopher, ws, wss

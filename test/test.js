@@ -634,6 +634,12 @@ test("duplicateQueryParameters", function() {
     ok(u._parts.duplicateQueryParameters, "duplicateQueryParameters still enabled after clone()");
     u.normalizeQuery();
     equal(u.toString(), '?bar=1&bar=1&bar=1', "parameters NOT de-duplicated");
+    
+    // test adding
+    u = new URI('?bar=1&bar=1&bar=1');
+    u.duplicateQueryParameters(true);
+    u.addQuery('bar', 1);
+    equal(u.toString(), '?bar=1&bar=1&bar=1&bar=1', "parameters NOT de-duplicated after addQuery()");
 });
 
 module("normalizing");
