@@ -207,6 +207,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.8.0 (November 13th 2012) ###
+
 * adding [`.resource()`](http://medialize.github.com/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]
 * adding jQuery 1.8.x compatibility for jQuery.URI.js (remaining backwards compatibility!)
 * adding default ports for gopher, ws, wss
@@ -221,6 +223,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * adding documentation for various [encode/decode functions](http://medialize.github.com/URI.js/docs.html#encoding-decoding)
 * adding some pointers on possible problems with URLs to [About URIs](http://medialize.github.com/URI.js/about-uris.html)
 * adding tests for fragment abuse and splitting tests into separate scopes
+* adding meta-data for [Jam](http://jamjs.org/) and [Bower](http://twitter.github.com/bower/)
 
 Note: QUnit seems to be having some difficulties on IE8. While the jQuery-plugin tests fail, the plugin itself works. We're still trying to figure out what's making QUnit "lose its config state".
 

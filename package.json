@@ -1,6 +1,6 @@
 {
     "name": "URIjs",
-    "version": "1.7.4",
+    "version": "1.8.0",
     "title": "URI.js - Mutating URLs",
     "author": {
         "name": "Rodney Rehm",
@@ -35,6 +35,10 @@
         "RFC 6570",
         "RFC6570"
     ],
+    "categories": [
+        "Parsers & Compilers",
+        "Utilities"
+    ],
     "main": "./src/URI",
     "homepage": "http://medialize.github.com/URI.js/",
     "contributors": [
@@ -47,5 +51,20 @@
         "src/punycode.js",
         "src/URITemplate.js",
         "src/jquery.URI.js"
-    ]
+    ],
+    
+    "jam": {
+        "main": "src/URI.js",
+        "dependencies": {
+            "jquery": ">=1.7.0"
+        },
+        "include": [
+            "src/URI.js",
+            "src/IPv6.js",
+            "src/SecondLevelDomains.js",
+            "src/punycode.js",
+            "src/URITemplate.js",
+            "src/jquery.URI.js"
+        ]
+    }
 }
