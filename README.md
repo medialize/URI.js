@@ -212,13 +212,13 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * adding [`.resource()`](http://medialize.github.com/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]
 * adding jQuery 1.8.x compatibility for jQuery.URI.js (remaining backwards compatibility!)
 * adding default ports for gopher, ws, wss
-* adding [`.duplicateQueryParameters()`](http://medialize.github.com/URI.js/docs.html#setting-duplicateQueryParameters) to control if `key=value` duplicates have to be preserved or reduced ([Issue #51](https://github.com/medialize/URI.js/issues/51)
+* adding [`.duplicateQueryParameters()`](http://medialize.github.com/URI.js/docs.html#setting-duplicateQueryParameters) to control if `key=value` duplicates have to be preserved or reduced ([Issue #51](https://github.com/medialize/URI.js/issues/51))
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.1.1
 * improving AMD/Node using [UMD returnExports](https://github.com/umdjs/umd/blob/master/returnExports.js) - ([Issue #44](https://github.com/medialize/URI.js/issues/44), [Issue #47](https://github.com/medialize/URI.js/issues/47))
 * fixing `.addQuery("empty")` to properly add `?empty` - ([Issue #46](https://github.com/medialize/URI.js/issues/46))
 * fixing parsing of badly formatted userinfo `http://username:pass:word@hostname`
 * fixing parsing of Windows-Drive-Letter paths `file://C:/WINDOWS/foo.txt`
-* fixing `URI(location)` to properly parse the URL - ([Issue #50](https://github.com/medialize/URI.js/issues/50))
+* fixing `URI(location)` to properly parse the URL - ([Issue #52](https://github.com/medialize/URI.js/issues/52))
 * fixing type error for fragment abuse demos - ([Issue #50](https://github.com/medialize/URI.js/issues/50))
 * adding documentation for various [encode/decode functions](http://medialize.github.com/URI.js/docs.html#encoding-decoding)
 * adding some pointers on possible problems with URLs to [About URIs](http://medialize.github.com/URI.js/about-uris.html)
