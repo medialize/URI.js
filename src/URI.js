@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.8.0
+ * Version: 1.8.1
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.com/URI.js/
@@ -401,11 +401,11 @@ URI.build = function(parts) {
         t += parts.path;
     }
 
-    if (typeof parts.query === "string") {
+    if (typeof parts.query === "string" && parts.query) {
         t += '?' + parts.query;
     }
 
-    if (typeof parts.fragment === "string") {
+    if (typeof parts.fragment === "string" && parts.fragment) {
         t += '#' + parts.fragment;
     }
     return t;

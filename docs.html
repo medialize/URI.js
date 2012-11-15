@@ -444,6 +444,7 @@ uri.search("?foo=bar&amp;bar=baz"); // returns the URI instance for chaining
 uri.search("foo=bar&amp;bar=baz"); // returns the URI instance for chaining
 // uri == "http://example.org/bar/world.html?foo=bar&amp;bar=baz"
 
+// remove query
 uri.search(""); // returns the URI instance for chaining
 // uri == "http://example.org/bar/world.html"
 
@@ -468,6 +469,10 @@ uri.search("?foo=bar[]&amp;bar[]=baz");</pre>
 uri.hash(); // returns string "#world" (leading #)
 // get fragment
 uri.fragment(); // returns string "world" (no leading #)
+
+// remove fragment
+uri.fragment(""); // returns the URI instance for chaining
+// uri == "http://example.org/bar/world.html"
 
 // .hash() and .fragment() behave the same for the following:
 

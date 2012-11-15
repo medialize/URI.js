@@ -207,6 +207,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.8.1 (November 15th 2012) ###
+
+* fixing build() to properly omit empty query and fragment ([Issue #53](https://github.com/medialize/URI.js/issues/53))
+
 ### 1.8.0 (November 13th 2012) ###
 
 * adding [`.resource()`](http://medialize.github.com/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]

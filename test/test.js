@@ -169,6 +169,7 @@ test("query", function() {
     u.query('');
     equal(u.query(), "", "query: ''");
     equal(u.search(), "", "query: '' - search");
+    equal(u.toString(), "http://example.org/foo.html");
 
     u.search('foo=bar=foo');
     equal(u.query(), "foo=bar=foo", "search: foo=bar=foo");
@@ -205,6 +206,7 @@ test("fragment", function() {
     u.fragment('');
     equal(u.fragment(), "", "fragment: ''");
     equal(u.hash(), "", "fragment: '' - hash");
+    equal(u.toString(), "http://example.org/foo.html");
 
     u.hash('foo');
     equal(u.fragment(), "foo", "hash: foo");
