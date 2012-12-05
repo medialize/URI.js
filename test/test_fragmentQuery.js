@@ -27,6 +27,12 @@ test("storing query-data in fragment", function() {
     u.removeFragment("name");
     deepEqual(u.fragment(true), {}, "removing value name");
     equal(u.toString(), "http://example.org/#?", "removing value name serialized");
+
+    u = URI("http://example.org/#foo=bar");
+    deepEqual(u.fragmentPrefix("").fragment(true), {foo: "bar"}, "empty fragment prefix");
+
+    u = URI("http://example.org/#!foo=bar");
+    deepEqual(u.fragmentPrefix("!").fragment(true), {foo: "bar"}, "alternative fragment prefix");
 });
 
 })();
