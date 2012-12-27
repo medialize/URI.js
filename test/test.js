@@ -887,6 +887,11 @@ test("relativeTo", function() {
             url: '/relative/path?blubber=1#hash1',
             base: '/relative/sub/foo/sub/file?some=query#hash',
             result: '../../../path?blubber=1#hash1'
+        }, {
+            name: 'descendant',
+            url: '/base/path/with/subdir/inner.html',
+            base: '/base/path/top.html',
+            result: './with/subdir/inner.html'
         }
     ];
 

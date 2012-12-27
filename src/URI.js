@@ -622,7 +622,7 @@ generateAccessor = function(_part){
     };
 };
 
-for (_part in _parts) {
+for (_part in _parts) {                                                                                                                                                                                        
     p[_part] = generateAccessor(_parts[_part]);
 }
 
@@ -1507,7 +1507,7 @@ p.absoluteTo = function(base) {
 p.relativeTo = function(base) {
     var relative = this.clone();
     var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
-    var common, _base;
+    var common, _base, _this, _base_diff, _this_diff;
 
     if (this._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
@@ -1521,33 +1521,52 @@ p.relativeTo = function(base) {
         throw new Error('Cannot calculate common path from non-relative URLs');
     }
 
+    // determine common sub path
     common = URI.commonPath(relative.path(), base.path());
-    _base = base.directory();
-
-    for (var i = 0, p; p = properties[i]; i++) {
-        relative._parts[p] = null;
-    }
-
+    
+    // no relation if there's nothing in common 
     if (!common || common === '/') {
         return relative;
     }
-
-    if (_base + '/' === common) {
+    
+    // relative paths don't have authority
+    for (var i = 0, p; p = properties[i]; i++) {
+        relative._parts[p] = null;
+    }
+    
+    _base = base.directory();
+    _this = this.directory();
+    
+    // base and this are on the same level
+    if (_base === _this) {
         relative._parts.path = './' + relative.filename();
-    } else {
-        var parents = '../';
-        var _common = new RegExp('^' + escapeRegEx(common));
-        var _parents = _base.replace(_common, '/').match(/\//g).length -1;
-
-        while (_parents--) {
-            parents += '../';
+        return relative.build();
+    }
+    
+    _base_diff = _base.substring(common.length);
+    _this_diff = _this.substring(common.length);
+    
+    // this is a descendant of base
+    if (_base + '/' === common) {
+        if (_this_diff) {
+            _this_diff += '/';
         }
+        
+        relative._parts.path = './' + _this_diff + relative.filename();
+        return relative.build();
+    } 
 
-        relative._parts.path = relative._parts.path.replace(_common, parents);
+    // this is a descendant of base
+    var parents = '../';
+    var _common = new RegExp('^' + escapeRegEx(common));
+    var _parents = _base.replace(_common, '/').match(/\//g).length -1;
+
+    while (_parents--) {
+        parents += '../';
     }
 
-    relative.build();
-    return relative;
+    relative._parts.path = relative._parts.path.replace(_common, parents);
+    return relative.build();
 };
 
 // comparing URIs
