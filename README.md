@@ -207,6 +207,12 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.8.2 (December 27th 2012) ###
+
+* adding `.fragmentPrefix()` to configure prefix of fragmentURI and fragmentQuery extensions - ([Issue #55](https://github.com/medialize/URI.js/issues/55))
+* adding docs for [`.toString()`, `.valueOf()`](http://medialize.github.com/URI.js/docs.html#toString) and [`.href()`](http://medialize.github.com/URI.js/docs.html#href) - ([Issue #56](https://github.com/medialize/URI.js/issues/56))
+* fixing [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) for descendants - ([Issue #57](https://github.com/medialize/URI.js/issues/57))
+
 ### 1.8.1 (November 15th 2012) ###
 
 * fixing build() to properly omit empty query and fragment ([Issue #53](https://github.com/medialize/URI.js/issues/53))
