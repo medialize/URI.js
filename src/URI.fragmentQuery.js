@@ -38,14 +38,31 @@
 var p = URI.prototype;
 // old fragment handler we need to wrap
 var f = p.fragment;
-// NOTE: google want's #! (hashbang), others might want #? others might want plain #
-// choose the prefix you want to use here
-var prefix = '?';
+
+// make fragmentPrefix configurable
+URI.fragmentPrefix = '?';
+var _parts = URI._parts;
+URI._parts = function() {
+    var parts = _parts();
+    parts.fragmentPrefix = URI.fragmentPrefix;
+    return parts;
+};
+p.fragmentPrefix = function(v) {
+    this._parts.fragmentPrefix = v;
+    return this;
+};
 
 // add fragment(true) and fragment({key: value}) signatures
 p.fragment = function(v, build) {
+    var prefix = this._parts.fragmentPrefix;
+    var fragment = this._parts.fragment || "";
+    
     if (v === true) {
-        return URI.parseQuery((this._parts.fragment || "").substring(prefix.length));
+        if (fragment.substring(0, prefix.length) !== prefix) {
+            return {};
+        }
+        
+        return URI.parseQuery(fragment.substring(prefix.length));
     } else if (v !== undefined && typeof v !== "string") {
         this._parts.fragment = prefix + URI.buildQuery(v);
         this.build(!build);
@@ -55,6 +72,7 @@ p.fragment = function(v, build) {
     }
 };
 p.addFragment = function(name, value, build) {
+    var prefix = this._parts.fragmentPrefix;
     var data = URI.parseQuery((this._parts.fragment || "").substring(prefix.length));
     URI.addQuery(data, name, value);
     this._parts.fragment = prefix + URI.buildQuery(data);
@@ -66,6 +84,7 @@ p.addFragment = function(name, value, build) {
     return this;
 };
 p.removeFragment = function(name, value, build) {
+    var prefix = this._parts.fragmentPrefix;
     var data = URI.parseQuery((this._parts.fragment || "").substring(prefix.length));
     URI.removeQuery(data, name, value);
     this._parts.fragment = prefix + URI.buildQuery(data);

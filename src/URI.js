@@ -85,6 +85,21 @@ function filterArrayValues(data, value) {
     return data;
 }
 
+URI._parts = function() {
+    return {
+        protocol: null,
+        username: null,
+        password: null,
+        hostname: null,
+        urn: null,
+        port: null,
+        path: null,
+        query: null,
+        fragment: null,
+        // state
+        duplicateQueryParameters: URI.duplicateQueryParameters
+    };
+};
 // state: allow duplicate query parameters (a=1&a=1)
 URI.duplicateQueryParameters = false;
 // static properties
@@ -676,28 +691,18 @@ p.pathname = function(v, build) {
 };
 p.path = p.pathname;
 p.href = function(href, build) {
+    var key;
+    
     if (href === undefined) {
         return this.toString();
     }
 
     this._string = "";
-    this._parts = {
-        protocol: null,
-        username: null,
-        password: null,
-        hostname: null,
-        urn: null,
-        port: null,
-        path: null,
-        query: null,
-        fragment: null,
-        // state
-        duplicateQueryParameters: URI.duplicateQueryParameters
-    };
+    this._parts = URI._parts();
 
     var _URI = href instanceof URI;
     var _object = typeof href === "object" && (href.hostname || href.path);
-    var key;
+
     
     // window.location is reported to be an object, but it's not the sort
     // of object we're looking for: 

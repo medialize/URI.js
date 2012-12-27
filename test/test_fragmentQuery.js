@@ -28,5 +28,30 @@ test("storing query-data in fragment", function() {
     deepEqual(u.fragment(true), {}, "removing value name");
     equal(u.toString(), "http://example.org/#?", "removing value name serialized");
 });
+test("fragmentPrefix", function() {
+    var u;
+    
+    URI.fragmentPrefix = '!';
+    u = URI("http://example.org");
+    equal(u._parts.fragmentPrefix, '!', "init using global property");
+    
+    u.fragment('#?hello=world');
+    equal(u.fragment(), "?hello=world", "unparsed ?");
+    deepEqual(u.fragment(true), {}, "parsing ? prefix");
+    
+    u.fragment('#!hello=world');
+    equal(u.fragment(), "!hello=world", "unparsed !");
+    deepEqual(u.fragment(true), {hello: "world"}, "parsing ! prefix");
+    
+    u.fragmentPrefix('§');
+    equal(u.fragment(), "!hello=world", "unparsed §");
+    deepEqual(u.fragment(true), {}, "parsing § prefix");
+    
+    u.fragment('#§hello=world');
+    equal(u.fragment(), "§hello=world", "unparsed §");
+    deepEqual(u.fragment(true), {hello: "world"}, "parsing § prefix");
+    
+    URI.fragmentPrefix = '?';
+});
 
 })();

@@ -36,14 +36,33 @@ var p = URI.prototype;
 // old handlers we need to wrap
 var f = p.fragment;
 var b = p.build;
-// NOTE: google want's #! (hashbang), others might want plain #
-// choose the prefix you want to use here
-var prefix = '!';
+
+// make fragmentPrefix configurable
+URI.fragmentPrefix = '!';
+var _parts = URI._parts;
+URI._parts = function() {
+    var parts = _parts();
+    parts.fragmentPrefix = URI.fragmentPrefix;
+    return parts;
+};
+p.fragmentPrefix = function(v) {
+    this._parts.fragmentPrefix = v;
+    return this;
+};
 
 // add fragment(true) and fragment(URI) signatures    
 p.fragment = function(v, build) {
+    var prefix = this._parts.fragmentPrefix;
+    var fragment = this._parts.fragment || "";
+    var furi;
+
     if (v === true) {
-        var furi = new URI((this._parts.fragment || "").substring(prefix.length));
+        if (fragment.substring(0, prefix.length) !== prefix) {
+            furi = URI("");
+        } else {
+            furi = new URI(fragment.substring(prefix.length));
+        }
+        
         this._fragmentURI = furi;
         furi._parentURI = this;
         return furi;

@@ -26,5 +26,34 @@ test("storing URLs in fragment", function() {
     equal(u.fragment(), "!/foo/bar/foobar.txt", "modifying fragment() through FragmentURI on original");
     equal(u.toString(), "http://example.org/#!/foo/bar/foobar.txt", "modifying filename of FragmentURI on original");
 });
+test("fragmentPrefix", function() {
+    var u;
+    
+    URI.fragmentPrefix = '?';
+    u = URI("http://example.org");
+    equal(u._parts.fragmentPrefix, '?', "init using global property");
+    
+    u.fragment('#!/foo/bar/baz.html');
+    equal(u.fragment(), "!/foo/bar/baz.html", "unparsed ?");
+    ok(u.fragment(true) instanceof URI, "parsing ? prefix - is URI");
+    equal(u.fragment(true).toString(), "", "parsing ? prefix - result");
+    
+    u.fragment('#?/foo/bar/baz.html');
+    equal(u.fragment(), "?/foo/bar/baz.html", "unparsed ?");
+    ok(u.fragment(true) instanceof URI, "parsing ? prefix - is URI");
+    equal(u.fragment(true).toString(), "/foo/bar/baz.html", "parsing ? prefix - result");
+    
+    u.fragmentPrefix('§');
+    equal(u.fragment(), "?/foo/bar/baz.html", "unparsed §");
+    ok(u.fragment(true) instanceof URI, "parsing § prefix - is URI");
+    equal(u.fragment(true).toString(), "", "parsing § prefix - result");
+    
+    u.fragment('#§/foo/bar/baz.html');
+    equal(u.fragment(), "§/foo/bar/baz.html", "unparsed §");
+    ok(u.fragment(true) instanceof URI, "parsing § prefix - is URI");
+    equal(u.fragment(true).toString(), "/foo/bar/baz.html", "parsing § prefix - result");
+    
+    URI.fragmentPrefix = '!';
+});
 
 })();
