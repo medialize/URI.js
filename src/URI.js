@@ -1011,6 +1011,10 @@ p.tld = function(v, build) {
         }
 
         var pos = this._parts.hostname.lastIndexOf('.');
+        
+        if (pos === -1) {
+            return "";            
+        }    
         var tld = this._parts.hostname.substring(pos + 1);
 
         if (build !== true && SLD && SLD.list[tld.toLowerCase()]) {
