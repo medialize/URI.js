@@ -616,11 +616,8 @@ p.clone = function() {
     return new URI(this);
 };
 
-p.toString = function() {
+p.valueOf = p.toString = function() {
     return this.build(false)._string;
-};
-p.valueOf = function() {
-    return this.toString();
 };
 
 // generate simple accessors
