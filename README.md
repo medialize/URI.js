@@ -207,6 +207,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.8.3 (January 9th 2013) ###
+
+* fixing [UglifyJS2](https://github.com/mishoo/UglifyJS2) compression - ([Issue #60](https://github.com/medialize/URI.js/issues/60), [fidian](https://github.com/fidian))
+
 ### 1.8.2 (December 27th 2012) ###
 
 * adding `.fragmentPrefix()` to configure prefix of fragmentURI and fragmentQuery extensions - ([Issue #55](https://github.com/medialize/URI.js/issues/55))
