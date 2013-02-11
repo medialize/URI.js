@@ -553,7 +553,21 @@ test("mutating object", function() {
     u.query(q);
     equal(u.query(), 'something=new&something=and&something=funky', "removing array");
 });
-test("addQuery", function() {
+test("query callback", function() {
+    var u = URI('?foo=bar');
+    u.query(function(data) {
+        data.foo = "bam";
+    });
+    equal(u.query(), 'foo=bam', "augment argument");
+    
+    u.query(function(data) {
+        return {
+            bla: 'blubb'
+        }
+    });
+    equal(u.query(), 'bla=blubb', "overwrite returned value");
+});
+test("setQuery", function() {
     var u = URI('?foo=bar');
     u.setQuery('foo', 'bam');
     equal(u.query(), 'foo=bam', "set name, value");

@@ -1234,6 +1234,12 @@ var q = p.query;
 p.query = function(v, build) {
     if (v === true) {
         return URI.parseQuery(this._parts.query);
+    } else if (typeof v === "function") {
+        var data = URI.parseQuery(this._parts.query);
+        var result = v.call(this, data);
+        this._parts.query = URI.buildQuery(result || data, this._parts.duplicateQueryParameters);
+        this.build(!build);
+        return this;
     } else if (v !== undefined && typeof v !== "string") {
         this._parts.query = URI.buildQuery(v, this._parts.duplicateQueryParameters);
         this.build(!build);

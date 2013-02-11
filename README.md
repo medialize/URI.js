@@ -208,6 +208,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ## Changelog ##
 
 * adding [`.setQuery()`](http://medialize.github.com/URI.js/docs.html#search-set) - ([Issue #64](https://github.com/medialize/URI.js/issues/64))
+* adding callback argument to [`.query()`](http://medialize.github.com/URI.js/docs.html#accessors-search)
+
 
 ### 1.8.3 (January 9th 2013) ###
 

@@ -473,6 +473,18 @@ uri.search(true); // returns { foo: "bar", hello : ["world", "mars"] }
 uri.search({ foo: "bar", hello : ["world", "mars"] });
 // uri == "http://example.org/bar/world.html?foo=bar&amp;hello=world&amp;hello=mars"
 
+// overwrite data through callback
+uri.search(function(data) {
+    return { hello : "world" };
+});
+// uri == "http://example.org/bar/world.html?hello=world"
+
+// augment data through callback
+uri.search(function(data) {
+    data.foo = "bar";
+});
+// uri == "http://example.org/bar/world.html?hello=world&amp;foo=bar"
+
 // CAUTION: beware of arrays, the following are not quite the same
 // If you're dealing with PHP, you probably want the latter…
 uri.search("?foo=bar&amp;bar=baz");
