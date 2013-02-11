@@ -555,6 +555,38 @@ test("mutating object", function() {
 });
 test("addQuery", function() {
     var u = URI('?foo=bar');
+    u.setQuery('foo', 'bam');
+    equal(u.query(), 'foo=bam', "set name, value");
+
+    u.setQuery('array', ['one', 'two']);
+    equal(u.query(), 'foo=bam&array=one&array=two', "set name, array");
+
+    u.query('?foo=bar');
+    u.setQuery({'obj': 'bam', foo: "baz"});
+    equal(u.query(), 'foo=baz&obj=bam', "set {name: value}");
+
+    u.setQuery({'foo': 'foo', bar: ['1', '2']});
+    equal(u.query(), 'foo=foo&obj=bam&bar=1&bar=2', "set {name: array}");
+
+    u.query('?foo=bar');
+    u.setQuery({'bam': null, 'baz': ''});
+    equal(u.query(), 'foo=bar&bam&baz=', "set {name: null}");
+
+    u.query('?foo=bar');
+    u.setQuery('empty');
+    equal(u.query(), 'foo=bar&empty', "set undefined");
+    
+    u.query('?foo=bar');
+    u.setQuery('empty', "");
+    equal(u.query(), 'foo=bar&empty=', "set empty string");
+
+    u.query('');
+    u.setQuery('some value', "must be encoded because of = and ? and #");
+    equal(u.query(), 'some+value=must+be+encoded+because+of+%3D+and+%3F+and+%23', "encoding");
+    equal(u.query(true)['some value'], "must be encoded because of = and ? and #", "decoding");
+});
+test("addQuery", function() {
+    var u = URI('?foo=bar');
     u.addQuery('baz', 'bam');
     equal(u.query(), 'foo=bar&baz=bam', "add name, value");
 

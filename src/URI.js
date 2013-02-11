@@ -1242,6 +1242,29 @@ p.query = function(v, build) {
         return q.call(this, v, build);
     }
 };
+p.setQuery = function(name, value, build) {
+    var data = URI.parseQuery(this._parts.query);
+    
+    if (typeof name === "object") {
+        for (var key in name) {
+            if (hasOwn.call(name, key)) {
+                data[key] = name[key];
+            }
+        }
+    } else if (typeof name === "string") {
+        data[name] = value !== undefined ? value : null;
+    } else {
+        throw new TypeError("URI.addQuery() accepts an object, string as the name parameter");
+    }
+    
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters);
+    if (typeof name !== "string") {
+        build = value;
+    }
+
+    this.build(!build);
+    return this;
+};
 p.addQuery = function(name, value, build) {
     var data = URI.parseQuery(this._parts.query);
     URI.addQuery(data, name, value === undefined ? null : value);
@@ -1264,6 +1287,7 @@ p.removeQuery = function(name, value, build) {
     this.build(!build);
     return this;
 };
+p.setSearch = p.setQuery;
 p.addSearch = p.addQuery;
 p.removeSearch = p.removeQuery;
 

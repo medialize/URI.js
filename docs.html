@@ -81,6 +81,7 @@
             Working with the query string
             <ul>
                 <li><a href="#accessors-search">search(), query()</a></li>
+                <li><a href="#search-set">setSearch(), setQuery()</a></li>
                 <li><a href="#search-add">addSearch(), addQuery()</a></li>
                 <li><a href="#search-remove">removeSearch(), removeQuery()</a></li>
             </ul>
@@ -575,6 +576,24 @@ uri.is("ip") === false;</pre>
     
     
     <h2 id="querystrings">Working with the query string</h2>
+    
+    <h3 id="search-set">setSearch(), setQuery()</h3>
+    <p>.setQuery() is an alias of .setSearch()</p>
+    <pre class="prettyprint lang-js">var uri = new URI("?hello=world");
+uri.setSearch("hello", "mars"); // returns the URI instance for chaining
+// uri == "?hello=mars"
+
+uri.setSearch({ foo: "bar", goodbye : ["world", "mars"] });
+// uri == "?hello=mars&amp;foo=bar&amp;goodbye=world&amp;goodbye=mars"
+
+uri.setSearch("goodbye", "sun");
+// uri == "?hello=mars&amp;foo=bar&amp;goodbye=sun"
+
+// CAUTION: beware of arrays, the following are not quite the same
+// If you're dealing with PHP, you probably want the latter…
+uri.setSearch("foo", ["bar", "baz"]);
+uri.setSearch("foo[]", ["bar", "baz"]);</pre>
+    <p>Note that names and values passed in are encoded automatically.</p>
     
     <h3 id="search-add">addSearch(), addQuery()</h3>
     <p>.addQuery() is an alias of .addSearch()</p>
