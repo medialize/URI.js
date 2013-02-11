@@ -1,0 +1,38 @@
+{
+    "name": "URI",
+    "title": "jQuery URI",
+    "description": "URI.js - Mutating URLs",
+    "keywords": [
+        "URI",
+        "URIs",
+        "URL",
+        "URLs",
+        "URN",
+        "URNs",
+        "RFC3986",
+        "RFC6570",
+        "URI-Template",
+        "URL-Template",
+        "URI-mutation",
+        "URL-mutation",
+        "URI-manipulation",
+        "URL-manipulation"
+    ],
+    "version": "1.9.0",
+    "author": {
+        "name": "Rodney Rehm",
+        "url": "http://rodneyrehm.de/en/"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/jquery/jquery-color/blob/2.1.2/MIT-LICENSE.txt"
+        }
+    ],
+    "bugs": "https://github.com/medialize/URI.js/issues",
+    "homepage": "http://medialize.github.com/URI.js/",
+    "docs": "http://medialize.github.com/URI.js/docs.html",
+    "dependencies": {
+        "jquery": ">=1.7"
+    }
+}
