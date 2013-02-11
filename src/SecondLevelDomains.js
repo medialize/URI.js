@@ -2,7 +2,7 @@
  * URI.js - Mutating URLs
  * Second Level Domain (SLD) Support
  *
- * Version: 1.8.3
+ * Version: 1.9.0
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.com/URI.js/

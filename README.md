@@ -207,11 +207,13 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.9.0 (February 11th 2013) ###
+
 * adding [`.setQuery()`](http://medialize.github.com/URI.js/docs.html#search-set) - ([Issue #64](https://github.com/medialize/URI.js/issues/64))
 * adding callback argument to [`.query()`](http://medialize.github.com/URI.js/docs.html#accessors-search)
 * adding jQuery 1.9.1 to the test suite
 
-### 1.8.3 (January 9th 2013) ###
+### 1.9.0 (January 9th 2013) ###
 
 * fixing [UglifyJS2](https://github.com/mishoo/UglifyJS2) compression - ([Issue #60](https://github.com/medialize/URI.js/issues/60), [fidian](https://github.com/fidian))
 
