@@ -233,23 +233,23 @@ var uri = new URI("#call-me-hash");
     uri2 = uri.clone();
 
 uri2.tld("com");
-uri == "http://example.org";
-uri2 == "http://example.com";</pre>
+uri == "http://example.org/";
+uri2 == "http://example.com/";</pre>
     
     <h3 id="href">href()</h3>
     <p>get and set the entire URI</p>
     <pre class="prettyprint lang-js">var uri = URI("http://example.com");
-uri.href() === "http://example.com";
+uri.href() === "http://example.com/";
 
 uri.href("ftp://google.org");
-uri.toString() === "ftp://google.org"</pre>
+uri.toString() === "ftp://google.org/"</pre>
     
     <h3 id="toString">toString(), valueOf()</h3>
     <p>serialize the URI to string. <code>valueOf()</code> is an alias to <code>toString()</code>, as string is the base primitive.</p>
     <pre class="prettyprint lang-js">var uri = URI("http://example.com");
 var s = uri.toString();
 typeof s === "string";
-s === "http://example.com";</pre>
+s === "http://example.com/";</pre>
     
     
     <h3 id="accessors-protocol">protocol(), scheme()</h3>
