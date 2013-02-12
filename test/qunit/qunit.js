@@ -543,7 +543,7 @@ QUnit.assert = {
 extend( QUnit, QUnit.assert );
 
 /**
- * @deprecated since 1.9.0
+ * @deprecated since 1.9.1
  * Kept global "raises()" for backwards compatibility
  */
 QUnit.raises = QUnit.assert.throws;

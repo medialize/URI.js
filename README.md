@@ -207,6 +207,11 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.9.1 (February 12th 2013) ###
+
+* fixing IE9 compatibility with location import: `URI(location)`
+* fixing string character access for IE7 - ([Issue #67](https://github.com/medialize/URI.js/issues/67)), ([Issue #68](https://github.com/medialize/URI.js/issues/68))
+
 ### 1.9.0 (February 11th 2013) ###
 
 * adding [`.setQuery()`](http://medialize.github.com/URI.js/docs.html#search-set) - ([Issue #64](https://github.com/medialize/URI.js/issues/64))
