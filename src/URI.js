@@ -111,7 +111,7 @@ URI.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 // credits to Rich Brown
 // source: http://forums.intermapper.com/viewtopic.php?p=1096#1096
 // specification: http://www.ietf.org/rfc/rfc4291.txt
-URI.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/ ;
+URI.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
 // gruber revised expression - http://rodneyrehm.de/t/url-regex.html
 URI.find_uri_expression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/ig;
 // http://www.iana.org/assignments/uri-schemes.html
@@ -309,7 +309,7 @@ URI.parseHost = function(string, parts) {
         pos = string.length;
     }
 
-    if (string[0] === "[") {
+    if (string.charAt(0) === "[") {
         // IPv6 host - http://tools.ietf.org/html/draft-ietf-6man-text-addr-representation-04#section-6
         // I claim most client software breaks on IPv6 anyways. To simplify things, URI only accepts
         // IPv6+port in the format [2001:db8::1]:80 (for the time being)
@@ -327,7 +327,7 @@ URI.parseHost = function(string, parts) {
         parts.port = t[1] || null;
     }
 
-    if (parts.hostname && string.substring(pos)[0] !== '/') {
+    if (parts.hostname && string.substring(pos).charAt(0) !== '/') {
         pos++;
         string = "/" + string;
     }
@@ -409,7 +409,7 @@ URI.build = function(parts) {
     t += (URI.buildAuthority(parts) || '');
 
     if (typeof parts.path === "string") {
-        if (parts.path[0] !== '/' && typeof parts.hostname === "string") {
+        if (parts.path.charAt(0) !== '/' && typeof parts.hostname === "string") {
             t += '/';
         }
 
@@ -558,18 +558,18 @@ URI.commonPath = function(one, two) {
 
     // find first non-matching character
     for (pos = 0; pos < length; pos++) {
-        if (one[pos] !== two[pos]) {
+        if (one.charAt(pos) !== two.charAt(pos)) {
             pos--;
             break;
         }
     }
 
     if (pos < 1) {
-        return one[0] === two[0] && one[0] === '/' ? '/' : '';
+        return one.charAt(0) === two.charAt(0) && one.charAt(0) === '/' ? '/' : '';
     }
 
     // revert to last /
-    if (one[pos] !== '/') {
+    if (one.charAt(pos) !== '/') {
         pos = one.substring(0, pos).lastIndexOf('/');
     }
 
@@ -647,7 +647,7 @@ generateAccessor = function(_part, _key){
         } else {
             if (v !== null) {
                 v = v + "";
-                if (v[0] === _key) {
+                if (v.charAt(0) === _key) {
                     v = v.substring(1);
                 }
             }
@@ -826,7 +826,7 @@ p.port = function(v, build) {
 
         if (v) {
             v += "";
-            if (v[0] === ":") {
+            if (v.charAt(0) === ":") {
                 v = v.substring(1);
             }
 
@@ -934,7 +934,7 @@ p.subdomain = function(v, build) {
         var sub = this._parts.hostname.substring(0, e);
         var replace = new RegExp('^' + escapeRegEx(sub));
 
-        if (v && v[v.length - 1] !== '.') {
+        if (v && v.charAt(v.length - 1) !== '.') {
             v += ".";
         }
 
@@ -1068,13 +1068,13 @@ p.directory = function(v, build) {
                 v = '/';
             }
 
-            if (v[0] !== '/') {
+            if (v.charAt(0) !== '/') {
                 v = "/" + v;
             }
         }
 
         // directories always end with a slash
-        if (v && v[v.length - 1] !== '/') {
+        if (v && v.charAt(v.length - 1) !== '/') {
             v += '/';
         }
 
@@ -1101,7 +1101,7 @@ p.filename = function(v, build) {
     } else {
         var mutatedDirectory = false;
         
-        if (v[0] === '/') {
+        if (v.charAt(0) === '/') {
             v = v.substring(1);
         }
 
@@ -1145,7 +1145,7 @@ p.suffix = function(v, build) {
         res = (/^[a-z0-9%]+$/i).test(s) ? s : "";
         return v ? URI.decodePathSegment(res) : res;
     } else {
-        if (v[0] === '.') {
+        if (v.charAt(0) === '.') {
             v = v.substring(1);
         }
 
@@ -1362,8 +1362,8 @@ p.normalizePath = function(build) {
     var _parent, _pos;
 
     // handle relative paths
-    if (_path[0] !== '/') {
-        if (_path[0] === '.') {
+    if (_path.charAt(0) !== '/') {
+        if (_path.charAt(0) === '.') {
             _was_relative_prefix = _path.substring(0, _path.indexOf('/'));
         }
         _was_relative = true;
@@ -1474,7 +1474,7 @@ p.readable = function() {
         }
     }
 
-    if (uri._parts.hostname && uri._parts.path && uri._parts.path[0] !== '/') {
+    if (uri._parts.hostname && uri._parts.path && uri._parts.path.charAt(0) !== '/') {
         t += '/';
     }
 
@@ -1527,7 +1527,7 @@ p.absoluteTo = function(base) {
         }
     }
 
-    if (resolved.path()[0] !== '/') {
+    if (resolved.path().charAt(0) !== '/') {
         basedir = base.directory();
         resolved._parts.path = (basedir ? (basedir + '/') : '') + resolved._parts.path;
         resolved.normalizePath();
@@ -1549,13 +1549,13 @@ p.relativeTo = function(base) {
         base = new URI(base);
     }
 
-    if (this.path()[0] !== '/' || base.path()[0] !== '/') {
+    if (this.path().charAt(0) !== '/' || base.path().charAt(0) !== '/') {
         throw new Error('Cannot calculate common path from non-relative URLs');
     }
 
     // determine common sub path
     common = URI.commonPath(relative.path(), base.path());
-    
+
     // no relation if there's nothing in common 
     if (!common || common === '/') {
         return relative;
@@ -1568,7 +1568,7 @@ p.relativeTo = function(base) {
     
     _base = base.directory();
     _this = this.directory();
-    
+
     // base and this are on the same level
     if (_base === _this) {
         relative._parts.path = './' + relative.filename();
