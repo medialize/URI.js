@@ -708,7 +708,7 @@ p.href = function(href, build) {
     // * location.hash != object.fragment
     // simply serializing the unknown object should do the trick 
     // (for location, not for everything...)
-    if (!_URI && _object && Object.prototype.toString.call(href) !== "[object Object]") {
+    if (!_URI && _object && href.pathname !== undefined) {
         href = href.toString();
     }
 
