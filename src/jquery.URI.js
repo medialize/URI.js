@@ -84,6 +84,13 @@ function getUriProperty(elem) {
         return undefined;
     }
     
+    if (!property) {
+        // you can set any property you wish. So for elements that don't have
+        // either of [src, href, action] we simply return src.
+        // https://github.com/medialize/URI.js/issues/69
+        return 'src';
+    }
+    
     return property;
 }
 
