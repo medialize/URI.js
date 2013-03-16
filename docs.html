@@ -84,6 +84,7 @@
                 <li><a href="#search-set">setSearch(), setQuery()</a></li>
                 <li><a href="#search-add">addSearch(), addQuery()</a></li>
                 <li><a href="#search-remove">removeSearch(), removeQuery()</a></li>
+                <li><a href="#search-has">hasSearch(), hasQuery()</a></li>
             </ul>
         </li>
         <li>
@@ -646,6 +647,42 @@ uri.removeSearch(["hello", "foo"]);
 uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true&amp;a=1&amp;a=2&amp;a=3");
 uri.removeSearch({hello: "world", foo: undefined, a: ["1", "3"]});
 // uri == "?hello=mars&amp;mine=true&amp;a=2"</pre>
+
+    <h3 id="search-has">hasSearch(), hasQuery()</h3>
+    <p>.hasQuery() is an alias of .hasSearch(). The method checks the existence and value of a given parameter within the query string.</p>
+    <pre class="prettyprint lang-js">var uri = URI("?string=bar&amp;list=one&amp;list=two&amp;number=123&amp;null&amp;empty=");
+
+// check if parameter exists (regardless of value)
+u.hasQuery("string") === true;
+u.hasQuery("nono") === false;
+
+// check if parameter has a truthy / falsy value
+u.hasQuery("string", true) === true;
+u.hasQuery("string", false) === false;
+u.hasQuery("empty", true) === false;
+u.hasQuery("empty", false) === true;
+
+// check if parameter has a given value
+u.hasQuery("string", "bar") === true;
+u.hasQuery("number", 123) === true;
+
+// check if value is contained in parameter list
+u.hasQuery("list", "two", true) === true;
+u.hasQuery("list", ["two"], true) === true;
+u.hasQuery("list", "three", true) === false;
+u.hasQuery("list", ["two", "three"], true) === false;
+u.hasQuery("list", /ne$/, true) === true;
+
+// check if parameter matches an expression
+u.hasQuery("string", /ar$/) === true;
+
+// check by comparison function
+u.hasQuery("string", function(value, name, data) {
+  // value === "bar";
+  // name === "string";
+  // data === u.query(true);
+  return true;
+}) === true;</pre>
 
     <h2 id="fragment-abuse">Working with the Fragment (Hash)</h2>
 
