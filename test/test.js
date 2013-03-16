@@ -732,10 +732,12 @@ test("hasQuery", function() {
     
     // matching part of array
     equal(u.hasQuery('string', ['one'], true), false, "in array check - failing string");
+    equal(u.hasQuery('list', 'one', true), true, "in array check - passing value");
     equal(u.hasQuery('list', ['one'], true), true, "in array check - passing incomplete list");
     equal(u.hasQuery('list', ['one', 'two'], true), true, "in array check - passing list");
     equal(u.hasQuery('list', ['two', 'one'], true), true, "in array check - passing unsorted list");
-    equal(u.hasQuery('list', [/ne$/], true), true, "in array check - passing RegExp");
+    equal(u.hasQuery('list', /ne$/, true), true, "in array check - passing RegExp");
+    equal(u.hasQuery('list', [/ne$/], true), true, "in array check - passing RegExp list");
     
     // comparison function
     equal(u.hasQuery('string', function(value, name, data) {
