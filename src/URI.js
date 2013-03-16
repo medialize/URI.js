@@ -58,8 +58,12 @@ function escapeRegEx(string) {
     return string.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 }
 
+function getType(value) {
+    return String(Object.prototype.toString.call(value)).slice(8, -1);
+}
+
 function isArray(obj) {
-    return String(Object.prototype.toString.call(obj)) === "[object Array]";
+    return getType(obj) === "Array";
 }
 
 function filterArrayValues(data, value) {
@@ -83,6 +87,57 @@ function filterArrayValues(data, value) {
     }
 
     return data;
+}
+
+function arrayContains(list, value) {
+    var i, length;
+    
+    // value may be string, number, array, regexp
+    if (isArray(value)) {
+        // Note: this can be optimized to O(n) (instead of current O(m * n))
+        for (i = 0, length = value.length; i < length; i++) {
+            if (!arrayContains(list, value[i])) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    var _type = getType(value);
+    for (i = 0, length = list.length; i < length; i++) {
+        if (_type === 'RegExp') {
+            if (typeof list[i] === 'string' && list[i].match(value)) {
+                return true;
+            }
+        } else if (list[i] === value) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function arraysEqual(one, two) {
+    if (!isArray(one) || !isArray(two)) {
+        return false;
+    }
+    
+    // arrays can't be equal if they have different amount of content
+    if (one.length !== two.length) {
+        return false;
+    }
+
+    one.sort();
+    two.sort();
+
+    for (var i = 0, l = one.length; i < l; i++) {
+        if (one[i] !== two[i]) {
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 URI._parts = function() {
@@ -551,6 +606,73 @@ URI.removeQuery = function(data, name, value) {
         throw new TypeError("URI.addQuery() accepts an object, string as the first parameter");
     }
 };
+URI.hasQuery = function(data, name, value, withinArray) {
+    if (typeof name === "object") {
+        for (var key in name) {
+            if (hasOwn.call(name, key)) {
+                if (!URI.hasQuery(data, key, name[key])) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    } else if (typeof name !== "string") {
+        throw new TypeError("URI.hasQuery() accepts an object, string as the name parameter");
+    }
+
+    switch (getType(value)) {
+        case 'Undefined':
+            // true if exists (but may be empty)
+            return name in data; // data[name] !== undefined;
+
+        case 'Boolean':
+            // true if exists and non-empty
+            var _booly = Boolean(isArray(data[name]) ? data[name].length : data[name]);
+            return value === _booly;
+
+        case 'Function':
+            // allow complex comparison
+            return !!value(data[name], name, data);
+
+        case 'Array':
+            if (!isArray(data[name])) {
+                return false;
+            }
+
+            var op = withinArray ? arrayContains : arraysEqual;
+            return op(data[name], value);
+
+        case 'RegExp':
+            if (!isArray(data[name])) {
+                return Boolean(data[name] && data[name].match(value));
+            }
+
+            if (!withinArray) {
+                return false;
+            }
+
+            return arrayContains(data[name], value);
+
+        case 'Number':
+            value = String(value);
+            // omit break;
+        case 'String':
+            if (!isArray(data[name])) {
+                return data[name] === value;
+            }
+
+            if (!withinArray) {
+                return false;
+            }
+
+            return arrayContains(data[name], value);
+
+        default:
+            throw new TypeError("URI.hasQuery() accepts undefined, boolean, string, number, RegExp, Function as the value parameter");
+    }
+};
+
 
 URI.commonPath = function(one, two) {
     var length = Math.min(one.length, two.length);
@@ -1293,9 +1415,14 @@ p.removeQuery = function(name, value, build) {
     this.build(!build);
     return this;
 };
+p.hasQuery = function(name, value, withinArray) {
+    var data = URI.parseQuery(this._parts.query);
+    return URI.hasQuery(data, name, value, withinArray);
+};
 p.setSearch = p.setQuery;
 p.addSearch = p.addQuery;
 p.removeSearch = p.removeQuery;
+p.hasSearch = p.hasQuery;
 
 // sanitizing URLs
 p.normalize = function() {
@@ -1643,24 +1770,8 @@ p.equals = function(uri) {
                 if (one_map[key] !== two_map[key]) {
                     return false;
                 }
-            } else {
-                if (!isArray(two_map[key])) {
-                    return false;
-                }
-
-                // arrays can't be equal if they have different amount of content
-                if (one_map[key].length !== two_map[key].length) {
-                    return false;
-                }
-
-                one_map[key].sort();
-                two_map[key].sort();
-
-                for (var i = 0, l = one_map[key].length; i < l; i++) {
-                    if (one_map[key][i] !== two_map[key][i]) {
-                        return false;
-                    }
-                }
+            } else if (!arraysEqual(one_map[key], two_map[key])) {
+                return false;
             }
 
             checked[key] = true;

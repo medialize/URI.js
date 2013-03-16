@@ -563,7 +563,7 @@ test("query callback", function() {
     u.query(function(data) {
         return {
             bla: 'blubb'
-        }
+        };
     });
     equal(u.query(), 'bla=blubb', "overwrite returned value");
 });
@@ -688,6 +688,65 @@ test("duplicateQueryParameters", function() {
     u.duplicateQueryParameters(true);
     u.addQuery('bar', 1);
     equal(u.toString(), '?bar=1&bar=1&bar=1&bar=1', "parameters NOT de-duplicated after addQuery()");
+});
+test("hasQuery", function() {
+    var u = URI('?string=bar&list=one&list=two&number=123&null&empty=');
+
+    // exists
+    equal(u.hasQuery('string'), true, "simple exists check - passing");
+    equal(u.hasQuery('nono'), false, "simple exists check - failing");
+
+    // truthy value    
+    equal(u.hasQuery('string', true), true, "has truthy value check - passing string");
+    equal(u.hasQuery('number', true), true, "has truthy value check - passing number");
+    equal(u.hasQuery('list', true), true, "has truthy value check - passing list");
+    equal(u.hasQuery('empty', true), false, "has truthy value check - failing empty");
+    equal(u.hasQuery('null', true), false, "has truthy value check - failing null");
+    
+    // falsy value
+    equal(u.hasQuery('string', false), false, "has falsy value check - failing string");
+    equal(u.hasQuery('number', false), false, "has falsy value check - failing number");
+    equal(u.hasQuery('list', false), false, "has falsy value check - failing list");
+    equal(u.hasQuery('empty', false), true, "has falsy value check - passing empty");
+    equal(u.hasQuery('null', false), true, "has falsy value check - passing null");
+    
+    // match value
+    equal(u.hasQuery('string', "bar"), true, "value check - passing string");
+    equal(u.hasQuery('number', 123), true, "value check - passing number");
+    equal(u.hasQuery('number', "123"), true, "value check - passing number as string");
+    equal(u.hasQuery('list', "one"), false, "value check - failing list");
+    equal(u.hasQuery('empty', ""), true, "value check - passing empty");
+    equal(u.hasQuery('null', ""), false, "value check - failing null");
+    
+    // matching RegExp
+    equal(u.hasQuery('string', /ar$/), true, "RegExp check - passing string");
+    equal(u.hasQuery('number', /2/), true, "RegExp check - passing number");
+    equal(u.hasQuery('string', /nono/), false, "RegExp check - failing string");
+    equal(u.hasQuery('number', /999/), false, "RegExp check - failing number");
+    
+    // matching array
+    equal(u.hasQuery('string', ['one']), false, "array check - failing string");
+    equal(u.hasQuery('list', ['one']), false, "array check - failing incomplete list");
+    equal(u.hasQuery('list', ['one', 'two']), true, "array check - passing list");
+    equal(u.hasQuery('list', ['two', 'one']), true, "array check - passing unsorted list");
+    
+    // matching part of array
+    equal(u.hasQuery('string', ['one'], true), false, "in array check - failing string");
+    equal(u.hasQuery('list', ['one'], true), true, "in array check - passing incomplete list");
+    equal(u.hasQuery('list', ['one', 'two'], true), true, "in array check - passing list");
+    equal(u.hasQuery('list', ['two', 'one'], true), true, "in array check - passing unsorted list");
+    equal(u.hasQuery('list', [/ne$/], true), true, "in array check - passing RegExp");
+    
+    // comparison function
+    equal(u.hasQuery('string', function(value, name, data) {
+        equal(value, "bar", "Function check - param value");
+        equal(name, "string", "Function check - param name");
+        equal(typeof data, "object", "Function check - param data");
+        return true;
+    }), true, "Function check - passing true");
+    equal(u.hasQuery('string', function(value, name, data) {
+        return false;
+    }), false, "Function check - passing false");
 });
 
 module("normalizing");
