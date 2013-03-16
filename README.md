@@ -207,6 +207,11 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.10.0 (March 16th 2013) ###
+
+* adding [`hasQuery()`](http://medialize.github.com/URI.js/docs.html#search-has) - ([Issue #71](https://github.com/medialize/URI.js/issues/71))
+* fixing URI property detection to return 'src' if none was detected (`jquery.URI.js`) - ([Issue #69](https://github.com/medialize/URI.js/issues/69))
+
 ### 1.9.1 (February 12th 2013) ###
 
 * fixing IE9 compatibility with location import: `URI(location)`
