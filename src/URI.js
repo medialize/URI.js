@@ -1635,12 +1635,16 @@ p.absoluteTo = function(base) {
         throw new Error('URNs do not have any generally defined hierachical components');
     }
 
-    if (this._parts.hostname) {
-        return resolved;
-    }
-
     if (!(base instanceof URI)) {
         base = new URI(base);
+    }
+    
+    if (!resolved._parts.protocol) {
+        resolved._parts.protocol = base._parts.protocol;
+    }
+    
+    if (this._parts.hostname) {
+        return resolved;
     }
 
     for (i = 0, p; p = properties[i]; i++) {

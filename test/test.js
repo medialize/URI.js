@@ -898,6 +898,11 @@ test("absoluteTo", function() {
             base: 'http://user:pass@www.example.org:1234/path/to/file?some=query#hash',
             result: 'http://user:pass@www.example.org:1234/absolute/path?blubber=1#hash3'
         }, {
+            name: 'absolute resolve full URL without scheme',
+            url: '//user:pass@www.example.org:1234/path/to/file?some=query#hash',
+            base: 'proto://user:pass@www.example.org:1234/path/to/file?some=query#hash',
+            result: 'proto://user:pass@www.example.org:1234/path/to/file?some=query#hash'
+        }, {
             name: 'path-relative resolve',
             url: './relative/path?blubber=1#hash3',
             base: 'http://user:pass@www.example.org:1234/path/to/file?some=query#hash',
