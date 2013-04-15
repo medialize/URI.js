@@ -983,7 +983,7 @@ test("relativeTo", function() {
             name: 'same parent',
             url: '/relative/path?blubber=1#hash1',
             base: '/relative/file?some=query#hash',
-            result: './path?blubber=1#hash1'
+            result: 'path?blubber=1#hash1'
         }, {
             name: 'direct parent',
             url: '/relative/path?blubber=1#hash1',
@@ -1003,7 +1003,7 @@ test("relativeTo", function() {
             name: 'descendant',
             url: '/base/path/with/subdir/inner.html',
             base: '/base/path/top.html',
-            result: './with/subdir/inner.html'
+            result: 'with/subdir/inner.html'
         }, {
             name: 'absolute /',
             url: 'http://example.org/foo/bar/bat',
@@ -1018,7 +1018,7 @@ test("relativeTo", function() {
             name: 'absolute /foo/',
             url: 'http://example.org/foo/bar/bat',
             base: 'http://example.org/foo/',
-            result: './bar/bat'
+            result: 'bar/bat'
         }
     ];
 

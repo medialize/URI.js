@@ -1705,7 +1705,7 @@ p.relativeTo = function(base) {
 
     // base and this are on the same level
     if (_base === _this) {
-        relative._parts.path = './' + relative.filename();
+        relative._parts.path = relative.filename();
         return relative.build();
     }
     
@@ -1718,7 +1718,7 @@ p.relativeTo = function(base) {
             _this_diff += '/';
         }
         
-        relative._parts.path = './' + _this_diff + relative.filename();
+        relative._parts.path = _this_diff + relative.filename();
         return relative.build();
     } 
 
