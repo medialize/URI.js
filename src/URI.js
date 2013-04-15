@@ -820,7 +820,7 @@ p.href = function(href, build) {
     this._parts = URI._parts();
 
     var _URI = href instanceof URI;
-    var _object = typeof href === "object" && (href.hostname || href.path);
+    var _object = typeof href === "object" && (href.hostname || href.path || href.pathname);
 
     
     // window.location is reported to be an object, but it's not the sort
