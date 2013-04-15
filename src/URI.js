@@ -1664,70 +1664,60 @@ p.absoluteTo = function(base) {
     return resolved;
 };
 p.relativeTo = function(base) {
-    var relative = this.clone();
-    var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
-    var common, _base, _this, _base_diff, _this_diff;
+    var relative = this.clone().normalize();
+    var common;
 
     if (relative._parts.urn) {
-        throw new Error('URNs do not have any generally defined hierachical components');
+        throw new Error('URNs do not have any generally defined hierarchical components');
     }
 
-    if (!(base instanceof URI)) {
-        base = new URI(base);
+    base = new URI(base).normalize();
+
+    if (relative.path().charAt(0) !== '/') {
+        throw new Error('URI is already relative');
     }
 
-    if (relative.path().charAt(0) !== '/' || base.path().charAt(0) !== '/') {
-        throw new Error('Cannot calculate common path from non-relative URLs');
+    if (base.path().charAt(0) !== '/') {
+        throw new Error('Cannot calculate a URI relative to another relative URI');
+    }
+
+    if (relative._parts.protocol === base._parts.protocol) {
+        relative._parts.protocol = null;
+    }
+
+    if (relative._parts.username !== base._parts.username ||
+            relative._parts.password !== base._parts.password) {
+        return relative.build();
+    }
+
+    if (relative._parts.protocol !== null ||
+            relative._parts.username !== null ||
+            relative._parts.password !== null) {
+        return relative.build();
+    }
+
+    if (relative._parts.hostname === base._parts.hostname &&
+            relative._parts.port === base._parts.port) {
+        relative._parts.hostname = null;
+        relative._parts.port = null;
+    } else {
+        return relative.build();
     }
 
     // determine common sub path
     common = URI.commonPath(relative.path(), base.path());
-    
-    // relative paths don't have authority
-    for (var i = 0, p; p = properties[i]; i++) {
-        relative._parts[p] = null;
-    }
 
-    // no relation if there's nothing in common 
-    if (common === '/') {
-        return relative;
-    } else if (!common) {
-        // there's absolutely nothing in common here
-        return this.clone();
-    }
-    
-    _base = base.directory();
-    _this = relative.directory();
-
-    // base and this are on the same level
-    if (_base === _this) {
-        relative._parts.path = relative.filename();
+    // If the paths have nothing in common, return a relative URL with the absolute path.
+    if (!common) {
         return relative.build();
     }
-    
-    _base_diff = _base.substring(common.length);
-    _this_diff = _this.substring(common.length);
-    
-    // this is a descendant of base
-    if (_base + '/' === common) {
-        if (_this_diff) {
-            _this_diff += '/';
-        }
-        
-        relative._parts.path = _this_diff + relative.filename();
-        return relative.build();
-    } 
 
-    // this is a descendant of base
-    var parents = '../';
-    var _common = new RegExp('^' + escapeRegEx(common));
-    var _parents = _base.replace(_common, '/').match(/\//g).length -1;
+    var parents = base._parts.path.
+            substring(common.length).
+            replace(/[^/]*$/, '').
+            replace(/.*?\//g, '../');
+    relative._parts.path = parents + relative._parts.path.substring(common.length);
 
-    while (_parents--) {
-        parents += '../';
-    }
-
-    relative._parts.path = relative._parts.path.replace(_common, parents);
     return relative.build();
 };
 
