@@ -1004,6 +1004,21 @@ test("relativeTo", function() {
             url: '/base/path/with/subdir/inner.html',
             base: '/base/path/top.html',
             result: './with/subdir/inner.html'
+        }, {
+            name: 'absolute /',
+            url: 'http://example.org/foo/bar/bat',
+            base: 'http://example.org/',
+            result: '/foo/bar/bat'
+        }, {
+            name: 'absolute /foo',
+            url: 'http://example.org/foo/bar/bat',
+            base: 'http://example.org/foo',
+            result: '/foo/bar/bat'
+        }, {
+            name: 'absolute /foo/',
+            url: 'http://example.org/foo/bar/bat',
+            base: 'http://example.org/foo/',
+            result: './bar/bat'
         }
     ];
 

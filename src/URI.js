@@ -689,9 +689,9 @@ URI.commonPath = function(one, two) {
     if (pos < 1) {
         return one.charAt(0) === two.charAt(0) && one.charAt(0) === '/' ? '/' : '';
     }
-
+    
     // revert to last /
-    if (one.charAt(pos) !== '/') {
+    if (one.charAt(pos) !== '/' || two.charAt(pos) !== '/') {
         pos = one.substring(0, pos).lastIndexOf('/');
     }
 
@@ -1672,7 +1672,7 @@ p.relativeTo = function(base) {
     var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
     var common, _base, _this, _base_diff, _this_diff;
 
-    if (this._parts.urn) {
+    if (relative._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
     }
 
@@ -1680,25 +1680,28 @@ p.relativeTo = function(base) {
         base = new URI(base);
     }
 
-    if (this.path().charAt(0) !== '/' || base.path().charAt(0) !== '/') {
+    if (relative.path().charAt(0) !== '/' || base.path().charAt(0) !== '/') {
         throw new Error('Cannot calculate common path from non-relative URLs');
     }
 
     // determine common sub path
     common = URI.commonPath(relative.path(), base.path());
-
-    // no relation if there's nothing in common 
-    if (!common || common === '/') {
-        return relative;
-    }
     
     // relative paths don't have authority
     for (var i = 0, p; p = properties[i]; i++) {
         relative._parts[p] = null;
     }
+
+    // no relation if there's nothing in common 
+    if (common === '/') {
+        return relative;
+    } else if (!common) {
+        // there's absolutely nothing in common here
+        return this.clone();
+    }
     
     _base = base.directory();
-    _this = this.directory();
+    _this = relative.directory();
 
     // base and this are on the same level
     if (_base === _this) {

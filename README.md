@@ -207,6 +207,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+* fixing [`relativeTo()`](http://medialize.github.com/URI.js/docs.htmlrelativeto) - ([Issue #75](https://github.com/medialize/URI.js/issues/75))
+
 ### 1.10.1 (April 2nd 2013) ###
 
 * adding [`absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to properly resolve relative scheme - ([Issue #71](https://github.com/medialize/URI.js/issues/73))
