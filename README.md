@@ -207,7 +207,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-* fixing [`relativeTo()`](http://medialize.github.com/URI.js/docs.htmlrelativeto) - ([Issue #75](https://github.com/medialize/URI.js/issues/75))
+* fixing [`relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) - ([Issue #75](https://github.com/medialize/URI.js/issues/75))
+* fixing [`normalizePath()`](http://medialize.github.com/URI.js/docs.html#normalize-path) to not prepend ./ to relative paths - ([Issue #76](https://github.com/medialize/URI.js/issues/76))
 
 ### 1.10.1 (April 2nd 2013) ###
 

@@ -1518,11 +1518,7 @@ p.normalizePath = function(build) {
     }
     // revert to relative
     if (_was_relative && this.is('relative')) {
-        if (_was_relative_prefix){
-            _path = _was_relative_prefix + _path;
-        } else {
-            _path = _path.substring(1);
-        }
+        _path = _path.substring(1);
     }
 
     _path = URI.recodePath(_path);

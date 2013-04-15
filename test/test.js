@@ -815,7 +815,7 @@ test("normalizePath", function() {
     equal(u.path(), 'food/bar/baz.html', "relative parent");
 
     u.path('./food/woo/../bar/baz.html').normalizePath();
-    equal(u.path(), './food/bar/baz.html', "dot-relative parent");
+    equal(u.path(), 'food/bar/baz.html', "dot-relative parent");
 
     // absolute URL
     u = new URI('http://example.org/foo/bar/baz.html');
