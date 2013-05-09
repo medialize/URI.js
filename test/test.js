@@ -1052,6 +1052,15 @@ test("withinString", function() {
 
     equal(result, expected, "in string URI identification");
 });
+test("noConflict", function() {
+  var actual_lib = URI; // actual library; after loading, before noConflict()
+  var unconflicted = URI.noConflict();
+
+  strictEqual( unconflicted, actual_lib, "noConflict() returns the URI object" );
+  strictEqual( URI, URI_pre_lib, "noConflict() restores the `URI` variable" );
+
+  window.URI = actual_lib;
+});
 
 module("comparing URLs");
 test("equals", function() {

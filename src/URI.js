@@ -26,6 +26,12 @@
 }(this, function (punycode, IPv6, SLD) {
 "use strict";
 
+// get access to the global object ('window' in browsers)
+var root = (function(f){ return f('return this')(); })(Function);
+
+// save current URI variable, if any
+var _URI = root.URI;
+
 function URI(url, base) {
     // Allow instantiation without the 'new' keyword
     if (!(this instanceof URI)) {
@@ -721,6 +727,15 @@ URI.ensureValidHostname = function(v) {
             throw new TypeError("Hostname '" + v + "' contains characters other than [A-Z0-9.-]");
         }
     }
+};
+
+// noConflict
+URI.noConflict = function() {
+  if (root.URI === URI) {
+    root.URI = _URI;
+  }
+
+  return URI;
 };
 
 p.build = function(deferBuild) {
