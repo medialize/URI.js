@@ -138,7 +138,7 @@ $.fn.uri = function(uri) {
         if (uri) {
             return uri;
         } else {
-    		uri = URI($this.attr(property) || '');
+            uri = URI($this.attr(property) || '');
         }
     }
     
