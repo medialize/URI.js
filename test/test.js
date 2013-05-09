@@ -13,7 +13,7 @@ test("new URI(object)", function() {
     var u = new URI({protocol: "http", hostname: 'example.org'});
     ok(u instanceof URI, "instanceof URI");
     ok(u._parts.hostname !== undefined, "host undefined");
-    
+
     u = new URI(location);
     equal(u.href(), String(location.href), "location object");
 });
@@ -132,7 +132,7 @@ test("hostname", function() {
     equal(u.hostname(), "", "hostname removed");
     equal(u+"", "http:///foo.html", "hostname removed url");
 });
-test("port", function() { 
+test("port", function() {
     var u = new URI("http://example.org/foo.html");
     u.port('80');
     equal(u.port(), "80", "changing port 80");
@@ -142,7 +142,7 @@ test("port", function() {
     equal(u.port(), "", "changing port ''");
     equal(u+"", "http://example.org/foo.html", "changing url ''");
 });
-test("path", function() { 
+test("path", function() {
     var u = new URI("http://example.org/foobar.html?query=string");
     u.pathname('/some/path/file.suffix');
     equal(u.pathname(), '/some/path/file.suffix', "changing pathname '/some/path/file.suffix'");
@@ -156,7 +156,7 @@ test("path", function() {
     equal(u.pathname(), '/~userhome/@mine;is%20%2F%20and/', "path encoding");
     equal(u.pathname(true), '/~userhome/@mine;is %2F and/', "path decoded");
 });
-test("query", function() { 
+test("query", function() {
     var u = new URI("http://example.org/foo.html");
     u.query('foo=bar=foo');
     equal(u.query(), "foo=bar=foo", "query: foo=bar=foo");
@@ -193,7 +193,7 @@ test("query", function() {
     t = u.query('').query(true);
     t = u.href("http://example.org").query(true);
 });
-test("fragment", function() { 
+test("fragment", function() {
     var u = new URI("http://example.org/foo.html");
     u.fragment('foo');
     equal(u.fragment(), "foo", "fragment: foo");
@@ -264,7 +264,7 @@ test("userinfo", function() {
     equal(u.username(), "walter", "userinfo removed password");
     equal(u.password(), "", "userinfo removed password");
     equal(u+"", "http://walter@foo.bar/foo.html", "userinfo changed url");
-    
+
     u.userinfo('');
     equal(u.username(), "", "userinfo removed username");
     equal(u.password(), "", "userinfo removed password");
@@ -302,7 +302,7 @@ test("resource", function() {
 
     u.resource("/foo.html?hello#world");
     equal(u.href(), "http://foo.bar/foo.html?hello#world", "set resource");
-    
+
     u.resource("/world.html");
     equal(u.href(), "http://foo.bar/world.html", "set resource path");
     equal(u.resource(), "/world.html", "get resource path");
@@ -322,7 +322,7 @@ test("resource", function() {
     u.resource("/mars.txt?planet=123");
     equal(u.href(), "http://foo.bar/mars.txt?planet=123", "set resource path+query");
     equal(u.resource(), "/mars.txt?planet=123", "get resource path+query");
-    
+
     u.resource("/neptune.txt#foo");
     equal(u.href(), "http://foo.bar/neptune.txt#foo", "set resource path+fragment");
     equal(u.resource(), "/neptune.txt#foo", "get resource path+fragment");
@@ -366,7 +366,7 @@ test("domain", function() {
     u.domain('example.co.uk');
     equal(u.domain(), "example.co.uk", "domain after changed domain example.co.uk");
     equal(u+"", "http://www.example.co.uk/foo.html", "url after changed domain example.co.uk");
-    
+
     u.href('http://test/');
     equal(u.domain(), "test", "domain (dot-less)");
     equal(u.subdomain(), "", "subdomain (dot-less)");
@@ -396,10 +396,10 @@ test("tld", function() {
     u.tld('org');
     equal(u.tld(), "org", "sld changed to tld");
     equal(u+"", "http://www.example.org/foo.html", "changed url to tld");
-    
+
     u.hostname('www.examplet.se');
     equal(u.tld(), "se", "se tld");
-    
+
 });
 test("directory", function() {
     var u = new URI("http://www.example.org/some/directory/foo.html");
@@ -496,10 +496,10 @@ test("segment", function() {
         s = u.segment();
 
     equal(s.join('||'), "some||directory||foo.html", "segment get array");
-    
+
     u.segment(['hello', 'world', 'foo.html']);
     equal(u.path(), "/hello/world/foo.html", "segment set array");
-    
+
     equal(u.segment(0), "hello", "segment get 0");
     equal(u.segment(2), "foo.html", "segment get 2");
     equal(u.segment(3), undefined, "segment get 3");
@@ -512,26 +512,26 @@ test("segment", function() {
     equal(u.path(), "/goodbye/world/bar.html/zupp", "segment set 3");
     u.segment("zapp");
     equal(u.path(), "/goodbye/world/bar.html/zupp/zapp", "segment append");
-    
+
     u.segment(3, "");
     equal(u.path(), "/goodbye/world/bar.html/zapp", "segment del 3 ''");
     u.segment(3, null);
     equal(u.path(), "/goodbye/world/bar.html", "segment del 3 null");
-    
+
     u = new URI("http://www.example.org/some/directory/foo.html");
     equal(u.segment(-1), "foo.html", "segment get -1");
     u.segment(-1, "world.html");
     equal(u.path(), "/some/directory/world.html", "segment set -1");
-    
+
     u = new URI("someurn:foo:bar:baz");
     equal(u.segment().join('||'), "foo||bar||baz", "segment get array URN");
     u.segment(1, 'mars');
     equal(u.path(), "foo:mars:baz", "segment set 1 URN");
     equal(u.toString(), "someurn:foo:mars:baz", "segment set 1 URN");
-    
+
     u = new URI('/foo/');
     equal(u.segment().join('||'), "foo||", "segment get array trailing empty");
-    
+
     u.segment('test');
     equal(u.path(), "/foo/test", "segment append trailing empty");
 });
@@ -559,7 +559,7 @@ test("query callback", function() {
         data.foo = "bam";
     });
     equal(u.query(), 'foo=bam', "augment argument");
-    
+
     u.query(function(data) {
         return {
             bla: 'blubb'
@@ -589,7 +589,7 @@ test("setQuery", function() {
     u.query('?foo=bar');
     u.setQuery('empty');
     equal(u.query(), 'foo=bar&empty', "set undefined");
-    
+
     u.query('?foo=bar');
     u.setQuery('empty', "");
     equal(u.query(), 'foo=bar&empty=', "set empty string");
@@ -621,7 +621,7 @@ test("addQuery", function() {
     u.query('?foo=bar');
     u.addQuery('empty');
     equal(u.query(), 'foo=bar&empty', "add undefined");
-    
+
     u.query('?foo=bar');
     u.addQuery('empty', "");
     equal(u.query(), 'foo=bar&empty=', "add empty string");
@@ -653,36 +653,36 @@ test("removeQuery", function() {
 });
 test("duplicateQueryParameters", function() {
     var u = new URI('?bar=1&bar=1&bar=1');
-    
+
     u.normalizeQuery();
     equal(u.toString(), '?bar=1', "parameters de-duplicated");
-    
+
     u = new URI('?bar=1&bar=1&bar=1');
     u.duplicateQueryParameters(true);
     ok(u._parts.duplicateQueryParameters, "duplicateQueryParameters enabled");
     u.normalizeQuery();
     equal(u.toString(), '?bar=1&bar=1&bar=1', "parameters NOT de-duplicated");
     ok(u._parts.duplicateQueryParameters, "duplicateQueryParameters still enabled after normalizeQuery()");
-    
+
     u.duplicateQueryParameters(false);
     u.normalizeQuery();
     equal(u.toString(), '?bar=1', "parameters de-duplicated again");
     ok(!u._parts.duplicateQueryParameters, "duplicateQueryParameters still disabled after normalizeQuery()");
-    
+
     URI.duplicateQueryParameters = true;
     u = new URI('?bar=1&bar=1&bar=1');
     u.normalizeQuery();
     equal(u.toString(), '?bar=1&bar=1&bar=1', "global configuration");
-    
+
     URI.duplicateQueryParameters = false;
-    
+
     // test cloning
     u = new URI('?bar=1&bar=1&bar=1');
     u = u.duplicateQueryParameters(true).clone();
     ok(u._parts.duplicateQueryParameters, "duplicateQueryParameters still enabled after clone()");
     u.normalizeQuery();
     equal(u.toString(), '?bar=1&bar=1&bar=1', "parameters NOT de-duplicated");
-    
+
     // test adding
     u = new URI('?bar=1&bar=1&bar=1');
     u.duplicateQueryParameters(true);
@@ -696,20 +696,20 @@ test("hasQuery", function() {
     equal(u.hasQuery('string'), true, "simple exists check - passing");
     equal(u.hasQuery('nono'), false, "simple exists check - failing");
 
-    // truthy value    
+    // truthy value
     equal(u.hasQuery('string', true), true, "has truthy value check - passing string");
     equal(u.hasQuery('number', true), true, "has truthy value check - passing number");
     equal(u.hasQuery('list', true), true, "has truthy value check - passing list");
     equal(u.hasQuery('empty', true), false, "has truthy value check - failing empty");
     equal(u.hasQuery('null', true), false, "has truthy value check - failing null");
-    
+
     // falsy value
     equal(u.hasQuery('string', false), false, "has falsy value check - failing string");
     equal(u.hasQuery('number', false), false, "has falsy value check - failing number");
     equal(u.hasQuery('list', false), false, "has falsy value check - failing list");
     equal(u.hasQuery('empty', false), true, "has falsy value check - passing empty");
     equal(u.hasQuery('null', false), true, "has falsy value check - passing null");
-    
+
     // match value
     equal(u.hasQuery('string', "bar"), true, "value check - passing string");
     equal(u.hasQuery('number', 123), true, "value check - passing number");
@@ -717,19 +717,19 @@ test("hasQuery", function() {
     equal(u.hasQuery('list', "one"), false, "value check - failing list");
     equal(u.hasQuery('empty', ""), true, "value check - passing empty");
     equal(u.hasQuery('null', ""), false, "value check - failing null");
-    
+
     // matching RegExp
     equal(u.hasQuery('string', /ar$/), true, "RegExp check - passing string");
     equal(u.hasQuery('number', /2/), true, "RegExp check - passing number");
     equal(u.hasQuery('string', /nono/), false, "RegExp check - failing string");
     equal(u.hasQuery('number', /999/), false, "RegExp check - failing number");
-    
+
     // matching array
     equal(u.hasQuery('string', ['one']), false, "array check - failing string");
     equal(u.hasQuery('list', ['one']), false, "array check - failing incomplete list");
     equal(u.hasQuery('list', ['one', 'two']), true, "array check - passing list");
     equal(u.hasQuery('list', ['two', 'one']), true, "array check - passing unsorted list");
-    
+
     // matching part of array
     equal(u.hasQuery('string', ['one'], true), false, "in array check - failing string");
     equal(u.hasQuery('list', 'one', true), true, "in array check - passing value");
@@ -738,7 +738,7 @@ test("hasQuery", function() {
     equal(u.hasQuery('list', ['two', 'one'], true), true, "in array check - passing unsorted list");
     equal(u.hasQuery('list', /ne$/, true), true, "in array check - passing RegExp");
     equal(u.hasQuery('list', [/ne$/], true), true, "in array check - passing RegExp list");
-    
+
     // comparison function
     equal(u.hasQuery('string', function(value, name, data) {
         equal(value, "bar", "Function check - param value");
