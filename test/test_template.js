@@ -299,8 +299,8 @@ var levels = {
             "path" : "/foo/bar",
             "list" : ["red", "green", "blue"],
             "keys" : {
-                "semi" : ";", 
-                "dot" : ".", 
+                "semi" : ";",
+                "dot" : ".",
                 "comma" : ","
             },
             "v" : "6",
@@ -321,18 +321,18 @@ for (var i in levels) {
             var combined_expression = "",
                 combined_expansion = "",
                 template, expression, expansion;
-            
+
             for (type in data.expressions) {
                 for (expression in data.expressions[type]) {
                     combined_expression += "/" + expression;
                     combined_expansion += "/" + data.expressions[type][expression];
-                    
+
                     template = new URITemplate(expression);
                     expansion = template.expand(data.values);
                     equal(expansion, data.expressions[type][expression], type + ": " + expression);
                 }
             }
-            
+
             template = new URITemplate(combined_expression);
             expansion = template.expand(data.values);
             equal(expansion, combined_expansion, type + ": combined");
@@ -348,7 +348,7 @@ test("Data Callbacks", function() {
         local = function(key) {
             return "hello world.html";
         };
-        
+
         equal(template.expand(global), "hello%20world.html", "global callback");
         equal(template.expand({"var": local}), "hello%20world.html", "local callback");
 });
@@ -357,7 +357,7 @@ test("Parse errors", function() {
     raises(function() {
         URITemplate("AB{var$}IJ").parse();
     }, Error, "Failing invalid variable name");
-    
+
     raises(function() {
         URITemplate("AB{$var}IJ").parse();
     }, Error, "Failing invalid operator");
