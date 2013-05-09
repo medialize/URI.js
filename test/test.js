@@ -1059,6 +1059,7 @@ test("noConflict", function() {
   strictEqual( unconflicted, actual_lib, "noConflict() returns the URI object" );
   strictEqual( URI, URI_pre_lib, "noConflict() restores the `URI` variable" );
 
+  // restore for other tests
   window.URI = actual_lib;
 });
 

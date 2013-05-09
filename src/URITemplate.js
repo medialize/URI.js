@@ -27,6 +27,12 @@
 }(this, function (URI) {
 "use strict";
 
+// get access to the global object ('window' in browsers)
+var root = (function(f){ return f('return this')(); })(Function);
+
+// save current URITemplate variable, if any
+var _URITemplate = root.URITemplate;
+
 var hasOwn = Object.prototype.hasOwnProperty;
 function URITemplate(expression) {
     // serve from cache where possible
@@ -297,6 +303,14 @@ URITemplate.expandUnnamed = function(d, options, explode, separator, length, nam
     }
 
     return result;
+};
+
+URITemplate.noConflict = function() {
+  if (root.URITemplate === URITemplate) {
+    root.URITemplate = _URITemplate;
+  }
+
+  return URITemplate;
 };
 
 // expand template through given data map
