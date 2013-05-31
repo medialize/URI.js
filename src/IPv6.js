@@ -35,6 +35,12 @@ var _expected = "fe80::204:61ff:fe9d:f156";
 console.log(_in, _out, _expected, _out === _expected);
 */
 
+// get access to the global object ('window' in browsers)
+var root = (function(f){ return f('return this')(); })(Function);
+
+// save current IPv6 variable, if any
+var _IPv6 = root.IPv6;
+
 function best(address) {
     // based on:
     // Javascript to test an IPv6 address for proper format, and to
@@ -167,7 +173,15 @@ function best(address) {
     return result;
 };
 
+function noConflict(){
+  if (root.IPv6 === this) {
+    root.IPv6 = _IPv6;
+  }
+  return this;
+};
+
 return {
-    best: best
+    best: best,
+    noConflict: noConflict
 };
 }));
