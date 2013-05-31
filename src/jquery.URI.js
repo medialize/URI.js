@@ -145,7 +145,7 @@ $.fn.uri = function(uri) {
         }
         
         if (!(uri instanceof URI)) {
-            uri = URI(uri);
+            uri = URI(uri || '');
         }
     } else {
         uri = $this.data('uri');
