@@ -27,18 +27,24 @@
 }(this, function (URI) {
 "use strict";
 
+// get access to the global object ('window' in browsers)
+var root = (function(f){ return f('return this')(); })(Function);
+
+// save current URITemplate variable, if any
+var _URITemplate = root.URITemplate;
+
 var hasOwn = Object.prototype.hasOwnProperty;
 function URITemplate(expression) {
     // serve from cache where possible
     if (URITemplate._cache[expression]) {
         return URITemplate._cache[expression];
     }
-    
+
     // Allow instantiation without the 'new' keyword
     if (!(this instanceof URITemplate)) {
         return new URITemplate(expression);
     }
-    
+
     this.expression = expression;
     URITemplate._cache[expression] = this;
     return this;
@@ -100,7 +106,7 @@ var operators = {
         empty_name_separator: false,
         encode : "encode"
     },
-    // Query component beginning with "?" and consisting 
+    // Query component beginning with "?" and consisting
     // of name=value pairs separated by "&"; an
     '?' : {
         prefix: "?",
@@ -109,7 +115,7 @@ var operators = {
         empty_name_separator: true,
         encode : "encode"
     },
-    // Continuation of query-style &name=value pairs 
+    // Continuation of query-style &name=value pairs
     // within a literal query component.
     '&' : {
         prefix: "&",
@@ -118,7 +124,7 @@ var operators = {
         empty_name_separator: true,
         encode : "encode"
     }
-    
+
     // The operator characters equals ("="), comma (","), exclamation ("!"),
     // at sign ("@"), and pipe ("|") are reserved for future extensions.
 };
@@ -143,7 +149,7 @@ URITemplate.expand = function(expression, data) {
     // result buffer for evaluating the expression
     var buffer = [];
     var d, variable, i, l, value;
-    
+
     for (i = 0; variable = variables[i]; i++) {
         // fetch simplified data source
         d = data.get(variable.name);
@@ -156,24 +162,24 @@ URITemplate.expand = function(expression, data) {
             // no data, no action
             continue;
         }
-        
+
         // expand the given variable
         buffer.push(URITemplate["expand" + type](
-            d, 
-            options, 
+            d,
+            options,
             variable.explode,
             variable.explode && options.separator || ",",
             variable.maxlength,
             variable.name
         ));
     }
-    
+
     if (buffer.length) {
         return options.prefix + buffer.join(options.separator);
     } else {
         // prefix is not prepended for empty expressions
         return "";
-    }    
+    }
 };
 // expand a named variable
 URITemplate.expandNamed = function(d, options, explode, separator, length, name) {
@@ -187,7 +193,7 @@ URITemplate.expandNamed = function(d, options, explode, separator, length, name)
     // key for named expansion
     var _name = d.type === 2 ? '': URI[encode](name);
     var _value, i, l;
-    
+
     // for each found value
     for (i = 0, l = d.val.length; i < l; i++) {
         if (length) {
@@ -215,30 +221,30 @@ URITemplate.expandNamed = function(d, options, explode, separator, length, name)
                 _name = d[encode][i][0];
             }
         }
-        
+
         if (result) {
             // unless we're the first value, prepend the separator
             result += separator;
         }
-        
+
         if (!explode) {
             if (!i) {
                 // first element, so prepend variable name
                 result += URI[encode](name) + (empty_name_separator || _value ? "=" : "");
             }
-            
+
             if (d.type === 2) {
                 // without explode-modifier, keys of objects are returned comma-separated
                 result += _name + ",";
             }
-            
+
             result += _value;
         } else {
             // only add the = if it is either default (?&) or there actually is a value (;)
             result += _name + (empty_name_separator || _value ? "=" : "") + _value;
         }
     }
-    
+
     return result;
 };
 // expand an unnamed variable
@@ -268,12 +274,12 @@ URITemplate.expandUnnamed = function(d, options, explode, separator, length, nam
             // value already encoded, pull from cache
             _value = d[encode][i][1];
         }
-        
+
         if (result) {
             // unless we're the first value, prepend the separator
             result += separator;
         }
-        
+
         if (d.type === 2) {
             if (length) {
                 // maxlength also applies to keys of objects
@@ -282,7 +288,7 @@ URITemplate.expandUnnamed = function(d, options, explode, separator, length, nam
                 // at this point the name must already be encoded
                 _name = d[encode][i][0];
             }
-            
+
             result += _name;
             if (explode) {
                 // explode-modifier separates name and value by "="
@@ -292,28 +298,36 @@ URITemplate.expandUnnamed = function(d, options, explode, separator, length, nam
                 result += ",";
             }
         }
-        
+
         result += _value;
     }
-    
+
     return result;
+};
+
+URITemplate.noConflict = function() {
+  if (root.URITemplate === URITemplate) {
+    root.URITemplate = _URITemplate;
+  }
+
+  return URITemplate;
 };
 
 // expand template through given data map
 p.expand = function(data) {
     var result = "";
-    
+
     if (!this.parts || !this.parts.length) {
         // lazilyy parse the template
         this.parse();
     }
-    
+
     if (!(data instanceof Data)) {
         // make given data available through the
         // optimized data handling thingie
         data = new Data(data);
     }
-    
+
     for (var i = 0, l = this.parts.length; i < l; i++) {
         result += typeof this.parts[i] === "string"
             // literal string
@@ -321,7 +335,7 @@ p.expand = function(data) {
             // expression
             : URITemplate.expand(this.parts[i], data);
     }
-    
+
     return result;
 };
 // parse template into action tokens
@@ -336,9 +350,9 @@ p.parse = function() {
         // position within source template
     var pos = 0;
     var variables, eMatch, vMatch;
-    
+
     // RegExp is shared accross all templates,
-    // which requires a manual reset 
+    // which requires a manual reset
     ePattern.lastIndex = 0;
     // I don't like while(foo = bar()) loops,
     // to make things simpler I go while(true) and break when required
@@ -353,13 +367,13 @@ p.parse = function() {
             parts.push(expression.substring(pos, eMatch.index));
             pos = eMatch.index + eMatch[0].length;
         }
-        
+
         if (!operators[eMatch[1]]) {
             throw new Error('Unknown Operator "' + eMatch[1]  + '" in "' + eMatch[0] + '"');
         } else if (!eMatch[3]) {
             throw new Error('Unclosed Expression "' + eMatch[0]  + '"');
         }
-        
+
         // parse variable-list
         variables = eMatch[2].split(',');
         for (var i = 0, l = variables.length; i < l; i++) {
@@ -369,32 +383,32 @@ p.parse = function() {
             } else if (vMatch[1].match(nPattern)) {
                 throw new Error('Invalid Variable Name "' + vMatch[1] + '" in "' + eMatch[0] + '"');
             }
-            
+
             variables[i] = {
                 name: vMatch[1],
                 explode: !!vMatch[3],
                 maxlength: vMatch[4] && parseInt(vMatch[4], 10)
             };
         }
-        
+
         if (!variables.length) {
             throw new Error('Expression Missing Variable(s) "' + eMatch[0] + '"');
         }
-        
+
         parts.push({
-            expression: eMatch[0], 
-            operator: eMatch[1], 
+            expression: eMatch[0],
+            operator: eMatch[1],
             variables: variables
         });
     }
-    
+
     if (!parts.length) {
         // template doesn't contain any expressions
         // so it is a simple literal string
         // this probably should fire a warning or something?
         parts.push(expression);
     }
-    
+
     this.parts = parts;
     return this;
 };
@@ -414,14 +428,14 @@ Data.prototype.get = function(key) {
         encodeReserved: []
     };
     var i, l, value;
-    
+
     if (this.cache[key] !== undefined) {
         // we've already processed this key
         return this.cache[key];
     }
-    
+
     this.cache[key] = d;
-    
+
     if (String(Object.prototype.toString.call(data)) === "[object Function]") {
         // data itself is a callback (global callback)
         value = data(key);
@@ -432,7 +446,7 @@ Data.prototype.get = function(key) {
         // data is a map of data
         value = data[key];
     }
-    
+
     // generalize input into [ [name1, value1], [name2, value2], … ]
     // so expansion has to deal with a single data structure only
     if (value === undefined || value === null) {
@@ -445,7 +459,7 @@ Data.prototype.get = function(key) {
                 d.val.push([undefined, String(value[i])]);
             }
         }
-        
+
         if (d.val.length) {
             // only treat non-empty arrays as arrays
             d.type = 3; // array
@@ -457,7 +471,7 @@ Data.prototype.get = function(key) {
                 d.val.push([i, String(value[i])]);
             }
         }
-        
+
         if (d.val.length) {
             // only treat non-empty objects as objects
             d.type = 2; // object
@@ -467,7 +481,7 @@ Data.prototype.get = function(key) {
         // arrays don't have names
         d.val.push([undefined, String(value)]);
     }
-    
+
     return d;
 };
 
@@ -475,7 +489,7 @@ Data.prototype.get = function(key) {
 URI.expand = function(expression, data) {
     var template = new URITemplate(expression);
     var expansion = template.expand(data);
-    
+
     return new URI(expansion);
 };
 

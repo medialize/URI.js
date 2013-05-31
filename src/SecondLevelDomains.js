@@ -28,6 +28,12 @@
 }(this, function () {
 "use strict";
 
+// get access to the global object ('window' in browsers)
+var root = (function(f){ return f('return this')(); })(Function);
+
+// save current SecondLevelDomains variable, if any
+var _SecondLevelDomains = root.SecondLevelDomains;
+
 var hasOwn = Object.prototype.hasOwnProperty;
 var SLD = {
     // list of known Second Level Domains
@@ -187,6 +193,12 @@ var SLD = {
     get: function(domain) {
         var t = domain.match(SLD.has_expression);
         return t && t[1] || null;
+    },
+    noConflict: function(){
+      if (root.SecondLevelDomains === this) {
+        root.SecondLevelDomains = _SecondLevelDomains;
+      }
+      return this;
     },
     init: function() {
         var t = '';
