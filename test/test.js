@@ -13,9 +13,22 @@ test("new URI(object)", function() {
     var u = new URI({protocol: "http", hostname: 'example.org'});
     ok(u instanceof URI, "instanceof URI");
     ok(u._parts.hostname !== undefined, "host undefined");
-    
-    u = new URI(location);
+});
+test("new URI(Location)", function () {
+    var u = new URI(location);
     equal(u.href(), String(location.href), "location object");
+});
+test("new URI(HTMLAnchorElement", function (){
+    var a = document.createElement("a");
+    a.href = "http://example.org/foobar.html";
+    var u = new URI(a);
+    equal(u.scheme(), "http", "scheme");
+    equal(u.host(), "example.org", "host");
+    equal(u.path(), "/foobar.html", "path");
+
+    a.href = "file:///C:/foo/bar.html";
+    u = new URI(a);
+    equal(u.href(), a.href, "file");
 });
 test("new URI(URI)", function() {
     var u = new URI(new URI({protocol: "http", hostname: 'example.org'}));
@@ -30,7 +43,8 @@ test("new URI(new Date())", function() {
 test("new URI()", function() {
     var u = new URI();
     ok(u instanceof URI, "instanceof URI");
-    ok(u._parts.hostname === location.hostname, "hostname == location.hostname");
+    ok(u._parts.hostname === location.hostname || u._parts.hostname === null && location.hostname === '',
+            "hostname == location.hostname");
 });
 test("function URI(string)", function() {
     var u = new URI("http://example.org/");
