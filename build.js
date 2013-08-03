@@ -41,12 +41,11 @@ function build(files) {
 };
 
 function download(code) {
-    var bb = new BlobBuilder();
-    bb.append(code);
+    var blob = new Blob([code], {type: 'text\/javascript'});
 
     var a = document.createElement('a');
     a.download = 'URI.js';
-    a.href = window.URL.createObjectURL(bb.getBlob('text/javascript'));
+    a.href = window.URL.createObjectURL(blob);
     a.textContent = 'Download';
     a.dataset.downloadurl = ['text/javascript', a.download, a.href].join(':');
     

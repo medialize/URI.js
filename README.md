@@ -209,6 +209,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### `[dev-version]` (master branch) ###
 
+* fixing build tool - ([Issue #83](https://github.com/medialize/URI.js/issues/83))
 * fixing for-loop to make closure compiler happy - ([Issue #93](https://github.com/medialize/URI.js/issues/93))
 * adding [`URI.noConflict()`](http://medialize.github.io/URI.js/docs.html#static-noConflict) - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
 * fixing whitespace in code - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
