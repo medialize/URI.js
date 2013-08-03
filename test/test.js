@@ -41,7 +41,7 @@ test("new URI(Location)", function () {
     testUnsupportedDomAttribute(element, 'src');
     
     function testDomAttribute(element, attribute) {
-        test("new URI(Element " + element.nodeName, function() {
+        test("new URI(Element " + element.nodeName + ")", function() {
             element[attribute] = "http://example.org/foobar.html";
 
             var u = new URI(element);
