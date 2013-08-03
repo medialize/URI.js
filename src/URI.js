@@ -1576,8 +1576,12 @@ p.normalizePath = function(build) {
         _was_relative = true;
         _path = '/' + _path;
     }
+
     // resolve simples
-    _path = _path.replace(/(\/(\.\/)+)|\/{2,}/g, '/');
+    _path = _path
+        .replace(/(\/(\.\/)+)/g, '/')
+        .replace(/\/{2,}/g, '/');
+
     // resolve parents
     while (true) {
         _parent = _path.indexOf('/../');
@@ -1596,6 +1600,7 @@ p.normalizePath = function(build) {
         }
         _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
     }
+
     // revert to relative
     if (_was_relative && this.is('relative')) {
         _path = _path.substring(1);
