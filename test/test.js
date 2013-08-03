@@ -209,6 +209,14 @@ test("path", function() {
     u.pathname('/~userhome/@mine;is %2F and/');
     equal(u.pathname(), '/~userhome/@mine;is%20%2F%20and/', "path encoding");
     equal(u.pathname(true), '/~userhome/@mine;is %2F and/', "path decoded");
+
+    u = new URI('/a/b/c/').relativeTo('/a/b/c/');
+    equal(u.pathname(), '', "empty relative path");
+    equal(u.toString(), '', "empty relative path to string");
+
+    u.pathname('/');
+    equal(u.pathname(), '/', "empty absolute path");
+    equal(u.toString(), '/', "empty absolute path to string");
 });
 test("query", function() {
     var u = new URI("http://example.org/foo.html");

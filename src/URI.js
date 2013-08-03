@@ -876,7 +876,7 @@ for (_part in _parts) {
 
 p.pathname = function(v, build) {
     if (v === undefined || v === true) {
-        var res = this._parts.path || (this._parts.urn ? '' : '/');
+        var res = this._parts.path || (this._parts.hostname ? '/' : '');
         return v ? URI.decodePath(res) : res;
     } else {
         this._parts.path = v ? URI.recodePath(v) : "/";
