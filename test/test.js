@@ -751,6 +751,38 @@ test("duplicateQueryParameters", function() {
     u.addQuery('bar', 1);
     equal(u.toString(), '?bar=1&bar=1&bar=1&bar=1', "parameters NOT de-duplicated after addQuery()");
 });
+test("escapeQuerySpace", function() {
+    var u = new URI('?bar=foo+bar&bam+baz=foo');
+    var data = u.query(true);
+    
+    equal(data.bar, 'foo bar', "value un-spac-escaped");
+    equal(data['bam baz'], 'foo', "name un-spac-escaped");
+    
+    u.escapeQuerySpace(false);
+    data = u.query(true);
+    equal(data.bar, 'foo+bar', "value not un-spac-escaped");
+    equal(data['bam+baz'], 'foo', "name not un-spac-escaped");
+    
+    u.escapeQuerySpace(true);
+    data = u.query(true);
+    
+    equal(data.bar, 'foo bar', "value un-spac-escaped again");
+    equal(data['bam baz'], 'foo', "name un-spac-escaped again");
+
+    u.escapeQuerySpace(false);
+    
+    u.addQuery('alpha bravo', 'charlie delta');
+    equal(u.toString(), '?bar=foo%2Bbar&bam%2Bbaz=foo&alpha%20bravo=charlie%20delta', 'serialized un/escaped space');
+    
+    URI.escapeQuerySpace = false;
+    u = new URI('?bar=foo+bar&bam+baz=foo');
+    data = u.query(true);
+    equal(data.bar, 'foo+bar', "value not un-spac-escaped by default");
+    equal(data['bam+baz'], 'foo', "name not un-spac-escaped by default");
+    
+    // reset
+    URI.escapeQuerySpace = true;
+});
 test("hasQuery", function() {
     var u = URI('?string=bar&list=one&list=two&number=123&null&empty=');
 

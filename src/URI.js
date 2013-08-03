@@ -163,11 +163,14 @@ URI._parts = function() {
         query: null,
         fragment: null,
         // state
-        duplicateQueryParameters: URI.duplicateQueryParameters
+        duplicateQueryParameters: URI.duplicateQueryParameters,
+        escapeQuerySpace: URI.escapeQuerySpace
     };
 };
 // state: allow duplicate query parameters (a=1&a=1)
 URI.duplicateQueryParameters = false;
+// state: replaces + with %20 (space in query strings)
+URI.escapeQuerySpace = true;
 // static properties
 URI.protocol_expression = /^[a-z][a-z0-9-+-]*$/i;
 URI.idn_expression = /[^a-z0-9\.-]/i;
@@ -303,12 +306,14 @@ URI.characters = {
         }
     }
 };
-URI.encodeQuery = function(string) {
-    return URI.encode(string + "").replace(/%20/g, '+');
+URI.encodeQuery = function(string, escapeQuerySpace) {
+    var escaped = URI.encode(string + "");
+    return escapeQuerySpace ? escaped.replace(/%20/g, '+') : escaped;
 };
-URI.decodeQuery = function(string) {
+URI.decodeQuery = function(string, escapeQuerySpace) {
+    string += "";
     try {
-        return URI.decode((string + "").replace(/\+/g, '%20'));
+        return URI.decode(escapeQuerySpace ? string.replace(/\+/g, '%20') : string);
     } catch(e) {
         // we're not going to mess with weird encodings,
         // give up and return the undecoded original string
@@ -467,7 +472,7 @@ URI.parseUserinfo = function(string, parts) {
 
     return string;
 };
-URI.parseQuery = function(string) {
+URI.parseQuery = function(string, escapeQuerySpace) {
     if (!string) {
         return {};
     }
@@ -486,9 +491,9 @@ URI.parseQuery = function(string) {
 
     for (var i = 0; i < length; i++) {
         v = splits[i].split('=');
-        name = URI.decodeQuery(v.shift());
+        name = URI.decodeQuery(v.shift(), escapeQuerySpace);
         // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
-        value = v.length ? URI.decodeQuery(v.join('=')) : null;
+        value = v.length ? URI.decodeQuery(v.join('='), escapeQuerySpace) : null;
 
         if (items[name]) {
             if (typeof items[name] === "string") {
@@ -574,7 +579,7 @@ URI.buildUserinfo = function(parts) {
 
     return t;
 };
-URI.buildQuery = function(data, duplicates) {
+URI.buildQuery = function(data, duplicateQueryParameters, escapeQuerySpace) {
     // according to http://tools.ietf.org/html/rfc3986 or http://labs.apache.org/webarch/uri/rfc/rfc3986.html
     // being »-._~!$&'()*+,;=:@/?« %HEX and alnum are allowed
     // the RFC explicitly states ?/foo being a valid use case, no mention of parameter syntax!
@@ -589,24 +594,24 @@ URI.buildQuery = function(data, duplicates) {
                 unique = {};
                 for (i = 0, length = data[key].length; i < length; i++) {
                     if (data[key][i] !== undefined && unique[data[key][i] + ""] === undefined) {
-                        t += "&" + URI.buildQueryParameter(key, data[key][i]);
-                        if (duplicates !== true) {
+                        t += "&" + URI.buildQueryParameter(key, data[key][i], escapeQuerySpace);
+                        if (duplicateQueryParameters !== true) {
                             unique[data[key][i] + ""] = true;
                         }
                     }
                 }
             } else if (data[key] !== undefined) {
-                t += '&' + URI.buildQueryParameter(key, data[key]);
+                t += '&' + URI.buildQueryParameter(key, data[key], escapeQuerySpace);
             }
         }
     }
 
     return t.substring(1);
 };
-URI.buildQueryParameter = function(name, value) {
+URI.buildQueryParameter = function(name, value, escapeQuerySpace) {
     // http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type -- application/x-www-form-urlencoded
     // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
-    return URI.encodeQuery(name) + (value !== null ? "=" + URI.encodeQuery(value) : "");
+    return URI.encodeQuery(name, escapeQuerySpace) + (value !== null ? "=" + URI.encodeQuery(value, escapeQuerySpace) : "");
 };
 
 URI.addQuery = function(data, name, value) {
@@ -1441,15 +1446,15 @@ p.segment = function(segment, v, build) {
 var q = p.query;
 p.query = function(v, build) {
     if (v === true) {
-        return URI.parseQuery(this._parts.query);
+        return URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
     } else if (typeof v === "function") {
-        var data = URI.parseQuery(this._parts.query);
+        var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
         var result = v.call(this, data);
-        this._parts.query = URI.buildQuery(result || data, this._parts.duplicateQueryParameters);
+        this._parts.query = URI.buildQuery(result || data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
         this.build(!build);
         return this;
     } else if (v !== undefined && typeof v !== "string") {
-        this._parts.query = URI.buildQuery(v, this._parts.duplicateQueryParameters);
+        this._parts.query = URI.buildQuery(v, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
         this.build(!build);
         return this;
     } else {
@@ -1457,7 +1462,7 @@ p.query = function(v, build) {
     }
 };
 p.setQuery = function(name, value, build) {
-    var data = URI.parseQuery(this._parts.query);
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
     
     if (typeof name === "object") {
         for (var key in name) {
@@ -1471,7 +1476,7 @@ p.setQuery = function(name, value, build) {
         throw new TypeError("URI.addQuery() accepts an object, string as the name parameter");
     }
     
-    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
     if (typeof name !== "string") {
         build = value;
     }
@@ -1480,9 +1485,9 @@ p.setQuery = function(name, value, build) {
     return this;
 };
 p.addQuery = function(name, value, build) {
-    var data = URI.parseQuery(this._parts.query);
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
     URI.addQuery(data, name, value === undefined ? null : value);
-    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
     if (typeof name !== "string") {
         build = value;
     }
@@ -1491,9 +1496,9 @@ p.addQuery = function(name, value, build) {
     return this;
 };
 p.removeQuery = function(name, value, build) {
-    var data = URI.parseQuery(this._parts.query);
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
     URI.removeQuery(data, name, value);
-    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
     if (typeof name !== "string") {
         build = value;
     }
@@ -1502,7 +1507,7 @@ p.removeQuery = function(name, value, build) {
     return this;
 };
 p.hasQuery = function(name, value, withinArray) {
-    var data = URI.parseQuery(this._parts.query);
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
     return URI.hasQuery(data, name, value, withinArray);
 };
 p.setSearch = p.setQuery;
@@ -1623,7 +1628,7 @@ p.normalizeQuery = function(build) {
         if (!this._parts.query.length) {
             this._parts.query = null;
         } else {
-            this.query(URI.parseQuery(this._parts.query));
+            this.query(URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace));
         }
 
         this.build(!build);
@@ -1697,18 +1702,18 @@ p.readable = function() {
         var q = '';
         for (var i = 0, qp = uri._parts.query.split('&'), l = qp.length; i < l; i++) {
             var kv = (qp[i] || "").split('=');
-            q += '&' + URI.decodeQuery(kv[0])
+            q += '&' + URI.decodeQuery(kv[0], this._parts.escapeQuerySpace)
                 .replace(/&/g, '%26');
 
             if (kv[1] !== undefined) {
-                q += "=" + URI.decodeQuery(kv[1])
+                q += "=" + URI.decodeQuery(kv[1], this._parts.escapeQuerySpace)
                     .replace(/&/g, '%26');
             }
         }
         t += '?' + q.substring(1);
     }
 
-    t += URI.decodeQuery(uri.hash());
+    t += URI.decodeQuery(uri.hash(), true);
     return t;
 };
 
@@ -1855,8 +1860,8 @@ p.equals = function(uri) {
         return false;
     }
 
-    one_map = URI.parseQuery(one_query);
-    two_map = URI.parseQuery(two_query);
+    one_map = URI.parseQuery(one_query, this._parts.escapeQuerySpace);
+    two_map = URI.parseQuery(two_query, this._parts.escapeQuerySpace);
 
     for (key in one_map) {
         if (hasOwn.call(one_map, key)) {
@@ -1887,6 +1892,11 @@ p.equals = function(uri) {
 // state
 p.duplicateQueryParameters = function(v) {
     this._parts.duplicateQueryParameters = !!v;
+    return this;
+};
+
+p.escapeQuerySpace = function(v) {
+    this._parts.escapeQuerySpace = !!v;
     return this;
 };
 

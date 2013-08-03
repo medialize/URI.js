@@ -1016,7 +1016,7 @@ URI.buildUserinfo(parts) === "user:pass@";</pre>
 };
 URI.buildHost(parts) === "example.org:8080";</pre>
     
-    <h3 id="static-buildQuery">URI.buildQuery(<em>object</em> data, [<em>boolean</em> duplicates])</h3>
+    <h3 id="static-buildQuery">URI.buildQuery(<em>object</em> data, [<em>boolean</em> duplicateQueryParameters], [<em>boolean</em> escapeQuerySpace])</h3>
     <p>serializes the query string parameters</p>
     <pre class="prettyprint lang-js">var data = {
     foo: "bar",
@@ -1060,6 +1060,23 @@ var noDuplicates = URI("?bar=1&amp;bar=1")
 
 withDuplicates === "?bar=1&amp;bar=1";
 noDuplicates === "?bar=1";</pre>
+
+    <p id="setting-escapeQuerySpace">As of v1.11.0 you can configure query space en/decoding:</p>
+    <pre class="prettyprint lang-js">// prevent all new URI instances from escaping spaces in query strings:
+URI.escapeQuerySpace = false; // default is true
+
+// make a specific URI instance allow duplicates:
+var withPlus = URI("?bar=hello+world")
+  .escapeQuerySpace(true)
+  .query(true).bar;
+
+// make a specific URI instance avoid duplicates (default):
+var withPercent = URI("?bar=hello%20world")
+  .escapeQuerySpace(false)
+  .query(true).bar;
+
+withPlus === "hello world";
+withPercent === "hello world";</pre>
     
     <h2 id="encoding-decoding">Encoding and Decoding URLs</h2>
     
