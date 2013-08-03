@@ -228,6 +228,31 @@ var uri = new URI("#call-me-hash");
 
 // and any combination of the above…</pre>
 
+    <p>using DOM elements:</p>
+    <pre class="prettyprint lang-js">var element = document.createElement('a');
+element.href = 'http://example.org';
+var uri = new URI(element);
+// uri.domain() === 'example.org';</pre>
+<pre class="prettyprint lang-html">The following DOM elements can be parsed:
+
+&lt;a href=&quot;...&quot;&gt;
+&lt;blockquote cite=&quot;...&quot;&gt;
+&lt;link href=&quot;...&quot;&gt;
+&lt;base href=&quot;...&quot;&gt;
+&lt;script src=&quot;...&quot;&gt;
+&lt;form action=&quot;...&quot;&gt;
+&lt;input type=&quot;image&quot; src=&quot;...&quot;&gt;
+&lt;img src=&quot;...&quot;&gt;
+&lt;area href=&quot;...&quot;&gt;
+&lt;iframe src=&quot;...&quot;&gt;
+&lt;embed src=&quot;...&quot;&gt;
+&lt;source src=&quot;...&quot;&gt;
+&lt;track src=&quot;...&quot;&gt;
+
+
+any other element yields URI("")
+</pre>
+
     <h3 id="clone">cloning URIs</h3>
     <p>Get a copy of the current URI instance</p>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org"),

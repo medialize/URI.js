@@ -207,6 +207,26 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### `[dev-version]` (master branch) ###
+
+* fixing [URI constructor](http://medialize.github.io/URI.js/docs.html#constructor) to accept the following elements - ([Issue #77](https://github.com/medialize/URI.js/issues/77))
+  * [`<a href="...">`](http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#the-a-element)
+  * [`<blockquote cite="...">`](http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-blockquote-element)
+  * [`<link href="...">`](http://www.w3.org/html/wg/drafts/html/master/document-metadata.html#the-link-element)
+  * [`<base href="...">`](http://www.w3.org/html/wg/drafts/html/master/document-metadata.html#the-base-element)
+  * [`<script src="...">`](http://www.w3.org/html/wg/drafts/html/master/scripting-1.html#script)
+  * [`<form action="...">`](http://www.w3.org/html/wg/drafts/html/master/forms.html#the-form-element)
+  * [`<input type="image" src="...">`](http://www.w3.org/html/wg/drafts/html/master/forms.html#the-input-element)
+  * [`<img src="...">`](http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#the-img-element)
+  * [`<area href="...">`](http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#the-area-element)
+  * [`<iframe src="...">`](http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#the-iframe-element)
+  * [`<embed src="...">`](http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#the-embed-element)
+  * [`<source src="...">`](http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#the-source-element)
+  * [`<track src="...">`](http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#the-track-element)
+
+
+### 1.10.2 (April 15th 2013) ###
+
 * fixing [`relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) - ([Issue #75](https://github.com/medialize/URI.js/issues/75))
 * fixing [`normalizePath()`](http://medialize.github.com/URI.js/docs.html#normalize-path) to not prepend ./ to relative paths - ([Issue #76](https://github.com/medialize/URI.js/issues/76))
 

@@ -183,6 +183,35 @@ URI.defaultPorts = {
 // ALPHA DIGIT "-" "." "_" "~" "!" "$" "&" "'" "(" ")" "*" "+" "," ";" "=" %encoded
 // I've never seen a (non-IDN) hostname other than: ALPHA DIGIT . -
 URI.invalid_hostname_characters = /[^a-zA-Z0-9\.-]/;
+// map DOM Elements to their URI attribute
+URI.domAttributes = {
+    'a': 'href',
+    'blockquote': 'cite',
+    'link': 'href',
+    'base': 'href',
+    'script': 'src',
+    'form': 'action',
+    'img': 'src',
+    'area': 'href',
+    'iframe': 'src',
+    'embed': 'src',
+    'source': 'src',
+    'track': 'src',
+    'input': 'src' // but only if type="image"
+};
+URI.getDomAttribute = function(node) {
+    if (!node || !node.nodeName) {
+        return undefined;
+    }
+    
+    var nodeName = node.nodeName.toLowerCase();
+    // <input> should only expose src for type="image"
+    if (nodeName === 'input' && node.type !== 'image') {
+        return undefined;
+    }
+    
+    return URI.domAttributes[nodeName];
+};
 // encoding / decoding according to RFC3986
 function strictEncodeURIComponent(string) {
     // see https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/encodeURIComponent
@@ -821,7 +850,11 @@ p.href = function(href, build) {
 
     var _URI = href instanceof URI;
     var _object = typeof href === "object" && (href.hostname || href.path || href.pathname);
-
+    if (href.nodeName) {
+        var attribute = URI.getDomAttribute(href);
+        href = href[attribute] || "";
+        _object = false;
+    }
     
     // window.location is reported to be an object, but it's not the sort
     // of object we're looking for: 

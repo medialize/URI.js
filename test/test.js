@@ -18,6 +18,58 @@ test("new URI(Location)", function () {
     var u = new URI(location);
     equal(u.href(), String(location.href), "location object");
 });
+(function() {
+    var element;
+    
+    for (var nodeName in URI.domAttributes) {
+        if (!Object.prototype.hasOwnProperty.call(URI.domAttributes, nodeName) || nodeName === 'input') {
+            continue;
+        }
+        
+        element = document.createElement(nodeName);
+        testDomAttribute(element, URI.domAttributes[nodeName]);
+    }
+    
+    element = document.createElement('input');
+    element.type = 'image';
+    testDomAttribute(element, 'src');
+    
+    element = document.createElement('input');
+    testUnsupportedDomAttribute(element, 'src');
+    
+    element = document.createElement('div');
+    testUnsupportedDomAttribute(element, 'src');
+    
+    function testDomAttribute(element, attribute) {
+        test("new URI(Element " + element.nodeName, function() {
+            element[attribute] = "http://example.org/foobar.html";
+
+            var u = new URI(element);
+            equal(u.scheme(), "http", "scheme");
+            equal(u.host(), "example.org", "host");
+            equal(u.path(), "/foobar.html", "path");
+            
+            element[attribute] = "file:///C:/foo/bar.html";
+            u = new URI(element);
+            equal(u.href(), element[attribute], "file");
+        });
+    }
+    
+    function testUnsupportedDomAttribute(element, attribute) {
+        test("new URI(unsupported Element " + element.nodeName, function() {
+            element[attribute] = "http://example.org/foobar.html";
+
+            var u = new URI(element);
+            equal(u.scheme(), "", "scheme");
+            equal(u.host(), "", "host");
+            equal(u.path(), "/", "path");
+            
+            element[attribute] = "file:///C:/foo/bar.html";
+            u = new URI(element);
+            equal(u.href(), "", "file");
+        });
+    }
+})();
 test("new URI(HTMLAnchorElement", function (){
     var a = document.createElement("a");
     a.href = "http://example.org/foobar.html";
