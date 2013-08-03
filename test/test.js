@@ -1048,8 +1048,7 @@ test("relativeTo", function() {
             name: 'denormalized url',
             url: '/foo//bar/bat',
             base: '/foo/bar/',
-            result: 'bat',
-            irreversible: true
+            result: 'bat'
         }, {
             name: 'credentials',
             url: 'http://user:pass@example.org/foo/bar',
@@ -1091,10 +1090,9 @@ test("relativeTo", function() {
             ok(!caught, t.name + " should not throw exception");
             equal(r + "", t.result, t.name);
 
-            if (!t.irreversible) {
-                var a = r.absoluteTo(t.base);
-                equal(a + "", t.url, t.name + " reversed");
-            }
+            var a = r.absoluteTo(t.base);
+            var n = u.clone().normalize();
+            equal(a.toString(), n.toString(), t.name + " reversed");
         }
     }
 });
