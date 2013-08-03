@@ -210,7 +210,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### `[dev-version]` (master branch) ###
 
 * fixing internal `strictEncodeURIComponent()` to work in Firefox 3.6 - ([Issue #91](https://github.com/medialize/URI.js/issues/91))
-* fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly resolve `/.//` to `/` - ([Issue #97](https://github.com/medialize/URI.js/issues/97))
+* fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly resolve `/.` and `/.//` to `/` - ([Issue #97](https://github.com/medialize/URI.js/issues/97))
 * fixing [`path()`](http://medialize.github.io/URI.js/docs.html#accessors-pathname) to return empty string if there is no path - ([Issue #82](https://github.com/medialize/URI.js/issues/82))
 * fixing crashing of `URI.decodeQuery()` on malformed input - now returns original undecoded data - ([Issue #87](https://github.com/medialize/URI.js/issues/87), [Issue #92](https://github.com/medialize/URI.js/issues/92))
 * fixing build tool - ([Issue #83](https://github.com/medialize/URI.js/issues/83))
@@ -220,7 +220,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * fixing [`readable()`](http://medialize.github.com/URI.js/docs.html#readable) to decode the hash value as well - ([Issue #90](https://github.com/medialize/URI.js/issue/90))
 * prevent `jquery.URI.js from` temporarily using `window.location` as the `href` of an empty attribute of a DOM element - ([Issue #94](https://github.com/medialize/URI.js/issues/94))
 * fixing internal `getType()` for IE8 with undefined value - ([Issue #96](https://github.com/medialize/URI.js/issues/96))
-* fixing [URI constructor](http://medialize.github.io/URI.js/docs.html#constructor) to accept the following elements - ([Issue #77](https://github.com/medialize/URI.js/issues/77))
+* adding DOM elements to [URI constructor](http://medialize.github.io/URI.js/docs.html#constructor) - ([Issue #77](https://github.com/medialize/URI.js/issues/77)):
   * [`<a href="...">`](http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#the-a-element)
   * [`<blockquote cite="...">`](http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-blockquote-element)
   * [`<link href="...">`](http://www.w3.org/html/wg/drafts/html/master/document-metadata.html#the-link-element)
