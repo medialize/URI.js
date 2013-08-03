@@ -223,11 +223,17 @@ URI.getDomAttribute = function(node) {
     
     return URI.domAttributes[nodeName];
 };
+
+function escapeForDumbFirefox36(value) {
+    // https://github.com/medialize/URI.js/issues/91
+    return escape(value);
+}
+
 // encoding / decoding according to RFC3986
 function strictEncodeURIComponent(string) {
     // see https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/encodeURIComponent
     return encodeURIComponent(string)
-        .replace(/[!'()*]/g, escape)
+        .replace(/[!'()*]/g, escapeForDumbFirefox36)
         .replace(/\*/g, "%2A");
 }
 URI.encode = strictEncodeURIComponent;
