@@ -906,7 +906,10 @@ test("normalizePath", function() {
     equal(u.path(), '/foo/bar/baz.html', "URL: dot-relative parent");
     
     u.path('/.//').normalizePath();
-    equal(u.path(), '/', "root");
+    equal(u.path(), '/', "root /.//");
+    
+    u.path('/.').normalizePath();
+    equal(u.path(), '/', "root /.");
 
     // encoding
     u._parts.path = '/~userhome/@mine;is %2F and/';

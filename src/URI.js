@@ -1579,7 +1579,7 @@ p.normalizePath = function(build) {
 
     // resolve simples
     _path = _path
-        .replace(/(\/(\.\/)+)/g, '/')
+        .replace(/(\/(\.\/)+)|(\/\.$)/g, '/')
         .replace(/\/{2,}/g, '/');
 
     // resolve parents
