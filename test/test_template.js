@@ -371,4 +371,15 @@ test("Parse errors", function() {
     }, Error, "Failing invalid modifier");
 });
 
+test("noConflict mode", function() {
+  var actual_lib = URITemplate; // actual library; after loading, before noConflict()
+  var unconflicted = URITemplate.noConflict();
+
+  strictEqual( unconflicted, actual_lib, "noConflict() returns the URITemplate object" );
+  strictEqual( URITemplate, URITemplate_pre_lib, "noConflict() restores the `URITemplate` variable" );
+
+  // restore for other tests
+  window.URITemplate = actual_lib;
+});
+
 })();

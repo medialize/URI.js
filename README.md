@@ -209,6 +209,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### `[dev-version]` (master branch) ###
 
+* adding [`URI.noConflict()`](http://medialize.github.io/URI.js/docs.html#static-noConflict) - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
 * fixing whitespace in code - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
 * fixing `URI.readable()` to decode the hash value as well - ([Issue #90](https://github.com/medialize/URI.js/issue/90))
 * prevent `jquery.URI.js from` temporarily using `window.location` as the `href` of an empty attribute of a DOM element - ([Issue #94](https://github.com/medialize/URI.js/issues/94))

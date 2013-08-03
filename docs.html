@@ -162,6 +162,8 @@
         <li>
             Static Helper Functions
             <ul>
+                <li><a href="#static-noConflict">URI.noConflict()</a></li>
+                
                 <li><a href="#static-addQuery">URI.addQuery()</a></li>
                 <li><a href="#static-removeQuery">URI.removeQuery()</a></li>
                 <li><a href="#static-commonPath">URI.commonPath()</a></li>
@@ -1089,6 +1091,18 @@ URI.decode("+") === "+";</pre>
     
     
     <h2 id="static-functions">Static Helper Functions</h2>
+
+    <h3 id="static-noConflict">URI.noConflict()</h3>
+    <p>removes URI variables from global scope</p>
+    <pre class="prettyprint lang-js">// restores window.URI to its previous state and returns URI
+URI.noConflict();
+// restores the global variable to its previous state and returns the object itself
+URITemplate.noConflict();
+IPv6.noConflict();
+SecondLevelDomains.noConflict();
+
+// restore all objects and return them as a map {URI: ..., IPv6: ..., ....}
+URI.noConflict(true);</pre>
     
     <h3 id="static-addQuery">URI.addQuery()</h3>
     <p>adds data to a map</p>
