@@ -70,18 +70,6 @@ test("new URI(Location)", function () {
         });
     }
 })();
-test("new URI(HTMLAnchorElement", function (){
-    var a = document.createElement("a");
-    a.href = "http://example.org/foobar.html";
-    var u = new URI(a);
-    equal(u.scheme(), "http", "scheme");
-    equal(u.host(), "example.org", "host");
-    equal(u.path(), "/foobar.html", "path");
-
-    a.href = "file:///C:/foo/bar.html";
-    u = new URI(a);
-    equal(u.href(), a.href, "file");
-});
 test("new URI(URI)", function() {
     var u = new URI(new URI({protocol: "http", hostname: 'example.org'}));
     ok(u instanceof URI, "instanceof URI");

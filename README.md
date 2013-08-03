@@ -209,6 +209,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### `[dev-version]` (master branch) ###
 
+* prevent `jquery.URI.js from` temporarily using `window.location` as the `href` of an empty attribute of a DOM element - ([Issue #94](https://github.com/medialize/URI.js/issues/94))
+* fixing internal `getType()` for IE8 with undefined value - ([Issue #96](https://github.com/medialize/URI.js/issues/96))
 * fixing [URI constructor](http://medialize.github.io/URI.js/docs.html#constructor) to accept the following elements - ([Issue #77](https://github.com/medialize/URI.js/issues/77))
   * [`<a href="...">`](http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#the-a-element)
   * [`<blockquote cite="...">`](http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-blockquote-element)
@@ -223,7 +225,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
   * [`<embed src="...">`](http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#the-embed-element)
   * [`<source src="...">`](http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#the-source-element)
   * [`<track src="...">`](http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#the-track-element)
-
+* optimize `jquery.URI.js` to use new DOM element infrastructure
 
 ### 1.10.2 (April 15th 2013) ###
 
