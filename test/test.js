@@ -1060,6 +1060,26 @@ test("relativeTo", function() {
             base: 'http://user:pass@example.org/foo/bar',
             result: '//example.org/foo/bar'
         }, {
+            name: 'same credentials different host',
+            url: 'http://user:pass@example.org/foo/bar',
+            base: 'http://user:pass@example.com/foo/bar',
+            result: '//user:pass@example.org/foo/bar'
+        }, {
+            name: 'different port 1',
+            url: 'http://example.org/foo/bar',
+            base: 'http://example.org:8080/foo/bar',
+            result: '//example.org/foo/bar'
+        }, {
+            name: 'different port 2',
+            url: 'http://example.org:8081/foo/bar',
+            base: 'http://example.org:8080/foo/bar',
+            result: '//example.org:8081/foo/bar'
+        }, {
+            name: 'different port 3',
+            url: 'http://example.org:8081/foo/bar',
+            base: 'http://example.org/foo/bar',
+            result: '//example.org:8081/foo/bar'
+        }, {
             name: 'already relative',
             url: 'foo/bar',
             base: '/foo/',
