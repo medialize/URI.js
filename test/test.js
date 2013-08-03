@@ -62,7 +62,7 @@ test("new URI(Location)", function () {
             var u = new URI(element);
             equal(u.scheme(), "", "scheme");
             equal(u.host(), "", "host");
-            equal(u.path(), "/", "path");
+            equal(u.path(), "", "path");
             
             element[attribute] = "file:///C:/foo/bar.html";
             u = new URI(element);

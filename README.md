@@ -209,6 +209,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### `[dev-version]` (master branch) ###
 
+* fixing [`path()`](http://medialize.github.io/URI.js/docs.html#accessors-pathname) to return empty string if there is no path - ([Issue #97](https://github.com/medialize/URI.js/issues/97))
 * fixing crashing of `URI.decodeQuery()` on malformed input - now returns original undecoded data - ([Issue #87](https://github.com/medialize/URI.js/issues/87), [Issue #92](https://github.com/medialize/URI.js/issues/92))
 * fixing build tool - ([Issue #83](https://github.com/medialize/URI.js/issues/83))
 * fixing for-loop to make closure compiler happy - ([Issue #93](https://github.com/medialize/URI.js/issues/93))

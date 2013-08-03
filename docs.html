@@ -399,7 +399,13 @@ uri.pathname("/foo/hello.html"); // returns the URI instance for chaining
 uri.pathname("/hello world/");
 uri.pathname() === "/hello%20world/";
 // will decode for you
-uri.pathname(true) === "/hello world/";</pre>
+uri.pathname(true) === "/hello world/";
+
+// will return empty string for empty paths, but:
+URI("").path() === "";
+URI("/").path() === "/";
+URI("http://example.org").path() === "/";
+</pre>
     
     <h3 id="accessors-directory">directory()</h3>
     <p>.directory() is an convenience method for mutating the directory part of a path</p>
