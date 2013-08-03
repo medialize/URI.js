@@ -1655,7 +1655,7 @@ p.readable = function() {
         t += '?' + q.substring(1);
     }
 
-    t += uri.hash();
+    t += URI.decodeQuery(uri.hash());
     return t;
 };
 
