@@ -59,6 +59,9 @@ function escapeRegEx(string) {
 }
 
 function getType(value) {
+    // required for compatibility with IE 8
+    if (typeof value === 'undefined') { return 'Undefined' }
+
     return String(Object.prototype.toString.call(value)).slice(8, -1);
 }
 
