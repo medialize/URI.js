@@ -1421,7 +1421,7 @@ p.segment = function(segment, v, build) {
         } else if (v || (typeof v === "string" && v.length)) {
             if (segments[segments.length -1] === "") {
                 // empty trailing elements have to be overwritten
-                // to prefent results such as /foo//bar
+                // to prevent results such as /foo//bar
                 segments[segments.length -1] = v;
             } else {
                 segments.push(v);
@@ -1724,7 +1724,7 @@ p.absoluteTo = function(base) {
     var basedir, i, p;
 
     if (this._parts.urn) {
-        throw new Error('URNs do not have any generally defined hierachical components');
+        throw new Error('URNs do not have any generally defined hierarchical components');
     }
 
     if (!(base instanceof URI)) {
@@ -1765,7 +1765,7 @@ p.relativeTo = function(base) {
     var common, _base, _this, _base_diff, _this_diff;
 
     if (relative._parts.urn) {
-        throw new Error('URNs do not have any generally defined hierachical components');
+        throw new Error('URNs do not have any generally defined hierarchical components');
     }
 
     if (!(base instanceof URI)) {
@@ -1855,7 +1855,7 @@ p.equals = function(uri) {
         return false;
     }
 
-    // query parameters have the same length, even if they're permutated
+    // query parameters have the same length, even if they're permuted
     if (one_query.length !== two_query.length) {
         return false;
     }
