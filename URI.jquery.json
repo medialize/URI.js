@@ -18,7 +18,7 @@
         "URI-manipulation",
         "URL-manipulation"
     ],
-    "version": "1.10.2",
+    "version": "[dev-version]",
     "author": {
         "name": "Rodney Rehm",
         "url": "http://rodneyrehm.de/en/"
