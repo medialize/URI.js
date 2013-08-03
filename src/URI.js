@@ -1715,12 +1715,12 @@ p.absoluteTo = function(base) {
         return resolved;
     }
 
-    for (i = 0, p; p = properties[i]; i++) {
+    for (i = 0; p = properties[i]; i++) {
         resolved._parts[p] = base._parts[p];
     }
     
     properties = ['query', 'path'];
-    for (i = 0, p; p = properties[i]; i++) {
+    for (i = 0; p = properties[i]; i++) {
         if (!resolved._parts[p] && base._parts[p]) {
             resolved._parts[p] = base._parts[p];
         }
