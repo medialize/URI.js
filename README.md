@@ -209,6 +209,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### `[dev-version]` (master branch) ###
 
+* updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.2.3
 * fixing internal `strictEncodeURIComponent()` to work in Firefox 3.6 - ([Issue #91](https://github.com/medialize/URI.js/issues/91))
 * fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly resolve `/.` and `/.//` to `/` - ([Issue #97](https://github.com/medialize/URI.js/issues/97))
 * fixing [`path()`](http://medialize.github.io/URI.js/docs.html#accessors-pathname) to return empty string if there is no path - ([Issue #82](https://github.com/medialize/URI.js/issues/82))
