@@ -1196,6 +1196,18 @@ test("iso8859", function() {
     u.unicode();
     equal(u.path(), "/%C3%A4.html", 'convert unicode');
 });
+test("bad charset in QueryString", function() {
+    var uri = new URI("http://www.google.com.hk/search?q=pennytel%20downloads&sa=%20%CB%D1%20%CB%F7%20&forid=1&prog=aff&ie=GB2312&oe=GB2312&safe=active&source=sdo_sb_html&hl=zh-CN");
+    var data = uri.query(true);
+    
+    equal(data.sa, "%20%CB%D1%20%CB%F7%20", 'undecodable value returned');
+    equal(data.forid, "1", 'decodable value returned');
+    
+    uri.normalizeQuery();
+    data = uri.query(true);
+    equal(data.sa, "%20%CB%D1%20%CB%F7%20", 'undecodable value returned');
+    equal(data.forid, "1", 'decodable value returned');
+});
 
 module("Encoding");
 test("encodeReserved", function() {

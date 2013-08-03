@@ -301,7 +301,15 @@ URI.encodeQuery = function(string) {
     return URI.encode(string + "").replace(/%20/g, '+');
 };
 URI.decodeQuery = function(string) {
-    return URI.decode((string + "").replace(/\+/g, '%20'));
+    try {
+        return URI.decode((string + "").replace(/\+/g, '%20'));
+    } catch(e) {
+        // we're not going to mess with weird encodings,
+        // give up and return the undecoded original string
+        // see https://github.com/medialize/URI.js/issues/87
+        // see https://github.com/medialize/URI.js/issues/92
+        return string;
+    }
 };
 URI.recodePath = function(string) {
     var segments = (string + "").split('/');
