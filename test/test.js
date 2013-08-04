@@ -1180,15 +1180,30 @@ test("relativeTo", function() {
             base: 'http://example.org/foo/bar',
             result: '//example.org:8081/foo/bar'
         }, {
+            name: 'same path - fragment',
+            url: 'http://www.example.com:8080/dir/file#abcd',
+            base: 'http://www.example.com:8080/dir/file',
+            result: '#abcd'
+        }, {
+            name: 'same path - query',
+            url: 'http://www.example.com:8080/dir/file?abcd=123',
+            base: 'http://www.example.com:8080/dir/file',
+            result: '?abcd=123'
+        }, {
+            name: 'same path - query and fragment',
+            url: 'http://www.example.com:8080/dir/file?abcd=123#alpha',
+            base: 'http://www.example.com:8080/dir/file',
+            result: '?abcd=123#alpha'
+        }, {
             name: 'already relative',
             url: 'foo/bar',
             base: '/foo/',
-            throws: true
+            'throws': true
         }, {
             name: 'relative base',
             url: '/foo/bar',
             base: 'foo/',
-            throws: true
+            'throws': true
         }
     ];
 
@@ -1204,7 +1219,7 @@ test("relativeTo", function() {
             caught = true;
         }
 
-        if (t.throws) {
+        if (t['throws']) {
             ok(caught, t.name + " should throw exception");
         } else {
             ok(!caught, t.name + " should not throw exception");

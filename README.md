@@ -209,7 +209,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### `[dev-version]` (master branch) ###
 
-* optimize [`relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results - ([Issue #78](https://github.com/medialize/URI.js/issues/78))
+* optimize [`relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results - ([Issue #78](https://github.com/medialize/URI.js/issues/78), [Issue #95](https://github.com/medialize/URI.js/issues/95))
 * removing obsolete code fragments from `URI.parse()` and `relativeTo()` - ([Issue #100](https://github.com/medialize/URI.js/issues/100))
 * adding setting `URI.escapeQuerySpace` to control if query string should escape spaces using `+` or `%20` - ([Issue #74](https://github.com/medialize/URI.js/issues/74))
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.2.3

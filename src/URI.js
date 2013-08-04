@@ -1757,7 +1757,7 @@ p.absoluteTo = function(base) {
 };
 p.relativeTo = function(base) {
     var relative = this.clone().normalize();
-    var relativeParts, baseParts, common;
+    var relativeParts, baseParts, common, relativePath, basePath;
 
     if (relative._parts.urn) {
         throw new Error('URNs do not have any generally defined hierarchical components');
@@ -1766,12 +1766,14 @@ p.relativeTo = function(base) {
     base = new URI(base).normalize();
     relativeParts = relative._parts;
     baseParts = base._parts;
+    relativePath = relative.path();
+    basePath = base.path();
 
-    if (relative.path().charAt(0) !== '/') {
+    if (relativePath.charAt(0) !== '/') {
         throw new Error('URI is already relative');
     }
 
-    if (base.path().charAt(0) !== '/') {
+    if (basePath.charAt(0) !== '/') {
         throw new Error('Cannot calculate a URI relative to another relative URI');
     }
 
@@ -1794,6 +1796,11 @@ p.relativeTo = function(base) {
         return relative.build();
     }
 
+    if (relativePath === basePath) {
+        relativeParts.path = '';
+        return relative.build();
+    }
+    
     // determine common sub path
     common = URI.commonPath(relative.path(), base.path());
 
@@ -1806,7 +1813,7 @@ p.relativeTo = function(base) {
         .substring(common.length)
         .replace(/[^\/]*$/, '')
         .replace(/.*?\//g, '../');
-    
+
     relativeParts.path = parents + relativeParts.path.substring(common.length);
 
     return relative.build();

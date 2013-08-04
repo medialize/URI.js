@@ -866,12 +866,26 @@ URI("../world.html").absoluteTo("foo/bar/baz.html");
 // -&gt; "foo/world.html"
 
 // absolute URLs are passed through unchanged
-URI("http://example.org/world.html").absoluteTo("http://google.com/baz");
+URI("http://example.org/world.html")
+  .absoluteTo("http://google.com/baz");
 // -&gt; "http://example.org/world.html"
 
 // absolute URLs relative to absolute URLs
-URI("http://example.org/world.html").clone().authority("").absoluteTo("http://google.com/baz");
-// -&gt; "http://google.com/world.html"</pre>
+URI("http://example.org/world.html").clone().authority("")
+  .absoluteTo("http://google.com/baz");
+// -&gt; "http://google.com/world.html"
+
+// equal URLs are relative by empty string
+URI("http://www.example.com:8080/dir/file")
+  .relativeTo('http://www.example.com:8080/dir/file')
+  .toString();
+// -&gt; ""
+
+// relative on fragment and query string as well
+URI("http://www.example.com:8080/dir/file?foo=bar#abcd")
+  .relativeTo('http://www.example.com:8080/dir/file')
+  .toString();
+// -&gt; "?foo=bar#abcd"</pre>
     <p>.relativeTo() and .absoluteTo() reverse each other.</p>
 
     <h3 id="absoluteto">absoluteTo()</h3>
