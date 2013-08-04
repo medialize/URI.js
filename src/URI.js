@@ -1757,13 +1757,15 @@ p.absoluteTo = function(base) {
 };
 p.relativeTo = function(base) {
     var relative = this.clone().normalize();
-    var common;
+    var relativeParts, baseParts, common;
 
     if (relative._parts.urn) {
         throw new Error('URNs do not have any generally defined hierarchical components');
     }
 
     base = new URI(base).normalize();
+    relativeParts = relative._parts;
+    baseParts = base._parts;
 
     if (relative.path().charAt(0) !== '/') {
         throw new Error('URI is already relative');
@@ -1773,21 +1775,21 @@ p.relativeTo = function(base) {
         throw new Error('Cannot calculate a URI relative to another relative URI');
     }
 
-    if (relative._parts.protocol === base._parts.protocol) {
-        relative._parts.protocol = null;
+    if (relativeParts.protocol === baseParts.protocol) {
+        relativeParts.protocol = null;
     }
 
-    if (relative._parts.username !== base._parts.username || relative._parts.password !== base._parts.password) {
+    if (relativeParts.username !== baseParts.username || relativeParts.password !== baseParts.password) {
         return relative.build();
     }
 
-    if (relative._parts.protocol !== null || relative._parts.username !== null || relative._parts.password !== null) {
+    if (relativeParts.protocol !== null || relativeParts.username !== null || relativeParts.password !== null) {
         return relative.build();
     }
 
-    if (relative._parts.hostname === base._parts.hostname && relative._parts.port === base._parts.port) {
-        relative._parts.hostname = null;
-        relative._parts.port = null;
+    if (relativeParts.hostname === baseParts.hostname && relativeParts.port === baseParts.port) {
+        relativeParts.hostname = null;
+        relativeParts.port = null;
     } else {
         return relative.build();
     }
@@ -1800,12 +1802,12 @@ p.relativeTo = function(base) {
         return relative.build();
     }
 
-    var parents = base._parts.path
+    var parents = baseParts.path
         .substring(common.length)
         .replace(/[^\/]*$/, '')
         .replace(/.*?\//g, '../');
     
-    relative._parts.path = parents + relative._parts.path.substring(common.length);
+    relativeParts.path = parents + relativeParts.path.substring(common.length);
 
     return relative.build();
 };
