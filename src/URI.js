@@ -1392,7 +1392,7 @@ p.segment = function(segment, v, build) {
     var absolute = path.substring(0, 1) === '/';
     var segments = path.split(separator);
 
-    if (typeof segment !== 'number') {
+    if (segment !== undefined && typeof segment !== 'number') {
         build = v;
         v = segment;
         segment = undefined;
@@ -1440,6 +1440,38 @@ p.segment = function(segment, v, build) {
     }
 
     return this.path(segments.join(separator), build);
+};
+p.segmentCoded = function(segment, v, build) {
+    var segments, i, l;
+
+    if (typeof segment !== 'number') {
+        build = v;
+        v = segment;
+        segment = undefined;
+    }
+
+    if (v === undefined) {
+        segments = this.segment(segment, v, build);
+        if (!isArray(segments)) {
+            segments = segments !== undefined ? URI.decode(segments) : undefined;
+        } else {
+            for (i = 0, l = segments.length; i < l; i++) {
+                segments[i] = URI.decode(segments[i]);
+            }
+        }
+
+        return segments;
+    }
+
+    if (!isArray(v)) {
+        v = typeof v === 'string' ? URI.encode(v) : v;
+    } else {
+        for (i = 0, l = v.length; i < l; i++) {
+            v[i] = URI.decode(v[i]);
+        }
+    }
+
+    return this.segment(segment, v, build);
 };
 
 // mutating query string

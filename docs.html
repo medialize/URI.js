@@ -70,6 +70,7 @@
                 <li><a href="#accessors-filename">filename()</a></li>
                 <li><a href="#accessors-suffix">suffix()</a></li>
                 <li><a href="#accessors-segment">segment()</a></li>
+                <li><a href="#accessors-segmentCoded">segmentCoded()</a></li>
                 
                 <li><a href="#accessors-search">search(), query()</a></li>
                 <li><a href="#accessors-hash">hash(), fragment()</a></li>
@@ -461,7 +462,7 @@ uri.suffix() === "w%C3%BCrgh";
 uri.suffix(true) === "würgh";</pre>
     
     <h3 id="accessors-segment">segment()</h3>
-    <p>.segment() allows convenient access to directory levels / URN segments within the path</p>
+    <p>.segment() allows convenient access to directory levels / URN segments within the path. See <a href="#accessors-segmentCoded">.segmentCoded()</a> for an interface that transparently encodes and decodes path segments.</p>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");
 // get segments
 uri.segment(); // returns array ["foo", "hello.html"]
@@ -477,9 +478,28 @@ uri.segment(0, "bar"); // -> http://example.org/bar/bar/foobar.html
 // remove specific level
 uri.segment(0, ""); // -> http://example.org/bar/foobar.html
 
-
 // append level
 uri.segment("appendthis"); // -> http://example.org/bar/foobar.html/appendthis</pre>
+
+    <h3 id="accessors-segmentCoded">segmentCoded()</h3>
+    <p>.segmentCoded() works the same way <a href="#accessors-segment">.segment()</a> does, with the difference of transparently encoding and decoding values.</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello%20world.html");
+// get segments
+uri.segment(); // returns array ["foo", "hello world.html"]
+// set segments
+uri.segment(["foo", "bar", "foo bar.html"]); // -> http://example.org/foo/bar/foo%20bar.html
+
+// get specific level
+uri.segment(0); // returns "foo"
+uri.segment(1); // returns "bar"
+uri.segment(-1); // returns "foo bar.html"
+// set specific level
+uri.segment(0, "bar bam"); // -> http://example.org/bar%20bam/bar/foobar.html
+// remove specific level
+uri.segment(0, ""); // -> http://example.org/bar/foobar.html
+
+// append level
+uri.segment("append this"); // -> http://example.org/bar/foobar.html/append%20this</pre>
     
     
     <h3 id="accessors-search">search(), query()</h3>

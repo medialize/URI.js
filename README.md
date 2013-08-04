@@ -209,19 +209,20 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### `[dev-version]` (master branch) ###
 
-* optimize [`relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results - ([Issue #78](https://github.com/medialize/URI.js/issues/78), [Issue #95](https://github.com/medialize/URI.js/issues/95))
+* adding [`.segmentCoded()`](http://medialize.github.com/URI.js/docs.html#accessors-segmentCoded) to provide en/decoding interface to `.segment()` - ([Issue #79](https://github.com/medialize/URI.js/issues/79))
+* optimize [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results - ([Issue #78](https://github.com/medialize/URI.js/issues/78), [Issue #95](https://github.com/medialize/URI.js/issues/95))
 * removing obsolete code fragments from `URI.parse()` and `relativeTo()` - ([Issue #100](https://github.com/medialize/URI.js/issues/100))
 * adding setting `URI.escapeQuerySpace` to control if query string should escape spaces using `+` or `%20` - ([Issue #74](https://github.com/medialize/URI.js/issues/74))
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.2.3
 * fixing internal `strictEncodeURIComponent()` to work in Firefox 3.6 - ([Issue #91](https://github.com/medialize/URI.js/issues/91))
 * fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly resolve `/.` and `/.//` to `/` - ([Issue #97](https://github.com/medialize/URI.js/issues/97))
-* fixing [`path()`](http://medialize.github.io/URI.js/docs.html#accessors-pathname) to return empty string if there is no path - ([Issue #82](https://github.com/medialize/URI.js/issues/82))
+* fixing [`.path()`](http://medialize.github.io/URI.js/docs.html#accessors-pathname) to return empty string if there is no path - ([Issue #82](https://github.com/medialize/URI.js/issues/82))
 * fixing crashing of `URI.decodeQuery()` on malformed input - now returns original undecoded data - ([Issue #87](https://github.com/medialize/URI.js/issues/87), [Issue #92](https://github.com/medialize/URI.js/issues/92))
 * fixing build tool - ([Issue #83](https://github.com/medialize/URI.js/issues/83))
 * fixing for-loop to make closure compiler happy - ([Issue #93](https://github.com/medialize/URI.js/issues/93))
 * adding [`URI.noConflict()`](http://medialize.github.io/URI.js/docs.html#static-noConflict) - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
 * fixing whitespace in code - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
-* fixing [`readable()`](http://medialize.github.com/URI.js/docs.html#readable) to decode the hash value as well - ([Issue #90](https://github.com/medialize/URI.js/issue/90))
+* fixing [`.readable()`](http://medialize.github.com/URI.js/docs.html#readable) to decode the hash value as well - ([Issue #90](https://github.com/medialize/URI.js/issue/90))
 * prevent `jquery.URI.js from` temporarily using `window.location` as the `href` of an empty attribute of a DOM element - ([Issue #94](https://github.com/medialize/URI.js/issues/94))
 * fixing internal `getType()` for IE8 with undefined value - ([Issue #96](https://github.com/medialize/URI.js/issues/96))
 * adding DOM elements to [URI constructor](http://medialize.github.io/URI.js/docs.html#constructor) - ([Issue #77](https://github.com/medialize/URI.js/issues/77)):
