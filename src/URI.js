@@ -356,7 +356,7 @@ for (_part in _parts) {
 URI.encodeReserved = generateAccessor("reserved", "encode");
 
 URI.parse = function(string, parts) {
-    var pos, t;
+    var pos;
     if (!parts) {
         parts = {};
     }
@@ -1575,15 +1575,11 @@ p.normalizePath = function(build) {
     }
 
     var _was_relative;
-    var _was_relative_prefix;
     var _path = this._parts.path;
     var _parent, _pos;
 
     // handle relative paths
     if (_path.charAt(0) !== '/') {
-        if (_path.charAt(0) === '.') {
-            _was_relative_prefix = _path.substring(0, _path.indexOf('/'));
-        }
         _was_relative = true;
         _path = '/' + _path;
     }
@@ -1762,7 +1758,7 @@ p.absoluteTo = function(base) {
 p.relativeTo = function(base) {
     var relative = this.clone();
     var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
-    var common, _base, _this, _base_diff, _this_diff;
+    var common, _base, _this, _this_diff;
 
     if (relative._parts.urn) {
         throw new Error('URNs do not have any generally defined hierachical components');
@@ -1801,7 +1797,6 @@ p.relativeTo = function(base) {
         return relative.build();
     }
     
-    _base_diff = _base.substring(common.length);
     _this_diff = _this.substring(common.length);
     
     // this is a descendant of base
