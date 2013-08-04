@@ -1777,19 +1777,15 @@ p.relativeTo = function(base) {
         relative._parts.protocol = null;
     }
 
-    if (relative._parts.username !== base._parts.username ||
-            relative._parts.password !== base._parts.password) {
+    if (relative._parts.username !== base._parts.username || relative._parts.password !== base._parts.password) {
         return relative.build();
     }
 
-    if (relative._parts.protocol !== null ||
-            relative._parts.username !== null ||
-            relative._parts.password !== null) {
+    if (relative._parts.protocol !== null || relative._parts.username !== null || relative._parts.password !== null) {
         return relative.build();
     }
 
-    if (relative._parts.hostname === base._parts.hostname &&
-            relative._parts.port === base._parts.port) {
+    if (relative._parts.hostname === base._parts.hostname && relative._parts.port === base._parts.port) {
         relative._parts.hostname = null;
         relative._parts.port = null;
     } else {
@@ -1804,10 +1800,11 @@ p.relativeTo = function(base) {
         return relative.build();
     }
 
-    var parents = base._parts.path.
-            substring(common.length).
-            replace(/[^\/]*$/, '').
-            replace(/.*?\//g, '../');
+    var parents = base._parts.path
+        .substring(common.length)
+        .replace(/[^\/]*$/, '')
+        .replace(/.*?\//g, '../');
+    
     relative._parts.path = parents + relative._parts.path.substring(common.length);
 
     return relative.build();
