@@ -1075,11 +1075,6 @@ test("absoluteTo", function() {
 });
 test("relativeTo", function() {
     var tests = [{
-            name: 'no relation',
-            url: '/relative/path?blubber=1#hash1',
-            base: '/path/to/file?some=query#hash',
-            result: '/relative/path?blubber=1#hash1'
-        }, {
             name: 'same parent',
             url: '/relative/path?blubber=1#hash1',
             base: '/relative/file?some=query#hash',
@@ -1100,6 +1095,11 @@ test("relativeTo", function() {
             base: '/relative/sub/foo/sub/file?some=query#hash',
             result: '../../../path?blubber=1#hash1'
         }, {
+            name: 'parent top level',
+            url: '/relative/path?blubber=1#hash1',
+            base: '/path/to/file?some=query#hash',
+            result: '../../relative/path?blubber=1#hash1'
+        }, {
             name: 'descendant',
             url: '/base/path/with/subdir/inner.html',
             base: '/base/path/top.html',
@@ -1108,29 +1108,112 @@ test("relativeTo", function() {
             name: 'absolute /',
             url: 'http://example.org/foo/bar/bat',
             base: 'http://example.org/',
-            result: '/foo/bar/bat'
+            result: 'foo/bar/bat'
         }, {
             name: 'absolute /foo',
             url: 'http://example.org/foo/bar/bat',
             base: 'http://example.org/foo',
-            result: '/foo/bar/bat'
+            result: 'foo/bar/bat'
         }, {
             name: 'absolute /foo/',
             url: 'http://example.org/foo/bar/bat',
             base: 'http://example.org/foo/',
             result: 'bar/bat'
+        }, {
+            name: 'same scheme',
+            url: 'http://example.org/foo/bar/bat',
+            base: 'http://example.com/foo/',
+            result: '//example.org/foo/bar/bat'
+        }, {
+            name: 'different scheme',
+            url: 'http://example.org/foo/bar',
+            base: 'https://example.org/foo/',
+            result: 'http://example.org/foo/bar'
+        }, {
+            name: 'base with no scheme or host',
+            url: 'http://example.org/foo/bar',
+            base: '/foo/',
+            result: 'http://example.org/foo/bar'
+        }, {
+            name: 'base with no scheme',
+            url: 'http://example.org/foo/bar',
+            base: '//example.org/foo/bar',
+            result: 'http://example.org/foo/bar'
+        }, {
+            name: 'denormalized base',
+            url: '/foo/bar/bat',
+            base: '/foo/./bar/',
+            result: 'bat'
+        }, {
+            name: 'denormalized url',
+            url: '/foo//bar/bat',
+            base: '/foo/bar/',
+            result: 'bat'
+        }, {
+            name: 'credentials',
+            url: 'http://user:pass@example.org/foo/bar',
+            base: 'http://example.org/foo/',
+            result: '//user:pass@example.org/foo/bar'
+        }, {
+            name: 'base credentials',
+            url: 'http://example.org/foo/bar',
+            base: 'http://user:pass@example.org/foo/bar',
+            result: '//example.org/foo/bar'
+        }, {
+            name: 'same credentials different host',
+            url: 'http://user:pass@example.org/foo/bar',
+            base: 'http://user:pass@example.com/foo/bar',
+            result: '//user:pass@example.org/foo/bar'
+        }, {
+            name: 'different port 1',
+            url: 'http://example.org/foo/bar',
+            base: 'http://example.org:8080/foo/bar',
+            result: '//example.org/foo/bar'
+        }, {
+            name: 'different port 2',
+            url: 'http://example.org:8081/foo/bar',
+            base: 'http://example.org:8080/foo/bar',
+            result: '//example.org:8081/foo/bar'
+        }, {
+            name: 'different port 3',
+            url: 'http://example.org:8081/foo/bar',
+            base: 'http://example.org/foo/bar',
+            result: '//example.org:8081/foo/bar'
+        }, {
+            name: 'already relative',
+            url: 'foo/bar',
+            base: '/foo/',
+            throws: true
+        }, {
+            name: 'relative base',
+            url: '/foo/bar',
+            base: 'foo/',
+            throws: true
         }
     ];
 
     for (var i = 0, t; t = tests[i]; i++) {
         var u = new URI(t.url),
             b = new URI(t.base),
+            caught = false;
+        var r;
+
+        try {
             r = u.relativeTo(b);
+        } catch (e) {
+            caught = true;
+        }
 
-        equal(r + "", t.result, t.name);
+        if (t.throws) {
+            ok(caught, t.name + " should throw exception");
+        } else {
+            ok(!caught, t.name + " should not throw exception");
+            equal(r + "", t.result, t.name);
 
-        var a = r.absoluteTo(t.base);
-        equal(a + "", t.url, t.name + " reversed");
+            var a = r.absoluteTo(t.base);
+            var n = u.clone().normalize();
+            equal(a.toString(), n.toString(), t.name + " reversed");
+        }
     }
 });
 
