@@ -381,7 +381,7 @@ URI.parse = function(string, parts) {
     // extract protocol
     if (string.substring(0, 2) === '//') {
         // relative-scheme
-        parts.protocol = '';
+        parts.protocol = null;
         string = string.substring(2);
         // extract "user:pass@host:port"
         string = URI.parseAuthority(string, parts);
