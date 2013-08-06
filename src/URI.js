@@ -836,7 +836,7 @@ generateAccessor = function(_part){
         if (v === undefined) {
             return this._parts[_part] || "";
         } else {
-            this._parts[_part] = v;
+            this._parts[_part] = v || null;
             this.build(!build);
             return this;
         }
