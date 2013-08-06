@@ -1251,6 +1251,14 @@ test("relativeTo", function() {
             equal(a.toString(), n.toString(), t.name + " reversed");
         }
     }
+
+    equal("b/c",
+        new URI("http://example.org/a/b/c")
+            .scheme("")
+            .authority("")
+            .relativeTo("/a/")
+            .toString(),
+        "bug #103");
 });
 
 module("static helpers");
