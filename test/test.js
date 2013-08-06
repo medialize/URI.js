@@ -1259,6 +1259,13 @@ test("relativeTo", function() {
             .relativeTo("/a/")
             .toString(),
         "bug #103");
+
+    equal("b/c",
+        new URI("//example.org/a/b/c")
+            .authority("")
+            .relativeTo("/a/")
+            .toString(),
+        "bug #103 (2)");
 });
 
 module("static helpers");
