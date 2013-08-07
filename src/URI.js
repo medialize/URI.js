@@ -388,7 +388,7 @@ URI.parse = function(string, parts) {
     } else {
         pos = string.indexOf(':');
         if (pos > -1) {
-            parts.protocol = string.substring(0, pos);
+            parts.protocol = string.substring(0, pos) || null;
             if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
                 // : may be within the path
                 parts.protocol = undefined;
