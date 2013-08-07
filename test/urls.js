@@ -429,7 +429,7 @@ var urls = [{
         url: '://user:pass@example.org:123/some/directory/file.html?query=string#fragment',
         _url: '//user:pass@example.org:123/some/directory/file.html?query=string#fragment',
         parts: {
-            protocol: "",
+            protocol: null,
             username: 'user',
             password: 'pass',
             hostname: 'example.org',
@@ -476,7 +476,7 @@ var urls = [{
         name: 'scheme-relative URL',
         url: '//www.example.org/',
         parts: {
-            protocol: '', // not null
+            protocol: null,
             username: null,
             password: null,
             hostname: 'www.example.org',
