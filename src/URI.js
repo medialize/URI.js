@@ -381,14 +381,14 @@ URI.parse = function(string, parts) {
     // extract protocol
     if (string.substring(0, 2) === '//') {
         // relative-scheme
-        parts.protocol = '';
+        parts.protocol = null;
         string = string.substring(2);
         // extract "user:pass@host:port"
         string = URI.parseAuthority(string, parts);
     } else {
         pos = string.indexOf(':');
         if (pos > -1) {
-            parts.protocol = string.substring(0, pos);
+            parts.protocol = string.substring(0, pos) || null;
             if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
                 // : may be within the path
                 parts.protocol = undefined;
@@ -836,7 +836,7 @@ generateAccessor = function(_part){
         if (v === undefined) {
             return this._parts[_part] || "";
         } else {
-            this._parts[_part] = v;
+            this._parts[_part] = v || null;
             this.build(!build);
             return this;
         }
