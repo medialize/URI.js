@@ -1251,6 +1251,21 @@ test("relativeTo", function() {
             equal(a.toString(), n.toString(), t.name + " reversed");
         }
     }
+
+    equal("b/c",
+        new URI("http://example.org/a/b/c")
+            .scheme("")
+            .authority("")
+            .relativeTo("/a/")
+            .toString(),
+        "bug #103");
+
+    equal("b/c",
+        new URI("//example.org/a/b/c")
+            .authority("")
+            .relativeTo("/a/")
+            .toString(),
+        "bug #103 (2)");
 });
 
 module("static helpers");
