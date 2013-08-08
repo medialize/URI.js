@@ -209,6 +209,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### `[dev-version]` (master branch) ###
 
+* fixing inconsistent [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results caused by inconsistent URI component handling - ([Issue #103](https://github.com/medialize/URI.js/issues/103))
+
+### 1.11.0 (August 6th 2013) ###
+
 * adding [`.segmentCoded()`](http://medialize.github.com/URI.js/docs.html#accessors-segmentCoded) to provide en/decoding interface to `.segment()` - ([Issue #79](https://github.com/medialize/URI.js/issues/79))
 * optimize [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results - ([Issue #78](https://github.com/medialize/URI.js/issues/78), [Issue #95](https://github.com/medialize/URI.js/issues/95))
 * removing obsolete code fragments from `URI.parse()` and `relativeTo()` - ([Issue #100](https://github.com/medialize/URI.js/issues/100))
