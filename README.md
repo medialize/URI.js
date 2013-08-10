@@ -77,6 +77,8 @@ See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://
 
 ## Using URI.js ##
 
+URI.js (without plugins) has a gzipped weight of about 7KB - if you include all extensions you end up at about 13KB. So unless you *need* second level domain support and use URI templates, we suggest you don't include them in your build. If you don't need a full featured URI mangler, it may be worth looking into the much smaller parser-only alternatives [listed below](#alternatives).
+
 URI.js is available through [npm](http://npmjs.org/), [bower](http://bower.io/), [Jam](http://jamjs.org/) and manually from the [build page](http://medialize.github.io/URI.js/build.html):
 
 ```bash
@@ -171,7 +173,7 @@ How other environments do things
 
 ### Alternatives ###
 
-If you don't like URI.js, you may like one of these:
+If you don't like URI.js, you may like one of the following libraries. (If yours is not listed, drop me a line…)
 
 #### URL Manipulation ####
 
@@ -200,11 +202,12 @@ If you don't like URI.js, you may like one of these:
 #### Various ####
 
 * [TLD.js](https://github.com/oncletom/tld.js) - second level domain names
-* [Public Suffic](http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1) - second level domain names
+* [Public Suffix](http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1) - second level domain names
 
 ## Authors ##
 
 * [Rodney Rehm](https://github.com/rodneyrehm)
+* [Various Contributors](https://github.com/medialize/URI.js/graphs/contributors)
 
 
 ## Contains Code From ##
