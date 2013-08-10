@@ -11,8 +11,8 @@
 I always want to shoot myself in the head when looking at code like the following:
 
 ```javascript
-var url = "http://example.org/foo?bar=baz",
-    separator = url.indexOf('?') > -1 ? '&' : '?';
+var url = "http://example.org/foo?bar=baz";
+var separator = url.indexOf('?') > -1 ? '&' : '?';
 
 url += separator + encodeURIComponent("foo") + "=" + encodeURIComponent("bar");
 ```
@@ -34,36 +34,36 @@ URI.js is here to help with that.
 ```javascript
 // mutating URLs
 URI("http://example.org/foo.html?hello=world")
-    .username("rodneyrehm")
-        // -> http://rodneyrehm@example.org/foo.html?hello=world
-    .username("")
-        // -> http://example.org/foo.html?hello=world
-    .directory("bar")
-        // -> http://example.org/bar/foo.html?hello=world
-    .suffix("xml")
-        // -> http://example.org/bar/foo.xml?hello=world
-    .query("")
-        // -> http://example.org/bar/foo.xml
-    .tld("com")
-        // -> http://example.com/bar/foo.xml
-    .query({ foo: "bar", hello: ["world", "mars"] });
-        // -> http://example.com/bar/foo.xml?foo=bar&hello=world&hello=mars
+  .username("rodneyrehm")
+    // -> http://rodneyrehm@example.org/foo.html?hello=world
+  .username("")
+    // -> http://example.org/foo.html?hello=world
+  .directory("bar")
+    // -> http://example.org/bar/foo.html?hello=world
+  .suffix("xml")
+    // -> http://example.org/bar/foo.xml?hello=world
+  .query("")
+    // -> http://example.org/bar/foo.xml
+  .tld("com")
+    // -> http://example.com/bar/foo.xml
+  .query({ foo: "bar", hello: ["world", "mars"] });
+    // -> http://example.com/bar/foo.xml?foo=bar&hello=world&hello=mars
 
 // cleaning things up
 URI("?&foo=bar&&foo=bar&foo=baz&")
-    .normalizeQuery();
-        // -> ?foo=bar&foo=baz
+  .normalizeQuery();
+    // -> ?foo=bar&foo=baz
 
 // working with relative paths
 URI("/foo/bar/baz.html")
-    .relativeTo("/foo/bar/world.html");
-        // -> ./baz.html
+  .relativeTo("/foo/bar/world.html");
+    // -> ./baz.html
 
 URI("/foo/bar/baz.html")
-    .relativeTo("/foo/bar/sub/world.html")
-        // -> ../baz.html
-    .absoluteTo("/foo/bar/sub/world.html");
-        // -> /foo/bar/baz.html
+  .relativeTo("/foo/bar/sub/world.html")
+    // -> ../baz.html
+  .absoluteTo("/foo/bar/sub/world.html");
+    // -> /foo/bar/baz.html
 
 // URI Templates
 URI.expand("/foo/{dir}/{file}", {
@@ -105,8 +105,8 @@ var URI = require('URIjs');
 var URITemplate = require('URIjs/src/URITemplate');
 
 URI("/foo/bar/baz.html")
-    .relativeTo("/foo/bar/sub/world.html")
-// -> ../baz.html
+  .relativeTo("/foo/bar/sub/world.html")
+    // -> ../baz.html
 ```
 
 ### RequireJS ###
@@ -115,16 +115,16 @@ Clone the URI.js repository or use a package manager to get URI.js into your pro
 
 ```javascript
 require.config({
-    paths: {
-        URIjs: 'where-you-put-uri.js/src'
-    }
+  paths: {
+    URIjs: 'where-you-put-uri.js/src'
+  }
 });
 
 require(['URIjs/URI'], function(URI) {
-    console.log("URI.js and dependencies: ", URI("//amazon.co.uk").is('sld') ? 'loaded' : 'failed');
+  console.log("URI.js and dependencies: ", URI("//amazon.co.uk").is('sld') ? 'loaded' : 'failed');
 });
 require(['URIjs/URITemplate'], function(URITemplate) {
-    console.log("URITemplate.js and dependencies: ", URITemplate._cache ? 'loaded' : 'failed');
+  console.log("URITemplate.js and dependencies: ", URITemplate._cache ? 'loaded' : 'failed');
 });
 ```
 
