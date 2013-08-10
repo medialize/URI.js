@@ -77,6 +77,19 @@ See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://
 
 ## Using URI.js ##
 
+URI.js is available through [npm](http://npmjs.org/), [bower](http://bower.io/), [Jam](http://jamjs.org/) and manually from the [build page](http://medialize.github.io/URI.js/build.html):
+
+```bash
+# using bower
+bower install uri.js
+
+# using Jam
+jam install URIjs
+
+# using npm
+npm install URIjs
+```
+
 ### Browser ###
 
 I guess you'll manage to use the [build tool](http://medialize.github.com/URI.js/build.html) or follow the [instructions below](#minify) to combine and minify the various files into URI.min.js - and I'm fairly certain you know how to `<script src=".../URI.min.js"></script>` that sucker, too.
