@@ -23,13 +23,10 @@
         define(factory);
     } else {
         // Browser globals (root is window)
-        root.SecondLevelDomains = factory();
+        root.SecondLevelDomains = factory(root);
     }
-}(this, function () {
+}(this, function (root) {
 "use strict";
-
-// get access to the global object ('window' in browsers)
-var root = (function(f){ return f('return this')(); })(Function);
 
 // save current SecondLevelDomains variable, if any
 var _SecondLevelDomains = root.SecondLevelDomains;

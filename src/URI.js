@@ -21,13 +21,10 @@
         define(['./punycode', './IPv6', './SecondLevelDomains'], factory);
     } else {
         // Browser globals (root is window)
-        root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains);
+        root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains, root);
     }
-}(this, function (punycode, IPv6, SLD) {
+}(this, function (punycode, IPv6, SLD, root) {
 "use strict";
-
-// get access to the global object ('window' in browsers)
-var root = (function(f){ return f('return this')(); })(Function);
 
 // save current URI variable, if any
 var _URI = root.URI;

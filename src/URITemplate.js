@@ -22,13 +22,10 @@
         define(['./URI'], factory);
     } else {
         // Browser globals (root is window)
-        root.URITemplate = factory(root.URI);
+        root.URITemplate = factory(root.URI, root);
     }
-}(this, function (URI) {
+}(this, function (URI, root) {
 "use strict";
-
-// get access to the global object ('window' in browsers)
-var root = (function(f){ return f('return this')(); })(Function);
 
 // save current URITemplate variable, if any
 var _URITemplate = root.URITemplate;
