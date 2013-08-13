@@ -27,7 +27,7 @@
 "use strict";
 
 // save current URI variable, if any
-var _URI = root.URI;
+var _URI = root && root.URI;
 
 function URI(url, base) {
     // Allow instantiation without the 'new' keyword
