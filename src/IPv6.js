@@ -36,7 +36,7 @@ console.log(_in, _out, _expected, _out === _expected);
 */
 
 // save current IPv6 variable, if any
-var _IPv6 = root.IPv6;
+var _IPv6 = root && root.IPv6;
 
 function best(address) {
     // based on:

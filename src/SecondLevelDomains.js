@@ -29,7 +29,7 @@
 "use strict";
 
 // save current SecondLevelDomains variable, if any
-var _SecondLevelDomains = root.SecondLevelDomains;
+var _SecondLevelDomains = root && root.SecondLevelDomains;
 
 var hasOwn = Object.prototype.hasOwnProperty;
 var SLD = {
