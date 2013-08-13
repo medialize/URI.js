@@ -223,7 +223,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-### 1.11.0 (August 6th 2013) ###
+### 1.11.1 (August 13th 2013) ###
 
 * fixing inconsistent [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results caused by inconsistent URI component handling - ([Issue #103](https://github.com/medialize/URI.js/issues/103))
 * fixing unsafe eval by using UMD's root - ([Issue #105](https://github.com/medialize/URI.js/issues/105))
