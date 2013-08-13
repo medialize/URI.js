@@ -596,6 +596,11 @@ test("segment", function() {
 
     u.segment('test');
     equal(u.path(), "/foo/test", "segment append trailing empty");
+    
+    u.segment('');
+    equal(u.path(), "/foo/test/", "segment append empty trailing");
+    u.segment('');
+    equal(u.path(), "/foo/test/", "segment append empty trailing unchanged");
 });
 test("segmentCoded", function() {
     var u = new URI("http://www.example.org/some%20thing/directory/foo.html"),
@@ -617,6 +622,11 @@ test("segmentCoded", function() {
     equal(u.path(), "/hello%20world/mars/zapp%20zerapp", "segmentCoded del 3 ''");
     u.segmentCoded(2, null);
     equal(u.path(), "/hello%20world/mars", "segmentCoded del 3 null");
+    
+    u.segmentCoded('');
+    equal(u.path(), "/hello%20world/mars/", "segmentCoded append empty trailing");
+    u.segmentCoded('');
+    equal(u.path(), "/hello%20world/mars/", "segmentCoded append empty trailing unchanged");
 });
 
 module("mutating query strings");

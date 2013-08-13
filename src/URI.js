@@ -1415,7 +1415,7 @@ p.segment = function(segment, v, build) {
     } else if (segment === null || segments[segment] === undefined) {
         if (isArray(v)) {
             segments = v;
-        } else if (v || (typeof v === "string" && v.length)) {
+        } else if (v || (typeof v === "string")) {
             if (segments[segments.length -1] === "") {
                 // empty trailing elements have to be overwritten
                 // to prevent results such as /foo//bar
