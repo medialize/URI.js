@@ -11,8 +11,8 @@
 I always want to shoot myself in the head when looking at code like the following:
 
 ```javascript
-var url = "http://example.org/foo?bar=baz",
-    separator = url.indexOf('?') > -1 ? '&' : '?';
+var url = "http://example.org/foo?bar=baz";
+var separator = url.indexOf('?') > -1 ? '&' : '?';
 
 url += separator + encodeURIComponent("foo") + "=" + encodeURIComponent("bar");
 ```
@@ -34,36 +34,36 @@ URI.js is here to help with that.
 ```javascript
 // mutating URLs
 URI("http://example.org/foo.html?hello=world")
-    .username("rodneyrehm")
-        // -> http://rodneyrehm@example.org/foo.html?hello=world
-    .username("")
-        // -> http://example.org/foo.html?hello=world
-    .directory("bar")
-        // -> http://example.org/bar/foo.html?hello=world
-    .suffix("xml")
-        // -> http://example.org/bar/foo.xml?hello=world
-    .query("")
-        // -> http://example.org/bar/foo.xml
-    .tld("com")
-        // -> http://example.com/bar/foo.xml
-    .query({ foo: "bar", hello: ["world", "mars"] });
-        // -> http://example.com/bar/foo.xml?foo=bar&hello=world&hello=mars
+  .username("rodneyrehm")
+    // -> http://rodneyrehm@example.org/foo.html?hello=world
+  .username("")
+    // -> http://example.org/foo.html?hello=world
+  .directory("bar")
+    // -> http://example.org/bar/foo.html?hello=world
+  .suffix("xml")
+    // -> http://example.org/bar/foo.xml?hello=world
+  .query("")
+    // -> http://example.org/bar/foo.xml
+  .tld("com")
+    // -> http://example.com/bar/foo.xml
+  .query({ foo: "bar", hello: ["world", "mars"] });
+    // -> http://example.com/bar/foo.xml?foo=bar&hello=world&hello=mars
 
 // cleaning things up
 URI("?&foo=bar&&foo=bar&foo=baz&")
-    .normalizeQuery();
-        // -> ?foo=bar&foo=baz
+  .normalizeQuery();
+    // -> ?foo=bar&foo=baz
 
 // working with relative paths
 URI("/foo/bar/baz.html")
-    .relativeTo("/foo/bar/world.html");
-        // -> ./baz.html
+  .relativeTo("/foo/bar/world.html");
+    // -> ./baz.html
 
 URI("/foo/bar/baz.html")
-    .relativeTo("/foo/bar/sub/world.html")
-        // -> ../baz.html
-    .absoluteTo("/foo/bar/sub/world.html");
-        // -> /foo/bar/baz.html
+  .relativeTo("/foo/bar/sub/world.html")
+    // -> ../baz.html
+  .absoluteTo("/foo/bar/sub/world.html");
+    // -> /foo/bar/baz.html
 
 // URI Templates
 URI.expand("/foo/{dir}/{file}", {
@@ -76,6 +76,21 @@ URI.expand("/foo/{dir}/{file}", {
 See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://medialize.github.com/URI.js/docs.html) for more stuff.
 
 ## Using URI.js ##
+
+URI.js (without plugins) has a gzipped weight of about 7KB - if you include all extensions you end up at about 13KB. So unless you *need* second level domain support and use URI templates, we suggest you don't include them in your build. If you don't need a full featured URI mangler, it may be worth looking into the much smaller parser-only alternatives [listed below](#alternatives).
+
+URI.js is available through [npm](http://npmjs.org/), [bower](http://bower.io/), [Jam](http://jamjs.org/) and manually from the [build page](http://medialize.github.io/URI.js/build.html):
+
+```bash
+# using bower
+bower install uri.js
+
+# using Jam
+jam install URIjs
+
+# using npm
+npm install URIjs
+```
 
 ### Browser ###
 
@@ -92,8 +107,8 @@ var URI = require('URIjs');
 var URITemplate = require('URIjs/src/URITemplate');
 
 URI("/foo/bar/baz.html")
-    .relativeTo("/foo/bar/sub/world.html")
-// -> ../baz.html
+  .relativeTo("/foo/bar/sub/world.html")
+    // -> ../baz.html
 ```
 
 ### RequireJS ###
@@ -102,16 +117,16 @@ Clone the URI.js repository or use a package manager to get URI.js into your pro
 
 ```javascript
 require.config({
-    paths: {
-        URIjs: 'where-you-put-uri.js/src'
-    }
+  paths: {
+    URIjs: 'where-you-put-uri.js/src'
+  }
 });
 
 require(['URIjs/URI'], function(URI) {
-    console.log("URI.js and dependencies: ", URI("//amazon.co.uk").is('sld') ? 'loaded' : 'failed');
+  console.log("URI.js and dependencies: ", URI("//amazon.co.uk").is('sld') ? 'loaded' : 'failed');
 });
 require(['URIjs/URITemplate'], function(URITemplate) {
-    console.log("URITemplate.js and dependencies: ", URITemplate._cache ? 'loaded' : 'failed');
+  console.log("URITemplate.js and dependencies: ", URITemplate._cache ? 'loaded' : 'failed');
 });
 ```
 
@@ -158,7 +173,7 @@ How other environments do things
 
 ### Alternatives ###
 
-If you don't like URI.js, you may like one of these:
+If you don't like URI.js, you may like one of the following libraries. (If yours is not listed, drop me a line…)
 
 #### URL Manipulation ####
 
@@ -187,11 +202,12 @@ If you don't like URI.js, you may like one of these:
 #### Various ####
 
 * [TLD.js](https://github.com/oncletom/tld.js) - second level domain names
-* [Public Suffic](http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1) - second level domain names
+* [Public Suffix](http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1) - second level domain names
 
 ## Authors ##
 
 * [Rodney Rehm](https://github.com/rodneyrehm)
+* [Various Contributors](https://github.com/medialize/URI.js/graphs/contributors)
 
 
 ## Contains Code From ##
@@ -209,10 +225,17 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### 1.11.0 (August 6th 2013) ###
 
+* fixing inconsistent [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results caused by inconsistent URI component handling - ([Issue #103](https://github.com/medialize/URI.js/issues/103))
+* fixing unsafe eval by using UMD's root - ([Issue #105](https://github.com/medialize/URI.js/issues/105))
+* fixing [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment) to allow appending an empty element - ([Issue #106](https://github.com/medialize/URI.js/issues/106))
+* fixing [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment) to collapse empty elements in array notation
+
+### 1.11.0 (August 6th 2013) ###
+
 * adding [`.segmentCoded()`](http://medialize.github.com/URI.js/docs.html#accessors-segmentCoded) to provide en/decoding interface to `.segment()` - ([Issue #79](https://github.com/medialize/URI.js/issues/79))
 * optimize [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results - ([Issue #78](https://github.com/medialize/URI.js/issues/78), [Issue #95](https://github.com/medialize/URI.js/issues/95))
 * removing obsolete code fragments from `URI.parse()` and `relativeTo()` - ([Issue #100](https://github.com/medialize/URI.js/issues/100))
-* adding setting `URI.escapeQuerySpace` to control if query string should escape spaces using `+` or `%20` - ([Issue #74](https://github.com/medialize/URI.js/issues/74))
+* adding setting [`URI.escapeQuerySpace`](http://medialize.github.io/URI.js/docs.html#setting-escapeQuerySpace) to control if query string should escape spaces using `+` or `%20` - ([Issue #74](https://github.com/medialize/URI.js/issues/74))
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.2.3
 * fixing internal `strictEncodeURIComponent()` to work in Firefox 3.6 - ([Issue #91](https://github.com/medialize/URI.js/issues/91))
 * fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly resolve `/.` and `/.//` to `/` - ([Issue #97](https://github.com/medialize/URI.js/issues/97))
@@ -223,7 +246,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * adding [`URI.noConflict()`](http://medialize.github.io/URI.js/docs.html#static-noConflict) - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
 * fixing whitespace in code - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
 * fixing [`.readable()`](http://medialize.github.com/URI.js/docs.html#readable) to decode the hash value as well - ([Issue #90](https://github.com/medialize/URI.js/issue/90))
-* prevent `jquery.URI.js from` temporarily using `window.location` as the `href` of an empty attribute of a DOM element - ([Issue #94](https://github.com/medialize/URI.js/issues/94))
+* prevent `jquery.URI.js` from temporarily using `window.location` as the `href` of an empty attribute of a DOM element - ([Issue #94](https://github.com/medialize/URI.js/issues/94))
 * fixing internal `getType()` for IE8 with undefined value - ([Issue #96](https://github.com/medialize/URI.js/issues/96))
 * adding DOM elements to [URI constructor](http://medialize.github.io/URI.js/docs.html#constructor) - ([Issue #77](https://github.com/medialize/URI.js/issues/77)):
   * [`<a href="...">`](http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#the-a-element)
@@ -244,7 +267,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### 1.10.2 (April 15th 2013) ###
 
 * fixing [`relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) - ([Issue #75](https://github.com/medialize/URI.js/issues/75))
-* fixing [`normalizePath()`](http://medialize.github.com/URI.js/docs.html#normalize-path) to not prepend ./ to relative paths - ([Issue #76](https://github.com/medialize/URI.js/issues/76))
+* fixing [`normalizePath()`](http://medialize.github.com/URI.js/docs.html#normalize-path) to not prepend `./` to relative paths - ([Issue #76](https://github.com/medialize/URI.js/issues/76))
 
 ### 1.10.1 (April 2nd 2013) ###
 

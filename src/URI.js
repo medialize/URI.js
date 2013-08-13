@@ -21,13 +21,10 @@
         define(['./punycode', './IPv6', './SecondLevelDomains'], factory);
     } else {
         // Browser globals (root is window)
-        root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains);
+        root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains, root);
     }
-}(this, function (punycode, IPv6, SLD) {
+}(this, function (punycode, IPv6, SLD, root) {
 "use strict";
-
-// get access to the global object ('window' in browsers)
-var root = (function(f){ return f('return this')(); })(Function);
 
 // save current URI variable, if any
 var _URI = root.URI;
@@ -381,14 +378,14 @@ URI.parse = function(string, parts) {
     // extract protocol
     if (string.substring(0, 2) === '//') {
         // relative-scheme
-        parts.protocol = '';
+        parts.protocol = null;
         string = string.substring(2);
         // extract "user:pass@host:port"
         string = URI.parseAuthority(string, parts);
     } else {
         pos = string.indexOf(':');
         if (pos > -1) {
-            parts.protocol = string.substring(0, pos);
+            parts.protocol = string.substring(0, pos) || null;
             if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
                 // : may be within the path
                 parts.protocol = undefined;
@@ -836,7 +833,7 @@ generateAccessor = function(_part){
         if (v === undefined) {
             return this._parts[_part] || "";
         } else {
-            this._parts[_part] = v;
+            this._parts[_part] = v || null;
             this.build(!build);
             return this;
         }
@@ -1417,8 +1414,20 @@ p.segment = function(segment, v, build) {
             : segments[segment];
     } else if (segment === null || segments[segment] === undefined) {
         if (isArray(v)) {
-            segments = v;
-        } else if (v || (typeof v === "string" && v.length)) {
+            segments = [];
+            // collapse empty elements within array
+            for (var i=0, l=v.length; i < l; i++) {
+                if (!v[i].length && (!segments.length || !segments[segments.length -1].length)) {
+                    continue;
+                }
+                
+                if (segments.length && !segments[segments.length -1].length) {
+                    segments.pop();
+                }
+                
+                segments.push(v[i]);
+            }
+        } else if (v || (typeof v === "string")) {
             if (segments[segments.length -1] === "") {
                 // empty trailing elements have to be overwritten
                 // to prevent results such as /foo//bar

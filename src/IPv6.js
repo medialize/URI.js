@@ -22,9 +22,9 @@
         define(factory);
     } else {
         // Browser globals (root is window)
-        root.IPv6 = factory();
+        root.IPv6 = factory(root);
     }
-}(this, function () {
+}(this, function (root) {
 "use strict";
 
 /*
@@ -34,9 +34,6 @@ var _expected = "fe80::204:61ff:fe9d:f156";
 
 console.log(_in, _out, _expected, _out === _expected);
 */
-
-// get access to the global object ('window' in browsers)
-var root = (function(f){ return f('return this')(); })(Function);
 
 // save current IPv6 variable, if any
 var _IPv6 = root.IPv6;
