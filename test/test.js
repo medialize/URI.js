@@ -601,6 +601,9 @@ test("segment", function() {
     equal(u.path(), "/foo/test/", "segment append empty trailing");
     u.segment('');
     equal(u.path(), "/foo/test/", "segment append empty trailing unchanged");
+    
+    u.segment(['', '', 'foo', '', '', 'bar', '', '']);
+    equal(u.path(), "/foo/bar/", "segment collapsing empty parts");
 });
 test("segmentCoded", function() {
     var u = new URI("http://www.example.org/some%20thing/directory/foo.html"),

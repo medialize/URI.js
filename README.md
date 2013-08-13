@@ -227,6 +227,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 * fixing inconsistent [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results caused by inconsistent URI component handling - ([Issue #103](https://github.com/medialize/URI.js/issues/103))
 * fixing unsafe eval by using UMD's root - ([Issue #105](https://github.com/medialize/URI.js/issues/105))
+* fixing [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment) to allow appending an empty element - ([Issue #106](https://github.com/medialize/URI.js/issues/106))
+* fixing [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment) to collapse empty elements in array notation
 
 ### 1.11.0 (August 6th 2013) ###
 

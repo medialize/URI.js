@@ -1414,7 +1414,19 @@ p.segment = function(segment, v, build) {
             : segments[segment];
     } else if (segment === null || segments[segment] === undefined) {
         if (isArray(v)) {
-            segments = v;
+            segments = [];
+            // collapse empty elements within array
+            for (var i=0, l=v.length; i < l; i++) {
+                if (!v[i].length && (!segments.length || !segments[segments.length -1].length)) {
+                    continue;
+                }
+                
+                if (segments.length && !segments[segments.length -1].length) {
+                    segments.pop();
+                }
+                
+                segments.push(v[i]);
+            }
         } else if (v || (typeof v === "string")) {
             if (segments[segments.length -1] === "") {
                 // empty trailing elements have to be overwritten
