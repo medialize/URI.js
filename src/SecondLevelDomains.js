@@ -2,7 +2,7 @@
  * URI.js - Mutating URLs
  * Second Level Domain (SLD) Support
  *
- * Version: 1.11.1
+ * Version: 1.11.2
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.com/URI.js/
@@ -29,7 +29,7 @@
 "use strict";
 
 // save current SecondLevelDomains variable, if any
-var _SecondLevelDomains = root.SecondLevelDomains;
+var _SecondLevelDomains = root && root.SecondLevelDomains;
 
 var hasOwn = Object.prototype.hasOwnProperty;
 var SLD = {

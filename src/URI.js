@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.11.1
+ * Version: 1.11.2
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.com/URI.js/
@@ -27,7 +27,7 @@
 "use strict";
 
 // save current URI variable, if any
-var _URI = root.URI;
+var _URI = root && root.URI;
 
 function URI(url, base) {
     // Allow instantiation without the 'new' keyword
@@ -451,8 +451,10 @@ URI.parseAuthority = function(string, parts) {
 };
 URI.parseUserinfo = function(string, parts) {
     // extract username:password
-    var pos = string.indexOf('@');
     var firstSlash = string.indexOf('/');
+    var pos = firstSlash > -1 
+        ? string.lastIndexOf('@', firstSlash) 
+        : string.indexOf('@');
     var t;
 
     // authority@ must come before /path
@@ -781,30 +783,29 @@ URI.ensureValidHostname = function(v) {
 
 // noConflict
 URI.noConflict = function(removeAll) {
-  if(removeAll){
-    var unconflicted = {
-      URI: this.noConflict()
-    };
+    if (removeAll) {
+        var unconflicted = {
+            URI: this.noConflict()
+        };
 
-    if(URITemplate && typeof URITemplate.noConflict == "function") {
-      unconflicted.URITemplate = URITemplate.noConflict();
-    }
-    if(IPv6 && typeof IPv6.noConflict == "function") {
-      unconflicted.IPv6 = IPv6.noConflict();
-    }
-    if(SecondLevelDomains && typeof SecondLevelDomains.noConflict == "function") {
-      unconflicted.SecondLevelDomains = SecondLevelDomains.noConflict();
-    }
+        if (URITemplate && typeof URITemplate.noConflict == "function") {
+            unconflicted.URITemplate = URITemplate.noConflict();
+        }
 
-    return unconflicted;
-  }
-  else {
-    if (root.URI === this) {
-      root.URI = _URI;
+        if (IPv6 && typeof IPv6.noConflict == "function") {
+            unconflicted.IPv6 = IPv6.noConflict();
+        }
+
+        if (SecondLevelDomains && typeof SecondLevelDomains.noConflict == "function") {
+            unconflicted.SecondLevelDomains = SecondLevelDomains.noConflict();
+        }
+
+        return unconflicted;
+    } else if (root.URI === this) {
+        root.URI = _URI;
     }
 
     return this;
-  }
 };
 
 p.build = function(deferBuild) {
