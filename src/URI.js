@@ -451,8 +451,10 @@ URI.parseAuthority = function(string, parts) {
 };
 URI.parseUserinfo = function(string, parts) {
     // extract username:password
-    var pos = string.indexOf('@');
     var firstSlash = string.indexOf('/');
+    var pos = firstSlash > -1 
+        ? string.lastIndexOf('@', firstSlash) 
+        : string.indexOf('@');
     var t;
 
     // authority@ must come before /path

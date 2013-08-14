@@ -284,6 +284,54 @@ var urls = [{
             punycode: false
         }
     }, {
+        name: 'malformed email in userinfo',
+        url: 'scheme://john@doe.com:pass:word@www.example.org/',
+        _url: 'scheme://john%40doe.com:pass%3Aword@www.example.org/',
+        parts: {
+            protocol: 'scheme',
+            username: 'john@doe.com',
+            password: 'pass:word',
+            hostname: 'www.example.org',
+            port: null,
+            path: '/',
+            query: null,
+            fragment: null
+        },
+        accessors: {
+            protocol: 'scheme',
+            username: 'john@doe.com',
+            password: 'pass:word',
+            port: '',
+            path: '/',
+            query: '',
+            fragment: '',
+            resource: '/',
+            authority: 'john%40doe.com:pass%3Aword@www.example.org',
+            userinfo: 'john%40doe.com:pass%3Aword',
+            subdomain: 'www',
+            domain: 'example.org',
+            tld: 'org',
+            directory: '/',
+            filename: '',
+            suffix: '',
+            hash: '',
+            search: '',
+            host: 'www.example.org',
+            hostname: 'www.example.org'
+        },
+        is: {
+            urn: false,
+            url: true,
+            relative: false,
+            name: true,
+            sld: false,
+            ip: false,
+            ip4: false,
+            ip6: false,
+            idn: false,
+            punycode: false
+        }
+    }, {
         name: 'host-relative: URL',
         url: '/some/directory/file.html?query=string#fragment',
         parts: {

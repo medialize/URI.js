@@ -226,6 +226,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### `[dev-version]` (master branch) ###
 
 * fixing regression for Node.js introduced by `fixing unsafe eval by using UMD's root` - ([Issue #107](https://github.com/medialize/URI.js/issues/107))
+* fixing parser to accept malformed userinfo (non-encoded email address) - ([Issue #108](https://github.com/medialize/URI.js/issues/108))
 
 ### 1.11.1 (August 13th 2013) ###
 
