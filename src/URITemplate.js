@@ -28,7 +28,7 @@
 "use strict";
 
 // save current URITemplate variable, if any
-var _URITemplate = root.URITemplate;
+var _URITemplate = root && root.URITemplate;
 
 var hasOwn = Object.prototype.hasOwnProperty;
 function URITemplate(expression) {
@@ -303,11 +303,11 @@ URITemplate.expandUnnamed = function(d, options, explode, separator, length, nam
 };
 
 URITemplate.noConflict = function() {
-  if (root.URITemplate === URITemplate) {
-    root.URITemplate = _URITemplate;
-  }
+    if (root.URITemplate === URITemplate) {
+        root.URITemplate = _URITemplate;
+    }
 
-  return URITemplate;
+    return URITemplate;
 };
 
 // expand template through given data map

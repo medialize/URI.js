@@ -225,6 +225,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### `[dev-version]` (master branch) ###
 
+* fixing regression for Node.js introduced by `fixing unsafe eval by using UMD's root` - ([Issue #107](https://github.com/medialize/URI.js/issues/107))
+
+### 1.11.1 (August 13th 2013) ###
+
 * fixing inconsistent [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results caused by inconsistent URI component handling - ([Issue #103](https://github.com/medialize/URI.js/issues/103))
 * fixing unsafe eval by using UMD's root - ([Issue #105](https://github.com/medialize/URI.js/issues/105))
 * fixing [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment) to allow appending an empty element - ([Issue #106](https://github.com/medialize/URI.js/issues/106))

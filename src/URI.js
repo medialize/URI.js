@@ -781,30 +781,29 @@ URI.ensureValidHostname = function(v) {
 
 // noConflict
 URI.noConflict = function(removeAll) {
-  if(removeAll){
-    var unconflicted = {
-      URI: this.noConflict()
-    };
+    if (removeAll) {
+        var unconflicted = {
+            URI: this.noConflict()
+        };
 
-    if(URITemplate && typeof URITemplate.noConflict == "function") {
-      unconflicted.URITemplate = URITemplate.noConflict();
-    }
-    if(IPv6 && typeof IPv6.noConflict == "function") {
-      unconflicted.IPv6 = IPv6.noConflict();
-    }
-    if(SecondLevelDomains && typeof SecondLevelDomains.noConflict == "function") {
-      unconflicted.SecondLevelDomains = SecondLevelDomains.noConflict();
-    }
+        if (URITemplate && typeof URITemplate.noConflict == "function") {
+            unconflicted.URITemplate = URITemplate.noConflict();
+        }
 
-    return unconflicted;
-  }
-  else {
-    if (root.URI === this) {
-      root.URI = _URI;
+        if (IPv6 && typeof IPv6.noConflict == "function") {
+            unconflicted.IPv6 = IPv6.noConflict();
+        }
+
+        if (SecondLevelDomains && typeof SecondLevelDomains.noConflict == "function") {
+            unconflicted.SecondLevelDomains = SecondLevelDomains.noConflict();
+        }
+
+        return unconflicted;
+    } else if (root.URI === this) {
+        root.URI = _URI;
     }
 
     return this;
-  }
 };
 
 p.build = function(deferBuild) {
