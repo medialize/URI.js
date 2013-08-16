@@ -53,6 +53,8 @@ function URI(url, base) {
     return this;
 };
 
+URI.version = '[dev-version]';
+
 var p = URI.prototype;
 var hasOwn = Object.prototype.hasOwnProperty;
 
