@@ -485,21 +485,21 @@ uri.segment("appendthis"); // -> http://example.org/bar/foobar.html/appendthis</
     <p>.segmentCoded() works the same way <a href="#accessors-segment">.segment()</a> does, with the difference of transparently encoding and decoding values.</p>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello%20world.html");
 // get segments
-uri.segment(); // returns array ["foo", "hello world.html"]
+uri.segmentCoded(); // returns array ["foo", "hello world.html"]
 // set segments
-uri.segment(["foo", "bar", "foo bar.html"]); // -> http://example.org/foo/bar/foo%20bar.html
+uri.segmentCoded(["foo", "bar", "foo bar.html"]); // -> http://example.org/foo/bar/foo%20bar.html
 
 // get specific level
-uri.segment(0); // returns "foo"
-uri.segment(1); // returns "bar"
-uri.segment(-1); // returns "foo bar.html"
+uri.segmentCoded(0); // returns "foo"
+uri.segmentCoded(1); // returns "bar"
+uri.segmentCoded(-1); // returns "foo bar.html"
 // set specific level
-uri.segment(0, "bar bam"); // -> http://example.org/bar%20bam/bar/foobar.html
+uri.segmentCoded(0, "bar bam"); // -> http://example.org/bar%20bam/bar/foobar.html
 // remove specific level
-uri.segment(0, ""); // -> http://example.org/bar/foobar.html
+uri.segmentCoded(0, ""); // -> http://example.org/bar/foobar.html
 
 // append level
-uri.segment("append this"); // -> http://example.org/bar/foobar.html/append%20this</pre>
+uri.segmentCoded("append this"); // -> http://example.org/bar/foobar.html/append%20this</pre>
     
     
     <h3 id="accessors-search">search(), query()</h3>
