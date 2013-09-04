@@ -225,6 +225,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### [dev-version master] ###
+
+* fixing [`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to comply with [RFC3986 Reference Resolution Examples](http://tools.ietf.org/html/rfc3986#section-5.4) - ([Issue #113](https://github.com/medialize/URI.js/issues/113))
+
 ### 1.11.2 (August 14th 2013) ###
 
 * fixing regression for Node.js introduced by `fixing unsafe eval by using UMD's root` - ([Issue #107](https://github.com/medialize/URI.js/issues/107))

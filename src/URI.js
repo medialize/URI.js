@@ -1635,14 +1635,14 @@ p.normalizePath = function(build) {
 
     // resolve parents
     while (true) {
-        _parent = _path.indexOf('/../');
+        _parent = _path.indexOf('/..');
         if (_parent === -1) {
             // no more ../ to resolve
             break;
         } else if (_parent === 0) {
-            // top level cannot be relative...
+            // top level cannot be relative, skip it
             _path = _path.substring(3);
-            break;
+            continue;
         }
 
         _pos = _path.substring(0, _parent).lastIndexOf('/');
@@ -1783,13 +1783,15 @@ p.absoluteTo = function(base) {
         resolved._parts[p] = base._parts[p];
     }
     
-    properties = ['query', 'path'];
-    for (i = 0; p = properties[i]; i++) {
-        if (!resolved._parts[p] && base._parts[p]) {
-            resolved._parts[p] = base._parts[p];
+    if (!resolved._parts.path) {
+        resolved._parts.path = base._parts.path;
+        if (!resolved._parts.query) {
+            resolved._parts.query = base._parts.query;
         }
+    } else if (resolved._parts.path.substring(-2) === '..') {
+        resolved._parts.path += '/';
     }
-
+    
     if (resolved.path().charAt(0) !== '/') {
         basedir = base.directory();
         resolved._parts.path = (basedir ? (basedir + '/') : '') + resolved._parts.path;
