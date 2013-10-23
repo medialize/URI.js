@@ -175,24 +175,28 @@ var SLD = {
         "za":"ac|agric|alt|bourse|city|co|cybernet|db|edu|gov|grondar|iaccess|imt|inca|landesign|law|mil|net|ngo|nis|nom|olivetti|org|pix|school|tm|web",
         "zm":"ac|co|com|edu|gov|net|org|sch"
     },
-    // http://jsperf.com/long-string-indexof-vs-quickindexof/2
-    quickIndexOf: function(s, t) {
-        var i, j, k;
+    // http://jsperf.com/uri-js-sld-regex-vs-binary-search
+    quickIndexOf: function(haystack, needle) {
+        var midpoint, start, end;
+        var straw;
         var left = 1;
-        var right = s.length - 1;
-        var sub;
-        t = ' ' + t + ' ';
+        var right = haystack.length - 1;
+        needle = ' ' + needle + ' ';
         while (left < right) {
-            i = left + right >> 1;
-            j = s.lastIndexOf(' ', i);
-            k = s.indexOf(' ', j+1) + 1;
-            sub = s.slice(j, k);
-            if ( t < sub ) {
-                right = j;
-            } else if ( t > sub ) {
-                left = k;
+            // find midpoint: bitwise shift right allows us to divide by 2
+            // and obtain an integer as a result without using Math.floor()
+            midpoint = left + right >> 1;
+            // there is a straw at midpoint, find its start and end in order
+            // to extract it whole
+            start = haystack.lastIndexOf(' ', midpoint);
+            end = haystack.indexOf(' ', start+1) + 1;
+            straw = haystack.slice(start, end);
+            if ( needle < straw ) {
+                right = start;
+            } else if ( needle > straw ) {
+                left = end;
             } else {
-                return j;
+                return start; // Oh, that's not a straw, that's our needle!
             }
         }
         return -1;
