@@ -470,7 +470,7 @@ test("sld", function() {
     var u = new URI("http://www.example.org/foo.html");
     equal(u.is("sld"), false, "is not sld");
     var list = SecondLevelDomains.list;
-    var tlds = Object.keys(SecondLevelDomains.list);
+    var tlds = Object.keys(list);
     var iTld = tlds.length;
     var tld, slds, sld, iSld;
     while ( iTld-- ) {
