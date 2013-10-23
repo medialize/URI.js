@@ -175,21 +175,53 @@ var SLD = {
         "za":"ac|agric|alt|bourse|city|co|cybernet|db|edu|gov|grondar|iaccess|imt|inca|landesign|law|mil|net|ngo|nis|nom|olivetti|org|pix|school|tm|web",
         "zm":"ac|co|com|edu|gov|net|org|sch"
     },
-    // SLD expression for each TLD
-    //expressions: {},
-    // SLD expression for all TLDs
-    has_expression: null,
-    is_expression: null,
-    // validate domain is a known SLD
+    // http://jsperf.com/uri-js-sld-regex-vs-binary-search
+    quickIndexOf: function(haystack, needle) {
+        var midpoint, start, end;
+        var straw;
+        var left = 1;
+        var right = haystack.length - 1;
+        needle = ' ' + needle + ' ';
+        while (left < right) {
+            // find midpoint: bitwise shift right allows us to divide by 2
+            // and obtain an integer as a result without using Math.floor()
+            midpoint = left + right >> 1;
+            // there is a straw at midpoint, find its start and end in order
+            // to extract it whole
+            start = haystack.lastIndexOf(' ', midpoint);
+            end = haystack.indexOf(' ', start+1) + 1;
+            straw = haystack.slice(start, end);
+            if ( needle < straw ) {
+                right = start;
+            } else if ( needle > straw ) {
+                left = end;
+            } else {
+                return start; // Oh, that's not a straw, that's our needle!
+            }
+        }
+        return -1;
+    },
     has: function(domain) {
-        return !!domain.match(SLD.has_expression);
+        var dd = domain.split('.');
+        if ( dd.length < 3 ) { return false; }
+        return SLD.quickIndexOf(SLD.all, dd.reverse().slice(0,2).join('.')) >= 0;
     },
     is: function(domain) {
-        return !!domain.match(SLD.is_expression);
+        var dd = domain.split('.');
+        if ( dd.length > 2 ) { return false; }
+        return SLD.quickIndexOf(SLD.all, dd.reverse().join('.')) >= 0;
     },
     get: function(domain) {
-        var t = domain.match(SLD.has_expression);
-        return t && t[1] || null;
+        var dd = domain.split('.');
+        if ( dd.length < 3 ) {
+            return null;
+        }
+        var i = SLD.quickIndexOf(SLD.all, dd.reverse().slice(0,2).join('.'));
+        if ( i < 0 ) {
+            return null;
+        }
+        var j = SLD.all.indexOf(' ', i+1);
+        return SLD.all.slice(i+1,j).split('.').reverse().join('.');
     },
     noConflict: function(){
       if (root.SecondLevelDomains === this) {
@@ -198,19 +230,16 @@ var SLD = {
       return this;
     },
     init: function() {
-        var t = '';
+        var t = [];
         for (var tld in SLD.list) {
             if (!hasOwn.call(SLD.list, tld)) {
                 continue;
             }
-
-            var expression = '(' + SLD.list[tld] + ')\.' + tld;
-            //SLD.expressions[tld] = new RegExp('\.' + expression + '$', 'i');
-            t += '|(' + expression + ')';
+            t = t.concat(SLD.list[tld].split('|').map(function(sld){
+                return tld + '.' + sld;
+            }));
         }
-
-        SLD.has_expression = new RegExp('\\.(' + t.substr(1) + ')$', 'i');
-        SLD.is_expression = new RegExp('^(' + t.substr(1) + ')$', 'i');
+        SLD.all = ' ' + t.sort().join(' ') + ' ';
     }
 };
 

@@ -463,6 +463,31 @@ test("tld", function() {
     equal(u.tld(), "se", "se tld");
 
 });
+test("sld", function() {
+    // Lets just test them all..
+    // Calling URI.is(), URI.domain(), URI.subdomain() allows us to indirectly
+    // test SLD.has(), SLD.is() and SLD.get()
+    var u = new URI("http://www.example.org/foo.html");
+    equal(u.is("sld"), false, "is not sld");
+    var list = SecondLevelDomains.list;
+    var tlds = Object.keys(list);
+    var iTld = tlds.length;
+    var tld, slds, sld, iSld;
+    while ( iTld-- ) {
+        tld = tlds[iTld];
+        slds = list[tld].split("|");
+        iSld = slds.length;
+        while ( iSld-- ) {
+            sld = slds[iSld] + '.' + tld;
+            u.hostname("www.example." + sld);
+            equal(u.is("sld"), true, "is sld");
+            equal(u.domain(), "example." + sld, "domain is example." + sld);
+            equal(u.subdomain(), "www", "subdomain is www");
+            u.hostname('www.example.' + tld);
+            equal(u.is("sld"), false, "is not sld");
+        }
+    }
+});
 test("directory", function() {
     var u = new URI("http://www.example.org/some/directory/foo.html");
     u.directory("/");
