@@ -175,6 +175,11 @@ var SLD = {
         "za":" ac agric alt bourse city co cybernet db edu gov grondar iaccess imt inca landesign law mil net ngo nis nom olivetti org pix school tm web ",
         "zm":" ac co com edu gov net org sch "
     },
+    // gorhill 2013-10-25: Using indexOf() instead Regexp(). Significant boost
+    // in both performance and memory footprint. No initialization required.
+    // http://jsperf.com/uri-js-sld-regex-vs-binary-search/4
+    // Following methods use lastIndexOf() rather than array.split() in order
+    // to avoid any memory allocations.
     has: function(domain) {
         var tldOffset = domain.lastIndexOf('.');
         if ( tldOffset <= 0 || tldOffset >= (domain.length-1) ) { return false; }
