@@ -181,31 +181,51 @@ var SLD = {
     // Following methods use lastIndexOf() rather than array.split() in order
     // to avoid any memory allocations.
     has: function(domain) {
-        var tldOffset = domain.lastIndexOf('.');
-        if ( tldOffset <= 0 || tldOffset >= (domain.length-1) ) { return false; }
-        var sldOffset = domain.lastIndexOf('.', tldOffset-1);
-        if ( sldOffset <= 0 || sldOffset >= (tldOffset-1) ) { return false; }
+        var tldOffset = domain.lastIndexOf(".");
+        if (tldOffset <= 0 || tldOffset >= (domain.length-1)) {
+            return false;
+        }
+        var sldOffset = domain.lastIndexOf(".", tldOffset-1);
+        if (sldOffset <= 0 || sldOffset >= (tldOffset-1)) {
+            return false;
+        }
         var sldList = SLD.list[domain.slice(tldOffset+1)];
-        if ( !sldList ) { return false; }
-        return sldList.indexOf(' ' + domain.slice(sldOffset+1, tldOffset) + ' ') >= 0;
+        if (!sldList) {
+            return false;
+        }
+        return sldList.indexOf(" " + domain.slice(sldOffset+1, tldOffset) + " ") >= 0;
     },
     is: function(domain) {
-        var tldOffset = domain.lastIndexOf('.');
-        if ( tldOffset <= 0 || tldOffset >= (domain.length-1) ) { return false; }
-        var sldOffset = domain.lastIndexOf('.', tldOffset-1);
-        if ( sldOffset >= 0 ) { return false; }
+        var tldOffset = domain.lastIndexOf(".");
+        if (tldOffset <= 0 || tldOffset >= (domain.length-1)) {
+            return false;
+        }
+        var sldOffset = domain.lastIndexOf(".", tldOffset-1);
+        if (sldOffset >= 0) {
+            return false;
+        }
         var sldList = SLD.list[domain.slice(tldOffset+1)];
-        if ( !sldList ) { return false; }
-        return sldList.indexOf(' ' + domain.slice(0, tldOffset) + ' ') >= 0;
+        if (!sldList) {
+            return false;
+        }
+        return sldList.indexOf(" " + domain.slice(0, tldOffset) + " ") >= 0;
     },
     get: function(domain) {
-        var tldOffset = domain.lastIndexOf('.');
-        if ( tldOffset <= 0 || tldOffset >= (domain.length-1) ) { return null; }
-        var sldOffset = domain.lastIndexOf('.', tldOffset-1);
-        if ( sldOffset <= 0 || sldOffset >= (tldOffset-1) ) { return null; }
+        var tldOffset = domain.lastIndexOf(".");
+        if (tldOffset <= 0 || tldOffset >= (domain.length-1)) {
+            return null;
+        }
+        var sldOffset = domain.lastIndexOf(".", tldOffset-1);
+        if (sldOffset <= 0 || sldOffset >= (tldOffset-1)) {
+            return null;
+        }
         var sldList = SLD.list[domain.slice(tldOffset+1)];
-        if ( !sldList ) { return null; }
-        if ( sldList.indexOf(' ' + domain.slice(sldOffset+1, tldOffset) + ' ') < 0 ) { return null; }
+        if (!sldList) {
+            return null;
+        }
+        if (sldList.indexOf(" " + domain.slice(sldOffset+1, tldOffset) + " ") < 0) {
+            return null;
+        }
         return domain.slice(sldOffset+1);
     },
     noConflict: function(){

@@ -475,18 +475,15 @@ test("sld", function() {
     var tld, slds, sld, iSld;
     while ( iTld-- ) {
         tld = tlds[iTld];
-        // We trim and split on whitespaces, so if someone mistakenly uses
-        // more than one space to separate the SLD fragments, it will cause
-        // the tests to fail.
         slds = list[tld].trim().split(/\s+/);
         iSld = slds.length;
         while ( iSld-- ) {
-            sld = slds[iSld].trim() + '.' + tld;
+            sld = slds[iSld].trim() + "." + tld;
             u.hostname("www.example." + sld);
             equal(u.is("sld"), true, "is sld");
             equal(u.domain(), "example." + sld, "domain is example." + sld);
             equal(u.subdomain(), "www", "subdomain is www");
-            u.hostname('www.example.' + tld);
+            u.hostname("www.example." + tld);
             equal(u.is("sld"), false, "is not sld");
         }
     }
