@@ -1099,12 +1099,12 @@ noDuplicates === "?bar=1";</pre>
     <pre class="prettyprint lang-js">// prevent all new URI instances from escaping spaces in query strings:
 URI.escapeQuerySpace = false; // default is true
 
-// make a specific URI instance allow duplicates:
+// make a specific URI instance escape spaces in query:
 var withPlus = URI("?bar=hello+world")
   .escapeQuerySpace(true)
   .query(true).bar;
 
-// make a specific URI instance avoid duplicates (default):
+// make a specific URI instance not escape spaces in query
 var withPercent = URI("?bar=hello%20world")
   .escapeQuerySpace(false)
   .query(true).bar;
@@ -1212,6 +1212,7 @@ URI.commonPath("/foo", "bar");
     
     <h3 id="static-withinString">URI.withinString()</h3>
     <p>URI.withinString() identifies URIs within text, e.g. to translate them to &lt;a&gt;-Tags. (Obviously you'd want to put the urls inside the href-Attribute and escape them properly…)</p>
+    <p>NOTE: .withinString() only works on plain text, it will not work with HTML!</p>
     <pre class="prettyprint lang-js">var source = "Hello www.example.com,\n"
     + "http://google.com is a search engine, like http://www.bing.com\n"
     + "http://exämple.org/foo.html?baz=la#bumm is an IDN URL,\n"
