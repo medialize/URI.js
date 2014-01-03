@@ -195,6 +195,7 @@ If you don't like URI.js, you may like one of the following libraries. (If yours
 
 #### URI Template ####
 
+* [uri-templates](https://github.com/geraintluff/uri-templates) (supporting extraction as well) by Geraint Luff
 * [uri-templates](https://github.com/marc-portier/uri-templates) by Marc Portier
 * [uri-templates](https://github.com/geraintluff/uri-templates) by Geraint Luff (includint reverse operation)
 * [URI Template JS](https://github.com/fxa/uritemplate-js) by Franz Antesberger
