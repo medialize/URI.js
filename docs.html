@@ -1289,6 +1289,17 @@ Hello <strong>&lt;code&gt;www.example.com&lt;/code&gt;</strong>,
 &lt;img src=&quot;http://example.org/image.png&quot; alt=&quot;&quot;&gt; is HTML,
 &lt;a href='http://example.org/target.html'&gt; is HTML&lt;/a&gt;,
 &lt;a href=http://example.org/target.html&gt; is HTML, too&lt;/a&gt;
+*/
+
+// custom URI beginning pattern
+source = "That example.com/ is just a domain";
+result = URI.withinString(source, decorate, {
+  // "scheme://" or "www." or "domain.tld/"
+  start: /\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.|[a-z]+\.[a-z]{2,4}\/)/gi
+});
+
+/* result is:
+That <strong>&lt;code&gt;example.com/&lt;/code&gt;</strong> is just a domain
 */</pre>
     
     <h3 id="static-iso8859">URI.iso8859()</h3>

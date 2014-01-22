@@ -186,8 +186,11 @@ URI.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-
 // * http://rodneyrehm.de/t/url-regex.html
 URI.find_uri_expression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/ig;
 URI.findUri = {
+    // valid "scheme://" or "www."
     start: /\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.)/gi,
+    // everything up to the next whitespace
     end: /[\s\r\n]|$/,
+    // trim trailing punctuation captured by end RegExp
     trim: /[`!()\[\]{};:'".,<>?«»“”„‘’]+$/
 };
 // http://www.iana.org/assignments/uri-schemes.html
