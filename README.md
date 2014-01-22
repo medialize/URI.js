@@ -231,6 +231,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * fixing [`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to comply with [RFC3986 Reference Resolution Examples](http://tools.ietf.org/html/rfc3986#section-5.4) - ([Issue #113](https://github.com/medialize/URI.js/issues/113))
 * fixing [`.normalizePath()`](http://medialize.github.com/URI.js/docs.html#normalize-path) to maintain leading parent references (`../`) for relative paths, while removing them for absolute paths - ([Issue #133](https://github.com/medialize/URI.js/issues/133))
 * fixing `URI.protocol_expression` to properly accept `.` in compliance with [RFC 3986 - Scheme](http://tools.ietf.org/html/rfc3986#section-3.1) - ([Issue #132](https://github.com/medialize/URI.js/issues/132))
+* fixing [`URI.withinString()`](http://medialize.github.com/URI.js/docs.html#static-withinString) to not use backtracking prone regular expression `URI.find_uri_expression` anymore - ([Issue #131](https://github.com/medialize/URI.js/issues/131))
+* fixing [`URI.withinString()`](http://medialize.github.com/URI.js/docs.html#static-withinString) to accept options `ignore` and `ignoreHtml` to allow better control over which detected URLs get handled - ([Issue #117](https://github.com/medialize/URI.js/issues/117))
 
 ### 1.11.2 (August 14th 2013) ###
 

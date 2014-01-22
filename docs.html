@@ -258,8 +258,8 @@ any other element yields URI("")
 
     <h3 id="clone">cloning URIs</h3>
     <p>Get a copy of the current URI instance</p>
-    <pre class="prettyprint lang-js">var uri = new URI("http://example.org"),
-    uri2 = uri.clone();
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org");
+var uri2 = uri.clone();
 
 uri2.tld("com");
 uri == "http://example.org/";
@@ -990,8 +990,8 @@ parts === {
     <p>parses a string's beginning into its URI components hostname, port. 
         Found components are appended to the <code>parts</code> parameter.
         Remaining string is returned</p>
-    <pre class="prettyprint lang-js">var parts = {},
-    result = URI.parseAuthority("example.org:8080/foo.html", parts);
+    <pre class="prettyprint lang-js">var parts = {};
+var result = URI.parseAuthority("example.org:8080/foo.html", parts);
 result === "/foo.html";
 parts === {
   hostname: "example.org",
@@ -1066,8 +1066,8 @@ URI.buildQuery(data) === "foo=bar&amp;hello=world&amp;hello=mars&amp;bam=&amp;yu
 // Note: duplicate hello=mars is preserved
 URI.buildQuery(data, true) === "foo=bar&amp;hello=world&amp;hello=mars&amp;hello=mars&amp;bam=&amp;yup";</pre>
     <p>To preserve duplicate values, use URI.buildQuery() directly:</p>
-    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo.html?bar=baz"),
-    data = uri.query(true);
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo.html?bar=baz");
+var data = uri.query(true);
 
 data.some = "new data";
 uri.query(URI.buildQuery(data, true));
@@ -1250,6 +1250,46 @@ var result = URI.withinString(source, function(url) {
     + escapeHtml(url.<a href="#readable">readable</a>()) + "&lt;/a&gt;";
 });
 </pre>
+    <p>As of URI.js 1.12.0 withinString accepts the following parameters:</p>
+    <pre class="prettyprint lang-js">var source = "Hello www.example.com.";
+var decorate = function(url) {
+  return "&lt;code&gt;" + url + "&lt;/code&gt;";
+};
+var result = null;
+
+// access to the original input text from the callback
+URI.withinString(source, function(url, start, end, source) {
+  source.slice(start, end) === url;
+  return url;
+});
+
+// ignore certain URLs
+source = "Hello www.example.com,\n"
+  + "ohgodno://example.org/ is a a protocol we want ignored";
+result = URI.withinString(source, decorate, {
+  ignore: /^ohgodno:/i
+});
+
+/* result is:
+Hello <strong>&lt;code&gt;www.example.com&lt;/code&gt;</strong>,
+ohgodno://example.org/ is a a protocol we want ignored
+*/
+
+// ignore URLs in HTML
+source = "Hello www.example.com,\n"
+  + '&lt;img src=&quot;http://example.org/image.png&quot; alt=&quot;&quot;&gt; is HTML,\n'
+  + "&lt;a href='http://example.org/target.html'&gt; is HTML&lt;/a&gt;,\n"
+  + "&lt;a href=http://example.org/target.html&gt; is HTML, too&lt;/a&gt;.";
+result = URI.withinString(source, decorate, {
+  ignoreHtml: true
+});
+
+/* result is:
+Hello <strong>&lt;code&gt;www.example.com&lt;/code&gt;</strong>,
+&lt;img src=&quot;http://example.org/image.png&quot; alt=&quot;&quot;&gt; is HTML,
+&lt;a href='http://example.org/target.html'&gt; is HTML&lt;/a&gt;,
+&lt;a href=http://example.org/target.html&gt; is HTML, too&lt;/a&gt;
+*/</pre>
     
     <h3 id="static-iso8859">URI.iso8859()</h3>
     <p>URI.iso8859() tells URI.js to use the older escape/unescape methods, for backwards compatibility with non-unicode platforms.</p>

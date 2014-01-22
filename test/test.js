@@ -1340,20 +1340,48 @@ test("relativeTo", function() {
 module("static helpers");
 test("withinString", function() {
     var source = "Hello www.example.com,\n"
-            + "http://google.com is a search engine, like http://www.bing.com\n"
-            + "http://exämple.org/foo.html?baz=la#bumm is an IDN URL,\n"
-            + "http://123.123.123.123/foo.html is IPv4 and http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html is IPv6.\n"
-            + "links can also be in parens (http://example.org) or quotes »http://example.org«.",
-        expected = "Hello <a>www.example.com</a>,\n"
-            + "<a>http://google.com</a> is a search engine, like <a>http://www.bing.com</a>\n"
-            + "<a>http://exämple.org/foo.html?baz=la#bumm</a> is an IDN URL,\n"
-            + "<a>http://123.123.123.123/foo.html</a> is IPv4 and <a>http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html</a> is IPv6.\n"
-            + "links can also be in parens (<a>http://example.org</a>) or quotes »<a>http://example.org</a>«.",
-        result = URI.withinString(source, function(url) {
-            return '<a>' + url + '</a>';
-        });
+        + "http://google.com is a search engine, like http://www.bing.com\n"
+        + "http://exämple.org/foo.html?baz=la#bumm is an IDN URL,\n"
+        + "http://123.123.123.123/foo.html is IPv4 and http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html is IPv6.\n"
+        + "links can also be in parens (http://example.org) or quotes »http://example.org«.";
+    var expected = "Hello <a>www.example.com</a>,\n"
+        + "<a>http://google.com</a> is a search engine, like <a>http://www.bing.com</a>\n"
+        + "<a>http://exämple.org/foo.html?baz=la#bumm</a> is an IDN URL,\n"
+        + "<a>http://123.123.123.123/foo.html</a> is IPv4 and <a>http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html</a> is IPv6.\n"
+        + "links can also be in parens (<a>http://example.org</a>) or quotes »<a>http://example.org</a>«.";
+    var result = URI.withinString(source, function(url) {
+        return '<a>' + url + '</a>';
+    });
 
     equal(result, expected, "in string URI identification");
+});
+test("withinString - ignore", function() {
+    var decorate = function(url) {
+        return '<a>' + url + '</a>';
+    };
+    var source = "Hello www.example.com,\n"
+        + "proto://example.org/foo.html?baz=la#bumm is an URL.\n";
+    var expected = "Hello <a>www.example.com</a>,\n"
+        + "proto://example.org/foo.html?baz=la#bumm is an URL.\n";
+    var result = URI.withinString(source, decorate, {ignore: /^proto:/i});
+
+    equal(result, expected, "filtered in string URI identification");
+});
+test("withinString - ignoreHtml", function() {
+    var decorate = function(url) {
+        return '<a>' + url + '</a>';
+    };
+    var source = "Hello www.example.com,\n"
+        + "<a href=http://example.org/foo.html?baz=la#bumm is an URL</a>.\n"
+        + "<a href='http://example.org/foo.html?baz=la#bumm> is an URL</a>.\n"
+        + "<a href=\"http://example.org/foo.html?baz=la#bumm\"> is an URL</a>.\n";
+    var expected = "Hello <a>www.example.com</a>,\n"
+        + "<a href=http://example.org/foo.html?baz=la#bumm is an URL</a>.\n"
+        + "<a href='http://example.org/foo.html?baz=la#bumm> is an URL</a>.\n"
+        + "<a href=\"http://example.org/foo.html?baz=la#bumm\"> is an URL</a>.\n";
+    var result = URI.withinString(source, decorate, {ignoreHtml: true});
+
+    equal(result, expected, "filtered in string URI identification");
 });
 test("noConflict", function() {
     var actual_lib = URI; // actual library; after loading, before noConflict()
