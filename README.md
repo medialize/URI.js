@@ -229,6 +229,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### [dev-version master] ###
 
 * fixing [`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to comply with [RFC3986 Reference Resolution Examples](http://tools.ietf.org/html/rfc3986#section-5.4) - ([Issue #113](https://github.com/medialize/URI.js/issues/113))
+* fixing [`.normalizePath()`](http://medialize.github.com/URI.js/docs.html#normalize-path) to maintain leading parent references (`../`) for relative paths, while removing them for absolute paths - ([Issue #133](https://github.com/medialize/URI.js/issues/133))
 
 ### 1.11.2 (August 14th 2013) ###
 

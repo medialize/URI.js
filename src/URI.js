@@ -1620,6 +1620,7 @@ p.normalizePath = function(build) {
 
     var _was_relative;
     var _path = this._parts.path;
+    var _leadingParents = '';
     var _parent, _pos;
 
     // handle relative paths
@@ -1632,6 +1633,14 @@ p.normalizePath = function(build) {
     _path = _path
         .replace(/(\/(\.\/)+)|(\/\.$)/g, '/')
         .replace(/\/{2,}/g, '/');
+
+    // remember leading parents
+    if (_was_relative) {
+        _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
+        if (_leadingParents) {
+            _leadingParents = _leadingParents[0];
+        }
+    }
 
     // resolve parents
     while (true) {
@@ -1654,7 +1663,7 @@ p.normalizePath = function(build) {
 
     // revert to relative
     if (_was_relative && this.is('relative')) {
-        _path = _path.substring(1);
+        _path = _leadingParents + _path.substring(1);
     }
 
     _path = URI.recodePath(_path);
