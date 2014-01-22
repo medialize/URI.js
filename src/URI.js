@@ -171,7 +171,7 @@ URI.duplicateQueryParameters = false;
 // state: replaces + with %20 (space in query strings)
 URI.escapeQuerySpace = true;
 // static properties
-URI.protocol_expression = /^[a-z][a-z0-9-+-]*$/i;
+URI.protocol_expression = /^[a-z][a-z0-9.+-]*$/i;
 URI.idn_expression = /[^a-z0-9\.-]/i;
 URI.punycode_expression = /(xn--)/i;
 // well, 333.444.555.666 matches, but it sure ain't no IPv4 - do we care?
@@ -1019,8 +1019,8 @@ p.protocol = function(v, build) {
             // accept trailing ://
             v = v.replace(/:(\/\/)?$/, '');
 
-            if (v.match(/[^a-zA-z0-9\.+-]/)) {
-                throw new TypeError("Protocol '" + v + "' contains characters other than [A-Z0-9.+-]");
+            if (!v.match(URI.protocol_expression)) {
+                throw new TypeError("Protocol '" + v + "' contains characters other than [A-Z0-9.+-] or doesn't start with [A-Z]");
             }
         }
     }

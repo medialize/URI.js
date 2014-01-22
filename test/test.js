@@ -143,6 +143,14 @@ test("protocol", function() {
     equal(u.protocol(), "", "relative protocol");
     equal(u+"", "//example.org/foo.html", "relative-scheme url");
 
+    u.protocol('f.t-p+0');
+    equal(u.protocol(), "f.t-p+0", "character profile");
+
+    try {
+        u.protocol('f:t');
+        ok(false, "do not accept invalid protocol");
+    } catch(e) {}
+
     u.protocol(null);
     equal(u.protocol(), "", "missing protocol");
     equal(u+"", "//example.org/foo.html", "missing-scheme url");
