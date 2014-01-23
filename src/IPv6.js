@@ -2,7 +2,7 @@
  * URI.js - Mutating URLs
  * IPv6 Support
  *
- * Version: 1.11.2
+ * Version: 1.12.0
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.com/URI.js/
