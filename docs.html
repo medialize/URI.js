@@ -706,34 +706,34 @@ uri.removeSearch({hello: "world", foo: undefined, a: ["1", "3"]});
     <pre class="prettyprint lang-js">var uri = URI("?string=bar&amp;list=one&amp;list=two&amp;number=123&amp;null&amp;empty=");
 
 // check if parameter exists (regardless of value)
-u.hasQuery("string") === true;
-u.hasQuery("nono") === false;
+uri.hasQuery("string") === true;
+uri.hasQuery("nono") === false;
 
 // check if parameter has a truthy / falsy value
-u.hasQuery("string", true) === true;
-u.hasQuery("string", false) === false;
-u.hasQuery("empty", true) === false;
-u.hasQuery("empty", false) === true;
+uri.hasQuery("string", true) === true;
+uri.hasQuery("string", false) === false;
+uri.hasQuery("empty", true) === false;
+uri.hasQuery("empty", false) === true;
 
 // check if parameter has a given value
-u.hasQuery("string", "bar") === true;
-u.hasQuery("number", 123) === true;
+uri.hasQuery("string", "bar") === true;
+uri.hasQuery("number", 123) === true;
 
 // check if value is contained in parameter list
-u.hasQuery("list", "two", true) === true;
-u.hasQuery("list", ["two"], true) === true;
-u.hasQuery("list", "three", true) === false;
-u.hasQuery("list", ["two", "three"], true) === false;
-u.hasQuery("list", /ne$/, true) === true;
+uri.hasQuery("list", "two", true) === true;
+uri.hasQuery("list", ["two"], true) === true;
+uri.hasQuery("list", "three", true) === false;
+uri.hasQuery("list", ["two", "three"], true) === false;
+uri.hasQuery("list", /ne$/, true) === true;
 
 // check if parameter matches an expression
-u.hasQuery("string", /ar$/) === true;
+uri.hasQuery("string", /ar$/) === true;
 
 // check by comparison function
-u.hasQuery("string", function(value, name, data) {
+uri.hasQuery("string", function(value, name, data) {
   // value === "bar";
   // name === "string";
-  // data === u.query(true);
+  // data === uri.query(true);
   return true;
 }) === true;</pre>
 
