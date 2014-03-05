@@ -20,26 +20,26 @@ test("new URI(Location)", function () {
 });
 (function() {
     var element;
-    
+
     for (var nodeName in URI.domAttributes) {
         if (!Object.prototype.hasOwnProperty.call(URI.domAttributes, nodeName) || nodeName === 'input') {
             continue;
         }
-        
+
         element = document.createElement(nodeName);
         testDomAttribute(element, URI.domAttributes[nodeName]);
     }
-    
+
     element = document.createElement('input');
     element.type = 'image';
     testDomAttribute(element, 'src');
-    
+
     element = document.createElement('input');
     testUnsupportedDomAttribute(element, 'src');
-    
+
     element = document.createElement('div');
     testUnsupportedDomAttribute(element, 'src');
-    
+
     function testDomAttribute(element, attribute) {
         test("new URI(Element " + element.nodeName + ")", function() {
             element[attribute] = "http://example.org/foobar.html";
@@ -48,13 +48,13 @@ test("new URI(Location)", function () {
             equal(u.scheme(), "http", "scheme");
             equal(u.host(), "example.org", "host");
             equal(u.path(), "/foobar.html", "path");
-            
+
             element[attribute] = "file:///C:/foo/bar.html";
             u = new URI(element);
             equal(u.href(), element[attribute], "file");
         });
     }
-    
+
     function testUnsupportedDomAttribute(element, attribute) {
         test("new URI(unsupported Element " + element.nodeName + ")", function() {
             element[attribute] = "http://example.org/foobar.html";
@@ -63,7 +63,7 @@ test("new URI(Location)", function () {
             equal(u.scheme(), "", "scheme");
             equal(u.host(), "", "host");
             equal(u.path(), "", "path");
-            
+
             element[attribute] = "file:///C:/foo/bar.html";
             u = new URI(element);
             equal(u.href(), "", "file");
@@ -604,12 +604,12 @@ test("segment", function() {
 
     u.segment('test');
     equal(u.path(), "/foo/test", "segment append trailing empty");
-    
+
     u.segment('');
     equal(u.path(), "/foo/test/", "segment append empty trailing");
     u.segment('');
     equal(u.path(), "/foo/test/", "segment append empty trailing unchanged");
-    
+
     u.segment(['', '', 'foo', '', '', 'bar', '', '']);
     equal(u.path(), "/foo/bar/", "segment collapsing empty parts");
 });
@@ -625,15 +625,15 @@ test("segmentCoded", function() {
     equal(u.segmentCoded(0), "hello world", "segmentCoded get 0");
     equal(u.segmentCoded(2), "foo.html", "segmentCoded get 2");
     equal(u.segmentCoded(3), undefined, "segmentCoded get 3");
-    
+
     u.segmentCoded("zapp zerapp");
     equal(u.path(), "/hello%20world/mars/foo.html/zapp%20zerapp", "segmentCoded append");
-    
+
     u.segmentCoded(2, "");
     equal(u.path(), "/hello%20world/mars/zapp%20zerapp", "segmentCoded del 3 ''");
     u.segmentCoded(2, null);
     equal(u.path(), "/hello%20world/mars", "segmentCoded del 3 null");
-    
+
     u.segmentCoded('');
     equal(u.path(), "/hello%20world/mars/", "segmentCoded append empty trailing");
     u.segmentCoded('');
@@ -796,32 +796,32 @@ test("duplicateQueryParameters", function() {
 test("escapeQuerySpace", function() {
     var u = new URI('?bar=foo+bar&bam+baz=foo');
     var data = u.query(true);
-    
+
     equal(data.bar, 'foo bar', "value un-spac-escaped");
     equal(data['bam baz'], 'foo', "name un-spac-escaped");
-    
+
     u.escapeQuerySpace(false);
     data = u.query(true);
     equal(data.bar, 'foo+bar', "value not un-spac-escaped");
     equal(data['bam+baz'], 'foo', "name not un-spac-escaped");
-    
+
     u.escapeQuerySpace(true);
     data = u.query(true);
-    
+
     equal(data.bar, 'foo bar', "value un-spac-escaped again");
     equal(data['bam baz'], 'foo', "name un-spac-escaped again");
 
     u.escapeQuerySpace(false);
-    
+
     u.addQuery('alpha bravo', 'charlie delta');
     equal(u.toString(), '?bar=foo%2Bbar&bam%2Bbaz=foo&alpha%20bravo=charlie%20delta', 'serialized un/escaped space');
-    
+
     URI.escapeQuerySpace = false;
     u = new URI('?bar=foo+bar&bam+baz=foo');
     data = u.query(true);
     equal(data.bar, 'foo+bar', "value not un-spac-escaped by default");
     equal(data['bam+baz'], 'foo', "name not un-spac-escaped by default");
-    
+
     // reset
     URI.escapeQuerySpace = true;
 });
@@ -978,10 +978,10 @@ test("normalizePath", function() {
 
     u.path('./foo/woo/../bar/baz.html').normalizePath();
     equal(u.path(), '/foo/bar/baz.html', "URL: dot-relative parent");
-    
+
     u.path('/.//').normalizePath();
     equal(u.path(), '/', "root /.//");
-    
+
     u.path('/.').normalizePath();
     equal(u.path(), '/', "root /.");
 
@@ -1155,7 +1155,7 @@ test("absoluteTo - RFC3986 reference resolution", function() {
         "../../../g"    :  "http://a/g",
         "../../../../g" :  "http://a/g"
     };
-    
+
     for (var key in map) {
         var u = new URI(key),
             r = u.absoluteTo(base);
@@ -1476,10 +1476,10 @@ test("iso8859", function() {
 test("bad charset in QueryString", function() {
     var uri = new URI("http://www.google.com.hk/search?q=pennytel%20downloads&sa=%20%CB%D1%20%CB%F7%20&forid=1&prog=aff&ie=GB2312&oe=GB2312&safe=active&source=sdo_sb_html&hl=zh-CN");
     var data = uri.query(true);
-    
+
     equal(data.sa, "%20%CB%D1%20%CB%F7%20", 'undecodable value returned');
     equal(data.forid, "1", 'decodable value returned');
-    
+
     uri.normalizeQuery();
     data = uri.query(true);
     equal(data.sa, "%20%CB%D1%20%CB%F7%20", 'undecodable value returned');
@@ -1493,11 +1493,11 @@ test("encodeQuery", function() {
     URI.escapeQuerySpace = true;
     equal(URI.encodeQuery(" "), "+");
     equal(URI.encode(" "), "%20");
-    
+
     URI.escapeQuerySpace = false;
     equal(URI.encodeQuery(" "), "%20");
     equal(URI.encode(" "), "%20");
-    
+
     URI.escapeQuerySpace = escapeQuerySpace;
 });
 test("decodeQuery", function() {
@@ -1508,13 +1508,13 @@ test("decodeQuery", function() {
     equal(URI.decodeQuery("%20"), " ");
     equal(URI.decode("%20"), " ");
     equal(URI.decode("+"), "+");
-    
+
     URI.escapeQuerySpace = false;
     equal(URI.decodeQuery("+"), "+");
     equal(URI.decodeQuery("%20"), " ");
     equal(URI.decode("%20"), " ");
     equal(URI.decode("+"), "+");
-    
+
     URI.escapeQuerySpace = escapeQuerySpace;
 });
 test("encodeReserved", function() {
