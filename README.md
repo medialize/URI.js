@@ -226,6 +226,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+* fixing [`.encodeQuery()`](http://medialize.github.io/URI.js/docs.html#static-encodeQuery) and [`.decodeQuery()`](http://medialize.github.io/URI.js/docs.html#static-decodeQuery) to respect [`URI.escapeQuerySpace`](http://medialize.github.io/URI.js/docs.html#setting-escapeQuerySpace) - ([Issue #137](https://github.com/medialize/URI.js/issues/137))
+
 ### 1.12.0 (January 23rd 2014) ###
 
 * fixing [`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to comply with [RFC3986 Reference Resolution Examples](http://tools.ietf.org/html/rfc3986#section-5.4) - ([Issue #113](https://github.com/medialize/URI.js/issues/113))

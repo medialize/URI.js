@@ -318,10 +318,18 @@ URI.characters = {
 };
 URI.encodeQuery = function(string, escapeQuerySpace) {
     var escaped = URI.encode(string + "");
+    if (escapeQuerySpace === undefined) {
+        escapeQuerySpace = URI.escapeQuerySpace;
+    }
+
     return escapeQuerySpace ? escaped.replace(/%20/g, '+') : escaped;
 };
 URI.decodeQuery = function(string, escapeQuerySpace) {
     string += "";
+    if (escapeQuerySpace === undefined) {
+        escapeQuerySpace = URI.escapeQuerySpace;
+    }
+
     try {
         return URI.decode(escapeQuerySpace ? string.replace(/\+/g, '%20') : string);
     } catch(e) {

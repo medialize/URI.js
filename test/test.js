@@ -1487,6 +1487,36 @@ test("bad charset in QueryString", function() {
 });
 
 module("Encoding");
+test("encodeQuery", function() {
+    var escapeQuerySpace = URI.escapeQuerySpace;
+
+    URI.escapeQuerySpace = true;
+    equal(URI.encodeQuery(" "), "+");
+    equal(URI.encode(" "), "%20");
+    
+    URI.escapeQuerySpace = false;
+    equal(URI.encodeQuery(" "), "%20");
+    equal(URI.encode(" "), "%20");
+    
+    URI.escapeQuerySpace = escapeQuerySpace;
+});
+test("decodeQuery", function() {
+    var escapeQuerySpace = URI.escapeQuerySpace;
+
+    URI.escapeQuerySpace = true;
+    equal(URI.decodeQuery("+"), " ");
+    equal(URI.decodeQuery("%20"), " ");
+    equal(URI.decode("%20"), " ");
+    equal(URI.decode("+"), "+");
+    
+    URI.escapeQuerySpace = false;
+    equal(URI.decodeQuery("+"), "+");
+    equal(URI.decodeQuery("%20"), " ");
+    equal(URI.decode("%20"), " ");
+    equal(URI.decode("+"), "+");
+    
+    URI.escapeQuerySpace = escapeQuerySpace;
+});
 test("encodeReserved", function() {
     equal(URI.encodeReserved("ä:/?#[]@!$&'()*+,;="), "%C3%A4:/?#[]@!$&'()*+,;=");
 });
