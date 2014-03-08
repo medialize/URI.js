@@ -92,5 +92,5 @@ p.build = function(deferBuild) {
 };
 
 // extending existing object rather than defining something new
-return {};
+return URI;
 }));

@@ -99,5 +99,5 @@ p.addHash = p.addFragment;
 p.removeHash = p.removeFragment;
 
 // extending existing object rather than defining something new
-return {};
+return URI;
 }));
