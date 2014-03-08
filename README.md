@@ -206,6 +206,7 @@ If you don't like URI.js, you may like one of the following libraries. (If yours
 
 * [TLD.js](https://github.com/oncletom/tld.js) - second level domain names
 * [Public Suffix](http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1) - second level domain names
+* [uri-collection](https://github.com/scivey/uri-collection) - underscore based utility for working with many URIs
 
 ## Authors ##
 
