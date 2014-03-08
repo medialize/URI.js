@@ -165,3 +165,17 @@ ul.plain-list > li {
     color: #2C879B;
     font-weight: bold;
 }
+
+.note {
+    background-color: #EEE;
+    padding: 10px;
+    margin: -10px;
+}
+.note::before {
+    content: "NOTE: ";
+    font-weight: bold;
+}
+pre + .note, 
+.note + .note {
+    margin-top: 10px;
+}

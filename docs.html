@@ -292,7 +292,7 @@ uri.protocol("ftp"); // returns the URI instance for chaining
 // relative scheme
 uri.protocol("");
 uri.toString() === "//example.org/foo/hello.html";</pre>
-    <p>NOTE: Throws a <code>TypeError</code> on illegal input, that is anything but <code>[a-z0-9.+-]</code> and <code>[empty string]</code> and <code>null</code></p>
+    <p class="note">Throws a <code>TypeError</code> on illegal input, that is anything but <code>[a-z0-9.+-]</code> and <code>[empty string]</code> and <code>null</code></p>
 
     <h3 id="accessors-username">username()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://user:pass@example.org/foo/hello.html");
@@ -314,7 +314,7 @@ uri.password("user"); // returns the URI instance for chaining</pre>
 uri.hostname(); // returns string
 // set protocol
 uri.hostname("example.org"); // returns the URI instance for chaining</pre>
-    <p>NOTE: <a href="#accessors-hostname">.hostname()</a> returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
+    <p class="note"><a href="#accessors-hostname">.hostname()</a> returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
     
     <h3 id="accessors-port">port()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org:8080/foo/hello.html");
@@ -322,8 +322,8 @@ uri.hostname("example.org"); // returns the URI instance for chaining</pre>
 uri.port(); // returns string "8080"
 // set port
 uri.port("80"); // returns the URI instance for chaining</pre>
-    <p>NOTE: although the port may be considered an integer, within URI it is a string.</p>
-    <p>NOTE: Throws a <code>TypeError</code> on illegal input</p>
+    <p class="note">although the port may be considered an integer, within URI it is a string.</p>
+    <p class="note">Throws a <code>TypeError</code> on illegal input</p>
     
     <h3 id="accessors-host">host()</h3>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org:80/foo/hello.html");
@@ -331,7 +331,7 @@ uri.port("80"); // returns the URI instance for chaining</pre>
 uri.host(); // returns string "example.org:80"
 // set host
 uri.host("example.org:80"); // returns the URI instance for chaining</pre>
-    <p>NOTE: <a href="#accessors-hostname">.hostname()</a> returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
+    <p class="note"><a href="#accessors-hostname">.hostname()</a> returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
 
     <h3 id="accessors-userinfo">userinfo()</h3>
     <p>Userinfo is comprised of username and password</p>
@@ -348,7 +348,7 @@ uri.userinfo("user:pass"); // returns the URI instance for chaining</pre>
 uri.authority(); // returns string "user:pass@example.org:88"
 // set authority
 uri.authority("user:pass@example.org:80"); // returns the URI instance for chaining</pre>
-    <p>NOTE: .authority() will reset any of username, password and port if they're not specified.</p>
+    <p class="note">.authority() will reset any of username, password and port if they're not specified.</p>
     
     <h3 id="accessors-domain">domain()</h3>
     <p>.domain() is a convenience method that returns <code>example.org</code> from the hostname <code>www.example.org</code>.</p>
@@ -362,8 +362,8 @@ uri.domain("otherdomain.com"); // returns the URI instance for chaining
 uri = new URI("http://example.co.uk/foo/hello.html");
 uri.domain(); // return string "example.co.uk"
 uri.domain(true); // return string "co.uk"</pre>
-    <p>NOTE: .domain() will throw an error if you pass it an empty string.</p>
-    <p>NOTE: Throws a <code>TypeError</code> on illegal input</p>
+    <p class="note"><code>.domain()</code> will throw an error if you pass it an empty string.</p>
+    <p class="note">Throws a <code>TypeError</code> on illegal input</p>
     
     <h3 id="accessors-subdomain">subdomain()</h3>
     <p>.subdomain() is a convenience method that returns <code>www</code> from the hostname <code>www.example.org</code>.</p>
@@ -372,7 +372,7 @@ uri.domain(true); // return string "co.uk"</pre>
 uri.subdomain(); // returns string "www"
 // set subdomain
 uri.subdomain("other.subdomain"); // returns the URI instance for chaining</pre>
-    <p>NOTE: Throws a <code>TypeError</code> on illegal input</p>
+    <p class="note">Throws a <code>TypeError</code> on illegal input</p>
     
     <h3 id="accessors-tld">tld()</h3>
     <p>.tld() is a convenience method that returns <code>org</code> from the hostname <code>www.example.org</code>.</p>
@@ -386,7 +386,7 @@ uri.tld("com"); // returns the URI instance for chaining
 uri = new URI("http://example.co.uk/foo/hello.html");
 uri.tld(); // return string "co.uk"
 uri.tld(true); // return string "uk"</pre>
-    <p>NOTE: Throws an <code>Error</code> if you pass it an empty string or use it on an IP-host.</p>
+    <p class="note">Throws an <code>Error</code> if you pass it an empty string or use it on an IP-host.</p>
 
     <h3 id="accessors-pathname">pathname(), path()</h3>
     <p>.path() is an alias of .pathname()</p>
@@ -444,7 +444,7 @@ uri.filename("hello world.html");
 uri.filename() === "hello%20world.html";
 // will decode for you
 uri.filename(true) === "hello world.html";</pre>
-    <p>NOTE: If you pass <code>../file.html</code>, the directory will be changed accordingly</p>
+    <p class="note">If you pass <code>../file.html</code>, the directory will be changed accordingly</p>
     
     <h3 id="accessors-suffix">suffix()</h3>
     <p>.suffix() is an convenience method for mutating the filename part of a path</p>
@@ -572,7 +572,7 @@ uri.hash("mars"); // returns the URI instance for chaining
 uri.resource(); // returns string "/foo/hello.html?query=string#hash"
 // set resource
 uri.resource("/mars.txt?query=foo#other"); // returns the URI instance for chaining</pre>
-    <p>NOTE: .resource() will reset any of path, query and fragment if they're not specified.</p>
+    <p class="note"><code>.resource()</code> will reset any of path, query and fragment if they're not specified.</p>
 
     <h3 id="is">is()</h3>
     <p>.is() tells what a URL is. It responds with a boolean and can be asked the following questions:</p>
@@ -852,7 +852,7 @@ uri.normalizeHash(); // returns the URI instance for chaining
     <pre class="prettyprint lang-js">var uri = new URI("/%C3%A4.html");
 uri.iso8859(); // returns the URI instance for chaining
 // uri == "/%E4.html"</pre>
-    <p>NOTE: You can make URI work with ISO8859 encoding by default by calling <a href="#static-iso8859">URI.iso8859()</a>.
+    <p class="note">You can make URI work with ISO8859 encoding by default by calling <a href="#static-iso8859">URI.iso8859()</a>.
 
     <h3 id="unicode">unicode()</h3>
     <p>.unicode() converts ISO8859-encoded escape sequences to unicode-encoded escape sequences. It does this by calling <a href="#normalize">.normalize()</a> internally.</p>
@@ -1222,7 +1222,7 @@ URI.commonPath("/foo", "bar");
     
     <h3 id="static-withinString">URI.withinString()</h3>
     <p>URI.withinString() identifies URIs within text, e.g. to translate them to &lt;a&gt;-Tags. (Obviously you'd want to put the urls inside the href-Attribute and escape them properly…)</p>
-    <p>NOTE: .withinString() only works on plain text, it will not work with HTML!</p>
+    <p class="note">.withinString() only works on plain text, it will not work with HTML!</p>
     <pre class="prettyprint lang-js">var source = "Hello www.example.com,\n"
   + "http://google.com is a search engine, like http://www.bing.com\n"
   + "http://exämple.org/foo.html?baz=la#bumm is an IDN URL,\n"
