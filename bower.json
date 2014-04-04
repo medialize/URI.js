@@ -7,7 +7,9 @@
         "src/SecondLevelDomains.js",
         "src/punycode.js",
         "src/URITemplate.js",
-        "src/jquery.URI.js"
+        "src/jquery.URI.js",
+        "src/URI.fragmentQuery.js",
+        "src/URI.fragmentURI.js"
     ],
     "ignore": [
         ".*",
