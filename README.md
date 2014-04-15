@@ -231,6 +231,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### master ###
 
 * fixing [`URI.parseHost()`](http://medialize.github.io/URI.js/docs.html#static-parseHost) and [`URI.buildHost()`](http://medialize.github.io/URI.js/docs.html#static-buildHost) to properly parse and build the IPv6 examples given in [RFC2732 Format for Literal IPv6 Addresses in URL's](http://tools.ietf.org/html/rfc2732#section-2) - ([Issue #144](https://github.com/medialize/URI.js/issues/144))
+* adding performance improvements to SecondLevelDomain - ([PR #122](https://github.com/medialize/URI.js/pull/122), [gorhill](https://github.com/gorhill))
 
 ### 1.12.1 (March 8th 2014) ###
 
