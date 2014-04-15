@@ -21,83 +21,84 @@
 // uri.toString() === "http://example.org/#?bar=foo";
 
 (function (root, factory) {
-    // https://github.com/umdjs/umd/blob/master/returnExports.js
-    if (typeof exports === 'object') {
-        // Node
-        module.exports = factory(require('./URI'));
-    } else if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['./URI'], factory);
-    } else {
-        // Browser globals (root is window)
-        factory(root.URI);
-    }
+  'use strict';
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if (typeof exports === 'object') {
+    // Node
+    module.exports = factory(require('./URI'));
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['./URI'], factory);
+  } else {
+    // Browser globals (root is window)
+    factory(root.URI);
+  }
 }(this, function (URI) {
-"use strict";
+  'use strict';
 
-var p = URI.prototype;
-// old fragment handler we need to wrap
-var f = p.fragment;
+  var p = URI.prototype;
+  // old fragment handler we need to wrap
+  var f = p.fragment;
 
-// make fragmentPrefix configurable
-URI.fragmentPrefix = '?';
-var _parts = URI._parts;
-URI._parts = function() {
+  // make fragmentPrefix configurable
+  URI.fragmentPrefix = '?';
+  var _parts = URI._parts;
+  URI._parts = function() {
     var parts = _parts();
     parts.fragmentPrefix = URI.fragmentPrefix;
     return parts;
-};
-p.fragmentPrefix = function(v) {
+  };
+  p.fragmentPrefix = function(v) {
     this._parts.fragmentPrefix = v;
     return this;
-};
+  };
 
-// add fragment(true) and fragment({key: value}) signatures
-p.fragment = function(v, build) {
+  // add fragment(true) and fragment({key: value}) signatures
+  p.fragment = function(v, build) {
     var prefix = this._parts.fragmentPrefix;
-    var fragment = this._parts.fragment || "";
-    
+    var fragment = this._parts.fragment || '';
+  
     if (v === true) {
-        if (fragment.substring(0, prefix.length) !== prefix) {
-            return {};
-        }
-        
-        return URI.parseQuery(fragment.substring(prefix.length));
-    } else if (v !== undefined && typeof v !== "string") {
-        this._parts.fragment = prefix + URI.buildQuery(v);
-        this.build(!build);
-        return this;
+      if (fragment.substring(0, prefix.length) !== prefix) {
+        return {};
+      }
+    
+      return URI.parseQuery(fragment.substring(prefix.length));
+    } else if (v !== undefined && typeof v !== 'string') {
+      this._parts.fragment = prefix + URI.buildQuery(v);
+      this.build(!build);
+      return this;
     } else {
-        return f.call(this, v, build);
+      return f.call(this, v, build);
     }
-};
-p.addFragment = function(name, value, build) {
+  };
+  p.addFragment = function(name, value, build) {
     var prefix = this._parts.fragmentPrefix;
-    var data = URI.parseQuery((this._parts.fragment || "").substring(prefix.length));
+    var data = URI.parseQuery((this._parts.fragment || '').substring(prefix.length));
     URI.addQuery(data, name, value);
     this._parts.fragment = prefix + URI.buildQuery(data);
-    if (typeof name !== "string") {
-        build = value;
+    if (typeof name !== 'string') {
+      build = value;
     }
 
     this.build(!build);
     return this;
-};
-p.removeFragment = function(name, value, build) {
+  };
+  p.removeFragment = function(name, value, build) {
     var prefix = this._parts.fragmentPrefix;
-    var data = URI.parseQuery((this._parts.fragment || "").substring(prefix.length));
+    var data = URI.parseQuery((this._parts.fragment || '').substring(prefix.length));
     URI.removeQuery(data, name, value);
     this._parts.fragment = prefix + URI.buildQuery(data);
-    if (typeof name !== "string") {
-        build = value;
+    if (typeof name !== 'string') {
+      build = value;
     }
 
     this.build(!build);
     return this;
-};
-p.addHash = p.addFragment;
-p.removeHash = p.removeFragment;
+  };
+  p.addHash = p.addFragment;
+  p.removeHash = p.removeFragment;
 
-// extending existing object rather than defining something new
-return URI;
+  // extending existing object rather than defining something new
+  return URI;
 }));
