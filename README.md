@@ -231,6 +231,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### master ###
 
 * fixing IPv6 normalization (bad variable name) - ([Issue #145](https://github.com/medialize/URI.js/issues/145))
+* adding grunt and jshint
 
 ### 1.13.0 (April 15th 2014) ###
 
