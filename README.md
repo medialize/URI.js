@@ -154,6 +154,7 @@ Documents specifying how URLs work:
 * [URL - Living Standard](http://url.spec.whatwg.org/)
 * [RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax](http://tools.ietf.org/html/rfc3986)
 * [RFC 3987 - Internationalized Resource Identifiers (IRI)](http://tools.ietf.org/html/rfc3987)
+* [RFC 2732 - Format for Literal IPv6 Addresses in URL's](http://tools.ietf.org/html/rfc2732)
 * [Punycode: A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)](http://tools.ietf.org/html/rfc3492)
 * [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type) (Query String Parameters) and [application/x-www-form-urlencoded encoding algorithm](http://www.whatwg.org/specs/web-apps/current-work/multipage/association-of-controls-and-forms.html#application/x-www-form-urlencoded-encoding-algorithm)
 * [What every web developer must know about URL encoding](http://blog.lunatech.com/2009/02/03/what-every-web-developer-must-know-about-url-encoding)
@@ -226,6 +227,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 
 ## Changelog ##
+
+### master ###
+
+* fixing [`URI.parseHost()`](http://medialize.github.io/URI.js/docs.html#static-parseHost) and [`URI.buildHost()`](http://medialize.github.io/URI.js/docs.html#static-buildHost) to properly parse and build the IPv6 examples given in [RFC2732 Format for Literal IPv6 Addresses in URL's](http://tools.ietf.org/html/rfc2732#section-2) - ([Issue #144](https://github.com/medialize/URI.js/issues/144))
 
 ### 1.12.1 (March 8th 2014) ###
 

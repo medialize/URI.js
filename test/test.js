@@ -906,9 +906,9 @@ test("normalizeHost", function() {
     }
 
     if (window.IPv6) {
-        u = new URI("http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html");
+        u = new URI("http://[fe80:0000:0000:0000:0204:61ff:fe9d:f156]/foobar.html");
         u.normalizeHostname();
-        equal(u+"", "http://fe80::204:61ff:fe9d:f156/foobar.html", "best IPv6 representation");
+        equal(u+"", "http://[fe80::204:61ff:fe9d:f156]/foobar.html", "best IPv6 representation");
     }
 
     u = new URI("http://wWw.eXamplE.Org/foobar.html");

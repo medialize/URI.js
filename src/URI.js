@@ -447,7 +447,10 @@ URI.parseHost = function(string, parts) {
         // IPv6+port in the format [2001:db8::1]:80 (for the time being)
         bracketPos = string.indexOf(']');
         parts.hostname = string.substring(1, bracketPos) || null;
-        parts.port = string.substring(bracketPos+2, pos) || null;
+        parts.port = string.substring(bracketPos + 2, pos) || null;
+        if (parts.port === '/') {
+            parts.port = null;
+        }
     } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
         // IPv6 host contains multiple colons - but no port
         // this notation is actually not allowed by RFC 3986, but we're a liberal parser
@@ -565,18 +568,13 @@ URI.buildHost = function(parts) {
     if (!parts.hostname) {
         return "";
     } else if (URI.ip6_expression.test(parts.hostname)) {
-        if (parts.port) {
-            t += "[" + parts.hostname + "]:" + parts.port;
-        } else {
-            // don't know if we should always wrap IPv6 in []
-            // the RFC explicitly says SHOULD, not MUST.
-            t += parts.hostname;
-        }
+        t += "[" + parts.hostname + "]";
     } else {
         t += parts.hostname;
-        if (parts.port) {
-            t += ':' + parts.port;
-        }
+    }
+
+    if (parts.port) {
+        t += ':' + parts.port;
     }
 
     return t;
