@@ -5,7 +5,7 @@
  * Version: 1.12.1
  *
  * Author: Rodney Rehm
- * Web: http://medialize.github.com/URI.js/
+ * Web: http://medialize.github.io/URI.js/
  *
  * Licensed under
  *   MIT License http://www.opensource.org/licenses/mit-license

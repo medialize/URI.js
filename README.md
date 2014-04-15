@@ -1,9 +1,9 @@
 # URI.js #
 
-* [About](http://medialize.github.com/URI.js/)
-* [Understanding URIs](http://medialize.github.com/URI.js/about-uris.html)
-* [Documentation](http://medialize.github.com/URI.js/docs.html)
-* [jQuery URI Plugin](http://medialize.github.com/URI.js/jquery-uri-plugin.html)
+* [About](http://medialize.github.io/URI.js/)
+* [Understanding URIs](http://medialize.github.io/URI.js/about-uris.html)
+* [Documentation](http://medialize.github.io/URI.js/docs.html)
+* [jQuery URI Plugin](http://medialize.github.io/URI.js/jquery-uri-plugin.html)
 * [Author](http://rodneyrehm.de/en/)
 
 ---
@@ -73,7 +73,7 @@ URI.expand("/foo/{dir}/{file}", {
 // -> /foo/bar/world.html
 ```
 
-See the [About Page](http://medialize.github.com/URI.js/) and [API Docs](http://medialize.github.com/URI.js/docs.html) for more stuff.
+See the [About Page](http://medialize.github.io/URI.js/) and [API Docs](http://medialize.github.io/URI.js/docs.html) for more stuff.
 
 ## Using URI.js ##
 
@@ -94,7 +94,7 @@ npm install URIjs
 
 ### Browser ###
 
-I guess you'll manage to use the [build tool](http://medialize.github.com/URI.js/build.html) or follow the [instructions below](#minify) to combine and minify the various files into URI.min.js - and I'm fairly certain you know how to `<script src=".../URI.min.js"></script>` that sucker, too.
+I guess you'll manage to use the [build tool](http://medialize.github.io/URI.js/build.html) or follow the [instructions below](#minify) to combine and minify the various files into URI.min.js - and I'm fairly certain you know how to `<script src=".../URI.min.js"></script>` that sucker, too.
 
 ### Node.js and NPM ###
 
@@ -132,17 +132,17 @@ require(['URIjs/URITemplate'], function(URITemplate) {
 
 ## Minify ##
 
-See the [build tool](http://medialize.github.com/URI.js/build.html) or use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
+See the [build tool](http://medialize.github.io/URI.js/build.html) or use [Google Closure Compiler](http://closure-compiler.appspot.com/home):
 
 ```
 // ==ClosureCompiler==
 // @compilation_level SIMPLE_OPTIMIZATIONS
 // @output_file_name URI.min.js
-// @code_url http://medialize.github.com/URI.js/src/IPv6.js
-// @code_url http://medialize.github.com/URI.js/src/punycode.js
-// @code_url http://medialize.github.com/URI.js/src/SecondLevelDomains.js
-// @code_url http://medialize.github.com/URI.js/src/URI.js
-// @code_url http://medialize.github.com/URI.js/src/URITemplate.js
+// @code_url http://medialize.github.io/URI.js/src/IPv6.js
+// @code_url http://medialize.github.io/URI.js/src/punycode.js
+// @code_url http://medialize.github.io/URI.js/src/SecondLevelDomains.js
+// @code_url http://medialize.github.io/URI.js/src/URI.js
+// @code_url http://medialize.github.io/URI.js/src/URITemplate.js
 // ==/ClosureCompiler==
 ```
 
@@ -239,12 +239,12 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### 1.12.0 (January 23rd 2014) ###
 
-* fixing [`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to comply with [RFC3986 Reference Resolution Examples](http://tools.ietf.org/html/rfc3986#section-5.4) - ([Issue #113](https://github.com/medialize/URI.js/issues/113))
-* fixing [`.normalizePath()`](http://medialize.github.com/URI.js/docs.html#normalize-path) to maintain leading parent references (`../`) for relative paths, while removing them for absolute paths - ([Issue #133](https://github.com/medialize/URI.js/issues/133))
+* fixing [`.absoluteTo()`](http://medialize.github.io/URI.js/docs.html#absoluteto) to comply with [RFC3986 Reference Resolution Examples](http://tools.ietf.org/html/rfc3986#section-5.4) - ([Issue #113](https://github.com/medialize/URI.js/issues/113))
+* fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to maintain leading parent references (`../`) for relative paths, while removing them for absolute paths - ([Issue #133](https://github.com/medialize/URI.js/issues/133))
 * fixing `URI.protocol_expression` to properly accept `.` in compliance with [RFC 3986 - Scheme](http://tools.ietf.org/html/rfc3986#section-3.1) - ([Issue #132](https://github.com/medialize/URI.js/issues/132))
-* fixing [`URI.withinString()`](http://medialize.github.com/URI.js/docs.html#static-withinString) to not use backtracking prone regular expression `URI.find_uri_expression` anymore - ([Issue #131](https://github.com/medialize/URI.js/issues/131))
-* fixing [`URI.withinString()`](http://medialize.github.com/URI.js/docs.html#static-withinString) to accept options `ignore` and `ignoreHtml` to allow better control over which detected URLs get handled - ([Issue #117](https://github.com/medialize/URI.js/issues/117))
-* fixing [`URI.withinString()`](http://medialize.github.com/URI.js/docs.html#static-withinString) to accept option `start` to specify the RegExp used for finding the beginning of an URL (defaults to `/\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.)/gi`) - ([Issue #115](https://github.com/medialize/URI.js/issues/115))
+* fixing [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString) to not use backtracking prone regular expression `URI.find_uri_expression` anymore - ([Issue #131](https://github.com/medialize/URI.js/issues/131))
+* fixing [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString) to accept options `ignore` and `ignoreHtml` to allow better control over which detected URLs get handled - ([Issue #117](https://github.com/medialize/URI.js/issues/117))
+* fixing [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString) to accept option `start` to specify the RegExp used for finding the beginning of an URL (defaults to `/\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.)/gi`) - ([Issue #115](https://github.com/medialize/URI.js/issues/115))
 
 ### 1.11.2 (August 14th 2013) ###
 
@@ -253,15 +253,15 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### 1.11.1 (August 13th 2013) ###
 
-* fixing inconsistent [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results caused by inconsistent URI component handling - ([Issue #103](https://github.com/medialize/URI.js/issues/103))
+* fixing inconsistent [`.relativeTo()`](http://medialize.github.io/URI.js/docs.html#relativeto) results caused by inconsistent URI component handling - ([Issue #103](https://github.com/medialize/URI.js/issues/103))
 * fixing unsafe eval by using UMD's root - ([Issue #105](https://github.com/medialize/URI.js/issues/105))
-* fixing [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment) to allow appending an empty element - ([Issue #106](https://github.com/medialize/URI.js/issues/106))
-* fixing [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment) to collapse empty elements in array notation
+* fixing [`.segment()`](http://medialize.github.io/URI.js/docs.html#accessors-segment) to allow appending an empty element - ([Issue #106](https://github.com/medialize/URI.js/issues/106))
+* fixing [`.segment()`](http://medialize.github.io/URI.js/docs.html#accessors-segment) to collapse empty elements in array notation
 
 ### 1.11.0 (August 6th 2013) ###
 
-* adding [`.segmentCoded()`](http://medialize.github.com/URI.js/docs.html#accessors-segmentCoded) to provide en/decoding interface to `.segment()` - ([Issue #79](https://github.com/medialize/URI.js/issues/79))
-* optimize [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) results - ([Issue #78](https://github.com/medialize/URI.js/issues/78), [Issue #95](https://github.com/medialize/URI.js/issues/95))
+* adding [`.segmentCoded()`](http://medialize.github.io/URI.js/docs.html#accessors-segmentCoded) to provide en/decoding interface to `.segment()` - ([Issue #79](https://github.com/medialize/URI.js/issues/79))
+* optimize [`.relativeTo()`](http://medialize.github.io/URI.js/docs.html#relativeto) results - ([Issue #78](https://github.com/medialize/URI.js/issues/78), [Issue #95](https://github.com/medialize/URI.js/issues/95))
 * removing obsolete code fragments from `URI.parse()` and `relativeTo()` - ([Issue #100](https://github.com/medialize/URI.js/issues/100))
 * adding setting [`URI.escapeQuerySpace`](http://medialize.github.io/URI.js/docs.html#setting-escapeQuerySpace) to control if query string should escape spaces using `+` or `%20` - ([Issue #74](https://github.com/medialize/URI.js/issues/74))
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.2.3
@@ -273,7 +273,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * fixing for-loop to make closure compiler happy - ([Issue #93](https://github.com/medialize/URI.js/issues/93))
 * adding [`URI.noConflict()`](http://medialize.github.io/URI.js/docs.html#static-noConflict) - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
 * fixing whitespace in code - ([Issue #84](https://github.com/medialize/URI.js/issue/84))
-* fixing [`.readable()`](http://medialize.github.com/URI.js/docs.html#readable) to decode the hash value as well - ([Issue #90](https://github.com/medialize/URI.js/issue/90))
+* fixing [`.readable()`](http://medialize.github.io/URI.js/docs.html#readable) to decode the hash value as well - ([Issue #90](https://github.com/medialize/URI.js/issue/90))
 * prevent `jquery.URI.js` from temporarily using `window.location` as the `href` of an empty attribute of a DOM element - ([Issue #94](https://github.com/medialize/URI.js/issues/94))
 * fixing internal `getType()` for IE8 with undefined value - ([Issue #96](https://github.com/medialize/URI.js/issues/96))
 * adding DOM elements to [URI constructor](http://medialize.github.io/URI.js/docs.html#constructor) - ([Issue #77](https://github.com/medialize/URI.js/issues/77)):
@@ -294,16 +294,16 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### 1.10.2 (April 15th 2013) ###
 
-* fixing [`relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) - ([Issue #75](https://github.com/medialize/URI.js/issues/75))
-* fixing [`normalizePath()`](http://medialize.github.com/URI.js/docs.html#normalize-path) to not prepend `./` to relative paths - ([Issue #76](https://github.com/medialize/URI.js/issues/76))
+* fixing [`relativeTo()`](http://medialize.github.io/URI.js/docs.html#relativeto) - ([Issue #75](https://github.com/medialize/URI.js/issues/75))
+* fixing [`normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to not prepend `./` to relative paths - ([Issue #76](https://github.com/medialize/URI.js/issues/76))
 
 ### 1.10.1 (April 2nd 2013) ###
 
-* adding [`absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to properly resolve relative scheme - ([Issue #71](https://github.com/medialize/URI.js/issues/73))
+* adding [`absoluteTo()`](http://medialize.github.io/URI.js/docs.html#absoluteto) to properly resolve relative scheme - ([Issue #71](https://github.com/medialize/URI.js/issues/73))
 
 ### 1.10.0 (March 16th 2013) ###
 
-* adding [`hasQuery()`](http://medialize.github.com/URI.js/docs.html#search-has) - ([Issue #71](https://github.com/medialize/URI.js/issues/71))
+* adding [`hasQuery()`](http://medialize.github.io/URI.js/docs.html#search-has) - ([Issue #71](https://github.com/medialize/URI.js/issues/71))
 * fixing URI property detection to return 'src' if none was detected (`jquery.URI.js`) - ([Issue #69](https://github.com/medialize/URI.js/issues/69))
 
 ### 1.9.1 (February 12th 2013) ###
@@ -313,8 +313,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### 1.9.0 (February 11th 2013) ###
 
-* adding [`.setQuery()`](http://medialize.github.com/URI.js/docs.html#search-set) - ([Issue #64](https://github.com/medialize/URI.js/issues/64))
-* adding callback argument to [`.query()`](http://medialize.github.com/URI.js/docs.html#accessors-search)
+* adding [`.setQuery()`](http://medialize.github.io/URI.js/docs.html#search-set) - ([Issue #64](https://github.com/medialize/URI.js/issues/64))
+* adding callback argument to [`.query()`](http://medialize.github.io/URI.js/docs.html#accessors-search)
 * adding jQuery 1.9.1 to the test suite
 
 ### 1.8.3 (January 9th 2013) ###
@@ -324,8 +324,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### 1.8.2 (December 27th 2012) ###
 
 * adding `.fragmentPrefix()` to configure prefix of fragmentURI and fragmentQuery extensions - ([Issue #55](https://github.com/medialize/URI.js/issues/55))
-* adding docs for [`.toString()`, `.valueOf()`](http://medialize.github.com/URI.js/docs.html#toString) and [`.href()`](http://medialize.github.com/URI.js/docs.html#href) - ([Issue #56](https://github.com/medialize/URI.js/issues/56))
-* fixing [`.relativeTo()`](http://medialize.github.com/URI.js/docs.html#relativeto) for descendants - ([Issue #57](https://github.com/medialize/URI.js/issues/57))
+* adding docs for [`.toString()`, `.valueOf()`](http://medialize.github.io/URI.js/docs.html#toString) and [`.href()`](http://medialize.github.io/URI.js/docs.html#href) - ([Issue #56](https://github.com/medialize/URI.js/issues/56))
+* fixing [`.relativeTo()`](http://medialize.github.io/URI.js/docs.html#relativeto) for descendants - ([Issue #57](https://github.com/medialize/URI.js/issues/57))
 
 ### 1.8.1 (November 15th 2012) ###
 
@@ -333,10 +333,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### 1.8.0 (November 13th 2012) ###
 
-* adding [`.resource()`](http://medialize.github.com/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]
+* adding [`.resource()`](http://medialize.github.io/URI.js/docs.html#accessors-resource) as compound of [path, query, fragment]
 * adding jQuery 1.8.x compatibility for jQuery.URI.js (remaining backwards compatibility!)
 * adding default ports for gopher, ws, wss
-* adding [`.duplicateQueryParameters()`](http://medialize.github.com/URI.js/docs.html#setting-duplicateQueryParameters) to control if `key=value` duplicates have to be preserved or reduced ([Issue #51](https://github.com/medialize/URI.js/issues/51))
+* adding [`.duplicateQueryParameters()`](http://medialize.github.io/URI.js/docs.html#setting-duplicateQueryParameters) to control if `key=value` duplicates have to be preserved or reduced ([Issue #51](https://github.com/medialize/URI.js/issues/51))
 * updating [Punycode.js](https://github.com/bestiejs/punycode.js/) to version 1.1.1
 * improving AMD/Node using [UMD returnExports](https://github.com/umdjs/umd/blob/master/returnExports.js) - ([Issue #44](https://github.com/medialize/URI.js/issues/44), [Issue #47](https://github.com/medialize/URI.js/issues/47))
 * fixing `.addQuery("empty")` to properly add `?empty` - ([Issue #46](https://github.com/medialize/URI.js/issues/46))
@@ -344,8 +344,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 * fixing parsing of Windows-Drive-Letter paths `file://C:/WINDOWS/foo.txt`
 * fixing `URI(location)` to properly parse the URL - ([Issue #52](https://github.com/medialize/URI.js/issues/52))
 * fixing type error for fragment abuse demos - ([Issue #50](https://github.com/medialize/URI.js/issues/50))
-* adding documentation for various [encode/decode functions](http://medialize.github.com/URI.js/docs.html#encoding-decoding)
-* adding some pointers on possible problems with URLs to [About URIs](http://medialize.github.com/URI.js/about-uris.html)
+* adding documentation for various [encode/decode functions](http://medialize.github.io/URI.js/docs.html#encoding-decoding)
+* adding some pointers on possible problems with URLs to [About URIs](http://medialize.github.io/URI.js/about-uris.html)
 * adding tests for fragment abuse and splitting tests into separate scopes
 * adding meta-data for [Jam](http://jamjs.org/) and [Bower](http://twitter.github.com/bower/)
 
@@ -362,42 +362,42 @@ Note: QUnit seems to be having some difficulties on IE8. While the jQuery-plugin
 
 ### 1.7.2 (August 28th 2012) ###
 
-* fixing SLD detection in [`.tld()`](http://medialize.github.com/URI.js/docs.html#accessors-tld) - `foot.se` would detect `t.se` - ([Issue #42](https://github.com/medialize/URI.js/issues/42))
-* fixing [`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to comply with [RFC 3986 Section 5.2.2](http://tools.ietf.org/html/rfc3986#section-5.2.2) - ([Issue #41](https://github.com/medialize/URI.js/issues/41))
+* fixing SLD detection in [`.tld()`](http://medialize.github.io/URI.js/docs.html#accessors-tld) - `foot.se` would detect `t.se` - ([Issue #42](https://github.com/medialize/URI.js/issues/42))
+* fixing [`.absoluteTo()`](http://medialize.github.io/URI.js/docs.html#absoluteto) to comply with [RFC 3986 Section 5.2.2](http://tools.ietf.org/html/rfc3986#section-5.2.2) - ([Issue #41](https://github.com/medialize/URI.js/issues/41))
 * fixing `location` not being available in non-browser environments like node.js ([Issue #45](https://github.com/medialize/URI.js/issues/45) [grimen](https://github.com/grimen))
 
 ### 1.7.1 (August 14th 2012) ###
 
-* fixing [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment)'s append operation - ([Issue #39](https://github.com/medialize/URI.js/issues/39))
+* fixing [`.segment()`](http://medialize.github.io/URI.js/docs.html#accessors-segment)'s append operation - ([Issue #39](https://github.com/medialize/URI.js/issues/39))
 
 ### 1.7.0 (August 11th 2012) ###
 
 * fixing URI() constructor passing of `base` - ([Issue #33](https://github.com/medialize/URI.js/issues/33) [LarryBattle](https://github.com/LarryBattle))
-* adding [`.segment()`](http://medialize.github.com/URI.js/docs.html#accessors-segment) accessor - ([Issue #34](https://github.com/medialize/URI.js/issues/34))
+* adding [`.segment()`](http://medialize.github.io/URI.js/docs.html#accessors-segment) accessor - ([Issue #34](https://github.com/medialize/URI.js/issues/34))
 * upgrading `URI.encode()` to strict URI encoding according to RFC3986
 * adding `URI.encodeReserved()` to exclude reserved characters (according to RFC3986) from being encoded
-* adding [URI Template (RFC 6570)](http://tools.ietf.org/html/rfc6570) support with [`URITemplate()`](http://medialize.github.com/URI.js/uri-template.html)
+* adding [URI Template (RFC 6570)](http://tools.ietf.org/html/rfc6570) support with [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html)
 
 ### 1.6.3 (June 24th 2012) ###
 
-* fixing [`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to join two relative paths properly - ([Issue #29](https://github.com/medialize/URI.js/issues/29))
-* adding [`.clone()`](http://medialize.github.com/URI.js/docs.html#clone) to copy an URI instance
+* fixing [`.absoluteTo()`](http://medialize.github.io/URI.js/docs.html#absoluteto) to join two relative paths properly - ([Issue #29](https://github.com/medialize/URI.js/issues/29))
+* adding [`.clone()`](http://medialize.github.io/URI.js/docs.html#clone) to copy an URI instance
 
 ### 1.6.2 (June 23rd 2012) ###
 
-* [`.directory()`](http://medialize.github.com/URI.js/docs.html#accessors-directory) now returns empty string if there is no directory
-* fixing [`.absoluteTo()`](http://medialize.github.com/URI.js/docs.html#absoluteto) to join two relative paths properly - ([Issue #29](https://github.com/medialize/URI.js/issues/29))
+* [`.directory()`](http://medialize.github.io/URI.js/docs.html#accessors-directory) now returns empty string if there is no directory
+* fixing [`.absoluteTo()`](http://medialize.github.io/URI.js/docs.html#absoluteto) to join two relative paths properly - ([Issue #29](https://github.com/medialize/URI.js/issues/29))
 
 ### 1.6.1 (May 19th 2012) ###
 
-* fixing TypeError on [`.domain()`](http://medialize.github.com/URI.js/docs.html#accessors-domain) with dot-less hostnames - ([Issue #27](https://github.com/medialize/URI.js/issues/27))
+* fixing TypeError on [`.domain()`](http://medialize.github.io/URI.js/docs.html#accessors-domain) with dot-less hostnames - ([Issue #27](https://github.com/medialize/URI.js/issues/27))
 
 ### 1.6.0 (March 19th 2012) ###
 
 * adding [URN](http://tools.ietf.org/html/rfc3986#section-3) (`javascript:`, `mailto:`, ...) support
-* adding [`.scheme()`](http://medialize.github.com/URI.js/docs.html#accessors-protocol) as alias of [`.protocol()`](http://medialize.github.com/URI.js/docs.html#accessors-protocol)
-* adding [`.userinfo()`](http://medialize.github.com/URI.js/docs.html#accessors-userinfo) to comply with terminology of [RFC 3986](http://tools.ietf.org/html/rfc3986#section-3.2.1)
-* adding [jQuery Plugin](http://medialize.github.com/URI.js/jquery-uri-plugin.html) `src/jquery.URI.js`
+* adding [`.scheme()`](http://medialize.github.io/URI.js/docs.html#accessors-protocol) as alias of [`.protocol()`](http://medialize.github.io/URI.js/docs.html#accessors-protocol)
+* adding [`.userinfo()`](http://medialize.github.io/URI.js/docs.html#accessors-userinfo) to comply with terminology of [RFC 3986](http://tools.ietf.org/html/rfc3986#section-3.2.1)
+* adding [jQuery Plugin](http://medialize.github.io/URI.js/jquery-uri-plugin.html) `src/jquery.URI.js`
 * fixing relative scheme URLs - ([Issue #19](https://github.com/medialize/URI.js/issues/19) [byroot](https://github.com/byroot))
 
 ### 1.5.0 (February 19th 2012) ###
@@ -418,38 +418,38 @@ Note: QUnit seems to be having some difficulties on IE8. While the jQuery-plugin
 
 ### 1.4.0 (January 12th 2012) ###
 
-* adding [`URI.iso8859()`](http://medialize.github.com/URI.js/docs.html#static-iso8859) and [`URI.unicode()`](http://medialize.github.com/URI.js/docs.html#static-unicode) to switch base charsets - ([Issue #10](https://github.com/medialize/URI.js/issues/10), [mortenn](https://github.com/))
-* adding [`.iso8859()`](http://medialize.github.com/URI.js/docs.html#iso8859) and [`.unicode()`](http://medialize.github.com/URI.js/docs.html#unicode) to convert an URI's escape encoding
+* adding [`URI.iso8859()`](http://medialize.github.io/URI.js/docs.html#static-iso8859) and [`URI.unicode()`](http://medialize.github.io/URI.js/docs.html#static-unicode) to switch base charsets - ([Issue #10](https://github.com/medialize/URI.js/issues/10), [mortenn](https://github.com/))
+* adding [`.iso8859()`](http://medialize.github.io/URI.js/docs.html#iso8859) and [`.unicode()`](http://medialize.github.io/URI.js/docs.html#unicode) to convert an URI's escape encoding
 
 ### 1.3.1 (January 3rd 2011) ###
 
 * updating Punycode.js to version 0.3.0
 * adding edge-case tests ("jim")
 * fixing edge-cases in .protocol(), .port(), .subdomain(), .domain(), .tld(), .filename()
-* fixing parsing of hostname in [`.hostname()`](http://medialize.github.com/URI.js/docs.html#accessors-hostname)
+* fixing parsing of hostname in [`.hostname()`](http://medialize.github.io/URI.js/docs.html#accessors-hostname)
 
 ### 1.3.0 (December 30th 2011) ###
 
-* adding [`.subdomain()`](http://medialize.github.com/URI.js/docs.html#accessors-subdomain) convenience accessor
+* adding [`.subdomain()`](http://medialize.github.io/URI.js/docs.html#accessors-subdomain) convenience accessor
 * improving internal deferred build handling
 * fixing thrown Error for `URI("http://example.org").query(true)` - ([Issue #6](https://github.com/medialize/URI.js/issues/6))
-* adding examples for extending URI.js for [fragment abuse](http://medialize.github.com/URI.js/docs.html#fragment-abuse), see src/URI.fragmentQuery.js and src/URI.fragmentURI.js - ([Issue #2](https://github.com/medialize/URI.js/issues/2))
+* adding examples for extending URI.js for [fragment abuse](http://medialize.github.io/URI.js/docs.html#fragment-abuse), see src/URI.fragmentQuery.js and src/URI.fragmentURI.js - ([Issue #2](https://github.com/medialize/URI.js/issues/2))
 
 ### 1.2.0 (December 29th 2011) ###
 
-* adding [`.equals()`](http://medialize.github.com/URI.js/docs.html#equals) for URL comparison
-* fixing encoding/decoding for [`.pathname()`](http://medialize.github.com/URI.js/docs.html#accessors-pathname), [`.directory()`](http://medialize.github.com/URI.js/docs.html#accessors-directory), [`.filename()`](http://medialize.github.com/URI.js/docs.html#accessors-filename) and [`.suffix()`](http://medialize.github.com/URI.js/docs.html#accessors-suffix) according to [RFC 3986 3.3](http://tools.ietf.org/html/rfc3986#section-3.3)
+* adding [`.equals()`](http://medialize.github.io/URI.js/docs.html#equals) for URL comparison
+* fixing encoding/decoding for [`.pathname()`](http://medialize.github.io/URI.js/docs.html#accessors-pathname), [`.directory()`](http://medialize.github.io/URI.js/docs.html#accessors-directory), [`.filename()`](http://medialize.github.io/URI.js/docs.html#accessors-filename) and [`.suffix()`](http://medialize.github.io/URI.js/docs.html#accessors-suffix) according to [RFC 3986 3.3](http://tools.ietf.org/html/rfc3986#section-3.3)
 * fixing escape spaces in query strings with `+` according to [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type)
-* fixing to allow [`URI.buildQuery()`](http://medialize.github.com/URI.js/docs.html#static-buildQuery) to build duplicate key=value combinations
-* fixing [`URI(string, string)`](http://medialize.github.com/URI.js/docs.html#constructor) constructor to conform with the [specification](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor)
-* adding [`.readable()`](http://medialize.github.com/URI.js/docs.html#readable) for humanly readable representation of encoded URIs
+* fixing to allow [`URI.buildQuery()`](http://medialize.github.io/URI.js/docs.html#static-buildQuery) to build duplicate key=value combinations
+* fixing [`URI(string, string)`](http://medialize.github.io/URI.js/docs.html#constructor) constructor to conform with the [specification](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor)
+* adding [`.readable()`](http://medialize.github.io/URI.js/docs.html#readable) for humanly readable representation of encoded URIs
 * fixing bug where @ in pathname would be parsed as part of the authority
 
 ### 1.1.0 (December 28th 2011) ###
 
-* adding [`URI.withinString()`](http://medialize.github.com/URI.js/docs.html#static-withinString)
-* adding [`.normalizeProtocol()`](http://medialize.github.com/URI.js/docs.html#normalize-protocol) to lowercase protocols
-* fixing [`.normalizeHostname()`](http://medialize.github.com/URI.js/docs.html#normalize-host) to lowercase hostnames
+* adding [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString)
+* adding [`.normalizeProtocol()`](http://medialize.github.io/URI.js/docs.html#normalize-protocol) to lowercase protocols
+* fixing [`.normalizeHostname()`](http://medialize.github.io/URI.js/docs.html#normalize-host) to lowercase hostnames
 * fixing String.substr() to be replaced by String.substring() - ([Issue #1](https://github.com/medialize/URI.js/issues/1))
 * fixing parsing "?foo" to `{foo: null}` [Algorithm for collecting URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters)
 * fixing building `{foo: null, bar: ""}` to "?foo&bar=" [Algorithm for serializing URL parameters](http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization)

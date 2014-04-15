@@ -45,7 +45,7 @@
         "Utilities"
     ],
     "main": "./src/URI",
-    "homepage": "http://medialize.github.com/URI.js/",
+    "homepage": "http://medialize.github.io/URI.js/",
     "contributors": [
         "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com)"
     ],

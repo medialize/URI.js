@@ -5,7 +5,7 @@
  * Version: 1.12.1
  *
  * Author: Rodney Rehm
- * Web: http://medialize.github.com/URI.js/jquery-uri-plugin.html
+ * Web: http://medialize.github.io/URI.js/jquery-uri-plugin.html
  *
  * Licensed under
  *   MIT License http://www.opensource.org/licenses/mit-license

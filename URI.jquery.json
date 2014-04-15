@@ -30,8 +30,8 @@
         }
     ],
     "bugs": "https://github.com/medialize/URI.js/issues",
-    "homepage": "http://medialize.github.com/URI.js/",
-    "docs": "http://medialize.github.com/URI.js/docs.html",
+    "homepage": "http://medialize.github.io/URI.js/",
+    "docs": "http://medialize.github.io/URI.js/docs.html",
     "dependencies": {
         "jquery": ">=1.7"
     }
