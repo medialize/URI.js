@@ -1,28 +1,28 @@
 {
-    "name": "URIjs",
-    "version": "1.13.0",
-    "main": [
-        "src/URI.js",
-        "src/IPv6.js",
-        "src/SecondLevelDomains.js",
-        "src/punycode.js",
-        "src/URITemplate.js",
-        "src/jquery.URI.js",
-        "src/URI.fragmentQuery.js",
-        "src/URI.fragmentURI.js"
-    ],
-    "ignore": [
-        ".*",
-        "*.css",
-        "*.min.js",
-        "/*.js",
-        "/*.html",
-        "/*.json",
-        "utils",
-        "test",
-        "prettify"
-    ],
-    "dependencies": {
-        "jquery": ">=1.7.0"
-    }
+  "name": "URIjs",
+  "version": "1.13.0",
+  "main": [
+    "src/URI.js",
+    "src/IPv6.js",
+    "src/SecondLevelDomains.js",
+    "src/punycode.js",
+    "src/URITemplate.js",
+    "src/jquery.URI.js",
+    "src/URI.fragmentQuery.js",
+    "src/URI.fragmentURI.js"
+  ],
+  "ignore": [
+    ".*",
+    "*.css",
+    "*.min.js",
+    "/*.js",
+    "/*.html",
+    "/*.json",
+    "utils",
+    "test",
+    "prettify"
+  ],
+  "dependencies": {
+    "jquery": ">=1.7.0"
+  }
 }
