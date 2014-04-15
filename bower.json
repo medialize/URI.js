@@ -1,6 +1,6 @@
 {
   "name": "URIjs",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "main": [
     "src/URI.js",
     "src/IPv6.js",

@@ -228,10 +228,13 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-### master ###
+### 1.13.1 (April 16th 2014) ###
 
 * fixing IPv6 normalization (bad variable name) - ([Issue #145](https://github.com/medialize/URI.js/issues/145))
 * adding grunt and jshint
+* changing code style to 2 spaces indentation, single quote strings
+* applying `'use strict';` everywhere
+* fixing jshint warnings
 
 ### 1.13.0 (April 15th 2014) ###
 
