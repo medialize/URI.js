@@ -10,6 +10,7 @@ module.exports = function(grunt) {
       target: [
         'Gruntfile.js',
         'src/*.js',
+        'test/*.js',
         '!src/*.min.js',
         '!src/punycode.js'
       ]
