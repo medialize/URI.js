@@ -12,33 +12,35 @@
  *   GPL v3 http://opensource.org/licenses/GPL-3.0
  *
  */
+
 (function (root, factory) {
-    // https://github.com/umdjs/umd/blob/master/returnExports.js
-    if (typeof exports === 'object') {
-        // Node
-        module.exports = factory();
-    } else if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(factory);
-    } else {
-        // Browser globals (root is window)
-        root.IPv6 = factory(root);
-    }
+  'use strict';
+  // https://github.com/umdjs/umd/blob/master/returnExports.js
+  if (typeof exports === 'object') {
+    // Node
+    module.exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(factory);
+  } else {
+    // Browser globals (root is window)
+    root.IPv6 = factory(root);
+  }
 }(this, function (root) {
-"use strict";
+  'use strict';
 
-/*
-var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156";
-var _out = IPv6.best(_in);
-var _expected = "fe80::204:61ff:fe9d:f156";
+  /*
+  var _in = "fe80:0000:0000:0000:0204:61ff:fe9d:f156";
+  var _out = IPv6.best(_in);
+  var _expected = "fe80::204:61ff:fe9d:f156";
 
-console.log(_in, _out, _expected, _out === _expected);
-*/
+  console.log(_in, _out, _expected, _out === _expected);
+  */
 
-// save current IPv6 variable, if any
-var _IPv6 = root && root.IPv6;
+  // save current IPv6 variable, if any
+  var _IPv6 = root && root.IPv6;
 
-function best(address) {
+  function bestPresentation(address) {
     // based on:
     // Javascript to test an IPv6 address for proper format, and to
     // present the "best text representation" according to IETF Draft RFC at
@@ -56,57 +58,57 @@ function best(address) {
 
     // trim colons (:: or ::a:b:c… or …a:b:c::)
     if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
-        // must have been ::
-        // remove first two items
-        segments.shift();
-        segments.shift();
+      // must have been ::
+      // remove first two items
+      segments.shift();
+      segments.shift();
     } else if (segments[0] === '' && segments[1] === '') {
-        // must have been ::xxxx
-        // remove the first item
-        segments.shift();
+      // must have been ::xxxx
+      // remove the first item
+      segments.shift();
     } else if (segments[length - 1] === '' && segments[length - 2] === '') {
-        // must have been xxxx::
-        segments.pop();
+      // must have been xxxx::
+      segments.pop();
     }
 
     length = segments.length;
 
     // adjust total segments for IPv4 trailer
     if (segments[length - 1].indexOf('.') !== -1) {
-        // found a "." which means IPv4
-        total = 7;
+      // found a "." which means IPv4
+      total = 7;
     }
 
     // fill empty segments them with "0000"
     var pos;
     for (pos = 0; pos < length; pos++) {
-        if (segments[pos] === '') {
-            break;
-        }
+      if (segments[pos] === '') {
+        break;
+      }
     }
 
     if (pos < total) {
-        segments.splice(pos, 1, '0000');
-        while (segments.length < total) {
-            segments.splice(pos, 0, '0000');
-        }
+      segments.splice(pos, 1, '0000');
+      while (segments.length < total) {
+        segments.splice(pos, 0, '0000');
+      }
 
-        length = segments.length;
+      length = segments.length;
     }
 
     // strip leading zeros
     var _segments;
     for (var i = 0; i < total; i++) {
-        _segments = segments[i].split("");
-        for (var j = 0; j < 3 ; j++) {
-            if (_segments[0] === '0' && _segments.length > 1) {
-                _segments.splice(0,1);
-            } else {
-                break;
-            }
+      _segments = segments[i].split('');
+      for (var j = 0; j < 3 ; j++) {
+        if (_segments[0] === '0' && _segments.length > 1) {
+          _segments.splice(0,1);
+        } else {
+          break;
         }
+      }
 
-        segments[i] = _segments.join("");
+      segments[i] = _segments.join('');
     }
 
     // find longest sequence of zeroes and coalesce them into one segment
@@ -118,32 +120,32 @@ function best(address) {
     // i; already declared
 
     for (i = 0; i < total; i++) {
-        if (inzeroes) {
-            if (segments[i] === '0') {
-                _current += 1;
-            } else {
-                inzeroes = false;
-                if (_current > _best) {
-                    best = current;
-                    _best = _current;
-                }
-            }
+      if (inzeroes) {
+        if (segments[i] === '0') {
+          _current += 1;
         } else {
-            if (segments[i] == '0') {
-                inzeroes = true;
-                current = i;
-                _current = 1;
-            }
+          inzeroes = false;
+          if (_current > _best) {
+            best = current;
+            _best = _current;
+          }
         }
+      } else {
+        if (segments[i] === '0') {
+          inzeroes = true;
+          current = i;
+          _current = 1;
+        }
+      }
     }
 
     if (_current > _best) {
-        best = current;
-        _best = _current;
+      best = current;
+      _best = _current;
     }
 
     if (_best > 1) {
-        segments.splice(best, _best, "");
+      segments.splice(best, _best, '');
     }
 
     length = segments.length;
@@ -151,35 +153,36 @@ function best(address) {
     // assemble remaining segments
     var result = '';
     if (segments[0] === '')  {
-        result = ":";
+      result = ':';
     }
 
     for (i = 0; i < length; i++) {
-        result += segments[i];
-        if (i === length - 1) {
-            break;
-        }
+      result += segments[i];
+      if (i === length - 1) {
+        break;
+      }
 
-        result += ':';
+      result += ':';
     }
 
     if (segments[length - 1] === '') {
-        result += ":";
+      result += ':';
     }
 
     return result;
-};
+  }
 
-function noConflict(){
+  function noConflict() {
+    /*jshint validthis: true */
     if (root.IPv6 === this) {
-        root.IPv6 = _IPv6;
+      root.IPv6 = _IPv6;
     }
-    
+  
     return this;
-};
+  }
 
-return {
-    best: best,
+  return {
+    best: bestPresentation,
     noConflict: noConflict
-};
+  };
 }));
