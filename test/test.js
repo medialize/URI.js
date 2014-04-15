@@ -936,6 +936,12 @@ test("normalizeHost", function() {
         equal(u+"", "http://[fe80::204:61ff:fe9d:f156]/foobar.html", "best IPv6 representation");
     }
 
+    if (window.IPv6) {
+        u = new URI("http://[::1]/foobar.html");
+        u.normalizeHostname();
+        equal(u+"", "http://[::1]/foobar.html", "best IPv6 representation");
+    }
+
     u = new URI("http://wWw.eXamplE.Org/foobar.html");
     u.normalizeHostname();
     equal(u+"", "http://www.example.org/foobar.html", "lower case hostname");

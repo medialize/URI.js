@@ -151,7 +151,7 @@ function best(address) {
     // assemble remaining segments
     var result = '';
     if (segments[0] === '')  {
-        beststr = ":";
+        result = ":";
     }
 
     for (i = 0; i < length; i++) {

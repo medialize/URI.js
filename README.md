@@ -228,6 +228,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### master ###
+
+* fixing IPv6 normalization (bad variable name) - ([Issue #145](https://github.com/medialize/URI.js/issues/145))
+
 ### 1.13.0 (April 15th 2014) ###
 
 * fixing [`URI.parseHost()`](http://medialize.github.io/URI.js/docs.html#static-parseHost) and [`URI.buildHost()`](http://medialize.github.io/URI.js/docs.html#static-buildHost) to properly parse and build the IPv6 examples given in [RFC2732 Format for Literal IPv6 Addresses in URL's](http://tools.ietf.org/html/rfc2732#section-2) - ([Issue #144](https://github.com/medialize/URI.js/issues/144))
