@@ -4,5 +4,6 @@
   "repo": "medialize/URI.js",
   "scripts": [
     "src/URI.min.js"
-  ]
+  ],
+  "main": "src/URI.min.js"
 }
