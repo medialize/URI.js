@@ -1,0 +1,8 @@
+{
+  "name": "URIjs",
+  "version": "1.13.1",
+  "repo": "medialize/URI.js",
+  "scripts": [
+    "URI.min.js"
+  ]
+}
