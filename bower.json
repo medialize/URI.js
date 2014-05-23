@@ -8,13 +8,14 @@
     "src/punycode.js",
     "src/URITemplate.js",
     "src/jquery.URI.js",
+    "src/URI.min.js",
+    "src/jquery.URI.min.js",
     "src/URI.fragmentQuery.js",
     "src/URI.fragmentURI.js"
   ],
   "ignore": [
     ".*",
     "*.css",
-    "*.min.js",
     "/*.js",
     "/*.html",
     "/*.json",
