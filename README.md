@@ -229,6 +229,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.13.2 (May 29th 2014) ###
+
+* changes to package management manifests only
+
 ### 1.13.1 (April 16th 2014) ###
 
 * fixing IPv6 normalization (bad variable name) - ([Issue #145](https://github.com/medialize/URI.js/issues/145))
