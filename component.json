@@ -1,0 +1,12 @@
+{
+  "name": "URIjs",
+  "version": "1.13.1",
+  "repo": "medialize/URI.js",
+  "scripts": [
+    "src/URI.js",
+    "src/punycode.js",
+    "src/IPv6.js",
+    "src/SecondLevelDomains.js"
+  ],
+  "main": "src/URI.js"
+}
