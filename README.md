@@ -229,6 +229,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### master branch ###
+
+* adding Hungarian second level domains - ([Issue #159](https://github.com/medialize/URI.js/issues/159))
+
 ### 1.13.2 (May 29th 2014) ###
 
 * changes to package management manifests only
