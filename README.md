@@ -172,10 +172,19 @@ How other environments do things
 
 [Discussion on Hacker News](https://news.ycombinator.com/item?id=3398837)
 
+### Forks / Code-borrow ###
+
+* [node-dom-urls](https://github.com/passy/node-dom-urls) passy's partial implementation of the W3C URL Spec Draft for Node
+* [urlutils](https://github.com/cofounders/urlutils) cofounders' `window.URL` constructor for Node
 
 ### Alternatives ###
 
 If you don't like URI.js, you may like one of the following libraries. (If yours is not listed, drop me a line…)
+
+#### Polyfill ####
+
+* [DOM-URL-Polyfill](https://github.com/arv/DOM-URL-Polyfill/) arv's polyfill of the [DOM URL spec](https://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#interface-urlutils) for browsers
+* [inexorabletash](https://github.com/inexorabletash/polyfill/#whatwg-url-api) inexorabletash's [WHATWG URL API](http://url.spec.whatwg.org/)
 
 #### URL Manipulation ####
 
@@ -228,6 +237,12 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 
 ## Changelog ##
+
+### master branch ###
+
+* adding Hungarian second level domains - ([Issue #159](https://github.com/medialize/URI.js/issues/159))
+* adding `<audio src="…">` and `<video src="…">` to supported DOM attributes - ([Issue #160](https://github.com/medialize/URI.js/issues/160)), ([Issue #161](https://github.com/medialize/URI.js/issues/161))
+* fixing `file://hostname/path` parsing - ([Issue #158](https://github.com/medialize/URI.js/issues/158))
 
 ### 1.13.2 (May 29th 2014) ###
 
