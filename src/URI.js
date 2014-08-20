@@ -225,7 +225,9 @@
     'embed': 'src',
     'source': 'src',
     'track': 'src',
-    'input': 'src' // but only if type="image"
+    'input': 'src', // but only if type="image"
+    'audio': 'src',
+    'video': 'src'
   };
   URI.getDomAttribute = function(node) {
     if (!node || !node.nodeName) {
