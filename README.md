@@ -232,6 +232,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### master branch ###
 
 * adding Hungarian second level domains - ([Issue #159](https://github.com/medialize/URI.js/issues/159))
+* adding `<audio src="…">` and `<video src="…">` to supported DOM attributes - ([Issue #160](https://github.com/medialize/URI.js/issues/160)), ([Issue #161](https://github.com/medialize/URI.js/issues/161))
 
 ### 1.13.2 (May 29th 2014) ###
 
