@@ -482,11 +482,7 @@
   URI.parseUserinfo = function(string, parts) {
     // extract username:password
     var firstSlash = string.indexOf('/');
-    /*jshint laxbreak: true */
-    var pos = firstSlash > -1
-      ? string.lastIndexOf('@', firstSlash)
-      : string.indexOf('@');
-    /*jshint laxbreak: false */
+    var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
     var t;
 
     // authority@ must come before /path
