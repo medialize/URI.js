@@ -367,9 +367,17 @@
   var _part;
   var generateAccessor = function(_group, _part) {
     return function(string) {
-      return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function(c) {
-        return URI.characters[_group][_part].map[c];
-      });
+      try {
+        return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function(c) {
+          return URI.characters[_group][_part].map[c];
+        });
+      } catch (e) {
+        // we're not going to mess with weird encodings,
+        // give up and return the undecoded original string
+        // see https://github.com/medialize/URI.js/issues/87
+        // see https://github.com/medialize/URI.js/issues/92
+        return string;
+      }
     };
   };
 
