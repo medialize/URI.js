@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.13.2
+ * Version: 1.14.0
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -57,7 +57,7 @@
     return this;
   }
 
-  URI.version = '1.13.2';
+  URI.version = '1.14.0';
 
   var p = URI.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
@@ -225,7 +225,9 @@
     'embed': 'src',
     'source': 'src',
     'track': 'src',
-    'input': 'src' // but only if type="image"
+    'input': 'src', // but only if type="image"
+    'audio': 'src',
+    'video': 'src'
   };
   URI.getDomAttribute = function(node) {
     if (!node || !node.nodeName) {
@@ -365,9 +367,17 @@
   var _part;
   var generateAccessor = function(_group, _part) {
     return function(string) {
-      return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function(c) {
-        return URI.characters[_group][_part].map[c];
-      });
+      try {
+        return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function(c) {
+          return URI.characters[_group][_part].map[c];
+        });
+      } catch (e) {
+        // we're not going to mess with weird encodings,
+        // give up and return the undecoded original string
+        // see https://github.com/medialize/URI.js/issues/87
+        // see https://github.com/medialize/URI.js/issues/92
+        return string;
+      }
     };
   };
 
@@ -414,9 +424,6 @@
         if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
           // : may be within the path
           parts.protocol = undefined;
-        } else if (parts.protocol === 'file') {
-          // the file scheme: does not contain an authority
-          string = string.substring(pos + 3);
         } else if (string.substring(pos + 1, pos + 3) === '//') {
           string = string.substring(pos + 3);
 
@@ -480,11 +487,7 @@
   URI.parseUserinfo = function(string, parts) {
     // extract username:password
     var firstSlash = string.indexOf('/');
-    /*jshint laxbreak: true */
-    var pos = firstSlash > -1
-      ? string.lastIndexOf('@', firstSlash)
-      : string.indexOf('@');
-    /*jshint laxbreak: false */
+    var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
     var t;
 
     // authority@ must come before /path

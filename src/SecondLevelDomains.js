@@ -2,7 +2,7 @@
  * URI.js - Mutating URLs
  * Second Level Domain (SLD) Support
  *
- * Version: 1.13.2
+ * Version: 1.14.0
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -80,6 +80,7 @@
       'gt':' com edu gob ind mil net org ',
       'gu':' com edu gov net org ',
       'hk':' com edu gov idv net org ',
+      'hu':' 2000 agrar bolt casino city co erotica erotika film forum games hotel info ingatlan jogasz konyvelo lakas media news org priv reklam sex shop sport suli szex tm tozsde utazas video ',
       'id':' ac co go mil net or sch web ',
       'il':' ac co gov idf k12 muni net org ',
       'in':' ac co edu ernet firm gen gov i ind mil net nic org res ',

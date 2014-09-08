@@ -233,15 +233,17 @@ If you don't like URI.js, you may like one of the following libraries. (If yours
 
 ## License ##
 
-URI.js is published under the [MIT license](http://www.opensource.org/licenses/mit-license) and [GPL v3](http://opensource.org/licenses/GPL-3.0).
+URI.js is published under the [MIT license](http://www.opensource.org/licenses/mit-license). Until version 1.13.2 URI.js was also published under the [GPL v3](http://opensource.org/licenses/GPL-3.0) license - but as this dual-licensing causes more questions than helps anyone, it was dropped with version 1.14.0.
 
 
 ## Changelog ##
 
-### master branch ###
+### 1.14.0 (September 8th 2014) ###
 
 * adding Hungarian second level domains - ([Issue #159](https://github.com/medialize/URI.js/issues/159))
 * adding `<audio src="…">` and `<video src="…">` to supported DOM attributes - ([Issue #160](https://github.com/medialize/URI.js/issues/160)), ([Issue #161](https://github.com/medialize/URI.js/issues/161))
+* fixing `file://hostname/path` parsing - ([Issue #158](https://github.com/medialize/URI.js/issues/158))
+* fixing `.decodePathSegment()` to not throw malformed URI error - ([Issue #163](https://github.com/medialize/URI.js/issues/163))
 
 ### 1.13.2 (May 29th 2014) ###
 

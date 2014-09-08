@@ -1532,6 +1532,20 @@
   });
 
   module('Encoding');
+  test('decode malformed URI', function() {
+    try {
+      decodeURIComponent('%%20');
+      ok(false, 'decodeURIComponent() must throw URIError: URI malformed');
+    } catch(e) {}
+
+    try {
+      URI.decode('%%20');
+      ok(false, 'URI.decode() must throw URIError: URI malformed');
+    } catch(e) {}
+
+    equal(URI.decodeQuery('%%20'), '%%20', 'malformed URI component returned');
+    equal(URI.decodePathSegment('%%20'), '%%20', 'malformed URI component returned');
+  });
   test('encodeQuery', function() {
     var escapeQuerySpace = URI.escapeQuerySpace;
 
