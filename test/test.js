@@ -369,6 +369,11 @@
     equal(u.search(), '', 'href removed search');
     equal(u.hash(), '', 'href removed hash');
     equal(u.href(), '../path/index.html', 'href removed url');
+
+    /*jshint -W053 */
+    u.href(new String('/narf'));
+    /*jshint +W053 */
+    equal(u.pathname(), '/narf', 'href from String instance');
   });
   test('resource', function() {
     var u = new URI('http://foo.bar/foo.html?hello#world');

@@ -981,8 +981,8 @@
       href = href.toString();
     }
 
-    if (typeof href === 'string') {
-      this._parts = URI.parse(href, this._parts);
+    if (typeof href === 'string' || href instanceof String) {
+      this._parts = URI.parse(String(href), this._parts);
     } else if (_URI || _object) {
       var src = _URI ? href._parts : href;
       for (key in src) {
@@ -1488,7 +1488,7 @@
 
           segments.push(v[i]);
         }
-      } else if (v || (typeof v === 'string')) {
+      } else if (v || typeof v === 'string') {
         if (segments[segments.length -1] === '') {
           // empty trailing elements have to be overwritten
           // to prevent results such as /foo//bar
@@ -1498,7 +1498,7 @@
         }
       }
     } else {
-      if (v || (typeof v === 'string' && v.length)) {
+      if (v) {
         segments[segment] = v;
       } else {
         segments.splice(segment, 1);
@@ -1534,7 +1534,7 @@
     }
 
     if (!isArray(v)) {
-      v = typeof v === 'string' ? URI.encode(v) : v;
+      v = (typeof v === 'string' || v instanceof String) ? URI.encode(v) : v;
     } else {
       for (i = 0, l = v.length; i < l; i++) {
         v[i] = URI.decode(v[i]);
@@ -1566,14 +1566,14 @@
   p.setQuery = function(name, value, build) {
     var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
 
-    if (typeof name === 'object') {
+    if (typeof name === 'string' || name instanceof String) {
+      data[name] = value !== undefined ? value : null;
+    } else if (typeof name === 'object') {
       for (var key in name) {
         if (hasOwn.call(name, key)) {
           data[key] = name[key];
         }
       }
-    } else if (typeof name === 'string') {
-      data[name] = value !== undefined ? value : null;
     } else {
       throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
     }
