@@ -885,9 +885,8 @@
     return this.build(false)._string;
   };
 
-  // generate simple accessors
-  _parts = {protocol: 'protocol', username: 'username', password: 'password', hostname: 'hostname',  port: 'port'};
-  generateAccessor = function(_part){
+
+  function generateSimpleAccessor(_part){
     return function(v, build) {
       if (v === undefined) {
         return this._parts[_part] || '';
@@ -897,15 +896,9 @@
         return this;
       }
     };
-  };
-
-  for (_part in _parts) {
-    p[_part] = generateAccessor(_parts[_part]);
   }
 
-  // generate accessors with optionally prefixed input
-  _parts = {query: '?', fragment: '#'};
-  generateAccessor = function(_part, _key){
+  function generatePrefixAccessor(_part, _key){
     return function(v, build) {
       if (v === undefined) {
         return this._parts[_part] || '';
@@ -922,24 +915,24 @@
         return this;
       }
     };
-  };
-
-  for (_part in _parts) {
-    p[_part] = generateAccessor(_part, _parts[_part]);
   }
 
-  // generate accessors with prefixed output
-  _parts = {search: ['?', 'query'], hash: ['#', 'fragment']};
-  generateAccessor = function(_part, _key){
-    return function(v, build) {
-      var t = this[_part](v, build);
-      return typeof t === 'string' && t.length ? (_key + t) : t;
-    };
-  };
+  p.protocol = generateSimpleAccessor('protocol');
+  p.username = generateSimpleAccessor('username');
+  p.password = generateSimpleAccessor('password');
+  p.hostname = generateSimpleAccessor('hostname');
+  p.port = generateSimpleAccessor('port');
+  p.query = generatePrefixAccessor('query', '?');
+  p.fragment = generatePrefixAccessor('fragment', '#');
 
-  for (_part in _parts) {
-    p[_part] = generateAccessor(_parts[_part][1], _parts[_part][0]);
-  }
+  p.search = function(v, build) {
+    var t = this.query(v, build);
+    return typeof t === 'string' && t.length ? ('?' + t) : t;
+  };
+  p.hash = function(v, build) {
+    var t = this.fragment(v, build);
+    return typeof t === 'string' && t.length ? ('#' + t) : t;
+  };
 
   p.pathname = function(v, build) {
     if (v === undefined || v === true) {
