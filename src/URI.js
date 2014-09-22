@@ -527,7 +527,7 @@
       // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
       value = v.length ? URI.decodeQuery(v.join('='), escapeQuerySpace) : null;
 
-      if (items[name]) {
+      if (hasOwn.call(items, name)) {
         if (typeof items[name] === 'string') {
           items[name] = [items[name]];
         }

@@ -241,6 +241,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### master (might become 1.14.1) ###
 
 * fixing handling of String instances (not string primitives) - ([Issue #146](https://github.com/medialize/URI.js/issues/146))
+* fixing Firefox [`.watch()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/watch) interfering with `.parseQuery()` - ([Issue #169](https://github.com/medialize/URI.js/issues/169))
 
 ### 1.14.0 (September 8th 2014) ###
 
