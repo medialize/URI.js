@@ -765,6 +765,10 @@
     u.addQuery('empty', '');
     equal(u.query(), 'foo=bar&empty=', 'add empty string');
 
+    u.query('?foo');
+    u.addQuery('foo', 'bar');
+    equal(u.query(), 'foo=bar', 'add to null value');
+
     u.query('');
     u.addQuery('some value', 'must be encoded because of = and ? and #');
     equal(u.query(), 'some+value=must+be+encoded+because+of+%3D+and+%3F+and+%23', 'encoding');

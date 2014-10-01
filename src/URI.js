@@ -660,7 +660,7 @@
         value = [value];
       }
 
-      data[name] = data[name].concat(value);
+      data[name] = (data[name] || []).concat(value);
     } else {
       throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
     }
