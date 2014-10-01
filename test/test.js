@@ -369,6 +369,11 @@
     equal(u.search(), '', 'href removed search');
     equal(u.hash(), '', 'href removed hash');
     equal(u.href(), '../path/index.html', 'href removed url');
+
+    /*jshint -W053 */
+    u.href(new String('/narf'));
+    /*jshint +W053 */
+    equal(u.pathname(), '/narf', 'href from String instance');
   });
   test('resource', function() {
     var u = new URI('http://foo.bar/foo.html?hello#world');
@@ -759,6 +764,10 @@
     u.query('?foo=bar');
     u.addQuery('empty', '');
     equal(u.query(), 'foo=bar&empty=', 'add empty string');
+
+    u.query('?foo');
+    u.addQuery('foo', 'bar');
+    equal(u.query(), 'foo=bar', 'add to null value');
 
     u.query('');
     u.addQuery('some value', 'must be encoded because of = and ? and #');
