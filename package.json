@@ -15,10 +15,6 @@
     {
       "type": "MIT",
       "url": "http://www.opensource.org/licenses/mit-license"
-    },
-    {
-      "type": "GPL",
-      "url": "http://opensource.org/licenses/GPL-3.0"
     }
   ],
   "description": "URI.js is a Javascript library for working with URLs.",
@@ -59,9 +55,9 @@
     "src/URI.min.js",
     "src/jquery.URI.min.js",
     "src/URI.fragmentQuery.js",
-    "src/URI.fragmentURI.js"
+    "src/URI.fragmentURI.js",
+    "LICENSE.txt"
   ],
-  
   "jam": {
     "main": "src/URI.js",
     "dependencies": {
@@ -77,10 +73,10 @@
       "src/URI.min.js",
       "src/jquery.URI.min.js",
       "src/URI.fragmentQuery.js",
-      "src/URI.fragmentURI.js"
+      "src/URI.fragmentURI.js",
+      "LICENSE.txt"
     ]
   },
-  
   "npmName": "URIjs",
   "npmFileMap": [
     {
@@ -88,7 +84,13 @@
       "files": [
         "*.js"
       ]
-    }
+    },
+    {
+      "basePath": "/",
+      "files": [
+        "LICENSE.txt"
+      ]
+    },
   ],
   "devDependencies": {
     "jshint-stylish": "~0.1.5",

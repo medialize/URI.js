@@ -238,6 +238,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### master / development ###
+
+* fixing inclusion of LICENSE in packages - ([Issue #174](https://github.com/medialize/URI.js/issues/174))
+
 ### 1.14.1 (October 1st 2014) ###
 
 * fixing handling of String instances (not string primitives) - ([Issue #146](https://github.com/medialize/URI.js/issues/146))
