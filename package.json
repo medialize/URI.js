@@ -96,5 +96,8 @@
     "jshint-stylish": "~0.1.5",
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.8.0"
+  },
+  "spm": {
+    "main": "src/URI.js"
   }
 }
