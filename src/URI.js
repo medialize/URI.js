@@ -689,7 +689,7 @@
         data[name] = undefined;
       }
     } else {
-      throw new TypeError('URI.addQuery() accepts an object, string as the first parameter');
+      throw new TypeError('URI.removeQuery() accepts an object, string as the first parameter');
     }
   };
   URI.hasQuery = function(data, name, value, withinArray) {
