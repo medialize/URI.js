@@ -241,7 +241,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### master / development ###
 
 * fixing inclusion of LICENSE in packages - ([Issue #174](https://github.com/medialize/URI.js/issues/174))
-* Adding meta data for [SPM](http://www.spmjs.io/) package manager - ([Issue #176](https://github.com/medialize/URI.js/issues/176))
+* fixing [`URI.parseHost()`](http://medialize.github.io/URI.js/docs.html#static-parseHost) to interpret colon in path as IPv6 hostname - ([Issue #190](https://github.com/medialize/URI.js/issues/190))
+* adding meta data for [SPM](http://www.spmjs.io/) package manager - ([Issue #176](https://github.com/medialize/URI.js/issues/176))
 * adding license meta to `bower.json`
 
 ### 1.14.1 (October 1st 2014) ###
