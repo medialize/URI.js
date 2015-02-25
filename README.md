@@ -238,7 +238,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-### master / development ###
+### 1.14.2 (February 25th 2015) ###
 
 * fixing inclusion of LICENSE in packages - ([Issue #174](https://github.com/medialize/URI.js/issues/174))
 * fixing [`URI.parseHost()`](http://medialize.github.io/URI.js/docs.html#static-parseHost) to not interpret colon in path as IPv6 hostname - ([Issue #190](https://github.com/medialize/URI.js/issues/190))
