@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.14.1
+ * Version: 1.14.2
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -57,7 +57,7 @@
     return this;
   }
 
-  URI.version = '1.14.1';
+  URI.version = '1.14.2';
 
   var p = URI.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
@@ -462,15 +462,20 @@
       if (parts.port === '/') {
         parts.port = null;
       }
-    } else if (string.indexOf(':') !== string.lastIndexOf(':')) {
-      // IPv6 host contains multiple colons - but no port
-      // this notation is actually not allowed by RFC 3986, but we're a liberal parser
-      parts.hostname = string.substring(0, pos) || null;
-      parts.port = null;
     } else {
-      t = string.substring(0, pos).split(':');
-      parts.hostname = t[0] || null;
-      parts.port = t[1] || null;
+      var firstColon = string.indexOf(':');
+      var firstSlash = string.indexOf('/');
+      var nextColon = string.indexOf(':', firstColon + 1);
+      if (nextColon !== -1 && (firstSlash === -1 || nextColon < firstSlash)) {
+        // IPv6 host contains multiple colons - but no port
+        // this notation is actually not allowed by RFC 3986, but we're a liberal parser
+        parts.hostname = string.substring(0, pos) || null;
+        parts.port = null;
+      } else {
+        t = string.substring(0, pos).split(':');
+        parts.hostname = t[0] || null;
+        parts.port = t[1] || null;
+      }
     }
 
     if (parts.hostname && string.substring(pos).charAt(0) !== '/') {

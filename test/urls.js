@@ -1705,6 +1705,53 @@ var urls = [{
       idn: false,
       punycode: false
     }
-  }
+  }, {
+      name: 'colon in path',
+      url: 'http://www.example.org:8080/hello:world',
+      parts: {
+        protocol: 'http',
+        username: null,
+        password: null,
+        hostname: 'www.example.org',
+        port: '8080',
+        path: '/hello:world',
+        query: null,
+        fragment: null
+      },
+      accessors: {
+        protocol: 'http',
+        username: '',
+        password: '',
+        port: '8080',
+        path: '/hello:world',
+        query: '',
+        fragment: '',
+        resource: '/hello:world',
+        authority: 'www.example.org:8080',
+        userinfo: '',
+        subdomain: 'www',
+        domain: 'example.org',
+        tld: 'org',
+        directory: '/',
+        filename: 'hello:world',
+        suffix: '',
+        hash: '', // location.hash style
+        search: '', // location.search style
+        host: 'www.example.org:8080',
+        hostname: 'www.example.org'
+      },
+      is: {
+        urn: false,
+        url: true,
+        relative: false,
+        name: true,
+        sld: false,
+        ip: false,
+        ip4: false,
+        ip6: false,
+        idn: false,
+        punycode: false
+      }
+    }
 ];
 
