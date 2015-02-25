@@ -92,7 +92,7 @@
       "files": [
         "LICENSE.txt"
       ]
-    },
+    }
   ],
   "devDependencies": {
     "jshint-stylish": "~0.1.5",
