@@ -34,7 +34,9 @@
     "RFC 3986",
     "RFC3986",
     "RFC 6570",
-    "RFC6570"
+    "RFC6570",
+    "jquery-plugin",
+    "ecosystem:jquery"
   ],
   "categories": [
     "Parsers & Compilers",
