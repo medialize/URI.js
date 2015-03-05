@@ -143,7 +143,7 @@ URL:      foo://example.com:8042/over/there?name=ferret#nose
     
     <h3 id="problems-querystring">The Query String</h3>
     <p>PHP (<a href="http://php.net/manual/en/function.parse-str.php">parse_str()</a>) will automatically parse the query string and populate the superglobal <code>$_GET</code> for you. <code>?foo=1&amp;foo=2</code> becomes <code>$_GET = array('foo' => 2);</code>, while <code>?foo[]=1&amp;foo[]=2</code> becomes <code>$_GET = array('foo' => array("1", "2"));</code>.</p>
-    <p>Ruby's <code>CGI.parse()</code> turns <code>?a=1&amp;b=2</code> into <code>{"a" : ["1", "2"]}</code>, while Ruby on Rails chose the PHP-way.</p>
+    <p>Ruby's <code>CGI.parse()</code> turns <code>?a=1&amp;a=2</code> into <code>{"a" : ["1", "2"]}</code>, while Ruby on Rails chose the PHP-way.</p>
     <p>Python's <a href="http://docs.python.org/2/library/urlparse.html#urlparse.parse_qs">parse_qs()</a> doesn't care for <code>[]</code> either.
     <p>Most other languages don't follow the <code>[]</code>-style array-notation and deal with this mess differently.</p>
     <p>TL;DR: You need to know the target-environment, to know how complex query string data has to be encoded</p>
