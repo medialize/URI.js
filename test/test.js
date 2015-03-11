@@ -85,6 +85,11 @@
       new URI(new Date());
     }, TypeError, 'Failing unknown input');
   });
+  test('new URI(undefined)', function() {
+    raises(function() {
+      new URI(undefined);
+    }, TypeError, 'Failing undefined input');
+  });
   test('new URI()', function() {
     var u = new URI();
     ok(u instanceof URI, 'instanceof URI');
