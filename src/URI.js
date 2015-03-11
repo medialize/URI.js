@@ -40,6 +40,10 @@
     }
 
     if (url === undefined) {
+      if (arguments.length) {
+        throw new TypeError('undefined is not a valid argument for URI');
+      }
+
       if (typeof location !== 'undefined') {
         url = location.href + '';
       } else {
