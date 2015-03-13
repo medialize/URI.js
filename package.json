@@ -6,10 +6,9 @@
     "name": "Rodney Rehm",
     "url": "http://rodneyrehm.de"
   },
-  "repository" :
-  {
-    "type" : "git",
-    "url" : "https://github.com/medialize/URI.js.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medialize/URI.js.git"
   },
   "licenses": [
     {
