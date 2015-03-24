@@ -1863,6 +1863,7 @@
 
     if (resolved.path().charAt(0) !== '/') {
       basedir = base.directory();
+      basedir = basedir ? basedir : base.path().indexOf('/') === 0 ? '/' : '';
       resolved._parts.path = (basedir ? (basedir + '/') : '') + resolved._parts.path;
       resolved.normalizePath();
     }

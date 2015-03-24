@@ -1121,6 +1121,16 @@
         base: '/path/to/file?some=query#hash',
         result: '/path/to/relative/path?blubber=1#hash3'
       }, {
+        name: 'path-relative path resolve 2',
+        url: 'tofile',
+        base: '/path/to/file',
+        result: '/path/to/tofile'
+      }, {
+        name: 'path-relative path-root resolve',
+        url: 'tofile',
+        base: '/file',
+        result: '/tofile'
+      }, {
         name: 'path-relative parent path resolve',
         url: '../relative/path?blubber=1#hash3',
         base: '/path/to/file?some=query#hash',
