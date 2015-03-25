@@ -324,6 +324,42 @@
           '%3D': '='
         }
       }
+    },
+    urnpath: {
+      // The characters under `encode` are the characters called out by RFC 2141 as being acceptable
+      // for usage in a URN. RFC2141 also calls out "-", ".", and "_" as acceptable characters, but
+      // these aren't encoded by encodeURIComponent, so we don't have to call them out here. Also
+      // note that the colon character is not featured in the encoding map; this is because URI.js
+      // gives the colons in URNs semantic meaning as the delimiters of path segements, and so it
+      // should not appear unencoded in a segment itself.
+      // See also the note above about RFC3986 and capitalalized hex digits.
+      encode: {
+        expression: /%(21|24|27|28|29|2A|2B|2C|3B|3D|40)/ig,
+        map: {
+          '%21': '!',
+          '%24': '$',
+          '%27': '\'',
+          '%28': '(',
+          '%29': ')',
+          '%2A': '*',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '=',
+          '%40': '@'
+        }
+      },
+      // These characters are the characters called out by RFC2141 as "reserved" characters that
+      // should never appear in a URN, plus the colon character (see note above).
+      decode: {
+        expression: /[\/\?#:]/g,
+        map: {
+          '/': '%2F',
+          '?': '%3F',
+          '#': '%23',
+          ':': '%3A'
+        }
+      }
     }
   };
   URI.encodeQuery = function(string, escapeQuerySpace) {
@@ -366,6 +402,22 @@
 
     return segments.join('/');
   };
+  URI.recodeURNPath = function(string) {
+    var segments = (string + '').split(':');
+    for (var i = 0, length = segments.length; i < length; i++) {
+      segments[i] = URI.encodeURNPathSegment(URI.decode(segments[i]));
+    }
+
+    return segments.join(':');
+  };
+  URI.decodeURNPath = function(string) {
+    var segments = (string + '').split(':');
+    for (var i = 0, length = segments.length; i < length; i++) {
+      segments[i] = URI.decodeURNPathSegment(segments[i]);
+    }
+
+    return segments.join(':');
+  };
   // generate encode/decode path functions
   var _parts = {'encode':'encode', 'decode':'decode'};
   var _part;
@@ -387,6 +439,10 @@
 
   for (_part in _parts) {
     URI[_part + 'PathSegment'] = generateAccessor('pathname', _parts[_part]);
+  }
+
+  for (_part in _parts) {
+    URI[_part + 'URNPathSegment'] = generateAccessor('urnpath', _parts[_part]);
   }
 
   URI.encodeReserved = generateAccessor('reserved', 'encode');
@@ -946,9 +1002,13 @@
   p.pathname = function(v, build) {
     if (v === undefined || v === true) {
       var res = this._parts.path || (this._parts.hostname ? '/' : '');
-      return v ? URI.decodePath(res) : res;
+      return v ? (this._parts.urn ? URI.decodeURNPath : URI.decodePath)(res) : res;
     } else {
-      this._parts.path = v ? URI.recodePath(v) : '/';
+      if (this._parts.urn) {
+        this._parts.path = v ? URI.recodeURNPath(v) : '';
+      } else {
+        this._parts.path = v ? URI.recodePath(v) : '/';
+      }
       this.build(!build);
       return this;
     }
@@ -1624,6 +1684,7 @@
     if (this._parts.urn) {
       return this
         .normalizeProtocol(false)
+        .normalizePath(false)
         .normalizeQuery(false)
         .normalizeFragment(false)
         .build();
@@ -1670,63 +1731,67 @@
     return this;
   };
   p.normalizePath = function(build) {
-    if (this._parts.urn) {
-      return this;
-    }
-
-    if (!this._parts.path || this._parts.path === '/') {
-      return this;
-    }
-
-    var _was_relative;
     var _path = this._parts.path;
-    var _leadingParents = '';
-    var _parent, _pos;
 
-    // handle relative paths
-    if (_path.charAt(0) !== '/') {
-      _was_relative = true;
-      _path = '/' + _path;
-    }
-
-    // resolve simples
-    _path = _path
-      .replace(/(\/(\.\/)+)|(\/\.$)/g, '/')
-      .replace(/\/{2,}/g, '/');
-
-    // remember leading parents
-    if (_was_relative) {
-      _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
-      if (_leadingParents) {
-        _leadingParents = _leadingParents[0];
+    if (this._parts.urn) {
+      if (!_path) {
+        return this;
       }
-    }
+      _path = URI.recodeURNPath(this._parts.path);
+    } else {
+      if (!_path || _path === '/') {
+        return this;
+      }
+      var _was_relative;
+      var _leadingParents = '';
+      var _parent, _pos;
 
-    // resolve parents
-    while (true) {
-      _parent = _path.indexOf('/..');
-      if (_parent === -1) {
-        // no more ../ to resolve
-        break;
-      } else if (_parent === 0) {
-        // top level cannot be relative, skip it
-        _path = _path.substring(3);
-        continue;
+      // handle relative paths
+      if (_path.charAt(0) !== '/') {
+        _was_relative = true;
+        _path = '/' + _path;
       }
 
-      _pos = _path.substring(0, _parent).lastIndexOf('/');
-      if (_pos === -1) {
-        _pos = _parent;
+      // resolve simples
+      _path = _path
+        .replace(/(\/(\.\/)+)|(\/\.$)/g, '/')
+        .replace(/\/{2,}/g, '/');
+
+      // remember leading parents
+      if (_was_relative) {
+        _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
+        if (_leadingParents) {
+          _leadingParents = _leadingParents[0];
+        }
       }
-      _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
+
+      // resolve parents
+      while (true) {
+        _parent = _path.indexOf('/..');
+        if (_parent === -1) {
+          // no more ../ to resolve
+          break;
+        } else if (_parent === 0) {
+          // top level cannot be relative, skip it
+          _path = _path.substring(3);
+          continue;
+        }
+
+        _pos = _path.substring(0, _parent).lastIndexOf('/');
+        if (_pos === -1) {
+          _pos = _parent;
+        }
+        _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
+      }
+
+      // revert to relative
+      if (_was_relative && this.is('relative')) {
+        _path = _leadingParents + _path.substring(1);
+      }
+
+      _path = URI.recodePath(_path);
     }
 
-    // revert to relative
-    if (_was_relative && this.is('relative')) {
-      _path = _leadingParents + _path.substring(1);
-    }
-
-    _path = URI.recodePath(_path);
     this._parts.path = _path;
     this.build(!build);
     return this;
