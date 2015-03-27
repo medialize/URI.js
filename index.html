@@ -146,10 +146,10 @@ uri.toString() === "http://example.org/#!/hello.html"
 // required src/URI.fragmentURI.js to be loaded</pre>
 
     <p>How do you like parsing URNs?</p>
-    <pre class="prettyprint lang-js">var uri = URI("mailto:hello@example.org?subject=hello");
-uri.protocol() == "mailto";
-uri.path() == "hello@example.org";
-uri.query() == "subject=hello";</pre>
+    <pre class="prettyprint lang-js">var uri = URI("urn:uuid:c5542ab6-3d96-403e-8e6b-b8bb52f48d9a?query=string");
+uri.protocol() == "urn";
+uri.path() == "uuid:c5542ab6-3d96-403e-8e6b-b8bb52f48d9a";
+uri.query() == "query=string";</pre>
     
     <p>How do you like URI Templating?</p>
     <pre class="prettyprint lang-js">URI.expand("/foo/{dir}/{file}", {
