@@ -386,38 +386,6 @@
       return string;
     }
   };
-  URI.recodePath = function(string) {
-    var segments = (string + '').split('/');
-    for (var i = 0, length = segments.length; i < length; i++) {
-      segments[i] = URI.encodePathSegment(URI.decode(segments[i]));
-    }
-
-    return segments.join('/');
-  };
-  URI.decodePath = function(string) {
-    var segments = (string + '').split('/');
-    for (var i = 0, length = segments.length; i < length; i++) {
-      segments[i] = URI.decodePathSegment(segments[i]);
-    }
-
-    return segments.join('/');
-  };
-  URI.recodeURNPath = function(string) {
-    var segments = (string + '').split(':');
-    for (var i = 0, length = segments.length; i < length; i++) {
-      segments[i] = URI.encodeURNPathSegment(URI.decode(segments[i]));
-    }
-
-    return segments.join(':');
-  };
-  URI.decodeURNPath = function(string) {
-    var segments = (string + '').split(':');
-    for (var i = 0, length = segments.length; i < length; i++) {
-      segments[i] = URI.decodeURNPathSegment(segments[i]);
-    }
-
-    return segments.join(':');
-  };
   // generate encode/decode path functions
   var _parts = {'encode':'encode', 'decode':'decode'};
   var _part;
@@ -439,11 +407,39 @@
 
   for (_part in _parts) {
     URI[_part + 'PathSegment'] = generateAccessor('pathname', _parts[_part]);
-  }
-
-  for (_part in _parts) {
     URI[_part + 'URNPathSegment'] = generateAccessor('urnpath', _parts[_part]);
   }
+
+  var generateSegmentedPathFunction = function(_sep, _codingFuncName, _innerCodingFuncName) {
+    return function(string) {
+      // Why pass in names of functions, rather than the function objects themselves? The
+      // definitions of some functions (but in particular, URI.decode) will occasionally change due
+      // to URI.js having ISO8859 and Unicode modes. Passing in the name and getting it will ensure
+      // that the functions we use here are "fresh".
+      var actualCodingFunc;
+      if (!_innerCodingFuncName) {
+        actualCodingFunc = URI[_codingFuncName];
+      } else {
+        actualCodingFunc = function(string) {
+          return URI[_codingFuncName](URI[_innerCodingFuncName](string));
+        };
+      }
+
+      var segments = (string + '').split(_sep);
+
+      for (var i = 0, length = segments.length; i < length; i++) {
+        segments[i] = actualCodingFunc(segments[i]);
+      }
+
+      return segments.join(_sep);
+    };
+  };
+
+  // This takes place outside the above loop because we don't want, e.g., encodeURNPath functions.
+  URI.decodePath = generateSegmentedPathFunction('/', 'decodePathSegment');
+  URI.decodeURNPath = generateSegmentedPathFunction(':', 'decodeURNPathSegment');
+  URI.recodePath = generateSegmentedPathFunction('/', 'encodePathSegment', 'decode');
+  URI.recodeURNPath = generateSegmentedPathFunction(':', 'encodeURNPathSegment', 'decode');
 
   URI.encodeReserved = generateAccessor('reserved', 'encode');
 
@@ -1732,66 +1728,68 @@
   };
   p.normalizePath = function(build) {
     var _path = this._parts.path;
-
-    if (this._parts.urn) {
-      if (!_path) {
-        return this;
-      }
-      _path = URI.recodeURNPath(this._parts.path);
-    } else {
-      if (!_path || _path === '/') {
-        return this;
-      }
-      var _was_relative;
-      var _leadingParents = '';
-      var _parent, _pos;
-
-      // handle relative paths
-      if (_path.charAt(0) !== '/') {
-        _was_relative = true;
-        _path = '/' + _path;
-      }
-
-      // resolve simples
-      _path = _path
-        .replace(/(\/(\.\/)+)|(\/\.$)/g, '/')
-        .replace(/\/{2,}/g, '/');
-
-      // remember leading parents
-      if (_was_relative) {
-        _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
-        if (_leadingParents) {
-          _leadingParents = _leadingParents[0];
-        }
-      }
-
-      // resolve parents
-      while (true) {
-        _parent = _path.indexOf('/..');
-        if (_parent === -1) {
-          // no more ../ to resolve
-          break;
-        } else if (_parent === 0) {
-          // top level cannot be relative, skip it
-          _path = _path.substring(3);
-          continue;
-        }
-
-        _pos = _path.substring(0, _parent).lastIndexOf('/');
-        if (_pos === -1) {
-          _pos = _parent;
-        }
-        _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
-      }
-
-      // revert to relative
-      if (_was_relative && this.is('relative')) {
-        _path = _leadingParents + _path.substring(1);
-      }
-
-      _path = URI.recodePath(_path);
+    if (!_path) {
+      return this;
     }
 
+    if (this._parts.urn) {
+      this._parts.path = URI.recodeURNPath(this._parts.path);
+      this.build(!build);
+      return this;
+    }
+
+    if (this._parts.path === '/') {
+      return this;
+    }
+
+    var _was_relative;
+    var _leadingParents = '';
+    var _parent, _pos;
+
+    // handle relative paths
+    if (_path.charAt(0) !== '/') {
+      _was_relative = true;
+      _path = '/' + _path;
+    }
+
+    // resolve simples
+    _path = _path
+      .replace(/(\/(\.\/)+)|(\/\.$)/g, '/')
+      .replace(/\/{2,}/g, '/');
+
+    // remember leading parents
+    if (_was_relative) {
+      _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
+      if (_leadingParents) {
+        _leadingParents = _leadingParents[0];
+      }
+    }
+
+    // resolve parents
+    while (true) {
+      _parent = _path.indexOf('/..');
+      if (_parent === -1) {
+        // no more ../ to resolve
+        break;
+      } else if (_parent === 0) {
+        // top level cannot be relative, skip it
+        _path = _path.substring(3);
+        continue;
+      }
+
+      _pos = _path.substring(0, _parent).lastIndexOf('/');
+      if (_pos === -1) {
+        _pos = _parent;
+      }
+      _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
+    }
+
+    // revert to relative
+    if (_was_relative && this.is('relative')) {
+      _path = _leadingParents + _path.substring(1);
+    }
+
+    _path = URI.recodePath(_path);
     this._parts.path = _path;
     this.build(!build);
     return this;
