@@ -1828,9 +1828,12 @@
 
     URI.encode = escape;
     URI.decode = decodeURIComponent;
-    this.normalize();
-    URI.encode = e;
-    URI.decode = d;
+    try {
+      this.normalize();
+    } finally {
+      URI.encode = e;
+      URI.decode = d;
+    }
     return this;
   };
 
@@ -1841,9 +1844,12 @@
 
     URI.encode = strictEncodeURIComponent;
     URI.decode = unescape;
-    this.normalize();
-    URI.encode = e;
-    URI.decode = d;
+    try {
+      this.normalize();
+    } finally {
+      URI.encode = e;
+      URI.decode = d;
+    }
     return this;
   };
 
