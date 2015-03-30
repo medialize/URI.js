@@ -1587,7 +1587,7 @@
 
     equal(URI.decodeQuery('%%20'), '%%20', 'malformed URI component returned');
     equal(URI.decodePathSegment('%%20'), '%%20', 'malformed URI component returned');
-    equal(URI.decodeURNPathSegment('%%20'), '%%20', 'malformed URN component returned');
+    equal(URI.decodeUrnPathSegment('%%20'), '%%20', 'malformed URN component returned');
   });
   test('encodeQuery', function() {
     var escapeQuerySpace = URI.escapeQuerySpace;

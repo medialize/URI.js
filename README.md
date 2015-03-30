@@ -158,6 +158,9 @@ Documents specifying how URLs work:
 * [RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax](http://tools.ietf.org/html/rfc3986)
 * [RFC 3987 - Internationalized Resource Identifiers (IRI)](http://tools.ietf.org/html/rfc3987)
 * [RFC 2732 - Format for Literal IPv6 Addresses in URL's](http://tools.ietf.org/html/rfc2732)
+* [RFC 2368 - The `mailto:` URL Scheme](https://www.ietf.org/rfc/rfc2368.txt)
+* [RFC 2141 - URN Syntax](https://www.ietf.org/rfc/rfc2141.txt)
+* [IANA URN Namespace Registry](http://www.iana.org/assignments/urn-namespaces/urn-namespaces.xhtml)
 * [Punycode: A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)](http://tools.ietf.org/html/rfc3492)
 * [application/x-www-form-urlencoded](http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type) (Query String Parameters) and [application/x-www-form-urlencoded encoding algorithm](http://www.whatwg.org/specs/web-apps/current-work/multipage/association-of-controls-and-forms.html#application/x-www-form-urlencoded-encoding-algorithm)
 * [What every web developer must know about URL encoding](http://blog.lunatech.com/2009/02/03/what-every-web-developer-must-know-about-url-encoding)
@@ -243,6 +246,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### master (will become 1.15.0)
 
+* URNs are now normalized based on the syntax given by [RFC 2141](https://www.ietf.org/rfc/rfc2141.txt)
 * fixing `URI(undefined)` to throw TypeError - ([Issue #189](https://github.com/medialize/URI.js/issues/189)) - tiny backward-compatibility-break
 
 ### 1.14.2 (February 25th 2015) ###

@@ -407,7 +407,7 @@
 
   for (_part in _parts) {
     URI[_part + 'PathSegment'] = generateAccessor('pathname', _parts[_part]);
-    URI[_part + 'URNPathSegment'] = generateAccessor('urnpath', _parts[_part]);
+    URI[_part + 'UrnPathSegment'] = generateAccessor('urnpath', _parts[_part]);
   }
 
   var generateSegmentedPathFunction = function(_sep, _codingFuncName, _innerCodingFuncName) {
@@ -435,11 +435,11 @@
     };
   };
 
-  // This takes place outside the above loop because we don't want, e.g., encodeURNPath functions.
+  // This takes place outside the above loop because we don't want, e.g., encodeUrnPath functions.
   URI.decodePath = generateSegmentedPathFunction('/', 'decodePathSegment');
-  URI.decodeURNPath = generateSegmentedPathFunction(':', 'decodeURNPathSegment');
+  URI.decodeUrnPath = generateSegmentedPathFunction(':', 'decodeUrnPathSegment');
   URI.recodePath = generateSegmentedPathFunction('/', 'encodePathSegment', 'decode');
-  URI.recodeURNPath = generateSegmentedPathFunction(':', 'encodeURNPathSegment', 'decode');
+  URI.recodeUrnPath = generateSegmentedPathFunction(':', 'encodeUrnPathSegment', 'decode');
 
   URI.encodeReserved = generateAccessor('reserved', 'encode');
 
@@ -998,10 +998,10 @@
   p.pathname = function(v, build) {
     if (v === undefined || v === true) {
       var res = this._parts.path || (this._parts.hostname ? '/' : '');
-      return v ? (this._parts.urn ? URI.decodeURNPath : URI.decodePath)(res) : res;
+      return v ? (this._parts.urn ? URI.decodeUrnPath : URI.decodePath)(res) : res;
     } else {
       if (this._parts.urn) {
-        this._parts.path = v ? URI.recodeURNPath(v) : '';
+        this._parts.path = v ? URI.recodeUrnPath(v) : '';
       } else {
         this._parts.path = v ? URI.recodePath(v) : '/';
       }
@@ -1733,7 +1733,7 @@
     }
 
     if (this._parts.urn) {
-      this._parts.path = URI.recodeURNPath(this._parts.path);
+      this._parts.path = URI.recodeUrnPath(this._parts.path);
       this.build(!build);
       return this;
     }
