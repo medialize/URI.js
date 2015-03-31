@@ -236,6 +236,20 @@
     equal(u.pathname(), '/', 'empty absolute path');
     equal(u.toString(), '/', 'empty absolute path to string');
   });
+  test('URN paths', function() {
+    var u = new URI('urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66?foo=bar');
+    u.pathname('uuid:de305d54-75b4-431b-adb2-eb6b9e546013');
+    equal(u.pathname(), 'uuid:de305d54-75b4-431b-adb2-eb6b9e546013');
+    equal(u + '', 'urn:uuid:de305d54-75b4-431b-adb2-eb6b9e546013?foo=bar');
+
+    u.pathname('');
+    equal(u.pathname(), '', 'changing pathname ""');
+    equal(u+'', 'urn:?foo=bar', 'changing url ""');
+
+    u.pathname('music:classical:Béla Bártok%3a Concerto for Orchestra');
+    equal(u.pathname(), 'music:classical:B%C3%A9la%20B%C3%A1rtok%3A%20Concerto%20for%20Orchestra', 'path encoding');
+    equal(u.pathname(true), 'music:classical:Béla Bártok%3A Concerto for Orchestra', 'path decoded');
+  });
   test('query', function() {
     var u = new URI('http://example.org/foo.html');
     u.query('foo=bar=foo');
@@ -1050,6 +1064,20 @@
     u = URI('/../../../../../www/common/js/app/../../../../www_test/common/js/app/views/view-test.html');
     u.normalize();
     equal(u.path(), '/www_test/common/js/app/views/view-test.html', 'parent absolute');
+
+    // URNs
+    u = URI('urn:people:authors:poets:Shel Silverstein');
+    u.normalize();
+    equal(u.path(), 'people:authors:poets:Shel%20Silverstein');
+
+    u = URI('urn:people:authors:philosophers:Søren Kierkegaard');
+    u.normalize();
+    equal(u.path(), 'people:authors:philosophers:S%C3%B8ren%20Kierkegaard');
+
+    // URNs path separator preserved
+    u = URI('urn:games:cards:Magic%3A the Gathering');
+    u.normalize();
+    equal(u.path(), 'games:cards:Magic%3A%20the%20Gathering');
   });
   test('normalizeQuery', function() {
     var u = new URI('http://example.org/foobar.html?');
@@ -1559,6 +1587,7 @@
 
     equal(URI.decodeQuery('%%20'), '%%20', 'malformed URI component returned');
     equal(URI.decodePathSegment('%%20'), '%%20', 'malformed URI component returned');
+    equal(URI.decodeUrnPathSegment('%%20'), '%%20', 'malformed URN component returned');
   });
   test('encodeQuery', function() {
     var escapeQuerySpace = URI.escapeQuerySpace;

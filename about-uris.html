@@ -50,9 +50,39 @@
     </p>
     
     <p>
-        URLs are used to address the individual resources of your website. 
-        URNs are usually used for hooking into other applications, as <code>mailto:</code>, <code>magnet:</code> or <code>spotify:</code> suggest. 
-        While RFC 3986 defines the structure of an URL in depth, URNs are not. The structure (and meaning) of URNs are up to their distinct specifications.
+        URNs <em>name</em> a resource.
+        They are (supposed to) designate a globally unique, permanent identifier for that resource.
+        For example, the URN <code>urn:isbn:0201896834</code> uniquely identifies Volume 1 of Donald Knuth's <em>The Art of Computer Porgramming</em>.
+        Even if that book goes out of print, that URN will continue to identify that particular book in that particular printing.
+        While the term &quot;URN&quot; <em>technically</em> refers to a specific URI scheme laid out by <a href="http://tools.ietf.org/html/rfc2141">RFC 2141</a>,
+        the previously-mentioned RFC 3986 indicates that in common usage &quot;URN&quot; refers to any kind of URI that identifies a resource.
+    </p>
+
+    <p>
+        URLs <em>locate</em> a resource.
+        They designate a protocol to use when looking up the resource and provide an &quot;address&quot; for finding the resource within that scheme.
+        For example, the URL <code><a href="http://tools.ietf.org/html/rfc3986">http://tools.ietf.org/html/rfc3986</a></code> tells the consumer (most likely a web browser)
+        to use the HTTP protocol to access whatever site is found at the <code>/html/rfc3986</code> path of <code>tools.ietf.org</code>.
+        URLs are not permanent; it is possible that in the future that the IETF will move to a different domain or even that some other organization will acquire the rights to <code>tools.ietf.org</code>.
+        It is also possible that multiple URLs may locate the same resource;
+        for example, an admin at the IETF might be able to access the document found at the example URL via the <code>ftp://</code> protocol.
+    </p>
+
+    <h2>URLs and URNs in URI.js</h2>
+
+    <p>
+        The distinction between URLs and URNs is one of <strong>semantics</strong>.
+        In principle, it is impossible to tell, on a purely syntactical level, whether a given URI is a URN or a URL without knowing more about its scheme.
+        Practically speaking, however, URIs that look like HTTP URLs (scheme is followed by a colon and two slashes, URI has an authority component, and paths are delimited by slashes) tend to be URLs,
+        and URIs that look like RFC 2141 URNs (scheme is followed by a colon, no authority component, and paths are delimited by colons) tend to be URNs (in the broad sense of &quot;URIs that name&quot;).
+    </p>
+
+    <p>
+        So, for the purposes of URI.js, the distinction between URLs and URNs is treated as one of <strong>syntax</strong>.
+        The main functional differences between the two are that (1) URNs will not have an authority element and
+        (2) when breaking the path of the URI into segments, the colon will be used as the delimiter rather than the slash.
+        The most surprising result of this is that <code>mailto:</code> URLs will be considered by URI.js to be URNs rather than URLs.
+        That said, the functional differences will not adversely impact the handling of those URLs.
     </p>
     
     <h2 id="components">Components of an URI</h2>
@@ -108,7 +138,7 @@ URL:      foo://example.com:8042/over/there?name=ferret#nose
 </span>  <a href="docs.html#accessors-protocol">scheme</a>       <a href="docs.html#accessors-pathname">path</a> &amp; <a href="docs.html#accessors-segment">segment</a>         <a href="docs.html#accessors-search">query</a>   <a href="docs.html#accessors-hash">fragment</a>
     </pre>
     
-    <p>While <a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a> does not define URNs having a query or fragment component, URI.js enables these accessors for convenience.</p>
+    <p>While <a href="http://tools.ietf.org/html/rfc2141">RFC 2141</a> does not define URNs having a query or fragment component, URI.js enables these accessors for convenience.</p>
     
     <h2 id="problems">URLs - Man Made Problems</h2>
     
