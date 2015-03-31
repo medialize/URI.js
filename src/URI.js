@@ -733,6 +733,12 @@
       for (i = 0, length = name.length; i < length; i++) {
         data[name[i]] = undefined;
       }
+    } else if (getType(name) === 'RegExp') {
+      for (key in data) {
+        if (name.test(key)) {
+          data[key] = undefined;
+        }
+      }
     } else if (typeof name === 'object') {
       for (key in name) {
         if (hasOwn.call(name, key)) {
@@ -750,7 +756,7 @@
         data[name] = undefined;
       }
     } else {
-      throw new TypeError('URI.removeQuery() accepts an object, string as the first parameter');
+      throw new TypeError('URI.removeQuery() accepts an object, string, RegExp as the first parameter');
     }
   };
   URI.hasQuery = function(data, name, value, withinArray) {
