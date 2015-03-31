@@ -244,16 +244,17 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-### master (will become 1.15.0)
+### 1.15.0 (April 1st 2015 - no joke, promise!) ###
 
-* fixed [`.pathname()`](http://medialize.github.io/URI.js/docs.html#accessors-pathname) to properly en/decode URN paths - ([Issue #201](https://github.com/medialize/URI.js/pull/201), [mlefoster](https://github.com/mlefoster))
+* fixing `URI(undefined)` to throw TypeError - ([Issue #189](https://github.com/medialize/URI.js/issues/189), [Issue #196](https://github.com/medialize/URI.js/issues/196), [eakron](https://github.com/eakron)) - *tiny backward-compatibility-break*
+* fixing [`.absoluteTo()`](http://medialize.github.io/URI.js/docs.html#absoluteto) - ([Issue #200](https://github.com/medialize/URI.js/issues/200), [giltayar](https://github.com/giltayar))
+* fixing [`.pathname()`](http://medialize.github.io/URI.js/docs.html#accessors-pathname) to properly en/decode URN paths - ([Issue #201](https://github.com/medialize/URI.js/pull/201), [mlefoster](https://github.com/mlefoster))
 * fixing URI normalization to properly handle URN paths based on [RFC 2141](https://www.ietf.org/rfc/rfc2141.txt) syntax - ([Issue #201](https://github.com/medialize/URI.js/pull/201), [mlefoster](https://github.com/mlefoster))
-  * fixed [`.normalize()`](http://medialize.github.io/URI.js/docs.html#normalize) and [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly normalize URN paths
-  * added `URI.encodeUrnPathSegment()`
-  * added `URI.decodeUrnPathSegment()`
-  * added `URI.decodeUrnPath()`
-  * added `URI.recodeUrnPath()`
-* fixing `URI(undefined)` to throw TypeError - ([Issue #189](https://github.com/medialize/URI.js/issues/189)) - tiny backward-compatibility-break
+  * fixing [`.normalize()`](http://medialize.github.io/URI.js/docs.html#normalize) and [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly normalize URN paths
+  * adding `URI.encodeUrnPathSegment()`
+  * adding `URI.decodeUrnPathSegment()`
+  * adding `URI.decodeUrnPath()`
+  * adding `URI.recodeUrnPath()`
 
 ### 1.14.2 (February 25th 2015) ###
 
