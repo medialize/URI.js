@@ -244,6 +244,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### master (will become 1.15.1) ###
+
+* fixing `URI()` to match behavior of `new URI()` (caused by [#196](https://github.com/medialize/URI.js/issues/196)) - [Issue #205](https://github.com/medialize/URI.js/issues/205)
+
 ### 1.15.0 (April 1st 2015 - no joke, promise!) ###
 
 * fixing `URI(undefined)` to throw TypeError - ([Issue #189](https://github.com/medialize/URI.js/issues/189), [Issue #196](https://github.com/medialize/URI.js/issues/196), [eakron](https://github.com/eakron)) - *tiny backward-compatibility-break*
