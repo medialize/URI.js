@@ -830,6 +830,10 @@
     u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
     u.removeQuery({foo: 'bar', obj: undefined, bar: ['1', '2']});
     equal(u.query(), 'foo=baz&foo=bam&bar=3', 'removing object');
+
+    u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
+    u.removeQuery(/^bar/);
+    equal(u.query(), 'foo=bar&foo=baz&foo=bam&obj=bam', 'removing by RegExp');
   });
   test('duplicateQueryParameters', function() {
     var u = new URI('?bar=1&bar=1&bar=1');
