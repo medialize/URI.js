@@ -99,7 +99,9 @@
     var lookup = {};
     var i, length;
 
-    if (isArray(value)) {
+    if (getType(value) === 'RegExp') {
+      lookup = null;
+    } else if (isArray(value)) {
       for (i = 0, length = value.length; i < length; i++) {
         lookup[value[i]] = true;
       }
@@ -108,7 +110,11 @@
     }
 
     for (i = 0, length = data.length; i < length; i++) {
-      if (lookup[data[i]] !== undefined) {
+      /*jshint laxbreak: true */
+      var _match = lookup && lookup[data[i]] !== undefined
+        || !lookup && value.test(data[i]);
+      /*jshint laxbreak: false */
+      if (_match) {
         data.splice(i, 1);
         length--;
         i--;
@@ -758,7 +764,13 @@
       }
     } else if (typeof name === 'string') {
       if (value !== undefined) {
-        if (data[name] === value) {
+        if (getType(value) === 'RegExp') {
+          if (!isArray(data[name]) && value.test(data[name])) {
+            data[name] = undefined;
+          } else {
+            data[name] = filterArrayValues(data[name], value);
+          }
+        } else if (data[name] === value) {
           data[name] = undefined;
         } else if (isArray(data[name])) {
           data[name] = filterArrayValues(data[name], value);

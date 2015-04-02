@@ -834,6 +834,10 @@
     u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
     u.removeQuery(/^bar/);
     equal(u.query(), 'foo=bar&foo=baz&foo=bam&obj=bam', 'removing by RegExp');
+
+    u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=bar&bar=baz&bar=bam');
+    u.removeQuery('foo', /[rz]$/);
+    equal(u.query(), 'foo=bam&obj=bam&bar=bar&bar=baz&bar=bam', 'removing by value RegExp');
   });
   test('duplicateQueryParameters', function() {
     var u = new URI('?bar=1&bar=1&bar=1');

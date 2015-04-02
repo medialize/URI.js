@@ -701,10 +701,15 @@ uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true&amp;a=1&amp;a=
 uri.removeSearch({hello: "world", foo: undefined, a: ["1", "3"]});
 // uri == "?hello=mars&amp;mine=true&amp;a=2"
 
-// remove multiple values with regexp
+// remove multiple values with RegExp
 uri.search("?hello=world&amp;hello=mars&amp;foo=bar&amp;mine=true&amp;a=1&amp;a=2&amp;a=3");
 uri.removeSearch(/^hello/);
-// uri == "?foo=bar&amp;mine=true&amp;a=1&amp;a=2&amp;a=3"</pre>
+// uri == "?foo=bar&amp;mine=true&amp;a=1&amp;a=2&amp;a=3"
+
+// filter values with RegExp
+uri.search("?foo=bar&amp;foo=baz&amp;foo=bam&amp;obj=bam&amp;bar=bar&amp;bar=baz&amp;bar=bam");
+uri.removeSearch('foo', /[rz]$/);
+// uri == "?foo=bam&amp;obj=bam&amp;bar=bar&amp;bar=baz&amp;bar=bam"</pre>
 
     <h3 id="search-has">hasSearch(), hasQuery()</h3>
     <p>.hasQuery() is an alias of .hasSearch(). The method checks the existence and value of a given parameter within the query string.</p>
