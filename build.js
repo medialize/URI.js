@@ -23,7 +23,7 @@ function build(files) {
     
     $.when.apply($, connections).done(function() {
         $progress.prop('value', 2).text('Compiling Scripts');
-        $.post('http://closure-compiler.appspot.com/compile', {
+        $.post('https://closure-compiler.appspot.com/compile', {
             js_code: sources.join("\n\n"),
             compilation_level: "SIMPLE_OPTIMIZATIONS",
             output_format: "text",
