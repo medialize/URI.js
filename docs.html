@@ -885,45 +885,50 @@ uri.readable() === "http://www.exämple.org/"
     <h2 id="relative-and-absolute">Relative and Absolute URLs</h2>
 
     <h3 id="relativeto">relativeTo()</h3>
-    <p>.relativeTo() compares two paths an makes one relative to the other</p>
+    <p>.relativeTo() compares two <em>paths</em> and makes one relative to the other</p>
     <pre class="prettyprint lang-js">var uri = new URI("/relative/path");
 // make path relative
 var relUri = uri.relativeTo("/relative/sub/foo/sub/file"); // returns a new URI instance
 // relUri == "../../../path"
 
-// also works for relative directories
-URI("../world.html").absoluteTo("foo/bar/baz.html");
-// -&gt; "foo/world.html"
-
 // absolute URLs are passed through unchanged
 URI("http://example.org/world.html")
-  .absoluteTo("http://google.com/baz");
+  .relativeTo("http://google.com/baz");
 // -&gt; "http://example.org/world.html"
 
 // absolute URLs relative to absolute URLs
-URI("http://example.org/world.html").clone().authority("")
-  .absoluteTo("http://google.com/baz");
-// -&gt; "http://google.com/world.html"
+// may resolve the protocol
+URI("http://example.org/world.html")
+  .clone()
+  .authority("")
+  .relativeTo("http://google.com/baz");
+// -&gt; "//google.com/world.html"
 
 // equal URLs are relative by empty string
 URI("http://www.example.com:8080/dir/file")
-  .relativeTo('http://www.example.com:8080/dir/file')
-  .toString();
+  .relativeTo('http://www.example.com:8080/dir/file');
 // -&gt; ""
 
 // relative on fragment and query string as well
 URI("http://www.example.com:8080/dir/file?foo=bar#abcd")
-  .relativeTo('http://www.example.com:8080/dir/file')
-  .toString();
+  .relativeTo('http://www.example.com:8080/dir/file');
 // -&gt; "?foo=bar#abcd"</pre>
     <p>.relativeTo() and .absoluteTo() reverse each other.</p>
 
     <h3 id="absoluteto">absoluteTo()</h3>
-    <p>.absoluteTo() makes a relative path absolute based on another path</p>
+    <p>.absoluteTo() makes a <em>relative path</em> absolute based on another path</p>
     <pre class="prettyprint lang-js">var uri = new URI("../../../path");
 // make path absolute
 var relUri = uri.absoluteTo("/relative/sub/foo/sub/file"); // returns a new URI instance
-// relUri == "/relative/path"</pre>
+// relUri == "/relative/path"
+
+// resolves protocols
+var u = new URI('//example.com/path');
+u.absoluteTo('https://example.com');
+// -&gt; "https://example.com/path"
+var u = new URI('//example.com/path');
+u.absoluteTo('https://');
+// -&gt; "https://example.com/path"</pre>
     <p>.relativeTo() and .absoluteTo() reverse each other.</p>
     
 
