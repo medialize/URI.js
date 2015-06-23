@@ -606,7 +606,7 @@
       value = v.length ? URI.decodeQuery(v.join('='), escapeQuerySpace) : null;
 
       if (hasOwn.call(items, name)) {
-        if (typeof items[name] === 'string') {
+        if (typeof items[name] === 'string' || items[name] === null) {
           items[name] = [items[name]];
         }
 

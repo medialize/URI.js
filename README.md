@@ -244,6 +244,10 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### master (will become 1.15.2) ###
+
+* fixing `URI.parseQuery()` to accept `?foo&foo=bar` - [Issue #220](https://github.com/medialize/URI.js/issues/220)
+
 ### 1.15.1 (April 5th 2015) ###
 
 * fixing `URI()` to match behavior of `new URI()` (caused by [#196](https://github.com/medialize/URI.js/issues/196)) - [Issue #205](https://github.com/medialize/URI.js/issues/205)
