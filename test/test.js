@@ -707,6 +707,12 @@
 
     equal(s.join('||'), 'some thing||directory||foo.html', 'segmentCoded get array');
 
+    u.segmentCoded(['hello/world']);
+    equal(u.path(), '/hello%2Fworld', 'escape in array');
+
+    u.segmentCoded('hello/world');
+    equal(u.path(), '/hello%2Fworld/hello%2Fworld', 'escape appended value');
+
     u.segmentCoded(['hello world', 'mars', 'foo.html']);
     equal(u.path(), '/hello%20world/mars/foo.html', 'segmentCoded set array');
 

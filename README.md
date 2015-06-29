@@ -246,7 +246,8 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ### master (will become 1.15.2) ###
 
-* fixing `URI.parseQuery()` to accept `?foo&foo=bar` - [Issue #220](https://github.com/medialize/URI.js/issues/220)
+* fixing [`URI.parseQuery()`](http://medialize.github.io/URI.js/docs.html#static-parseQuery) to accept `?foo&foo=bar` - [Issue #220](https://github.com/medialize/URI.js/issues/220)
+* fixing [`URI.segmentCoded()`](http://medialize.github.io/URI.js/docs.html#accessors-segmentCoded) to encode (instead of decode) array input - [Issue #223](https://github.com/medialize/URI.js/issues/223)
 
 ### 1.15.1 (April 5th 2015) ###
 

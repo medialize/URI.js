@@ -1624,7 +1624,7 @@
       v = (typeof v === 'string' || v instanceof String) ? URI.encode(v) : v;
     } else {
       for (i = 0, l = v.length; i < l; i++) {
-        v[i] = URI.decode(v[i]);
+        v[i] = URI.encode(v[i]);
       }
     }
 
