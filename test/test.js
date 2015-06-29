@@ -1096,15 +1096,24 @@
     u.path('/.//').normalizePath();
     equal(u.path(), '/', 'root /.//');
 
-    u.path('/.').normalizePath();
-    equal(u.path(), '/', 'root /.');
-
     // encoding
     u._parts.path = '/~userhome/@mine;is %2F and/';
     u.normalize();
     equal(u.pathname(), '/~userhome/@mine;is%20%2F%20and/', 'path encoding');
 
     // relative URL
+    u = URI('/.').normalizePath();
+    equal(u.path(), '/', 'root /.');
+
+    u = URI('/..').normalizePath();
+    equal(u.path(), '/', 'root /..');
+
+    u = URI('/foo/.').normalizePath();
+    equal(u.path(), '/foo/', 'root /foo/.');
+
+    u = URI('/foo/..').normalizePath();
+    equal(u.path(), '/', 'root /foo/..');
+
     u = URI('../../../../../www/common/js/app/../../../../www_test/common/js/app/views/view-test.html');
     u.normalize();
     equal(u.path(), '../../../../../www_test/common/js/app/views/view-test.html', 'parent relative');

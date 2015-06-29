@@ -1781,6 +1781,11 @@
       _path = '/' + _path;
     }
 
+    // handle relative files (as opposed to directories)
+    if (_path.slice(-3) === '/..' || _path.slice(-2) === '/.') {
+      _path += '/';
+    }
+
     // resolve simples
     _path = _path
       .replace(/(\/(\.\/)+)|(\/\.$)/g, '/')
@@ -2016,7 +2021,7 @@
     }
 
     // determine common sub path
-    common = URI.commonPath(relative.path(), base.path());
+    common = URI.commonPath(relativePath, basePath);
 
     // If the paths have nothing in common, return a relative URL with the absolute path.
     if (!common) {
