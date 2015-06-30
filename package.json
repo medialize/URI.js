@@ -56,9 +56,6 @@
   ],
   "jam": {
     "main": "src/URI.js",
-    "dependencies": {
-      "jquery": ">=1.7.0"
-    },
     "include": [
       "src/URI.js",
       "src/IPv6.js",
