@@ -12,8 +12,5 @@
     "test",
     "prettify"
   ],
-  "dependencies": {
-    "jquery": ">=1.7.0"
-  },
   "license": "MIT"
 }
