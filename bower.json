@@ -1,18 +1,7 @@
 {
   "name": "URIjs",
   "version": "1.15.1",
-  "main": [
-    "src/URI.js",
-    "src/IPv6.js",
-    "src/SecondLevelDomains.js",
-    "src/punycode.js",
-    "src/URITemplate.js",
-    "src/jquery.URI.js",
-    "src/URI.min.js",
-    "src/jquery.URI.min.js",
-    "src/URI.fragmentQuery.js",
-    "src/URI.fragmentURI.js"
-  ],
+  "main": "src/URI.js",
   "ignore": [
     ".*",
     "*.css",
