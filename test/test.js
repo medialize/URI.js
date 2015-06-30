@@ -1342,6 +1342,11 @@
         base: '/base/path/top.html',
         result: 'with/subdir/inner.html'
       }, {
+        name: 'same directory',
+        url: '/path/',
+        base: '/path/top.html',
+        result: './'
+      }, {
         name: 'absolute /',
         url: 'http://example.org/foo/bar/bat',
         base: 'http://example.org/',

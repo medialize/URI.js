@@ -247,8 +247,9 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 ### master (will become 1.15.2) ###
 
 * fixing [`URI.parseQuery()`](http://medialize.github.io/URI.js/docs.html#static-parseQuery) to accept `?foo&foo=bar` - [Issue #220](https://github.com/medialize/URI.js/issues/220)
-* fixing [`URI.segmentCoded()`](http://medialize.github.io/URI.js/docs.html#accessors-segmentCoded) to encode (instead of decode) array input - [Issue #223](https://github.com/medialize/URI.js/issues/223)
-* fixing [`URI.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly resolve `/foo/..` to `/` - [Issue #224](https://github.com/medialize/URI.js/issues/224)
+* fixing [`.segmentCoded()`](http://medialize.github.io/URI.js/docs.html#accessors-segmentCoded) to encode (instead of decode) array input - [Issue #223](https://github.com/medialize/URI.js/issues/223)
+* fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly resolve `/foo/..` to `/` - [Issue #224](https://github.com/medialize/URI.js/issues/224)
+* fixing [`.relativeTo()`](http://medialize.github.io/URI.js/docs.html#relativeto) to resolve `/foo/` and `/foo/bar` to `./` instead of empty string - [Issue #226](https://github.com/medialize/URI.js/issues/226)
 
 ### 1.15.1 (April 5th 2015) ###
 
