@@ -1,7 +1,7 @@
 {
   "name": "URIjs",
   "description": "URI.js is a Javascript library for working with URLs.",
-  "version": "1.15.1",
+  "version": "1.15.2",
   "repo": "medialize/URI.js",
   "scripts": [
     "src/URI.js",
