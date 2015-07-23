@@ -1752,6 +1752,54 @@ var urls = [{
         idn: false,
         punycode: false
       }
+    }, {
+      name: 'backslashes',
+      url: 'http://i.xss.com\\www.example.org/some/directory/file.html?query=string#fragment',
+      _url: 'http://i.xss.com/www.example.org/some/directory/file.html?query=string#fragment',
+      parts: {
+        protocol: 'http',
+        username: null,
+        password: null,
+        hostname: 'i.xss.com',
+        port: null,
+        path: '/www.example.org/some/directory/file.html',
+        query: 'query=string',
+        fragment: 'fragment'
+      },
+      accessors: {
+        protocol: 'http',
+        username: '',
+        password: '',
+        port: '',
+        path: '/www.example.org/some/directory/file.html',
+        query: 'query=string',
+        fragment: 'fragment',
+        resource: '/www.example.org/some/directory/file.html?query=string#fragment',
+        authority: 'i.xss.com',
+        userinfo: '',
+        subdomain: 'i',
+        domain: 'xss.com',
+        tld: 'com',
+        directory: '/www.example.org/some/directory',
+        filename: 'file.html',
+        suffix: 'html',
+        hash: '#fragment',
+        search: '?query=string',
+        host: 'i.xss.com',
+        hostname: 'i.xss.com'
+      },
+      is: {
+        urn: false,
+        url: true,
+        relative: false,
+        name: true,
+        sld: false,
+        ip: false,
+        ip4: false,
+        ip6: false,
+        idn: false,
+        punycode: false
+      }
     }
 ];
 
