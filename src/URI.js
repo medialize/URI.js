@@ -483,12 +483,6 @@
       string = string.substring(0, pos);
     }
 
-    // Copy chrome, IE, opera backslash-handling behavior.
-    // Back slashes before the query string get converted to forward slashes
-    // See: https://github.com/joyent/node/blob/master/lib/url.js
-    // See: https://code.google.com/p/chromium/issues/detail?id=25916
-    string = string.replace(/\\/g, '/');
-
     // extract protocol
     if (string.substring(0, 2) === '//') {
       // relative-scheme
@@ -522,6 +516,13 @@
     return parts;
   };
   URI.parseHost = function(string, parts) {
+    // Copy chrome, IE, opera backslash-handling behavior.
+    // Back slashes before the query string get converted to forward slashes
+    // See: https://github.com/joyent/node/blob/386fd24f49b0e9d1a8a076592a404168faeecc34/lib/url.js#L115-L124
+    // See: https://code.google.com/p/chromium/issues/detail?id=25916
+    // https://github.com/medialize/URI.js/pull/233
+    string = string.replace(/\\/g, '/');
+
     // extract host:port
     var pos = string.indexOf('/');
     var bracketPos;
@@ -1206,7 +1207,11 @@
 
     if (v !== undefined) {
       var x = {};
-      URI.parseHost(v, x);
+      var res = URI.parseHost(v, x);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+
       v = x.hostname;
     }
     return _hostname.call(this, v, build);
@@ -1221,7 +1226,11 @@
     if (v === undefined) {
       return this._parts.hostname ? URI.buildHost(this._parts) : '';
     } else {
-      URI.parseHost(v, this._parts);
+      var res = URI.parseHost(v, this._parts);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+
       this.build(!build);
       return this;
     }
@@ -1234,7 +1243,11 @@
     if (v === undefined) {
       return this._parts.hostname ? URI.buildAuthority(this._parts) : '';
     } else {
-      URI.parseAuthority(v, this._parts);
+      var res = URI.parseAuthority(v, this._parts);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+
       this.build(!build);
       return this;
     }
