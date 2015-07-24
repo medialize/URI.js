@@ -332,6 +332,7 @@ uri.host(); // returns string "example.org:80"
 // set host
 uri.host("example.org:80"); // returns the URI instance for chaining</pre>
     <p class="note"><a href="#accessors-hostname">.hostname()</a> returns the actual hostname, whereas <a href="#accessors-host">.host()</a> returns the hostname including the port</p>
+    <p class="note">Throws a <code>TypeError</code> if <code>path</code> is part of the input</p>
 
     <h3 id="accessors-userinfo">userinfo()</h3>
     <p>Userinfo is comprised of username and password</p>
@@ -349,7 +350,8 @@ uri.authority(); // returns string "user:pass@example.org:88"
 // set authority
 uri.authority("user:pass@example.org:80"); // returns the URI instance for chaining</pre>
     <p class="note">.authority() will reset any of username, password and port if they're not specified.</p>
-    
+    <p class="note">Throws a <code>TypeError</code> if <code>path</code> is part of the input</p>
+
     <h3 id="accessors-domain">domain()</h3>
     <p>.domain() is a convenience method that returns <code>example.org</code> from the hostname <code>www.example.org</code>.</p>
     <pre class="prettyprint lang-js">var uri = new URI("http://example.org/foo/hello.html");

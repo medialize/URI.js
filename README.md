@@ -244,6 +244,11 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
+### 1.16.0 (July 24th 2015) ###
+
+* **SECURITY** fixing [`URI.parseHost()`](http://medialize.github.io/URI.js/docs.html#static-parseHost) to rewrite `\` to `/` as Node and Browsers do - [Issue #233](https://github.com/medialize/URI.js/pull/233)
+* fixing [`.host()`](http://medialize.github.io/URI.js/docs.html#accessors-host) and [`.authority()`](http://medialize.github.io/URI.js/docs.html#accessors-authority) to raise an error if they contain a path segment (extending [Issue #233](https://github.com/medialize/URI.js/pull/233))
+
 ### 1.15.2 (July 2nd 2015) ###
 
 * fixing [`URI.parseQuery()`](http://medialize.github.io/URI.js/docs.html#static-parseQuery) to accept `?foo&foo=bar` - [Issue #220](https://github.com/medialize/URI.js/issues/220)

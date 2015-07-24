@@ -221,6 +221,10 @@
     u.hostname('');
     equal(u.hostname(), '', 'hostname removed');
     equal(u+'', 'http:///foo.html', 'hostname removed url');
+
+    raises(function() {
+      u.hostname('foo\\bar.com');
+    }, TypeError, 'Failing backslash detection in hostname');
   });
   test('port', function() {
     var u = new URI('http://example.org/foo.html');
@@ -362,6 +366,10 @@
     equal(u.hostname(), 'some-domain.com', 'host modified hostname');
     equal(u.port(), '', 'host removed port');
     equal(u+'', 'http://some-domain.com/foo.html', 'host modified url');
+
+    raises(function() {
+      u.host('foo\\bar.com');
+    }, TypeError, 'Failing backslash detection in host');
   });
   test('authority', function() {
     var u = new URI('http://foo.bar/foo.html');
@@ -379,6 +387,10 @@
     equal(u.hostname(), 'some-domain.com', 'authority modified hostname');
     equal(u.port(), '', 'authority removed port');
     equal(u+'', 'http://some-domain.com/foo.html', 'authority modified url');
+
+    raises(function() {
+      u.authority('username:password@foo\\bar.com:80');
+    }, TypeError, 'Failing backslash detection in authority');
   });
   test('userinfo', function() {
     var u = new URI('http://foo.bar/foo.html');
