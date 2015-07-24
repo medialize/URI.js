@@ -483,6 +483,12 @@
       string = string.substring(0, pos);
     }
 
+    // Copy chrome, IE, opera backslash-handling behavior.
+    // Back slashes before the query string get converted to forward slashes
+    // See: https://github.com/joyent/node/blob/master/lib/url.js
+    // See: https://code.google.com/p/chromium/issues/detail?id=25916
+    string = string.replace(/\\/g, '/');
+
     // extract protocol
     if (string.substring(0, 2) === '//') {
       // relative-scheme
