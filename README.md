@@ -199,14 +199,14 @@ If you don't like URI.js, you may like one of the following libraries. (If yours
 * [furl (Python)](https://github.com/gruns/furl)
 * [mediawiki Uri](https://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/resources/mediawiki/mediawiki.Uri.js?view=markup) (needs mw and jQuery)
 * [jurlp](https://github.com/tombonner/jurlp)
-* [jsUri](http://code.google.com/p/jsuri/)
+* [jsUri](https://github.com/derek-watson/jsUri)
 
 #### URL Parsers ####
 
 * [The simple <a> URL Mutation "Hack"](http://jsfiddle.net/rodneyrehm/KkGUJ/) ([jsPerf comparison](http://jsperf.com/idl-attributes-vs-uri-js))
 * [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
 * [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
-* [Google Closure Uri](http://closure-library.googlecode.com/svn/docs/closure_goog_uri_uri.js.html)
+* [Google Closure Uri](https://google.github.io/closure-library/api/class_goog_Uri.html)
 * [URI.js by Gary Court](https://github.com/garycourt/uri-js)
 
 #### URI Template ####
