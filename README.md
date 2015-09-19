@@ -79,20 +79,14 @@ See the [About Page](http://medialize.github.io/URI.js/) and [API Docs](http://m
 
 URI.js (without plugins) has a gzipped weight of about 7KB - if you include all extensions you end up at about 13KB. So unless you *need* second level domain support and use URI templates, we suggest you don't include them in your build. If you don't need a full featured URI mangler, it may be worth looking into the much smaller parser-only alternatives [listed below](#alternatives).
 
-URI.js is available through [npm](http://npmjs.org/), [bower](http://bower.io/), [Jam](http://jamjs.org/), [spm](http://spmjs.io/) and manually from the [build page](http://medialize.github.io/URI.js/build.html):
+URI.js is available through [npm](http://npmjs.org/), [bower](http://bower.io/) and manually from the [build page](http://medialize.github.io/URI.js/build.html):
 
 ```bash
 # using bower
 bower install uri.js
 
-# using Jam
-jam install URIjs
-
 # using npm
 npm install URIjs
-
-# using spm
-spm install urijs
 ```
 
 ### Browser ###
@@ -243,6 +237,12 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 
 ## Changelog ##
+
+### master (will be 1.16.1) ###
+
+Package Management Cleanup - no changes to source code!
+
+* removing [jam](http://jamjs.org/), [spm](http://spmjs.org/), `component.json` and `URI.jquery.json` as nobody cared that URI.js was stuck on 1.14 for a year
 
 ### 1.16.0 (July 24th 2015) ###
 

@@ -54,22 +54,6 @@
     "src/URI.fragmentURI.js",
     "LICENSE.txt"
   ],
-  "jam": {
-    "main": "src/URI.js",
-    "include": [
-      "src/URI.js",
-      "src/IPv6.js",
-      "src/SecondLevelDomains.js",
-      "src/punycode.js",
-      "src/URITemplate.js",
-      "src/jquery.URI.js",
-      "src/URI.min.js",
-      "src/jquery.URI.min.js",
-      "src/URI.fragmentQuery.js",
-      "src/URI.fragmentURI.js",
-      "LICENSE.txt"
-    ]
-  },
   "npmName": "URIjs",
   "npmFileMap": [
     {
@@ -89,8 +73,5 @@
     "jshint-stylish": "~0.1.5",
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.8.0"
-  },
-  "spm": {
-    "main": "src/URI.js"
   }
 }
