@@ -1,6 +1,6 @@
 {
-  "name": "URIjs",
-  "version": "1.16.0",
+  "name": "urijs",
+  "version": "1.16.1",
   "main": "src/URI.js",
   "ignore": [
     ".*",

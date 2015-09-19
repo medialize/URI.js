@@ -192,7 +192,7 @@ var uri = new URI(new URI("http://example.org"));
 // URI parts object
 var uri = new URI({
   protocol: "http",
-  host: "example.org"
+  hostname: "example.org"
 });
 
 // without new keyword
@@ -1140,7 +1140,7 @@ encodeURIComponent("hä lo#w*rl:d!") === "h%C3%A4%20lo%23w*rl%3Ad!";
     
     <h3 id="static-decode">URI.decode()</h3>
     <p>Decode an URI component</p>
-    <pre class="prettyprint lang-js">URI.encode("h%C3%A4%20lo%23w%2Arl%3Ad%21") === "hä lo#w*rl:d!";
+    <pre class="prettyprint lang-js">URI.decode("h%C3%A4%20lo%23w%2Arl%3Ad%21") === "hä lo#w*rl:d!";
 // note:
 URI.decode === decodeURIComponent;</pre>
     

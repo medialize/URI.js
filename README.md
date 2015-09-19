@@ -8,6 +8,10 @@
 
 ---
 
+> **NOTE:** The npm package name changed to `urijs`
+
+---
+
 I always want to shoot myself in the head when looking at code like the following:
 
 ```javascript
@@ -17,9 +21,7 @@ var separator = url.indexOf('?') > -1 ? '&' : '?';
 url += separator + encodeURIComponent("foo") + "=" + encodeURIComponent("bar");
 ```
 
-I still can't believe javascript - the f**ing backbone-language of the web - doesn't offer an API for mutating URLs. Browsers (Firefox) don't expose the `Location` object (the structure behind window.location). Yes, one could think of [decomposed IDL attributes](http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#url-decomposition-idl-attributes) as a native URL management library. But it relies on the DOM element &lt;a&gt;, it's slow and doesn't offer any convenience at all.
-
-How about a nice, clean and simple API for mutating URIs:
+Things are looking up with [URL](https://developer.mozilla.org/en/docs/Web/API/URL) and the [URL spec](http://url.spec.whatwg.org/) but until we can safely rely on that API, have a look at URI.js for a clean and simple API for mutating URIs:
 
 ```javascript
 var url = new URI("http://example.org/foo?bar=baz");
@@ -79,20 +81,14 @@ See the [About Page](http://medialize.github.io/URI.js/) and [API Docs](http://m
 
 URI.js (without plugins) has a gzipped weight of about 7KB - if you include all extensions you end up at about 13KB. So unless you *need* second level domain support and use URI templates, we suggest you don't include them in your build. If you don't need a full featured URI mangler, it may be worth looking into the much smaller parser-only alternatives [listed below](#alternatives).
 
-URI.js is available through [npm](http://npmjs.org/), [bower](http://bower.io/), [Jam](http://jamjs.org/), [spm](http://spmjs.io/) and manually from the [build page](http://medialize.github.io/URI.js/build.html):
+URI.js is available through [npm](https://www.npmjs.com/package/urijs), [bower](http://bower.io/search/?q=urijs), [cdnjs](https://cdnjs.com/libraries/URI.js) and manually from the [build page](http://medialize.github.io/URI.js/build.html):
 
 ```bash
 # using bower
 bower install uri.js
 
-# using Jam
-jam install URIjs
-
 # using npm
-npm install URIjs
-
-# using spm
-spm install urijs
+npm install urijs
 ```
 
 ### Browser ###
@@ -101,13 +97,13 @@ I guess you'll manage to use the [build tool](http://medialize.github.io/URI.js/
 
 ### Node.js and NPM ###
 
-Install with `npm install URIjs` or add `"URIjs"` to the dependencies in your `package.json`.
+Install with `npm install urijs` or add `"urijs"` to the dependencies in your `package.json`.
 
 ```javascript
 // load URI.js
-var URI = require('URIjs');
+var URI = require('urijs');
 // load an optional module (e.g. URITemplate)
-var URITemplate = require('URIjs/src/URITemplate');
+var URITemplate = require('urijs/src/URITemplate');
 
 URI("/foo/bar/baz.html")
   .relativeTo("/foo/bar/sub/world.html")
@@ -121,14 +117,14 @@ Clone the URI.js repository or use a package manager to get URI.js into your pro
 ```javascript
 require.config({
   paths: {
-    URIjs: 'where-you-put-uri.js/src'
+    urijs: 'where-you-put-uri.js/src'
   }
 });
 
-require(['URIjs/URI'], function(URI) {
+require(['urijs/URI'], function(URI) {
   console.log("URI.js and dependencies: ", URI("//amazon.co.uk").is('sld') ? 'loaded' : 'failed');
 });
-require(['URIjs/URITemplate'], function(URITemplate) {
+require(['urijs/URITemplate'], function(URITemplate) {
   console.log("URITemplate.js and dependencies: ", URITemplate._cache ? 'loaded' : 'failed');
 });
 ```
@@ -199,14 +195,14 @@ If you don't like URI.js, you may like one of the following libraries. (If yours
 * [furl (Python)](https://github.com/gruns/furl)
 * [mediawiki Uri](https://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/resources/mediawiki/mediawiki.Uri.js?view=markup) (needs mw and jQuery)
 * [jurlp](https://github.com/tombonner/jurlp)
-* [jsUri](http://code.google.com/p/jsuri/)
+* [jsUri](https://github.com/derek-watson/jsUri)
 
 #### URL Parsers ####
 
 * [The simple <a> URL Mutation "Hack"](http://jsfiddle.net/rodneyrehm/KkGUJ/) ([jsPerf comparison](http://jsperf.com/idl-attributes-vs-uri-js))
 * [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
 * [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
-* [Google Closure Uri](http://closure-library.googlecode.com/svn/docs/closure_goog_uri_uri.js.html)
+* [Google Closure Uri](https://google.github.io/closure-library/api/class_goog_Uri.html)
 * [URI.js by Gary Court](https://github.com/garycourt/uri-js)
 
 #### URI Template ####
@@ -243,6 +239,13 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 
 ## Changelog ##
+
+### 1.16.1 (September 19th 2015) ###
+
+Package Management Cleanup - no changes to source code!
+
+* renaming package to "urijs", was "URIjs" (because npm decided to go lower-case at some point and maintaining capitals in your package name poses all sorts of stupid issues)
+* removing [jam](http://jamjs.org/), [spm](http://spmjs.org/), `component.json` and `URI.jquery.json` as nobody cared that URI.js was stuck on 1.14 for a year
 
 ### 1.16.0 (July 24th 2015) ###
 
