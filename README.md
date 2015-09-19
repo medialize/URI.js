@@ -79,14 +79,14 @@ See the [About Page](http://medialize.github.io/URI.js/) and [API Docs](http://m
 
 URI.js (without plugins) has a gzipped weight of about 7KB - if you include all extensions you end up at about 13KB. So unless you *need* second level domain support and use URI templates, we suggest you don't include them in your build. If you don't need a full featured URI mangler, it may be worth looking into the much smaller parser-only alternatives [listed below](#alternatives).
 
-URI.js is available through [npm](http://npmjs.org/), [bower](http://bower.io/) and manually from the [build page](http://medialize.github.io/URI.js/build.html):
+URI.js is available through [npm](https://www.npmjs.com/package/urijs), [bower](http://bower.io/search/?q=urijs), [cdnjs](https://cdnjs.com/libraries/URI.js) and manually from the [build page](http://medialize.github.io/URI.js/build.html):
 
 ```bash
 # using bower
 bower install uri.js
 
 # using npm
-npm install URIjs
+npm install urijs
 ```
 
 ### Browser ###
@@ -95,13 +95,13 @@ I guess you'll manage to use the [build tool](http://medialize.github.io/URI.js/
 
 ### Node.js and NPM ###
 
-Install with `npm install URIjs` or add `"URIjs"` to the dependencies in your `package.json`.
+Install with `npm install urijs` or add `"urijs"` to the dependencies in your `package.json`.
 
 ```javascript
 // load URI.js
-var URI = require('URIjs');
+var URI = require('urijs');
 // load an optional module (e.g. URITemplate)
-var URITemplate = require('URIjs/src/URITemplate');
+var URITemplate = require('urijs/src/URITemplate');
 
 URI("/foo/bar/baz.html")
   .relativeTo("/foo/bar/sub/world.html")
@@ -115,14 +115,14 @@ Clone the URI.js repository or use a package manager to get URI.js into your pro
 ```javascript
 require.config({
   paths: {
-    URIjs: 'where-you-put-uri.js/src'
+    urijs: 'where-you-put-uri.js/src'
   }
 });
 
-require(['URIjs/URI'], function(URI) {
+require(['urijs/URI'], function(URI) {
   console.log("URI.js and dependencies: ", URI("//amazon.co.uk").is('sld') ? 'loaded' : 'failed');
 });
-require(['URIjs/URITemplate'], function(URITemplate) {
+require(['urijs/URITemplate'], function(URITemplate) {
   console.log("URITemplate.js and dependencies: ", URITemplate._cache ? 'loaded' : 'failed');
 });
 ```
@@ -242,6 +242,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 Package Management Cleanup - no changes to source code!
 
+* renaming package to "urijs", was "URIjs" (because npm decided to go lower-case at some point and maintaining capitals in your package name poses all sorts of stupid issues)
 * removing [jam](http://jamjs.org/), [spm](http://spmjs.org/), `component.json` and `URI.jquery.json` as nobody cared that URI.js was stuck on 1.14 for a year
 
 ### 1.16.0 (July 24th 2015) ###

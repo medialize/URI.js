@@ -1,5 +1,5 @@
 {
-  "name": "URIjs",
+  "name": "urijs",
   "version": "1.16.0",
   "main": "src/URI.js",
   "ignore": [

@@ -1,5 +1,5 @@
 {
-  "name": "URIjs",
+  "name": "urijs",
   "version": "1.16.0",
   "title": "URI.js - Mutating URLs",
   "author": {
@@ -54,7 +54,7 @@
     "src/URI.fragmentURI.js",
     "LICENSE.txt"
   ],
-  "npmName": "URIjs",
+  "npmName": "urijs",
   "npmFileMap": [
     {
       "basePath": "/src/",
