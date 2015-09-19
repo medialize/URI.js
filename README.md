@@ -8,6 +8,10 @@
 
 ---
 
+> **NOTE:** The npm package name changed to `urijs`
+
+---
+
 I always want to shoot myself in the head when looking at code like the following:
 
 ```javascript
@@ -17,9 +21,7 @@ var separator = url.indexOf('?') > -1 ? '&' : '?';
 url += separator + encodeURIComponent("foo") + "=" + encodeURIComponent("bar");
 ```
 
-I still can't believe javascript - the f**ing backbone-language of the web - doesn't offer an API for mutating URLs. Browsers (Firefox) don't expose the `Location` object (the structure behind window.location). Yes, one could think of [decomposed IDL attributes](http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#url-decomposition-idl-attributes) as a native URL management library. But it relies on the DOM element &lt;a&gt;, it's slow and doesn't offer any convenience at all.
-
-How about a nice, clean and simple API for mutating URIs:
+Things are looking up with [URL](https://developer.mozilla.org/en/docs/Web/API/URL) and the [URL spec](http://url.spec.whatwg.org/) but until we can safely rely on that API, have a look at URI.js for a clean and simple API for mutating URIs:
 
 ```javascript
 var url = new URI("http://example.org/foo?bar=baz");
@@ -238,7 +240,7 @@ URI.js is published under the [MIT license](http://www.opensource.org/licenses/m
 
 ## Changelog ##
 
-### master (will be 1.16.1) ###
+### 1.16.1 (September 19th 2015) ###
 
 Package Management Cleanup - no changes to source code!
 
