@@ -861,6 +861,13 @@
     u.removeQuery(['foo', 'bar']);
     equal(u.query(), 'obj=bam', 'removing array');
 
+    u.query('?bar=1&bar=2');
+    u.removeQuery({ bar: 1 });
+    equal(u.query(), 'bar=2', 'removing non-string value from array');
+
+    u.removeQuery({ bar: 2 });
+    equal(u.query(), '', 'removing a non-string value');
+
     u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
     u.removeQuery({foo: 'bar', obj: undefined, bar: ['1', '2']});
     equal(u.query(), 'foo=baz&foo=bam&bar=3', 'removing object');
