@@ -4,7 +4,7 @@ The release notes tracked in this document are also made available on the [relea
 
 ### master (will likely become 1.16.2) ###
 
-* fixing [`URI.removeQuery()`](http://medialize.github.io/URI.js/docs.html#search-remove) to cast values to string before matching - [Issue #233](https://github.com/medialize/URI.js/pull/233) fixed by [ryanelian](https://github.com/ryanelian)
+* fixing [`URI.removeQuery()`](http://medialize.github.io/URI.js/docs.html#search-remove) to cast values to string before matching - [Issue #250](https://github.com/medialize/URI.js/pull/250) fixed by [ryanelian](https://github.com/ryanelian)
 
 ### 1.16.1 (September 19th 2015) ###
 
