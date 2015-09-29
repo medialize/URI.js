@@ -712,6 +712,10 @@
 
     u.segment(['', '', 'foo', '', '', 'bar', '', '']);
     equal(u.path(), '/foo/bar/', 'segment collapsing empty parts');
+
+    u = new URI('https://google.com')
+    u.segment('//font.ttf//');
+    equal(u.path(), '/font.ttf', 'segment removes trailing and leading');
   });
   test('segmentCoded', function() {
     var u = new URI('http://www.example.org/some%20thing/directory/foo.html'),
