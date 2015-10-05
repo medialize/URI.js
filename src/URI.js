@@ -175,6 +175,11 @@
     return true;
   }
 
+  function trimSlashes(text) {
+    var noLeadTrailSlashRegex = /^\/+|\/+$/g;
+    return text.replace(noLeadTrailSlashRegex, '');
+  }
+
   URI._parts = function() {
     return {
       protocol: null,
@@ -1592,9 +1597,10 @@
             segments.pop();
           }
 
-          segments.push(v[i]);
+          segments.push(trimSlashes(v[i]));
         }
       } else if (v || typeof v === 'string') {
+        v = trimSlashes(v);
         if (segments[segments.length -1] === '') {
           // empty trailing elements have to be overwritten
           // to prevent results such as /foo//bar
@@ -1605,7 +1611,7 @@
       }
     } else {
       if (v) {
-        segments[segment] = v;
+        segments[segment] = trimSlashes(v);
       } else {
         segments.splice(segment, 1);
       }
