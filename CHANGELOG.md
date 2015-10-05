@@ -5,6 +5,7 @@ The release notes tracked in this document are also made available on the [relea
 ### master (will likely become 1.16.2) ###
 
 * fixing [`URI.removeQuery()`](http://medialize.github.io/URI.js/docs.html#search-remove) to cast values to string before matching - [Issue #250](https://github.com/medialize/URI.js/pull/250) fixed by [ryanelian](https://github.com/ryanelian)
+* fixing [`.segment()`](http://medialize.github.io/URI.js/docs.html#accessors-segment) to allow appending an empty element - ([Issue #236](https://github.com/medialize/URI.js/issues/236), [Issue #253](https://github.com/medialize/URI.js/pull/253)) fixed by [orlando](https://github.com/orlando)
 
 ### 1.16.1 (September 19th 2015) ###
 
