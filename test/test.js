@@ -715,7 +715,13 @@
 
     u = new URI('https://google.com')
     u.segment('//font.ttf//');
-    equal(u.path(), '/font.ttf', 'segment removes trailing and leading');
+    equal(u.path(), '/font.ttf', 'segment removes trailing and leading slashes');
+
+    u.segment(['/hello', '/world/', '//foo.html']);
+    equal(u.path(), '/hello/world/foo.html', 'segment set array trimming slashes');
+
+    u.segment(1, '/mars/');
+    equal(u.path(), '/hello/mars/foo.html', 'segment set index trimming slashes');
   });
   test('segmentCoded', function() {
     var u = new URI('http://www.example.org/some%20thing/directory/foo.html'),

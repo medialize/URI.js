@@ -176,8 +176,8 @@
   }
 
   function trimSlashes(text) {
-    var noLeadTrailSlashRegex = /^\/+|\/+$/g;
-    return text.replace(noLeadTrailSlashRegex, '');
+    var trim_expression = /^\/+|\/+$/g;
+    return text.replace(trim_expression, '');
   }
 
   URI._parts = function() {
