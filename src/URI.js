@@ -782,7 +782,7 @@
           } else {
             data[name] = filterArrayValues(data[name], value);
           }
-        } else if (data[name] === String(value)) {
+        } else if (data[name] === String(value) && (!isArray(value) || value.length === 1)) {
           data[name] = undefined;
         } else if (isArray(data[name])) {
           data[name] = filterArrayValues(data[name], value);
