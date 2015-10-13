@@ -713,7 +713,7 @@
     u.segment(['', '', 'foo', '', '', 'bar', '', '']);
     equal(u.path(), '/foo/bar/', 'segment collapsing empty parts');
 
-    u = new URI('https://google.com')
+    u = new URI('https://google.com');
     u.segment('//font.ttf//');
     equal(u.path(), '/font.ttf', 'segment removes trailing and leading slashes');
 
@@ -867,6 +867,22 @@
     u.removeQuery('bar', ['1', '3']);
     equal(u.query(), 'obj=bam&bar=2', 'removing name, array');
 
+    u.query('?obj=bam&bar=1&bar=2');
+    u.removeQuery('bar', ['2']);
+    equal(u.query(), 'obj=bam&bar=1', 'removing name, singleton array');
+
+    u.removeQuery('bar', ['1']);
+    equal(u.query(), 'obj=bam', 'removing the last value via name, singleton array');
+
+    u.query('?foo=one&foo=two').removeQuery('foo', ['one', 'two']);
+    equal(u.query(), '', 'removing name, array, finishes empty');
+
+    u.query('?foo=one,two').removeQuery('foo', ['one', 'two']);
+    equal(u.query(), 'foo=one%2Ctwo', 'not removing name, array');
+
+    u.query('?foo=one,two').removeQuery('foo', ['one,two']);
+    equal(u.query(), '', 'removing name, singleton array with comma in value');
+
     u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
     u.removeQuery(['foo', 'bar']);
     equal(u.query(), 'obj=bam', 'removing array');
@@ -877,7 +893,7 @@
 
     u.removeQuery({ bar: 2 });
     equal(u.query(), '', 'removing a non-string value');
-    
+
     u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
     u.removeQuery({foo: 'bar', obj: undefined, bar: ['1', '2']});
     equal(u.query(), 'foo=baz&foo=bam&bar=3', 'removing object');
