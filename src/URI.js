@@ -678,6 +678,10 @@
 
     return t;
   };
+  URI.buildOrigin = function (parts) {
+    var protocol = parts.protocol ? parts.protocol + '://' : '';
+    return protocol + URI.buildAuthority(parts);
+  };
   URI.buildAuthority = function(parts) {
     return URI.buildUserinfo(parts) + URI.buildHost(parts);
   };
@@ -1223,6 +1227,26 @@
   };
 
   // compound accessors
+  p.origin = function(v, build) {
+    var parts;
+
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+
+    if (v === undefined) {
+      return this._parts.hostname ? URI.buildOrigin(this._parts) : '';
+    } else {
+      parts = URI.parse(v);
+      this._parts.protocol = parts.protocol;
+      this._parts.username = parts.username;
+      this._parts.password = parts.password;
+      this._parts.hostname = parts.hostname;
+      this._parts.port = parts.port;
+      this.build(!build);
+      return this;
+    }
+  };
   p.host = function(v, build) {
     if (this._parts.urn) {
       return v === undefined ? '' : this;

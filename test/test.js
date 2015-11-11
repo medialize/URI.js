@@ -371,6 +371,14 @@
       u.host('foo\\bar.com');
     }, TypeError, 'Failing backslash detection in host');
   });
+  test('origin', function () {
+    var u = new URI('http://foo.bar/foo.html');
+    equal(u.origin(), 'http://foo.bar', 'invalid origin');
+
+    u.origin('http://bar.foo/bar.html');
+    equal(u.origin(), 'http://bar.foo', 'origin didnt change');
+    equal(u+'', 'http://bar.foo/foo.html', 'origin path changed');
+  });
   test('authority', function() {
     var u = new URI('http://foo.bar/foo.html');
 
