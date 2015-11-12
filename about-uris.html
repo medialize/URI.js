@@ -99,15 +99,18 @@ URL:      foo://example.com:8042/over/there?name=ferret#nose
     <h3 id="components-url">Components of an <abbr title="Uniform Resource Locator">URL</abbr> in URI.js</h3>
 
     <pre class="ascii-art">
-                         <a href="docs.html#accessors-authority">authority</a>
-<span class="line">                   __________|_________
-                  /                    \
+              <a href="docs.html#accessors-origin">origin</a>
+<span class="line">       __________|__________
+      /                     \
+</span>                         <a href="docs.html#accessors-authority">authority</a>
+<span class="line">     |             __________|_________
+     |            /                    \
 </span>              <a href="docs.html#accessors-userinfo">userinfo</a>                <a href="docs.html#accessors-host">host</a>                          <a href="docs.html#accessors-resource">resource</a>
-<span class="line">               __|___                ___|___                 __________|___________
-              /      \              /       \               /                      \
+<span class="line">     |         __|___                ___|___                 __________|___________
+     |        /      \              /       \               /                      \
 </span>         <a href="docs.html#accessors-username">username</a>  <a href="docs.html#accessors-password">password</a>     <a href="docs.html#accessors-hostname">hostname</a>    <a href="docs.html#accessors-port">port</a>     <a href="docs.html#accessors-pathname">path</a> &amp; <a href="docs.html#accessors-segment">segment</a>      <a href="docs.html#accessors-search">query</a>   <a href="docs.html#accessors-hash">fragment</a>
-<span class="line">           __|___   __|__    ______|______   |   __________|_________   ____|____   |
-          /      \ /     \  /             \ / \ /                    \ /         \ / \
+<span class="line">     |     __|___   __|__    ______|______   |   __________|_________   ____|____   |
+     |    /      \ /     \  /             \ / \ /                    \ /         \ / \
 </span>    foo://username:password@www.example.com:123/hello/world/there.html?name=ferret#foo
 <span class="line">    \_/                     \ / \       \ /    \__________/ \     \__/
      |                       |   \       |           |       \      |

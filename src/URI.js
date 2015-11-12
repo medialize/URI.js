@@ -1223,6 +1223,27 @@
   };
 
   // compound accessors
+  p.origin = function(v, build) {
+    var parts;
+
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+
+    if (v === undefined) {
+      var protocol = this.protocol();
+      var authority = this.authority();
+      if (!authority) return '';
+      return (protocol ? protocol + '://' : '') + this.authority();
+    } else {
+      var origin = URI(v);
+      this
+        .protocol(origin.protocol())
+        .authority(origin.authority())
+        .build(!build);
+      return this;
+    }
+  };
   p.host = function(v, build) {
     if (this._parts.urn) {
       return v === undefined ? '' : this;

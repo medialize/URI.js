@@ -61,6 +61,7 @@
                 <li><a href="#accessors-host">host()</a></li>
                 <li><a href="#accessors-userinfo">userinfo()</a></li>
                 <li><a href="#accessors-authority">authority()</a></li>
+                <li><a href="#accessors-origin">origin()</a></li>
                 <li><a href="#accessors-subdomain">subdomain()</a></li>
                 <li><a href="#accessors-domain">domain()</a></li>
                 <li><a href="#accessors-tld">tld()</a></li>
@@ -351,6 +352,20 @@ uri.authority(); // returns string "user:pass@example.org:88"
 uri.authority("user:pass@example.org:80"); // returns the URI instance for chaining</pre>
     <p class="note">.authority() will reset any of username, password and port if they're not specified.</p>
     <p class="note">Throws a <code>TypeError</code> if <code>path</code> is part of the input</p>
+
+    <h3 id="accessors-origin">origin()</h3>
+    <p>Origin is comprised of the scheme and authority.</p>
+    <pre class="prettyprint lang-js">var uri = new URI("http://example.com/foo.html?q=hello");
+// get origin
+uri.origin(); // returns string "http://example.com"
+// set origin
+uri.origin('https://other.org'); // returns URI instance for chaining
+
+// the URI will now have the string representation of:
+//   "https://other.org/foo.html?q=hello"</pre>
+    <p class="note">.origin() will reset the entire authority, including username, password and port if not specified in the new origin.</p>
+    <p class="note">.origin() will be empty if there is no authority.</p>
+    <p class="note">.origin() will be the same as .authority() (e.g. "example.org") if there is no scheme available.</p>
 
     <h3 id="accessors-domain">domain()</h3>
     <p>.domain() is a convenience method that returns <code>example.org</code> from the hostname <code>www.example.org</code>.</p>

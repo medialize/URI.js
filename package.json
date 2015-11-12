@@ -39,7 +39,8 @@
   "main": "./src/URI",
   "homepage": "http://medialize.github.io/URI.js/",
   "contributors": [
-    "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com)"
+    "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com)",
+    "Justin Chase <justin.m.chase@gmail.com> (http://justinmchase.com)"
   ],
   "files": [
     "src/URI.js",
