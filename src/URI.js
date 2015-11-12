@@ -678,10 +678,6 @@
 
     return t;
   };
-  URI.buildOrigin = function (parts) {
-    var protocol = parts.protocol ? parts.protocol + '://' : '';
-    return protocol + URI.buildAuthority(parts);
-  };
   URI.buildAuthority = function(parts) {
     return URI.buildUserinfo(parts) + URI.buildHost(parts);
   };
@@ -1235,15 +1231,16 @@
     }
 
     if (v === undefined) {
-      return this._parts.hostname ? URI.buildOrigin(this._parts) : '';
+      var protocol = this.protocol();
+      var authority = this.authority();
+      if (!authority) return '';
+      return (protocol ? protocol + '://' : '') + this.authority();
     } else {
-      parts = URI.parse(v);
-      this._parts.protocol = parts.protocol;
-      this._parts.username = parts.username;
-      this._parts.password = parts.password;
-      this._parts.hostname = parts.hostname;
-      this._parts.port = parts.port;
-      this.build(!build);
+      var origin = URI(v);
+      this
+        .protocol(origin.protocol())
+        .authority(origin.authority())
+        .build(!build);
       return this;
     }
   };
