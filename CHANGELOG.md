@@ -4,9 +4,9 @@ The release notes tracked in this document are also made available on the [relea
 
 ### master (will likely become 1.16.2) ###
 
-* fixing [`URI.removeQuery()`](http://medialize.github.io/URI.js/docs.html#search-remove) to cast values to string before matching - [Issue #250](https://github.com/medialize/URI.js/pull/250), [Issue #252](https://github.com/medialize/URI.js/pull/252) fixed by [ryanelian](https://github.com/ryanelian) and [Siltaar](https://github.com/Siltaar)
-* fixing [`.segment()`](http://medialize.github.io/URI.js/docs.html#accessors-segment) to allow appending an empty element - ([Issue #236](https://github.com/medialize/URI.js/issues/236), [Issue #253](https://github.com/medialize/URI.js/pull/253)) fixed by [orlando](https://github.com/orlando)
-
+* fixing [`URI.removeQuery()`](http://medialize.github.io/URI.js/docs.html#search-remove) to cast values to string before matching - [Issue #250](https://github.com/medialize/URI.js/pull/250), [Issue #252](https://github.com/medialize/URI.js/pull/252), by [ryanelian](https://github.com/ryanelian) and [Siltaar](https://github.com/Siltaar)
+* fixing [`.segment()`](http://medialize.github.io/URI.js/docs.html#accessors-segment) to allow appending an empty element - [Issue #236](https://github.com/medialize/URI.js/issues/236), [Issue #253](https://github.com/medialize/URI.js/pull/253), by [orlando](https://github.com/orlando)
+* adding [`.origin()`](http://medialize.github.io/URI.js/docs.html#accessors-origin) to get protocol and authority, counter-part to `.resource()` - [Issue #210](https://github.com/medialize/URI.js/issues/210), [Issue #263](https://github.com/medialize/URI.js/pull/263), by [justinmchase](https://github.com/justinmchase)
 
 ### 1.16.1 (September 19th 2015) ###
 
