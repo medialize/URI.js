@@ -2,7 +2,7 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
-### master (will likely become 1.16.2) ###
+### 1.17.0 (November 13th 2015) ###
 
 * fixing [`URI.removeQuery()`](http://medialize.github.io/URI.js/docs.html#search-remove) to cast values to string before matching - [Issue #250](https://github.com/medialize/URI.js/pull/250), [Issue #252](https://github.com/medialize/URI.js/pull/252), by [ryanelian](https://github.com/ryanelian) and [Siltaar](https://github.com/Siltaar)
 * fixing [`.segment()`](http://medialize.github.io/URI.js/docs.html#accessors-segment) to allow appending an empty element - [Issue #236](https://github.com/medialize/URI.js/issues/236), [Issue #253](https://github.com/medialize/URI.js/pull/253), by [orlando](https://github.com/orlando)
