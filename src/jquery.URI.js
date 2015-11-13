@@ -95,7 +95,7 @@
   }
 
   // populate lookup table and register $.attr('uri:accessor') handlers
-  $.each('authority directory domain filename fragment hash host hostname href password path pathname port protocol query resource scheme search subdomain suffix tld username'.split(' '), function(k, v) {
+  $.each('origin authority directory domain filename fragment hash host hostname href password path pathname port protocol query resource scheme search subdomain suffix tld username'.split(' '), function(k, v) {
     comparable[v] = true;
     $.attrHooks['uri:' + v] = generateAccessor(v);
   });
