@@ -49,8 +49,8 @@
     
     <h2>Accessing the URI Instance</h2>    
     <pre class="prettyprint lang-js">
-var $a = $('&lt;a href=&quot;http://google.com/hello.html&quot;&gt;Demo&lt;/a&gt;'),
-    uri = $a.uri();
+var $a = $('&lt;a href=&quot;http://google.com/hello.html&quot;&gt;Demo&lt;/a&gt;');
+var uri = $a.uri();
 
 // URI instance and DOMElement are always in sync
 uri.domain() == 'google.com';
@@ -68,17 +68,17 @@ $a.attr('href') == '/hello/world.html';
 uri.href() == '/hello/world.html';</pre>
     
     <h2>Accessing URI components</h2>
-    <pre class="prettyprint lang-js">
-        var $a = $('&lt;a href=&quot;http://www.google.com/hello.html&quot;&gt;Demo&lt;/a&gt;');
+    <pre class="prettyprint lang-js">var $a = $('&lt;a href=&quot;http://www.google.com/hello.html&quot;&gt;Demo&lt;/a&gt;');
 
 // read
 $a.attr('uri:domain') == 'google.com';
 
 // write
 $a.attr('uri:domain', 'example.org');
-$a.attr('href') == 'http://www.example.org/hello.html';
-    </pre>
+$a.attr('href') == 'http://www.example.org/hello.html';</pre>
+
     <p>All URI-component accessors (except <a href="docs.html#accessors-segment">segment</a>) can be used:
+           <a href="docs.html#accessors-origin">origin</a>,
            <a href="docs.html#accessors-authority">authority</a>,
            <a href="docs.html#accessors-directory">directory</a>,
            <a href="docs.html#accessors-domain">domain</a>,
@@ -145,10 +145,10 @@ $('a').eq(1).is(':uri(protocol = http)');
 
 // event delegation
 $(document).on('click', 'a:uri(scheme=javscript)', function(e) {
-    if (!confirm("do you really want to execute this script?\n\n" + this.href)) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-    }
+  if (!confirm("do you really want to execute this script?\n\n" + this.href)) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
 });</pre>
 
     <h3>The :uri() pseudo selector</h3>

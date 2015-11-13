@@ -1,6 +1,6 @@
 {
   "name": "urijs",
-  "version": "1.16.1",
+  "version": "1.17.0",
   "title": "URI.js - Mutating URLs",
   "author": {
     "name": "Rodney Rehm",
@@ -39,7 +39,8 @@
   "main": "./src/URI",
   "homepage": "http://medialize.github.io/URI.js/",
   "contributors": [
-    "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com)"
+    "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com)",
+    "Justin Chase <justin.m.chase@gmail.com> (http://justinmchase.com)"
   ],
   "files": [
     "src/URI.js",

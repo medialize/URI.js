@@ -371,6 +371,14 @@
       u.host('foo\\bar.com');
     }, TypeError, 'Failing backslash detection in host');
   });
+  test('origin', function () {
+    var u = new URI('http://foo.bar/foo.html');
+    equal(u.origin(), 'http://foo.bar', 'invalid origin');
+
+    u.origin('http://bar.foo/bar.html');
+    equal(u.origin(), 'http://bar.foo', 'origin didnt change');
+    equal(u+'', 'http://bar.foo/foo.html', 'origin path changed');
+  });
   test('authority', function() {
     var u = new URI('http://foo.bar/foo.html');
 
@@ -712,6 +720,16 @@
 
     u.segment(['', '', 'foo', '', '', 'bar', '', '']);
     equal(u.path(), '/foo/bar/', 'segment collapsing empty parts');
+
+    u = new URI('https://google.com');
+    u.segment('//font.ttf//');
+    equal(u.path(), '/font.ttf', 'segment removes trailing and leading slashes');
+
+    u.segment(['/hello', '/world/', '//foo.html']);
+    equal(u.path(), '/hello/world/foo.html', 'segment set array trimming slashes');
+
+    u.segment(1, '/mars/');
+    equal(u.path(), '/hello/mars/foo.html', 'segment set index trimming slashes');
   });
   test('segmentCoded', function() {
     var u = new URI('http://www.example.org/some%20thing/directory/foo.html'),
@@ -857,9 +875,32 @@
     u.removeQuery('bar', ['1', '3']);
     equal(u.query(), 'obj=bam&bar=2', 'removing name, array');
 
+    u.query('?obj=bam&bar=1&bar=2');
+    u.removeQuery('bar', ['2']);
+    equal(u.query(), 'obj=bam&bar=1', 'removing name, singleton array');
+
+    u.removeQuery('bar', ['1']);
+    equal(u.query(), 'obj=bam', 'removing the last value via name, singleton array');
+
+    u.query('?foo=one&foo=two').removeQuery('foo', ['one', 'two']);
+    equal(u.query(), '', 'removing name, array, finishes empty');
+
+    u.query('?foo=one,two').removeQuery('foo', ['one', 'two']);
+    equal(u.query(), 'foo=one%2Ctwo', 'not removing name, array');
+
+    u.query('?foo=one,two').removeQuery('foo', ['one,two']);
+    equal(u.query(), '', 'removing name, singleton array with comma in value');
+
     u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
     u.removeQuery(['foo', 'bar']);
     equal(u.query(), 'obj=bam', 'removing array');
+
+    u.query('?bar=1&bar=2');
+    u.removeQuery({ bar: 1 });
+    equal(u.query(), 'bar=2', 'removing non-string value from array');
+
+    u.removeQuery({ bar: 2 });
+    equal(u.query(), '', 'removing a non-string value');
 
     u.query('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
     u.removeQuery({foo: 'bar', obj: undefined, bar: ['1', '2']});
