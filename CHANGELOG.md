@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### master ###
+
+* fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly handle percent-encoded dot segments and leading dots in basename - [Issue #264](https://github.com/medialize/URI.js/issues/264), by [JordanMilne](https://github.com/JordanMilne)
+
 ### 1.17.0 (November 13th 2015) ###
 
 * fixing [`URI.removeQuery()`](http://medialize.github.io/URI.js/docs.html#search-remove) to cast values to string before matching - [Issue #250](https://github.com/medialize/URI.js/pull/250), [Issue #252](https://github.com/medialize/URI.js/pull/252), by [ryanelian](https://github.com/ryanelian) and [Siltaar](https://github.com/Siltaar)
