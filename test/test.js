@@ -1167,6 +1167,22 @@
     u = URI('/foo/..').normalizePath();
     equal(u.path(), '/', 'root /foo/..');
 
+    u = URI('/foo/.bar').normalizePath();
+    equal(u.path(), '/foo/.bar', 'root /foo/.bar');
+
+    u = URI('/foo/..bar').normalizePath();
+    equal(u.path(), '/foo/..bar', 'root /foo/..bar');
+
+    // Percent Encoding normalization has to happen before dot segment normalization
+    u = URI('/foo/%2E%2E').normalizePath();
+    equal(u.path(), '/', 'root /foo/%2E%2E');
+
+    u = URI('/foo/%2E').normalizePath();
+    equal(u.path(), '/foo/', 'root /foo/%2E');
+
+    u = URI('/foo/%2E%2E%2Fbar').normalizePath();
+    equal(u.path(), '/foo/..%2Fbar', 'root /foo/%2E%2E%2Fbar');
+
     u = URI('../../../../../www/common/js/app/../../../../www_test/common/js/app/views/view-test.html');
     u.normalize();
     equal(u.path(), '../../../../../www_test/common/js/app/views/view-test.html', 'parent relative');
