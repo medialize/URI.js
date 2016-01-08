@@ -990,9 +990,6 @@
     // exists
     equal(u.hasQuery('string'), true, 'simple exists check - passing');
     equal(u.hasQuery('nono'), false, 'simple exists check - failing');
-    equal(u.hasQuery(/^nested/), true, 'RegExp name exists check - passing');
-    equal(u.hasQuery(/^nested/, /2/), true, 'RegExp name and value exists check - passing');
-    equal(u.hasQuery(/^nested/, /3/), false, 'RegExp name and value exists check - failing');
 
     // truthy value
     equal(u.hasQuery('string', true), true, 'has truthy value check - passing string');
@@ -1021,6 +1018,14 @@
     equal(u.hasQuery('number', /2/), true, 'RegExp check - passing number');
     equal(u.hasQuery('string', /nono/), false, 'RegExp check - failing string');
     equal(u.hasQuery('number', /999/), false, 'RegExp check - failing number');
+    equal(u.hasQuery(/^nested/), true, 'RegExp name check - passing');
+    equal(u.hasQuery(/^nested/, 2), true, 'RegExp name and value - passing number');
+    equal(u.hasQuery(/^nested/, '2'), true, 'RegExp name and value - passing number as string');
+    equal(u.hasQuery(/^nested/, 'nono'), false, 'RegExp name and value - failing string');
+    equal(u.hasQuery(/^nested/, /2/), true, 'RegExp name and value - passing RegExp number');
+    equal(u.hasQuery(/^nested/, /3/), false, 'RegExp name and value exists check - failing');
+    equal(u.hasQuery(/^lis/, ['one']), false, 'RegExp name andarray check - failing incomplete list');
+    equal(u.hasQuery(/^lis/, ['one', 'two']), true, 'RegExp name and array check - passing list');
 
     // matching array
     equal(u.hasQuery('string', ['one']), false, 'array check - failing string');
