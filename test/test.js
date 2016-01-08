@@ -985,11 +985,14 @@
     URI.escapeQuerySpace = true;
   });
   test('hasQuery', function() {
-    var u = URI('?string=bar&list=one&list=two&number=123&null&empty=');
+    var u = URI('?string=bar&list=one&list=two&number=123&null&empty=&nested[one]=1&nested[two]=2');
 
     // exists
     equal(u.hasQuery('string'), true, 'simple exists check - passing');
     equal(u.hasQuery('nono'), false, 'simple exists check - failing');
+    equal(u.hasQuery(/^nested/), true, 'RegExp name exists check - passing');
+    equal(u.hasQuery(/^nested/, /2/), true, 'RegExp name and value exists check - passing');
+    equal(u.hasQuery(/^nested/, /3/), false, 'RegExp name and value exists check - failing');
 
     // truthy value
     equal(u.hasQuery('string', true), true, 'has truthy value check - passing string');
