@@ -985,11 +985,12 @@
     URI.escapeQuerySpace = true;
   });
   test('hasQuery', function() {
-    var u = URI('?string=bar&list=one&list=two&number=123&null&empty=');
+    var u = URI('?string=bar&list=one&list=two&number=123&null&empty=&nested[one]=1&nested[two]=2');
 
     // exists
     equal(u.hasQuery('string'), true, 'simple exists check - passing');
     equal(u.hasQuery('nono'), false, 'simple exists check - failing');
+    equal(u.hasQuery(/^nested/), true, 'RegExp exists check - passing');
 
     // truthy value
     equal(u.hasQuery('string', true), true, 'has truthy value check - passing string');
