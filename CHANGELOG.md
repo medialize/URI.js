@@ -2,7 +2,7 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
-### master ###
+### 1.17.1 (February 25th 2016) ###
 
 * fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly handle percent-encoded dot segments and leading dots in basename - [Issue #264](https://github.com/medialize/URI.js/issues/264), by [JordanMilne](https://github.com/JordanMilne)
 * fixing [`.hasQuery()`](http://medialize.github.io/URI.js/docs.html#search-has) to accept `RegExp` for name argument - [Issue #274](https://github.com/medialize/URI.js/issues/274), [Issue #277](https://github.com/medialize/URI.js/issues/277) by [mbrodala](https://github.com/mbrodala)
