@@ -756,6 +756,11 @@ uri.hasQuery("list", /ne$/, true) === true;
 // check if parameter matches an expression
 uri.hasQuery("string", /ar$/) === true;
 
+// check if parameter name matches an expression
+uri.hasQuery(/^str/) === true;
+// check if parameter name matches an expression and value exists
+uri.hasQuery(/^li/, "two") === true;
+
 // check by comparison function
 uri.hasQuery("string", function(value, name, data) {
   // value === "bar";
