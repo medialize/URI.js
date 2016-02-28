@@ -91,8 +91,6 @@
       while (segments.length < total) {
         segments.splice(pos, 0, '0000');
       }
-
-      length = segments.length;
     }
 
     // strip leading zeros
