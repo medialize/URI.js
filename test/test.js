@@ -1651,6 +1651,36 @@
     window.IPv6         = actual.IPv6;
     window.SecondLevelDomains = actual.SecondLevelDomains;
   });
+  test('joinPaths', function() {
+    var result;
+    
+    result = URI.joinPaths('/a/b', '/c', 'd', '/e').toString();
+    equal(result, '/a/b/c/d/e', 'absolute paths');
+
+    result = URI.joinPaths('a/b', 'http://example.com/c', new URI('d/'), '/e').toString();
+    equal(result, 'a/b/c/d/e', 'relative path');
+
+    result = URI.joinPaths('/a/').toString();
+    equal(result, '/a/', 'single absolute directory');
+
+    result = URI.joinPaths('/a').toString();
+    equal(result, '/a', 'single absolute segment');
+
+    result = URI.joinPaths('a').toString();
+    equal(result, 'a', 'single relative segment');
+
+    result = URI.joinPaths('').toString();
+    equal(result, '', 'empty string');
+
+    result = URI.joinPaths().toString();
+    equal(result, '', 'no argument');
+
+    result = URI.joinPaths('', 'a', '', '', 'b').toString();
+    equal(result, '/a/b', 'leading empty segment');
+
+    result = URI.joinPaths('a', '', '', 'b', '', '').toString();
+    equal(result, 'a/b/', 'trailing empty segment');
+  });
 
   module('comparing URLs');
   test('equals', function() {
