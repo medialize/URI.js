@@ -133,9 +133,9 @@
   // pattern to identify expressions [operator, variable-list] in template
   URITemplate.EXPRESSION_PATTERN = /\{([^a-zA-Z0-9%_]?)([^\}]+)(\}|$)/g;
   // pattern to identify variables [name, explode, maxlength] in variable-list
-  URITemplate.VARIABLE_PATTERN = /^([^*:]+)((\*)|:(\d+))?$/;
+  URITemplate.VARIABLE_PATTERN = /^([^*:.](?:\.?[^*:.])*)((\*)|:(\d+))?$/;
   // pattern to verify variable name integrity
-  URITemplate.VARIABLE_NAME_PATTERN = /[^a-zA-Z0-9%_]/;
+  URITemplate.VARIABLE_NAME_PATTERN = /[^a-zA-Z0-9%_.]/;
 
   // expand parsed expression (expression, not template!)
   URITemplate.expand = function(expression, data) {
