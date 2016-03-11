@@ -136,6 +136,8 @@
   URITemplate.VARIABLE_PATTERN = /^([^*:.](?:\.?[^*:.])*)((\*)|:(\d+))?$/;
   // pattern to verify variable name integrity
   URITemplate.VARIABLE_NAME_PATTERN = /[^a-zA-Z0-9%_.]/;
+  // pattern to verify literal integrity
+  URITemplate.LITERAL_PATTERN = /[<>{}'"`^| \\]/;
 
   // expand parsed expression (expression, not template!)
   URITemplate.expand = function(expression, data) {
@@ -346,11 +348,19 @@
     var ePattern = URITemplate.EXPRESSION_PATTERN;
     var vPattern = URITemplate.VARIABLE_PATTERN;
     var nPattern = URITemplate.VARIABLE_NAME_PATTERN;
+    var lPattern = URITemplate.LITERAL_PATTERN;
     // token result buffer
     var parts = [];
       // position within source template
     var pos = 0;
     var variables, eMatch, vMatch;
+
+    var checkLiteral = function(literal) {
+      if (literal.match(lPattern)) {
+        throw new Error('Invalid Literal "' + literal + '"');
+      }
+      return literal;
+    };
 
     // RegExp is shared accross all templates,
     // which requires a manual reset
@@ -361,11 +371,11 @@
       eMatch = ePattern.exec(expression);
       if (eMatch === null) {
         // push trailing literal
-        parts.push(expression.substring(pos));
+        parts.push(checkLiteral(expression.substring(pos)));
         break;
       } else {
         // push leading literal
-        parts.push(expression.substring(pos, eMatch.index));
+        parts.push(checkLiteral(expression.substring(pos, eMatch.index)));
         pos = eMatch.index + eMatch[0].length;
       }
 
@@ -407,7 +417,7 @@
       // template doesn't contain any expressions
       // so it is a simple literal string
       // this probably should fire a warning or something?
-      parts.push(expression);
+      parts.push(checkLiteral(expression));
     }
 
     this.parts = parts;

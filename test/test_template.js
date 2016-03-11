@@ -395,4 +395,10 @@
     equal(expansion, literal, 'period in varname');
   });
 
+  test('Invalid literals', function () {
+    raises(function() {
+      URITemplate('invalid.char}acter').parse();
+    }, Error, 'Failing invalid literal');
+  });
+
 })();
