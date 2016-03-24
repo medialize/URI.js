@@ -387,4 +387,12 @@
     window.URITemplate = actual_lib;
   });
 
+  test('Periods in varnames', function() {
+    var template = new URITemplate('{hello.world.var}');
+    var literal = 'replacement'
+    var data = {'hello.world.var': literal};
+    var expansion = template.expand(data);
+    equal(expansion, literal, 'period in varname');
+  });
+
 })();
