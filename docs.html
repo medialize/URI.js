@@ -1031,7 +1031,7 @@ parts === {
         Found components are appended to the <code>parts</code> parameter.
         Remaining string is returned</p>
     <pre class="prettyprint lang-js">var parts = {};
-var result = URI.parseAuthority("example.org:8080/foo.html", parts);
+var result = URI.parseHost("example.org:8080/foo.html", parts);
 result === "/foo.html";
 parts === {
   hostname: "example.org",
