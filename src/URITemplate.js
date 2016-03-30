@@ -164,6 +164,11 @@
         continue;
       }
 
+      if (d.type > 1 && variable.maxlength) {
+        // composite variable cannot specify maxlength
+        throw new Error('Invalid expression: Prefix modifier not applicable to variable "' + variable.name + '"');
+      }
+
       // expand the given variable
       buffer.push(URITemplate['expand' + type](
         d,
