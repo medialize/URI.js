@@ -2,6 +2,14 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.18.0 (April 30th 2016) ###
+
+* adding [`URI.joinPath`](http://medialize.github.io/URI.js/docs.html#static-joinPath) to compose paths from directory tokens - [Issue #285](https://github.com/medialize/URI.js/issues/285)
+* fixing [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) to allow `.` in variable names - [PR #287](https://github.com/medialize/URI.js/pull/287)
+* fixing [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) to reject invalid literals - [PR #289](https://github.com/medialize/URI.js/pull/289)
+* fixing [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) to reject prefix modifier on composite values - [PR #290](https://github.com/medialize/URI.js/pull/290)
+* fixing [`URI.buildUserinfo()`](http://medialize.github.io/URI.js/docs.html#static-buildUserinfo) to properly serialize passwort-only values - [PR #293](https://github.com/medialize/URI.js/pull/293)
+
 ### 1.17.1 (February 25th 2016) ###
 
 * fixing [`.normalizePath()`](http://medialize.github.io/URI.js/docs.html#normalize-path) to properly handle percent-encoded dot segments and leading dots in basename - [Issue #264](https://github.com/medialize/URI.js/issues/264), by [JordanMilne](https://github.com/JordanMilne)

@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.17.1
+ * Version: 1.18.0
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -71,7 +71,7 @@
     return this;
   }
 
-  URI.version = '1.17.1';
+  URI.version = '1.18.0';
 
   var p = URI.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
@@ -685,11 +685,13 @@
 
     if (parts.username) {
       t += URI.encode(parts.username);
+    }
 
-      if (parts.password) {
-        t += ':' + URI.encode(parts.password);
-      }
+    if (parts.password) {
+      t += ':' + URI.encode(parts.password);
+    }
 
+    if (t) {
       t += '@';
     }
 
@@ -877,6 +879,39 @@
     }
   };
 
+
+  URI.joinPaths = function() {
+    var input = [];
+    var segments = [];
+    var nonEmptySegments = 0;
+
+    for (var i = 0; i < arguments.length; i++) {
+      var url = new URI(arguments[i]);
+      input.push(url);
+      var _segments = url.segment();
+      for (var s = 0; s < _segments.length; s++) {
+        if (typeof _segments[s] === 'string') {
+          segments.push(_segments[s]);
+        }
+
+        if (_segments[s]) {
+          nonEmptySegments++;
+        }
+      }
+    }
+
+    if (!segments.length || !nonEmptySegments) {
+      return new URI('');
+    }
+
+    var uri = new URI('').segment(segments);
+
+    if (input[0].path() === '' || input[0].path().slice(0, 1) === '/') {
+      uri.path('/' + uri.path());
+    }
+
+    return uri.normalize();
+  };
 
   URI.commonPath = function(one, two) {
     var length = Math.min(one.length, two.length);
@@ -1301,12 +1336,8 @@
     }
 
     if (v === undefined) {
-      if (!this._parts.username) {
-        return '';
-      }
-
       var t = URI.buildUserinfo(this._parts);
-      return t.substring(0, t.length -1);
+      return t ? t.substring(0, t.length -1) : t;
     } else {
       if (v[v.length-1] !== '@') {
         v += '@';

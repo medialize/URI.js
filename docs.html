@@ -121,6 +121,7 @@
             <ul>
                 <li><a href="#relativeto">relativeTo()</a></li>
                 <li><a href="#absoluteto">absoluteTo()</a></li>
+                <li><a href="#static-joinPath">URI.joinPath()</a></li>
             </ul>
         </li>
         <li>
@@ -169,6 +170,8 @@
                 <li><a href="#static-addQuery">URI.addQuery()</a></li>
                 <li><a href="#static-removeQuery">URI.removeQuery()</a></li>
                 <li><a href="#static-commonPath">URI.commonPath()</a></li>
+                
+                <li><a href="#static-joinPath">URI.joinPath()</a></li>
                 
                 <li><a href="#static-withinString">URI.withinString()</a></li>
                 
@@ -1028,7 +1031,7 @@ parts === {
         Found components are appended to the <code>parts</code> parameter.
         Remaining string is returned</p>
     <pre class="prettyprint lang-js">var parts = {};
-var result = URI.parseAuthority("example.org:8080/foo.html", parts);
+var result = URI.parseHost("example.org:8080/foo.html", parts);
 result === "/foo.html";
 parts === {
   hostname: "example.org",
@@ -1256,7 +1259,24 @@ URI.commonPath("/foo/bar/baz.html", "/other/world.html");
 
 URI.commonPath("/foo", "bar");
 // returns ""</pre>
-    
+
+    <h3 id="static-joinPath">URI.joinPath()</h3>
+    <p>URI.joinPath() composes a path from directory tokens.</p>
+    <pre class="prettyprint lang-js">URI.joinPaths('/a/b', '/c', 'd', '/e');
+// returns URI("/a/b/c/d/e")
+
+URI.joinPaths('a/b', 'http://example.com/c', new URI('d/'), '/e');
+// returns URI("a/b/c/d/e")
+
+URI.joinPaths('/a/');
+// returns URI("/a/")
+
+URI.joinPaths('');
+// returns URI("")
+
+URI.joinPaths('', 'a', '');
+// returns URI("/a/")</pre>
+
     <h3 id="static-withinString">URI.withinString()</h3>
     <p>URI.withinString() identifies URIs within text, e.g. to translate them to &lt;a&gt;-Tags. (Obviously you'd want to put the urls inside the href-Attribute and escape them properly…)</p>
     <p class="note">.withinString() only works on plain text, it will not work with HTML!</p>

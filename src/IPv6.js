@@ -2,7 +2,7 @@
  * URI.js - Mutating URLs
  * IPv6 Support
  *
- * Version: 1.17.1
+ * Version: 1.18.0
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -91,8 +91,6 @@
       while (segments.length < total) {
         segments.splice(pos, 0, '0000');
       }
-
-      length = segments.length;
     }
 
     // strip leading zeros
