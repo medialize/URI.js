@@ -2,7 +2,7 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
-### master ###
+### 1.18.0 (April 30th 2016) ###
 
 * adding [`URI.joinPath`](http://medialize.github.io/URI.js/docs.html#static-joinPath) to compose paths from directory tokens - [Issue #285](https://github.com/medialize/URI.js/issues/285)
 * fixing [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) to allow `.` in variable names - [PR #287](https://github.com/medialize/URI.js/pull/287)
