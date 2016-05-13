@@ -4,7 +4,7 @@ The release notes tracked in this document are also made available on the [relea
 
 ### 1.18.0 (April 30th 2016) ###
 
-* adding [`URI.joinPath`](http://medialize.github.io/URI.js/docs.html#static-joinPath) to compose paths from directory tokens - [Issue #285](https://github.com/medialize/URI.js/issues/285)
+* adding [`URI.joinPaths()`](http://medialize.github.io/URI.js/docs.html#static-joinPaths) to compose paths from directory tokens - [Issue #285](https://github.com/medialize/URI.js/issues/285)
 * fixing [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) to allow `.` in variable names - [PR #287](https://github.com/medialize/URI.js/pull/287)
 * fixing [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) to reject invalid literals - [PR #289](https://github.com/medialize/URI.js/pull/289)
 * fixing [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) to reject prefix modifier on composite values - [PR #290](https://github.com/medialize/URI.js/pull/290)
