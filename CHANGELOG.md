@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### master ###
+
+* fixing UMD wrapper of `jquery.URI.js` - [Issue #295](https://github.com/medialize/URI.js/issues/295)
+
 ### 1.18.0 (April 30th 2016) ###
 
 * adding [`URI.joinPaths()`](http://medialize.github.io/URI.js/docs.html#static-joinPaths) to compose paths from directory tokens - [Issue #285](https://github.com/medialize/URI.js/issues/285)
