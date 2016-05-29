@@ -2,7 +2,7 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
-### master ###
+### 1.18.1 (May 29th 2016) ###
 
 * fixing UMD wrapper of `jquery.URI.js` - [Issue #295](https://github.com/medialize/URI.js/issues/295)
 
