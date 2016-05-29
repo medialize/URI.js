@@ -121,7 +121,7 @@
             <ul>
                 <li><a href="#relativeto">relativeTo()</a></li>
                 <li><a href="#absoluteto">absoluteTo()</a></li>
-                <li><a href="#static-joinPath">URI.joinPath()</a></li>
+                <li><a href="#static-joinPaths">URI.URI.joinPaths()</a></li>
             </ul>
         </li>
         <li>
@@ -171,7 +171,7 @@
                 <li><a href="#static-removeQuery">URI.removeQuery()</a></li>
                 <li><a href="#static-commonPath">URI.commonPath()</a></li>
                 
-                <li><a href="#static-joinPath">URI.joinPath()</a></li>
+                <li><a href="#static-joinPaths">URI.joinPath()</a></li>
                 
                 <li><a href="#static-withinString">URI.withinString()</a></li>
                 
@@ -1175,7 +1175,7 @@ URI.encode("ä:/?#[]@!$&amp;'()*+,;=") ===
   "%C3%A4%3A%2F%3F%23%5B%5D%40%21%24%26%27%28%29%2A%2B%2C%3B%3D";</pre>
     
     <h3 id="static-encodeQuery">URI.encodeQuery()</h3>
-    <p>Decode a query string component. Works like <a href="#static-encode">encode()</a>, except it handles <code>%20</code> as <code>+</code> (space) if <a href="#setting-escapeQuerySpace"><code>URI.escapeQuerySpace = true;</code></a>.</p>
+    <p>Encode a query string component. Works like <a href="#static-encode">encode()</a>, except it handles <code>%20</code> as <code>+</code> (space) if <a href="#setting-escapeQuerySpace"><code>URI.escapeQuerySpace = true;</code></a>.</p>
     <pre class="prettyprint lang-js">URI.escapeQuerySpace = true; // default
 URI.encodeQuery(" ") === "+";
 
@@ -1260,7 +1260,7 @@ URI.commonPath("/foo/bar/baz.html", "/other/world.html");
 URI.commonPath("/foo", "bar");
 // returns ""</pre>
 
-    <h3 id="static-joinPath">URI.joinPath()</h3>
+    <h3 id="static-joinPaths">URI.joinPath()</h3>
     <p>URI.joinPath() composes a path from directory tokens.</p>
     <pre class="prettyprint lang-js">URI.joinPaths('/a/b', '/c', 'd', '/e');
 // returns URI("/a/b/c/d/e")

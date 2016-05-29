@@ -2,7 +2,7 @@
  * URI.js - Mutating URLs
  * jQuery Plugin
  *
- * Version: 1.18.0
+ * Version: 1.18.1
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/jquery-uri-plugin.html
@@ -16,7 +16,7 @@
   // https://github.com/umdjs/umd/blob/master/returnExports.js
   if (typeof exports === 'object') {
     // Node
-    module.exports = factory(require('jquery', './URI'));
+    module.exports = factory(require('jquery'), require('./URI'));
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(['jquery', './URI'], factory);

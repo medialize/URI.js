@@ -209,8 +209,8 @@
 
     u.username('').password('hahaha');
     equal(u.username(), '', 'changed username - password without username');
-    equal(u.password(), 'hahaha', 'changed passowrd - password without username');
-    equal(u+'', 'http://example.org/foo.html', 'changed url - password without username');
+    equal(u.password(), 'hahaha', 'changed password - password without username');
+    equal(u+'', 'http://:hahaha@example.org/foo.html', 'changed url - password without username');
   });
   test('hostname', function() {
     var u = new URI('http://example.org/foo.html');
