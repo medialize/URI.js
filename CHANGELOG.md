@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### master ###
+
+* fixing [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString) to allow callback to return `undefined` or `string` - [Issue #303](https://github.com/medialize/URI.js/issues/303)
+
 ### 1.18.1 (May 29th 2016) ###
 
 * fixing UMD wrapper of `jquery.URI.js` - [Issue #295](https://github.com/medialize/URI.js/issues/295)

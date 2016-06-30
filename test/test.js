@@ -1619,6 +1619,33 @@
 
     equal(result, expected, 'filtered in string URI identification');
   });
+  test('withinString - capture only', function() {
+    /*jshint laxbreak: true */
+    var source = 'Hello www.example.com,\n'
+      + 'http://google.com is a search engine, like http://www.bing.com\n'
+      + 'http://exämple.org/foo.html?baz=la#bumm is an IDN URL,\n'
+      + 'http://123.123.123.123/foo.html is IPv4 and http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html is IPv6.\n'
+      + 'links can also be in parens (http://example.org) or quotes »http://example.org«.';
+    var expected = [
+      'www.example.com',
+      'http://google.com',
+      'http://www.bing.com',
+      'http://exämple.org/foo.html?baz=la#bumm',
+      'http://123.123.123.123/foo.html',
+      'http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html',
+      'http://example.org',
+      'http://example.org'
+    ];
+
+    /*jshint laxbreak: false */
+    var links = [];
+    var result = URI.withinString(source, function(url) {
+      links.push(url);
+    });
+
+    deepEqual(links, expected, 'urls extracted');
+    equal(result, source, 'source not modified');
+  });
   test('noConflict', function() {
     var actual_lib = URI; // actual library; after loading, before noConflict()
     var unconflicted = URI.noConflict();
