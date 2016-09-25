@@ -5,6 +5,7 @@ The release notes tracked in this document are also made available on the [relea
 ### master ###
 
 * fixing [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString) to allow callback to return `undefined` or `string` - [Issue #303](https://github.com/medialize/URI.js/issues/303)
+* fixing [`.absoluteTo()`](http://medialize.github.io/URI.js/docs.html#absoluteto) to properly resolve relative paths for fragment-only URLs
 
 ### 1.18.1 (May 29th 2016) ###
 
