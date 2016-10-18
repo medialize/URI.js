@@ -1,5 +1,5 @@
 # URI.js #
-
+[![CDNJS](https://img.shields.io/cdnjs/v/URI.js.svg)](https://cdnjs.com/libraries/URI.js)
 * [About](http://medialize.github.io/URI.js/)
 * [Understanding URIs](http://medialize.github.io/URI.js/about-uris.html)
 * [Documentation](http://medialize.github.io/URI.js/docs.html)
