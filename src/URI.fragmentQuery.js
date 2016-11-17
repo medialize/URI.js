@@ -23,7 +23,7 @@
 (function (root, factory) {
   'use strict';
   // https://github.com/umdjs/umd/blob/master/returnExports.js
-  if (typeof exports === 'object') {
+  if (typeof exports === 'object' && typeof module !== 'undefined') {
     // Node
     module.exports = factory(require('./URI'));
   } else if (typeof define === 'function' && define.amd) {
