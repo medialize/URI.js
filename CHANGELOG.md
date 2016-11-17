@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.18.3 (November 17th 2016) ###
+
+* fixing UMD wrappers to properly detect CommonJS - [Issue #318](https://github.com/medialize/URI.js/issues/318), [PR #319](https://github.com/medialize/URI.js/pull/319)
+
 ### 1.18.2 (September 25th 2016) ###
 
 * fixing [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString) to allow callback to return `undefined` or `string` - [Issue #303](https://github.com/medialize/URI.js/issues/303)
