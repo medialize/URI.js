@@ -15,7 +15,7 @@
 (function (root, factory) {
   'use strict';
   // https://github.com/umdjs/umd/blob/master/returnExports.js
-  if (typeof exports === 'object') {
+  if (typeof module === 'object' && module.exports) {
     // Node
     module.exports = factory();
   } else if (typeof define === 'function' && define.amd) {
