@@ -13,7 +13,7 @@
 (function (root, factory) {
   'use strict';
   // https://github.com/umdjs/umd/blob/master/returnExports.js
-  if (typeof exports === 'object' && typeof module !== 'undefined') {
+  if (typeof module === 'object' && module.exports) {
     // Node
     module.exports = factory(require('./punycode'), require('./IPv6'), require('./SecondLevelDomains'));
   } else if (typeof define === 'function' && define.amd) {
