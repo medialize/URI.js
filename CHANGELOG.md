@@ -2,7 +2,7 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
-### master ###
+### 1.18.4 (December 4th 2016) ###
 
 * fixing [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString) to capture balanced parentheses - [Issue #247](https://github.com/medialize/URI.js/issues/247)
 
