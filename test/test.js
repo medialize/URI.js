@@ -19,6 +19,11 @@
       URI(undefined);
     }, TypeError, 'Failing undefined input');
   });
+  test('URI(null)', function() {
+    raises(function() {
+      URI(null);
+    }, TypeError, 'Failing undefined input');
+  });
   test('new URI(string)', function() {
     var u = new URI('http://example.org/');
     ok(u instanceof URI, 'instanceof URI');
