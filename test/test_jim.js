@@ -98,6 +98,18 @@
     u.filename('../name.html?query');
     equal(u.filename(), 'name.html%3Fquery', 'filename() has set invalid filename');
     equal(u.directory(), '/dir1', 'filename() has not altered directory properly');
+
+    u.filename(null);
+    equal(u.filename(), 'name.html%3Fquery', 'filename() has set invalid filename');
+    equal(u.directory(), '/dir1', 'filename() has not altered directory properly');
+
+    u.filename(false);
+    equal(u.filename(), 'name.html%3Fquery', 'filename() has set invalid filename');
+    equal(u.directory(), '/dir1', 'filename() has not altered directory properly');
+
+    u.filename(0);
+    equal(u.filename(), 'name.html%3Fquery', 'filename() has set invalid filename');
+    equal(u.directory(), '/dir1', 'filename() has not altered directory properly');
   });
   test('addQuery', function() {
     var u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
