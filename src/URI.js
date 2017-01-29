@@ -984,7 +984,7 @@
       }
 
       if (parensEnd > -1) {
-        slice = slice.slice(0, parensEnd) + slice.slice(parensEnd + 1).replace(_trim, '');
+        slice = slice.slice(0, parensEnd) + slice.slice(parensEnd).replace(_trim, '');
       } else {
         slice = slice.replace(_trim, '');
       }
