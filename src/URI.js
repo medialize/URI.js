@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.18.4
+ * Version: 1.18.5
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -61,6 +61,12 @@
       }
     }
 
+    if (url === null) {
+      if (_urlSupplied) {
+        throw new TypeError('null is not a valid argument for URI');
+      }
+    }
+
     this.href(url);
 
     // resolve to base according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
@@ -71,7 +77,7 @@
     return this;
   }
 
-  URI.version = '1.18.4';
+  URI.version = '1.18.5';
 
   var p = URI.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
@@ -978,7 +984,7 @@
       }
 
       if (parensEnd > -1) {
-        slice = slice.slice(0, parensEnd) + slice.slice(parensEnd + 1).replace(_trim, '');
+        slice = slice.slice(0, parensEnd) + slice.slice(parensEnd).replace(_trim, '');
       } else {
         slice = slice.replace(_trim, '');
       }
@@ -1565,7 +1571,7 @@
       return v === undefined ? '' : this;
     }
 
-    if (v === undefined || v === true) {
+    if (typeof v !== 'string') {
       if (!this._parts.path || this._parts.path === '/') {
         return '';
       }
