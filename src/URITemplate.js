@@ -137,7 +137,7 @@
   // pattern to verify variable name integrity
   URITemplate.VARIABLE_NAME_PATTERN = /[^a-zA-Z0-9%_.]/;
   // pattern to verify literal integrity
-  URITemplate.LITERAL_PATTERN = /[<>{}'"`^| \\]/;
+  URITemplate.LITERAL_PATTERN = /[<>{}"`^| \\]/;
 
   // expand parsed expression (expression, not template!)
   URITemplate.expand = function(expression, data) {
