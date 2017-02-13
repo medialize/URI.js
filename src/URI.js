@@ -989,6 +989,12 @@
         slice = slice.replace(_trim, '');
       }
 
+      if (slice.length <= match[0].length) {
+        // the extract only contains the starting marker of a URI,
+        // e.g. "www" or "http://"
+        continue;
+      }
+
       if (options.ignore && options.ignore.test(slice)) {
         continue;
       }

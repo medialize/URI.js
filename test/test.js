@@ -1586,14 +1586,16 @@
       + 'http://123.123.123.123/foo.html is IPv4 and http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html is IPv6.\n'
       + 'links can also be in parens (http://example.org) or quotes »http://example.org«, '
       + 'yet https://example.com/with_(balanced_parentheses) and https://example.com/with_(balanced_parentheses).txt contain the closing parens, but '
-      + 'https://example.com/with_unbalanced_parentheses) does not.';
+      + 'https://example.com/with_unbalanced_parentheses) does not.\n'
+      + 'Note that www. is not a URL and neither is http://.';
     var expected = 'Hello <a>www.example.com</a>,\n'
       + '<a>http://google.com</a> is a search engine, like <a>http://www.bing.com</a>\n'
       + '<a>http://exämple.org/foo.html?baz=la#bumm</a> is an IDN URL,\n'
       + '<a>http://123.123.123.123/foo.html</a> is IPv4 and <a>http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html</a> is IPv6.\n'
       + 'links can also be in parens (<a>http://example.org</a>) or quotes »<a>http://example.org</a>«, '
       + 'yet <a>https://example.com/with_(balanced_parentheses)</a> and <a>https://example.com/with_(balanced_parentheses).txt</a> contain the closing parens, but '
-      + '<a>https://example.com/with_unbalanced_parentheses</a>) does not.';
+      + '<a>https://example.com/with_unbalanced_parentheses</a>) does not.\n'
+      + 'Note that www. is not a URL and neither is http://.';
     /*jshint laxbreak: false */
     var result = URI.withinString(source, function(url) {
       return '<a>' + url + '</a>';
