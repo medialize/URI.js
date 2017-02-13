@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.18.7 (February 13th 2017) ###
+
+* fixing [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString) to ignore `www.` and `http://.` - [Issue #327](https://github.com/medialize/URI.js/issues/327)
+
 ### 1.18.6 (February 10th 2017) ###
 
 * fixing [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) to allow `'` (single quotes) in literals - [PR #326](https://github.com/medialize/URI.js/pull/326)
