@@ -1,3 +1,65 @@
+### This fork adds : 
+
+* CommonJS & Browser Compatibility
+* URI templating & Pattern Matching extension : URI.pattern-templating.js
+
+Extract data from uri using template :
+
+```
+  URI(uri).extract(template)
+```
+
+Generate uri from template and data : 
+
+```
+  URI.generate(template, data)
+```
+
+```javascript
+
+> URI("https://twitter.com/Evangenieur/status/143512989688008704")
+    .extract("https://twitter.com/{nickanme}/status/{status_id}")
+{ nickanme: 'Evangenieur',
+  status_id: '143512989688008704' }
+
+
+> URI("http://www.youtube.com/watch?feature=youtube_gdata_player&v=S23owdOuLjc")
+   .extract("http://www.youtube.com/watch?v={video_id}")
+{ video_id: 'S23owdOuLjc' }
+
+// More Complex
+> uri = 'http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=14&size=512x512&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Ccolor:red%7Clabel:C%7C40.718217,-73.998284&sensor=false'
+
+> template = 'http://maps.googleapis.com/maps/api/{map}?sensor={sensor}&center={center}&size={width}x{height}&markers=color:{markers.color}|label:{markers.label}|{markers.long},{markers.lat}'
+
+> result = URI(uri).extract(template)
+{ sensor: 'false',
+  center: 'Brooklyn Bridge,New York,NY',
+  width: '512',
+  height: '512',
+  map: 'staticmap',
+  markers: 
+   [ { color: 'blue',
+       label: 'S',
+       long: '40.702147',
+       lat: '-74.015794' },
+     { color: 'green',
+       label: 'G',
+       long: '40.711614',
+       lat: '-74.012318' },
+     { color: 'red|color:red',
+       label: 'C',
+       long: '40.718217',
+       lat: '-73.998284' } ] }
+
+// Generating an uri from template and data
+
+> URI.generate(template, result)
+"http://maps.googleapis.com/maps/api/staticmap?sensor=false&center=Brooklyn+Bridge%2CNew+York%2CNY&size=512x512&markers=color%3Ablue%7Clabel%3AS%7C40.702147%2C-74.015794&markers=color%3Agreen%7Clabel%3AG%7C40.711614%2C-74.012318&markers=color%3Ared%7Ccolor%3Ared%7Clabel%3AC%7C40.718217%2C-73.998284"
+
+```
+  
+
 # URI.js #
 
 [![CDNJS](https://img.shields.io/cdnjs/v/URI.js.svg)](https://cdnjs.com/libraries/URI.js)
