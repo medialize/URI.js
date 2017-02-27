@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.18.8 (February 27th 2017) ###
+
+* fixing [`.absoluteTo()`](http://medialize.github.io/URI.js/docs.html#absoluteto) to not resolve URIs containing a scheme - [Issue #328](https://github.com/medialize/URI.js/issues/328)
+
 ### 1.18.7 (February 13th 2017) ###
 
 * fixing [`URI.withinString()`](http://medialize.github.io/URI.js/docs.html#static-withinString) to ignore `www.` and `http://.` - [Issue #327](https://github.com/medialize/URI.js/issues/327)
