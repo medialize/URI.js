@@ -29,7 +29,7 @@ function build(files) {
             output_format: "text",
             output_info: "compiled_code"
         }, function(data) {
-            var code = "/*! URI.js v1.18.7 http://medialize.github.io/URI.js/ */\n/* build contains: " + files.join(', ') + " */\n" + data;
+            var code = "/*! URI.js v1.18.8 http://medialize.github.io/URI.js/ */\n/* build contains: " + files.join(', ') + " */\n" + data;
             $progress.hide();
             $out.val(code).parent().show();
             $out.prev().find('a').remove();
