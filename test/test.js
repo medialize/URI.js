@@ -1343,6 +1343,16 @@
         base: 'http://example.com/foo/bar',
         result: 'http://github.com//the_relative_url'
       }, {
+        name: 'absolute passthru - file:/// - urljoin (#328)',
+        url: 'file:///C:/skyclan/snipkit',
+        base: 'http://example.com/foo/bar',
+        result: 'file:///C:/skyclan/snipkit'
+      }, {
+        name: 'absolute passthru - generic empty-hostname - urljoin (#328)',
+        url: 'http:///foo',
+        base: 'http://example.com/foo/bar',
+        result: 'http:///foo'
+      }, {
         name: 'file paths - urljoin',
         url: 'anotherFile',
         base: 'aFile',
