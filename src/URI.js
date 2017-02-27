@@ -2077,7 +2077,10 @@
       base = new URI(base);
     }
 
-    if (!resolved._parts.protocol) {
+    if (resolved._parts.protocol) {
+      // Directly returns even if this._parts.hostname is empty.
+      return resolved;
+    } else {
       resolved._parts.protocol = base._parts.protocol;
     }
 
