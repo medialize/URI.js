@@ -408,4 +408,10 @@
     }, Error, 'Failing invalid literal');
   });
 
+  test('Strict mode', function () {
+    raises(function() {
+        new URITemplate("/{foo}/bar").expand({ foobar: 123 }, { strict: true });
+    }, Error, 'Missing expansion value for variable in strict mode.');
+  });
+
 })();

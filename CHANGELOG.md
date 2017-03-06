@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.18.9 (March 6th 2017) ###
+
+* adding option `strict` to [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) in order to throw an exception in case a placeholder could not be replaced - [PR #330](https://github.com/medialize/URI.js/issues/330)
+
 ### 1.18.8 (February 27th 2017) ###
 
 * fixing [`.absoluteTo()`](http://medialize.github.io/URI.js/docs.html#absoluteto) to not resolve URIs containing a scheme - [Issue #328](https://github.com/medialize/URI.js/issues/328)
