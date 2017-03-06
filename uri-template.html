@@ -107,6 +107,11 @@ template.expand(function(key) {
 template.expand({file : function(key) {
     return "hello world.html";
 }});
+
+// Using strict mode
+var template = new URITemplate("http://example.org/{file}");
+var result = template.expand({filename: "hello world.html"}, { strict: true });
+// Uncaught Error: Missing expansion value for variable "file"
 </pre>
     
     
