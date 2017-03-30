@@ -560,29 +560,20 @@
 
   });
   test('sld', function() {
-    // Lets just test them all..
-    // Calling URI.is(), URI.domain(), URI.subdomain() allows us to indirectly
-    // test SLD.has(), SLD.is() and SLD.get()
-    var u = new URI('http://www.example.org/foo.html');
-    equal(u.is('sld'), false, 'is not sld');
-    var list = SecondLevelDomains.list;
-    var tlds = Object.keys(list);
-    var iTld = tlds.length;
-    var tld, slds, sld, iSld;
-    while ( iTld-- ) {
-      tld = tlds[iTld];
-      slds = list[tld].trim().split(/\s+/);
-      iSld = slds.length;
-      while ( iSld-- ) {
-        sld = slds[iSld].trim() + '.' + tld;
-        u.hostname('www.example.' + sld);
-        equal(u.is('sld'), true, 'is sld');
-        equal(u.domain(), 'example.' + sld, 'domain is example.' + sld);
-        equal(u.subdomain(), 'www', 'subdomain is www');
-        u.hostname('www.example.' + tld);
-        equal(u.is('sld'), false, 'is not sld');
-      }
-    }
+    var u = new URI('http://www.example.ch/foo.html')
+    equal(u.is('sld'), false, 'is() www.example.ch');
+    equal(u.domain(), 'example.ch', 'domain() www.example.ch');
+    equal(u.subdomain(), 'www', 'subdomain() www.example.ch');
+
+    u = new URI('http://www.example.com/foo.html')
+    equal(u.is('sld'), false, 'is() www.example.com');
+    equal(u.domain(), 'example.com', 'domain() www.example.com');
+    equal(u.subdomain(), 'www', 'subdomain() www.example.com');
+
+    u = new URI('http://www.example.eu.com/foo.html')
+    equal(u.is('sld'), true, 'is() www.example.eu.com');
+    equal(u.domain(), 'example.eu.com', 'domain() www.example.eu.com');
+    equal(u.subdomain(), 'www', 'subdomain() www.example.eu.com');
   });
   test('directory', function() {
     var u = new URI('http://www.example.org/some/directory/foo.html');
@@ -1853,6 +1844,31 @@
   });
   test('encodeReserved', function() {
     equal(URI.encodeReserved('ä:/?#[]@!$&\'()*+,;='), '%C3%A4:/?#[]@!$&\'()*+,;=');
+  });
+
+  module('SecondLevelDomains');
+  test('SecondLevelDomains.get()', function() {
+    equal(SecondLevelDomains.get('www.example.ch'), null, 'www.example.ch')
+    equal(SecondLevelDomains.get('www.example.com'), null, 'www.example.com')
+    equal(SecondLevelDomains.get('www.example.eu.com'), 'eu.com', 'www.example.eu.com')
+    equal(SecondLevelDomains.get('www.example.co.uk'), 'co.uk', 'www.example.co.uk')
+  });
+  test('SecondLevelDomains.has()', function() {
+    equal(SecondLevelDomains.has('www.example.ch'), false, 'www.example.ch')
+    equal(SecondLevelDomains.has('www.example.com'), false, 'www.example.com')
+    equal(SecondLevelDomains.has('www.example.eu.com'), true, 'www.example.eu.com')
+    equal(SecondLevelDomains.has('www.example.co.uk'), true, 'www.example.co.uk')
+  });
+  test('SecondLevelDomains.is()', function() {
+    equal(SecondLevelDomains.is('ch'), false, 'ch')
+    equal(SecondLevelDomains.is('example.ch'), false, 'example.ch')
+
+    equal(SecondLevelDomains.is('com'), false, 'com')
+    equal(SecondLevelDomains.is('eu.com'), true, 'eu.com')
+    equal(SecondLevelDomains.is('example.com'), false, 'example.com')
+
+    equal(SecondLevelDomains.is('uk'), false, 'uk')
+    equal(SecondLevelDomains.is('co.uk'), true, 'co.uk')
   });
 
 })();

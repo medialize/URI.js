@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### master ###
+
+* adding support for [CentralNic](https://en.wikipedia.org/wiki/CentralNic#Second-level_domains) Second Level Domains - [Issue #333](https://github.com/medialize/URI.js/issues/333)
+
 ### 1.18.9 (March 6th 2017) ###
 
 * adding option `strict` to [`URITemplate()`](http://medialize.github.io/URI.js/uri-template.html) in order to throw an exception in case a placeholder could not be replaced - [PR #330](https://github.com/medialize/URI.js/issues/330)
