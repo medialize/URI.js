@@ -2,7 +2,7 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
-### master ###
+### 1.18.10 (March 30th 2017) ###
 
 * adding support for [CentralNic](https://en.wikipedia.org/wiki/CentralNic#Second-level_domains) Second Level Domains - [Issue #333](https://github.com/medialize/URI.js/issues/333)
 
