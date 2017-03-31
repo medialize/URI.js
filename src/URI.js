@@ -714,7 +714,9 @@
 
     var t = '';
     var unique, key, i, length;
-    for (key in data) {
+    var keys = Object.keys(data).sort();
+    for (var j = 0, keysLength = keys.length; j < keysLength; j++) {
+      key = keys[j];
       if (hasOwn.call(data, key) && key) {
         if (isArray(data[key])) {
           unique = {};
