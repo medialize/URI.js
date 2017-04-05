@@ -91,6 +91,9 @@ bower install uri.js
 
 # using npm
 npm install urijs
+
+# using yarn
+yarn add urijs
 ```
 
 ### Browser ###
