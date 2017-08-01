@@ -575,6 +575,10 @@
       string = '/' + string;
     }
 
+    if (parts.port) {
+      URI.ensureValidPort(parts.port);
+    }
+
     return string.substring(pos) || '/';
   };
   URI.parseAuthority = function(string, parts) {
@@ -1031,6 +1035,27 @@
     }
   };
 
+  URI.ensureValidPort = function(v) {
+    var valid = false;
+
+    if (!v || !v.length) {
+      // no custom port specified
+      valid = true;
+    } else {
+      var port = Number(v);
+
+      // verify type and range
+      if (Number.isInteger(port) && (port > 0) && (port < 65536)
+      ) {
+        valid = true;
+      }
+    }
+
+    if (!valid) {
+      throw new TypeError('Port "' + v + '" is not a valid port');
+    }
+  };
+
   // noConflict
   URI.noConflict = function(removeAll) {
     if (removeAll) {
@@ -1288,9 +1313,7 @@
           v = v.substring(1);
         }
 
-        if (v.match(/[^0-9]/)) {
-          throw new TypeError('Port "' + v + '" contains characters other than [0-9]');
-        }
+        URI.ensureValidPort(v);
       }
     }
     return _port.call(this, v, build);
