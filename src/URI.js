@@ -243,7 +243,7 @@
   // allowed hostname characters according to RFC 3986
   // ALPHA DIGIT "-" "." "_" "~" "!" "$" "&" "'" "(" ")" "*" "+" "," ";" "=" %encoded
   // I've never seen a (non-IDN) hostname other than: ALPHA DIGIT . -
-  URI.invalid_hostname_characters = /[^a-zA-Z0-9\.-]/;
+  URI.invalid_hostname_characters = /[^a-zA-Z0-9\.\-:]/;
   // map DOM Elements to their URI attribute
   URI.domAttributes = {
     'a': 'href',
@@ -524,6 +524,8 @@
     // what's left must be the path
     parts.path = string;
 
+    URI.basicValidation(parts);
+
     // and we're done
     return parts;
   };
@@ -573,6 +575,10 @@
     if (parts.hostname && string.substring(pos).charAt(0) !== '/') {
       pos++;
       string = '/' + string;
+    }
+
+    if (parts.hostname) {
+      URI.ensureValidHostname(parts.hostname);
     }
 
     if (parts.port) {
@@ -1028,9 +1034,8 @@
       if (!punycode) {
         throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-] and Punycode.js is not available');
       }
-
       if (punycode.toASCII(v).match(URI.invalid_hostname_characters)) {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.:-]');
       }
     }
   };
@@ -1053,6 +1058,16 @@
 
     if (!valid) {
       throw new TypeError('Port "' + v + '" is not a valid port');
+    }
+  };
+
+  URI.basicValidation = function(parts) {
+    var hasProtocol = !!parts.protocol; // not null and not empty an empty string
+    var isHttpOrHttps = hasProtocol && (parts.protocol.indexOf('http') !== -1);
+    var hasHostname = !!parts.hostname; // not null and not an empty string
+
+    if (isHttpOrHttps && !hasHostname) {
+      throw new TypeError('Hostname cannot be empty, if protocol is http(s)');
     }
   };
 
