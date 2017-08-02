@@ -1464,6 +1464,10 @@
         v += '.';
       }
 
+      if (v.indexOf(':') !== -1) {
+        throw new TypeError('Domains cannot contain colons');
+      }
+
       if (v) {
         URI.ensureValidHostname(v);
       }
@@ -1502,6 +1506,10 @@
     } else {
       if (!v) {
         throw new TypeError('cannot set domain empty');
+      }
+
+      if (v.indexOf(':') !== -1) {
+        throw new TypeError('Domains cannot contain colons');
       }
 
       URI.ensureValidHostname(v);

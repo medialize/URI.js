@@ -139,6 +139,11 @@
       new URI('http://example.org:65536');
     }, TypeError, "throws TypeError");
   });
+  test('function URI(string) with protocol and without hostname should throw', function () {
+    raises(function () {
+      new URI('http://');
+    }, TypeError, "throws TypeError");
+  });
   test('new URI(string, string)', function() {
     // see http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
     var u = new URI('../foobar.html', 'http://example.org/hello/world.html');
@@ -1353,11 +1358,6 @@
         url: 'file:///C:/skyclan/snipkit',
         base: 'http://example.com/foo/bar',
         result: 'file:///C:/skyclan/snipkit'
-      }, {
-        name: 'absolute passthru - generic empty-hostname - urljoin (#328)',
-        url: 'http:///foo',
-        base: 'http://example.com/foo/bar',
-        result: 'http:///foo'
       }, {
         name: 'file paths - urljoin',
         url: 'anotherFile',
