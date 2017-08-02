@@ -1040,25 +1040,17 @@
     }
   };
 
-  URI.ensureValidPort = function(v) {
-    var valid = false;
-
-    if (!v || !v.length) {
-      // no custom port specified
-      valid = true;
-    } else {
-      var port = Number(v);
-
-      // verify type and range
-      if (Number.isInteger(port) && (port > 0) && (port < 65536)
-      ) {
-        valid = true;
-      }
+  URI.ensureValidPort = function (v) {
+    if (!v) {
+      return;
     }
 
-    if (!valid) {
-      throw new TypeError('Port "' + v + '" is not a valid port');
+    var port = Number(v);
+    if (Number.isInteger(port) && (port > 0) && (port < 65536)) {
+      return;
     }
+
+    throw new TypeError('Port "' + v + '" is not a valid port');
   };
 
   URI.basicValidation = function(parts) {
