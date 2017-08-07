@@ -240,6 +240,12 @@
     ws: '80',
     wss: '443'
   };
+  // list of protocols which always require a hostname
+  URI.hostProtocols = [
+    'http',
+    'https'
+  ];
+
   // allowed hostname characters according to RFC 3986
   // ALPHA DIGIT "-" "." "_" "~" "!" "$" "&" "'" "(" ")" "*" "+" "," ";" "=" %encoded
   // I've never seen a (non-IDN) hostname other than: ALPHA DIGIT . -
@@ -524,8 +530,6 @@
     // what's left must be the path
     parts.path = string;
 
-    URI.basicValidation(parts);
-
     // and we're done
     return parts;
   };
@@ -577,9 +581,7 @@
       string = '/' + string;
     }
 
-    if (parts.hostname) {
-      URI.ensureValidHostname(parts.hostname);
-    }
+    URI.ensureValidHostname(parts.hostname, parts.protocol);
 
     if (parts.port) {
       URI.ensureValidPort(parts.port);
@@ -1025,11 +1027,21 @@
     return string;
   };
 
-  URI.ensureValidHostname = function(v) {
+  URI.ensureValidHostname = function(v, protocol) {
     // Theoretically URIs allow percent-encoding in Hostnames (according to RFC 3986)
     // they are not part of DNS and therefore ignored by URI.js
 
-    if (v.match(URI.invalid_hostname_characters)) {
+    var hasHostname = !!v; // not null and not an empty string
+    var hasProtocol = !!protocol;
+    var rejectEmptyHostname = false;
+
+    if (hasProtocol) {
+      rejectEmptyHostname = arrayContains(URI.hostProtocols, protocol);
+    }
+
+    if (rejectEmptyHostname && !hasHostname) {
+      throw new TypeError('Hostname cannot be empty, if protocol is ' + protocol);
+    } else if (v && v.match(URI.invalid_hostname_characters)) {
       // test punycode
       if (!punycode) {
         throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-] and Punycode.js is not available');
@@ -1051,16 +1063,6 @@
     }
 
     throw new TypeError('Port "' + v + '" is not a valid port');
-  };
-
-  URI.basicValidation = function(parts) {
-    var hasProtocol = !!parts.protocol; // not null and not empty an empty string
-    var isHttpOrHttps = hasProtocol && (parts.protocol.indexOf('http') !== -1);
-    var hasHostname = !!parts.hostname; // not null and not an empty string
-
-    if (isHttpOrHttps && !hasHostname) {
-      throw new TypeError('Hostname cannot be empty, if protocol is http(s)');
-    }
   };
 
   // noConflict
@@ -1338,6 +1340,7 @@
       }
 
       v = x.hostname;
+      URI.ensureValidHostname(v, this._parts.protocol);
     }
     return _hostname.call(this, v, build);
   };
@@ -1461,7 +1464,7 @@
       }
 
       if (v) {
-        URI.ensureValidHostname(v);
+        URI.ensureValidHostname(v, this._parts.protocol);
       }
 
       this._parts.hostname = this._parts.hostname.replace(replace, v);
@@ -1504,7 +1507,7 @@
         throw new TypeError('Domains cannot contain colons');
       }
 
-      URI.ensureValidHostname(v);
+      URI.ensureValidHostname(v, this._parts.protocol);
 
       if (!this._parts.hostname || this.is('IP')) {
         this._parts.hostname = v;

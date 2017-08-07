@@ -243,13 +243,16 @@
     equal(u.hostname(), 'abc.foobar.lala', 'hostname changed');
     equal(u+'', 'http://abc.foobar.lala/foo.html', 'hostname changed url');
 
-    u.hostname('');
-    equal(u.hostname(), '', 'hostname removed');
-    equal(u+'', 'http:///foo.html', 'hostname removed url');
-
     raises(function() {
       u.hostname('foo\\bar.com');
     }, TypeError, 'Failing backslash detection in hostname');
+
+    raises(function() {
+      u.hostname('');
+    }, TypeError, "Trying to set an empty hostname with http(s) protocol throws a TypeError");
+    raises(function() {
+      u.hostname(null);
+    }, TypeError, "Trying to set hostname to null with http(s) protocol throws a TypeError");
   });
   test('port', function() {
     var u = new URI('http://example.org/foo.html');
