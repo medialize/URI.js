@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.18.11 (August 8th 2017) ###
+
+* making [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) throw on invalid port and hostname - [Issue #344](https://github.com/medialize/URI.js/issues/344), [PR #345](https://github.com/medialize/URI.js/issues/345)
+
 ### 1.18.10 (March 30th 2017) ###
 
 * adding support for [CentralNic](https://en.wikipedia.org/wiki/CentralNic#Second-level_domains) Second Level Domains - [Issue #333](https://github.com/medialize/URI.js/issues/333)
