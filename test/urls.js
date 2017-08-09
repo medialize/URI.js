@@ -1113,6 +1113,55 @@ var urls = [{
       punycode: false
     }
   }, {
+    // https://github.com/medialize/URI.js/issues/347
+    name: 'Underscore in domain',
+    url: 'http://user:pass@some_where.exa_mple.org:123/some/directory/file.html?query=string#fragment',
+    parts: {
+      protocol: 'http',
+      username: 'user',
+      password: 'pass',
+      hostname: 'some_where.exa_mple.org',
+      port: '123',
+      path: '/some/directory/file.html',
+      query: 'query=string',
+      fragment: 'fragment'
+    },
+    accessors: {
+      protocol: 'http',
+      username: 'user',
+      password: 'pass',
+      port: '123',
+      path: '/some/directory/file.html',
+      query: 'query=string',
+      fragment: 'fragment',
+      resource: '/some/directory/file.html?query=string#fragment',
+      authority: 'user:pass@some_where.exa_mple.org:123',
+      origin: 'http://user:pass@some_where.exa_mple.org:123',
+      userinfo: 'user:pass',
+      subdomain: 'some_where',
+      domain: 'exa_mple.org',
+      tld: 'org',
+      directory: '/some/directory',
+      filename: 'file.html',
+      suffix: 'html',
+      hash: '#fragment',
+      search: '?query=string',
+      host: 'some_where.exa_mple.org:123',
+      hostname: 'some_where.exa_mple.org'
+    },
+    is: {
+      urn: false,
+      url: true,
+      relative: false,
+      name: true,
+      sld: false,
+      ip: false,
+      ip4: false,
+      ip6: false,
+      idn: false,
+      punycode: false
+    }
+  }, {
     name: 'IDN (punycode)',
     url: 'http://user:pass@xn--exmple-cua.org:123/some/directory/file.html?query=string#fragment',
     parts: {
