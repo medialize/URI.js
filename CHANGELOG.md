@@ -2,6 +2,11 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.18.12 (August 9th 2017) ###
+
+* making [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) allow `_` in hostname - [Issue #347](https://github.com/medialize/URI.js/issues/347), [PR #348](https://github.com/medialize/URI.js/issues/348)
+* fixing [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) to not use `Number.isNumber()` for IE compatibility - [Issue #350](https://github.com/medialize/URI.js/issues/350), [PR #351](https://github.com/medialize/URI.js/issues/351)
+
 ### 1.18.11 (August 8th 2017) ###
 
 * making [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) throw on invalid port and hostname - [Issue #344](https://github.com/medialize/URI.js/issues/344), [PR #345](https://github.com/medialize/URI.js/issues/345)

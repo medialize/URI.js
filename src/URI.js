@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.18.11
+ * Version: 1.18.12
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -81,7 +81,7 @@
     return /^[0-9]+$/.test(value);
   }
 
-  URI.version = '1.18.11';
+  URI.version = '1.18.12';
 
   var p = URI.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
