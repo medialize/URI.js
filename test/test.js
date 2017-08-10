@@ -1700,6 +1700,36 @@
     deepEqual(links, expected, 'urls extracted');
     equal(result, source, 'source not modified');
   });
+  test('ensureValidPort', function() {
+
+    function testPort(value) {
+      var result = true;
+      try {
+        URI.ensureValidPort(value);
+      } catch(e) {
+        result = false;
+      }
+
+      return result;
+    }
+
+    equal(testPort(8000), true);
+    equal(testPort('8080'), true);
+
+    equal(testPort(0), true);
+    equal(testPort(1), true);
+
+    equal(testPort(65535), true);
+    equal(testPort(65536), false);
+
+    equal(testPort(-8080), false);
+    equal(testPort('-8080'), false);
+
+    equal(testPort('aaa8080'), false);
+    equal(testPort('8080a'), false);
+
+    equal(testPort(8080.2), false);
+  });
   test('noConflict', function() {
     var actual_lib = URI; // actual library; after loading, before noConflict()
     var unconflicted = URI.noConflict();

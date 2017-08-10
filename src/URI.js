@@ -77,6 +77,10 @@
     return this;
   }
 
+  function isInteger(value) {
+    return /^[0-9]+$/.test(value);
+  }
+
   URI.version = '1.18.11';
 
   var p = URI.prototype;
@@ -1058,7 +1062,7 @@
     }
 
     var port = Number(v);
-    if (Number.isInteger(port) && (port > 0) && (port < 65536)) {
+    if (isInteger(port) && (port > 0) && (port < 65536)) {
       return;
     }
 
