@@ -780,6 +780,21 @@
       throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
     }
   };
+
+  URI.setQuery = function(data, name, value) {
+    if (typeof name === 'object') {
+      for (var key in name) {
+        if (hasOwn.call(name, key)) {
+          URI.setQuery(data, key, name[key]);
+        }
+      }
+    } else if (typeof name === 'string') {
+      data[name] = value === undefined ? null : value;
+    } else {
+      throw new TypeError('URI.setQuery() accepts an object, string as the name parameter');
+    }
+  };
+
   URI.removeQuery = function(data, name, value) {
     var i, length, key;
 
