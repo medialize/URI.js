@@ -1792,6 +1792,44 @@
     result = URI.joinPaths('a', '', '', 'b', '', '').toString();
     equal(result, 'a/b/', 'trailing empty segment');
   });
+  test('setQuery', function () {
+    var o = {foo: 'bar'};
+
+    URI.setQuery(o, 'foo', 'bam');
+    deepEqual(o, {foo: 'bam'}, 'set name, value');
+
+    URI.setQuery(o, 'array', ['one', 'two']);
+    deepEqual(o, {foo: 'bam', array: ['one', 'two']}, 'set name, array');
+
+    URI.setQuery(o, 'foo', 'qux');
+    deepEqual(o, {foo: 'qux', array: ['one', 'two']}, 'override name, value');
+
+    o = {foo: 'bar'};
+    URI.setQuery(o, {baz: 'qux'});
+    deepEqual(o, {foo: 'bar', baz: 'qux'}, 'set {name: value}');
+
+    URI.setQuery(o, {bar: ['1', '2']});
+    deepEqual(o, {foo: 'bar', bar: ['1', '2'], baz: 'qux'}, 'set {name: array}');
+
+    URI.setQuery(o, {foo: 'qux'});
+    deepEqual(o, {foo: 'qux', bar: ['1', '2'], baz: 'qux'}, 'override {name: value}');
+
+    o = {foo: 'bar'};
+    URI.setQuery(o, {bam: null, baz: ''});
+    deepEqual(o, {foo: 'bar', bam: null, baz: ''}, 'set {name: null}');
+
+    o = {foo: 'bar'};
+    URI.setQuery(o, 'empty');
+    deepEqual(o, {foo: 'bar', empty: null}, 'set undefined');
+
+    o = {foo: 'bar'};
+    URI.setQuery(o, 'empty', '');
+    deepEqual(o, {foo: 'bar', empty: ''}, 'set empty string');
+
+    o = {};
+    URI.setQuery(o, 'some value', 'must be encoded because of = and ? and #');
+    deepEqual(o, {'some value': 'must be encoded because of = and ? and #'}, 'encoding');
+  });
 
   module('comparing URLs');
   test('equals', function() {
