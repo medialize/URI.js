@@ -140,9 +140,15 @@
     }, TypeError, "throws TypeError");
   });
   test('function URI(string) with protocol and without hostname should throw', function () {
+    new URI('http://');
+
+    URI.preventInvalidHostname = true;
     raises(function () {
       new URI('http://');
     }, TypeError, "throws TypeError");
+
+    URI.preventInvalidHostname = false;
+    new URI('http://');
   });
   test('new URI(string, string)', function() {
     // see http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
@@ -251,9 +257,17 @@
       u.hostname('foo\\bar.com');
     }, TypeError, 'Failing backslash detection in hostname');
 
+    // instance does not fall back to global setting
+    URI.preventInvalidHostname = true;
+    u.hostname('');
+    u.hostname(null);
+    URI.preventInvalidHostname = false;
+
+    u.preventInvalidHostname(true);
     raises(function() {
       u.hostname('');
     }, TypeError, "Trying to set an empty hostname with http(s) protocol throws a TypeError");
+
     raises(function() {
       u.hostname(null);
     }, TypeError, "Trying to set hostname to null with http(s) protocol throws a TypeError");
@@ -1791,6 +1805,44 @@
 
     result = URI.joinPaths('a', '', '', 'b', '', '').toString();
     equal(result, 'a/b/', 'trailing empty segment');
+  });
+  test('setQuery', function () {
+    var o = {foo: 'bar'};
+
+    URI.setQuery(o, 'foo', 'bam');
+    deepEqual(o, {foo: 'bam'}, 'set name, value');
+
+    URI.setQuery(o, 'array', ['one', 'two']);
+    deepEqual(o, {foo: 'bam', array: ['one', 'two']}, 'set name, array');
+
+    URI.setQuery(o, 'foo', 'qux');
+    deepEqual(o, {foo: 'qux', array: ['one', 'two']}, 'override name, value');
+
+    o = {foo: 'bar'};
+    URI.setQuery(o, {baz: 'qux'});
+    deepEqual(o, {foo: 'bar', baz: 'qux'}, 'set {name: value}');
+
+    URI.setQuery(o, {bar: ['1', '2']});
+    deepEqual(o, {foo: 'bar', bar: ['1', '2'], baz: 'qux'}, 'set {name: array}');
+
+    URI.setQuery(o, {foo: 'qux'});
+    deepEqual(o, {foo: 'qux', bar: ['1', '2'], baz: 'qux'}, 'override {name: value}');
+
+    o = {foo: 'bar'};
+    URI.setQuery(o, {bam: null, baz: ''});
+    deepEqual(o, {foo: 'bar', bam: null, baz: ''}, 'set {name: null}');
+
+    o = {foo: 'bar'};
+    URI.setQuery(o, 'empty');
+    deepEqual(o, {foo: 'bar', empty: null}, 'set undefined');
+
+    o = {foo: 'bar'};
+    URI.setQuery(o, 'empty', '');
+    deepEqual(o, {foo: 'bar', empty: ''}, 'set empty string');
+
+    o = {};
+    URI.setQuery(o, 'some value', 'must be encoded because of = and ? and #');
+    deepEqual(o, {'some value': 'must be encoded because of = and ? and #'}, 'encoding');
   });
 
   module('comparing URLs');

@@ -2,6 +2,11 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.19.0 (October 1st 2017) ###
+
+* adding `.setFragment()` to [query fragment plugin](http://medialize.github.io/URI.js/docs.html#fragment-abuse-query) - [Issue #338](https://github.com/medialize/URI.js/issues/338), [PR #356](https://github.com/medialize/URI.js/issues/356)
+* adding setting [`URI.preventInvalidHostname`](http://medialize.github.io/URI.js/docs.html#setting-preventInvalidHostname) to control if an error should be thrown on invalid input - [Issue #352](https://github.com/medialize/URI.js/issues/352), [Issue #354](https://github.com/medialize/URI.js/issues/354), [Issue #355](https://github.com/medialize/URI.js/issues/355) - effectively making the changes of version 1.18.11 opt-in rather than default.
+
 ### 1.18.12 (August 9th 2017) ###
 
 * making [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) allow `_` in hostname - [Issue #347](https://github.com/medialize/URI.js/issues/347), [PR #348](https://github.com/medialize/URI.js/issues/348)

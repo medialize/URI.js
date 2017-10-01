@@ -1037,6 +1037,17 @@ parts === {
   hostname: "example.org",
   port: "8080"
 };</pre>
+    <p id="setting-preventInvalidHostname">As of v1.19.0 you can activate host name validation (disabled by default):</p>
+    <pre class="prettyprint lang-js">URI.preventInvalidHostname = true;
+var parts = {};
+var result = URI.parseHost("/foo.html", parts);
+// throws TypeError
+
+URI.preventInvalidHostname = false;
+var uri = new URI('http://example.org/')
+  .preventInvalidHostname(true)
+  .hostname('')
+// throws TypeError</pre>
 
     <h3 id="static-parseQuery">URI.parseQuery(<em>string</em> querystring)</h3>
     <p>Parses the passed query string into an object. Returns object <code>{propertyName: propertyValue}</code></p>
