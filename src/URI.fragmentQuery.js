@@ -19,6 +19,10 @@
 // uri.toString() === "http://example.org/#?bar=foo&name=value";
 // uri.removeFragment("name");
 // uri.toString() === "http://example.org/#?bar=foo";
+// uri.setFragment("name", "value1");
+// uri.toString() === "http://example.org/#?bar=foo&name=value1";
+// uri.setFragment("name", "value2");
+// uri.toString() === "http://example.org/#?bar=foo&name=value2";
 
 (function (root, factory) {
   'use strict';
@@ -57,12 +61,12 @@
   p.fragment = function(v, build) {
     var prefix = this._parts.fragmentPrefix;
     var fragment = this._parts.fragment || '';
-  
+
     if (v === true) {
       if (fragment.substring(0, prefix.length) !== prefix) {
         return {};
       }
-    
+
       return URI.parseQuery(fragment.substring(prefix.length));
     } else if (v !== undefined && typeof v !== 'string') {
       this._parts.fragment = prefix + URI.buildQuery(v);
@@ -96,8 +100,21 @@
     this.build(!build);
     return this;
   };
+  p.setFragment = function(name, value, build) {
+    var prefix = this._parts.fragmentPrefix;
+    var data = URI.parseQuery((this._parts.fragment || '').substring(prefix.length));
+    URI.setQuery(data, name, value);
+    this._parts.fragment = prefix + URI.buildQuery(data);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+
+    this.build(!build);
+    return this;
+  };
   p.addHash = p.addFragment;
   p.removeHash = p.removeFragment;
+  p.setHash = p.setFragment;
 
   // extending existing object rather than defining something new
   return URI;
