@@ -146,7 +146,7 @@
     domain = "com";
     for (j=0; j<3; j++) {
       //start new subdomain
-      domain = "." + domain; 
+      domain = "." + domain;
       for (i=0; i<70; i++) {
         domain = "a" + domain;
       }

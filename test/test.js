@@ -140,9 +140,15 @@
     }, TypeError, "throws TypeError");
   });
   test('function URI(string) with protocol and without hostname should throw', function () {
+    new URI('http://');
+
+    URI.preventInvalidHostname = true;
     raises(function () {
       new URI('http://');
     }, TypeError, "throws TypeError");
+
+    URI.preventInvalidHostname = false;
+    new URI('http://');
   });
   test('new URI(string, string)', function() {
     // see http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
@@ -251,9 +257,17 @@
       u.hostname('foo\\bar.com');
     }, TypeError, 'Failing backslash detection in hostname');
 
+    // instance does not fall back to global setting
+    URI.preventInvalidHostname = true;
+    u.hostname('');
+    u.hostname(null);
+    URI.preventInvalidHostname = false;
+
+    u.preventInvalidHostname(true);
     raises(function() {
       u.hostname('');
     }, TypeError, "Trying to set an empty hostname with http(s) protocol throws a TypeError");
+
     raises(function() {
       u.hostname(null);
     }, TypeError, "Trying to set hostname to null with http(s) protocol throws a TypeError");
