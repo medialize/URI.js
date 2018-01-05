@@ -198,6 +198,7 @@ If you don't like URI.js, you may like one of the following libraries. (If yours
 * [mediawiki Uri](https://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/resources/mediawiki/mediawiki.Uri.js?view=markup) (needs mw and jQuery)
 * [jurlp](https://github.com/tombonner/jurlp)
 * [jsUri](https://github.com/derek-watson/jsUri)
+* [URL Toolkit](https://github.com/tjenkinson/url-toolkit) Build an absolute URL from a base URL and a relative URL (RFC 1808)
 
 #### URL Parsers ####
 
