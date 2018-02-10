@@ -1240,10 +1240,18 @@
       this._parts = URI.parse(String(href), this._parts);
     } else if (_URI || _object) {
       var src = _URI ? href._parts : href;
+      var queryObject;
       for (key in src) {
+        if (key === 'query' && typeof src[key] === 'object') {
+          queryObject = true;
+          continue;
+        }
         if (hasOwn.call(this._parts, key)) {
           this._parts[key] = src[key];
         }
+      }
+      if (queryObject) {
+        this.query(src['query']);
       }
     } else {
       throw new TypeError('invalid input');
