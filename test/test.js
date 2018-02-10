@@ -34,6 +34,49 @@
     ok(u instanceof URI, 'instanceof URI');
     ok(u._parts.hostname !== undefined, 'host undefined');
   });
+
+  test('new URI(object)', function() {
+    var u = new URI({
+      protocol: 'http',
+      hostname: 'example.org',
+      query: {
+        foo: 'bar',
+        bar: 'foo',
+      },
+    });
+    ok(u instanceof URI, 'instanceof URI');
+    ok(typeof u.query() === 'string', 'query is string');
+    equal(u.query(), 'foo=bar&bar=foo', 'query has right value');
+    equal(u.search(), '?foo=bar&bar=foo', 'search has right value');
+    deepEqual(u.query(true), { foo: 'bar', bar: 'foo' }, 'query(true) value');
+    deepEqual(u.search(true), { foo: 'bar', bar: 'foo' }, 'search(true) value');
+  });
+  test('new URI(object)', function() {
+    var u = new URI({
+      protocol: 'http',
+      hostname: 'example.org',
+      query: 'foo=bar&bar=foo',
+    });
+    ok(u instanceof URI, 'instanceof URI');
+    ok(typeof u.query() === 'string', 'query is string');
+    equal(u.query(), 'foo=bar&bar=foo', 'query has right value');
+    equal(u.search(), '?foo=bar&bar=foo', 'search has right value');
+    deepEqual(u.query(true), { foo: 'bar', bar: 'foo' }, 'query(true) value');
+    deepEqual(u.search(true), { foo: 'bar', bar: 'foo' }, 'search(true) value');
+  });
+  test('new URI(object)', function() {
+    var u = new URI({
+      protocol: 'http',
+      hostname: 'example.org',
+      query: '?foo=bar&bar=foo',
+    });
+    ok(u instanceof URI, 'instanceof URI');
+    ok(typeof u.query() === 'string', 'query is string');
+    equal(u.query(), 'foo=bar&bar=foo', 'query has right value');
+    equal(u.search(), '?foo=bar&bar=foo', 'search has right value');
+    deepEqual(u.query(true), { foo: 'bar', bar: 'foo' }, 'query(true) value');
+    deepEqual(u.search(true), { foo: 'bar', bar: 'foo' }, 'search(true) value');
+  });
   test('new URI(Location)', function () {
     var u = new URI(location);
     equal(u.href(), String(location.href), 'location object');
