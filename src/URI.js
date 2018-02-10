@@ -1240,15 +1240,19 @@
       this._parts = URI.parse(String(href), this._parts);
     } else if (_URI || _object) {
       var src = _URI ? href._parts : href;
+      var hasQueryPart = false;
       for (key in src) {
         if (key === 'query') {
+          hasQueryPart = true;
           continue;
         }
         if (hasOwn.call(this._parts, key)) {
           this._parts[key] = src[key];
         }
       }
-      this.query(src['query']);
+      if (hasQueryPart) {
+        this.query(src['query']);
+      }
     } else {
       throw new TypeError('invalid input');
     }
