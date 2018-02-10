@@ -46,10 +46,10 @@
     });
     ok(u instanceof URI, 'instanceof URI');
     ok(typeof u.query() === 'string', 'query is string');
-    ok(u.query() === 'foo=bar&bar=foo', 'query has right value');
-    ok(u.search() === '?foo=bar&bar=foo', 'search has right value');
-    ok(typeof u.query(true) === 'object', 'query map is object');
-    ok(typeof u.search(true) === 'object', 'search map is object');
+    equal(u.query(), 'foo=bar&bar=foo', 'query has right value');
+    equal(u.search(), '?foo=bar&bar=foo', 'search has right value');
+    deepEqual(u.query(true), { foo: 'bar', bar: 'foo' }, 'query(true) value');
+    deepEqual(u.search(true), { foo: 'bar', bar: 'foo' }, 'search(true) value');
   });
   test('new URI(object)', function() {
     var u = new URI({
@@ -59,10 +59,10 @@
     });
     ok(u instanceof URI, 'instanceof URI');
     ok(typeof u.query() === 'string', 'query is string');
-    ok(u.query() === 'foo=bar&bar=foo', 'query has right value');
-    ok(u.search() === '?foo=bar&bar=foo', 'search has right value');
-    ok(typeof u.query(true) === 'object', 'query map is object');
-    ok(typeof u.search(true) === 'object', 'search map is object');
+    equal(u.query(), 'foo=bar&bar=foo', 'query has right value');
+    equal(u.search(), '?foo=bar&bar=foo', 'search has right value');
+    deepEqual(u.query(true), { foo: 'bar', bar: 'foo' }, 'query(true) value');
+    deepEqual(u.search(true), { foo: 'bar', bar: 'foo' }, 'search(true) value');
   });
   test('new URI(object)', function() {
     var u = new URI({
@@ -72,10 +72,10 @@
     });
     ok(u instanceof URI, 'instanceof URI');
     ok(typeof u.query() === 'string', 'query is string');
-    ok(u.query() === 'foo=bar&bar=foo', 'query has right value');
-    ok(u.search() === '?foo=bar&bar=foo', 'search has right value');
-    ok(typeof u.query(true) === 'object', 'query map is object');
-    ok(typeof u.search(true) === 'object', 'search map is object');
+    equal(u.query(), 'foo=bar&bar=foo', 'query has right value');
+    equal(u.search(), '?foo=bar&bar=foo', 'search has right value');
+    deepEqual(u.query(true), { foo: 'bar', bar: 'foo' }, 'query(true) value');
+    deepEqual(u.search(true), { foo: 'bar', bar: 'foo' }, 'search(true) value');
   });
   test('new URI(Location)', function () {
     var u = new URI(location);
