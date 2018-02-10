@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.19.1 (February 10th 2018) ###
+
+* fixing [`.href()`](http://medialize.github.io/URI.js/docs.html#href) to parse `query` property - [Issue #366](https://github.com/medialize/URI.js/issues/366), [PR #367](https://github.com/medialize/URI.js/issues/367)
+
 ### 1.19.0 (October 1st 2017) ###
 
 * adding `.setFragment()` to [query fragment plugin](http://medialize.github.io/URI.js/docs.html#fragment-abuse-query) - [Issue #338](https://github.com/medialize/URI.js/issues/338), [PR #356](https://github.com/medialize/URI.js/issues/356)

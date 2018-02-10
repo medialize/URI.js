@@ -2,7 +2,7 @@
  * URI.js - Mutating URLs
  * jQuery Plugin
  *
- * Version: 1.19.0
+ * Version: 1.19.1
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/jquery-uri-plugin.html
@@ -31,7 +31,7 @@
 
   var comparable = {};
   var compare = {
-    // equals 
+    // equals
     '=': function(value, target) {
       return value === target;
     },
@@ -51,7 +51,7 @@
         // add trailing slash so /dir/ will match the deep-end as well
         value += '/';
       }
-    
+
       return !!(value + '').match(new RegExp(escapeRegEx(target), 'i'));
     },
     'equals:': function(uri, target) {
@@ -74,7 +74,7 @@
       // compensate ambiguous <input> that is not an image
       return undefined;
     }
-  
+
     // NOTE: as we use a static mapping from element to attribute,
     // the HTML5 attribute issue should not come up again
     // https://github.com/medialize/URI.js/issues/69
@@ -120,17 +120,17 @@
     var $this = this.first();
     var elem = $this.get(0);
     var property = getUriProperty(elem);
-  
+
     if (!property) {
       throw new Error('Element "' + elem.nodeName + '" does not have either property: href, src, action, cite');
     }
-  
+
     if (uri !== undefined) {
       var old = $this.data('uri');
       if (old) {
         return old.href(uri);
       }
-    
+
       if (!(uri instanceof URI)) {
         uri = URI(uri || '');
       }
@@ -142,7 +142,7 @@
         uri = URI($this.attr(property) || '');
       }
     }
-  
+
     uri._dom_element = elem;
     uri._dom_attribute = property;
     uri.normalize();
@@ -164,7 +164,7 @@
       this._string = URI.build(this._parts);
       this._deferred_build = false;
     }
-  
+
     return this;
   };
 
@@ -173,12 +173,12 @@
   var pseudoArgs = /^([a-zA-Z]+)\s*([\^\$*]?=|:)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/;
   function uriPseudo (elem, text) {
     var match, property, uri;
-  
+
     // skip anything without src|href|action and bad :uri() syntax
     if (!getUriProperty(elem) || !text) {
       return false;
     }
-  
+
     match = text.match(pseudoArgs);
 
     if (!match || (!match[5] && match[2] !== ':' && !compare[match[2]])) {
@@ -188,7 +188,7 @@
     }
 
     uri = $(elem).uri();
-  
+
     if (match[5]) {
       return uri.is(match[5]);
     } else if (match[2] === ':') {
@@ -197,7 +197,7 @@
         // filers seem to fail silently
         return false;
       }
-    
+
       return compare[property](uri, match[4]);
     } else {
       property = match[1].toLowerCase();
@@ -205,7 +205,7 @@
         // filers seem to fail silently
         return false;
       }
-    
+
       return compare[match[2]](uri[property](), match[4], property);
     }
 
