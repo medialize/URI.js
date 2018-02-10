@@ -64,6 +64,19 @@
     ok(typeof u.query(true) === 'object', 'query map is object');
     ok(typeof u.search(true) === 'object', 'search map is object');
   });
+  test('new URI(object)', function() {
+    var u = new URI({
+      protocol: 'http',
+      hostname: 'example.org',
+      query: '?foo=bar&bar=foo',
+    });
+    ok(u instanceof URI, 'instanceof URI');
+    ok(typeof u.query() === 'string', 'query is string');
+    ok(u.query() === 'foo=bar&bar=foo', 'query has right value');
+    ok(u.search() === '?foo=bar&bar=foo', 'search has right value');
+    ok(typeof u.query(true) === 'object', 'query map is object');
+    ok(typeof u.search(true) === 'object', 'search map is object');
+  });
   test('new URI(Location)', function () {
     var u = new URI(location);
     equal(u.href(), String(location.href), 'location object');
