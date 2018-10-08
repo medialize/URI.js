@@ -1,0 +1,6 @@
+{
+    "name": "medialize/urijs",
+    "description": "Javascript URL mutation library",
+    "type": "library",
+    "license": "MIT"
+}
