@@ -487,28 +487,31 @@
 
   URI.encodeReserved = generateAccessor('reserved', 'encode');
 
-  URI.toUri = function(string, scheme = '//') {
+  URI.toUri = function(string, defaults) {
     /**
      * Convert a string which may or may not have a valid scheme
      * to a valid URI prepending a scheme if needed
      * @param {string} string The url to parse
      * @param {string} scheme The scheme to use. One of [//, https, http]
-     * @return
+     * @return {string} A valid URI
      *
      */
+    defaults = defaults || {};
     // if the uri doesn't have a scheme, add one
     // now so it doesn't get parsed as a path
     if (!string.match(/^(https|http)?:\/\//i)) {
       // add the given scheme if its a valid one
       switch (true) {
-        case scheme === 'http':
-        case scheme === 'https':
-          scheme = scheme+':';
+        case defaults.scheme === 'http':
+        case defaults.scheme === 'https':
+          defaults.scheme = defaults.scheme+':';
           break;
         default:
-          scheme = '';
+          defaults.scheme = '';
       }
-      string = scheme+'//'+string;
+      // make sure we always have at least // or it'll
+      // be parsed as a path
+      string = defaults.scheme+'//'+string;
     }
     return URI.build(URI.parse(string));
   };
