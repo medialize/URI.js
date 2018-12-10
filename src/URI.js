@@ -491,8 +491,10 @@
     /**
      * Convert a string which may or may not have a valid scheme
      * to a valid URI prepending a scheme if needed
-     * @param {string} string The url to parse
-     * @param {string} scheme The scheme to use. One of [//, https, http]
+     * @param {string} string   The url to parse
+     * @param {object} defaults The defaults to use for the URI properties if not parsed.
+     *        Currently only supports, defaults.scheme which should be one of [https, http]
+     *        '//' will be added if no scheme is parsed or provided
      * @return {string} A valid URI
      *
      */
