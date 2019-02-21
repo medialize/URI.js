@@ -941,6 +941,10 @@
     u.addQuery({'bam': null, 'baz': ''});
     equal(u.query(), 'foo=bar&bam&baz=', 'add {name: null}');
 
+    u.query('?foo');
+    u.addQuery({ bar: NaN, baz: ''});
+    equal(u.query(), 'foo&bar&baz=', 'add {bar: NaN}')
+
     u.query('?foo=bar');
     u.addQuery('empty');
     equal(u.query(), 'foo=bar&empty', 'add undefined');
@@ -952,6 +956,7 @@
     u.query('?foo');
     u.addQuery('foo', 'bar');
     equal(u.query(), 'foo=bar', 'add to null value');
+
 
     u.query('');
     u.addQuery('some value', 'must be encoded because of = and ? and #');

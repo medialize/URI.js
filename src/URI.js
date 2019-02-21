@@ -766,7 +766,7 @@
   URI.buildQueryParameter = function(name, value, escapeQuerySpace) {
     // http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type -- application/x-www-form-urlencoded
     // don't append "=" for null values, according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#url-parameter-serialization
-    return URI.encodeQuery(name, escapeQuerySpace) + (value !== null ? '=' + URI.encodeQuery(value, escapeQuerySpace) : '');
+    return URI.encodeQuery(name, escapeQuerySpace) + (value === null || Number.isNaN(value) ? '' : '=' + URI.encodeQuery(value, escapeQuerySpace) );
   };
 
   URI.addQuery = function(data, name, value) {
