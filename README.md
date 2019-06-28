@@ -32,6 +32,12 @@ url.addQuery("foo", "bar");
 
 URI.js is here to help with that.
 
+## Install ##
+
+```shell
+$ npm install urijs
+```
+
 
 ## API Example ##
 
