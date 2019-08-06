@@ -1335,7 +1335,7 @@
     equal(u.readable(), 'http://www.exämple.org/hello world/ä.html?foo[]=b är#fragment', 'readable URL');
 
     var u = new URI('http://hvgbook.net/?=5640');
-    equal(u.readable(), 'http://hvgbook.net/?=5640', 'readable URL: query where no name');
+    equal(u.readable(), 'http://hvgbook.net/?=5640', 'readable URL: query without key');
   });
 
   module('resolving URLs');
