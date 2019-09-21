@@ -1334,8 +1334,8 @@
     var u = new URI('http://foo:bar@www.xn--exmple-cua.org/hello%20world/ä.html?foo%5B%5D=b+är#fragment');
     equal(u.readable(), 'http://www.exämple.org/hello world/ä.html?foo[]=b är#fragment', 'readable URL');
 
-    var u = new URI('http://hvgbook.net/?=5640');
-    equal(u.readable(), 'http://hvgbook.net/?=5640', 'readable URL: query without key');
+    var u = new URI('http://example.org/?=5640');
+    equal(u.readable(), 'http://example.org/?=5640', 'readable URL: query without key');
   });
 
   module('resolving URLs');
