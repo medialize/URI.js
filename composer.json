@@ -1,0 +1,6 @@
+{
+    "name": "medialize/uri.js",
+    "description": "URLs in JavaScript",
+    "type": "library",
+    "license": "MIT"
+}
