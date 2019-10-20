@@ -234,6 +234,16 @@
     })(t);
   }
 
+  module('serializing');
+  test('scheme and relative path', function() {
+    var u = new URI('')
+      .protocol('food')
+      .path('test/file.csv')
+      .toString()
+
+    equal(u.toString(), 'food:///test/file.csv', 'relative-path with scheme but no authority');
+  });
+
   module('mutating basics');
   test('protocol', function() {
     var u = new URI('http://example.org/foo.html');
@@ -1321,6 +1331,9 @@
 
     u.query('?&foo=bar&foo=bar').normalizeQuery();
     equal(u.query(), 'foo=bar', 'duplicate key=value resolution');
+
+    u.query('?=bar').normalizeQuery();
+    equal(u.query(), '=bar', 'query without key');
   });
   test('normalizeFragment', function() {
     var u = new URI('http://example.org/foobar.html#');
@@ -1330,6 +1343,9 @@
   test('readable', function() {
     var u = new URI('http://foo:bar@www.xn--exmple-cua.org/hello%20world/ä.html?foo%5B%5D=b+är#fragment');
     equal(u.readable(), 'http://www.exämple.org/hello world/ä.html?foo[]=b är#fragment', 'readable URL');
+
+    var u = new URI('http://example.org/?=5640');
+    equal(u.readable(), 'http://example.org/?=5640', 'readable URL: query without key');
   });
 
   module('resolving URLs');
