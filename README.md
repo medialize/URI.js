@@ -10,6 +10,10 @@
 
 ---
 
+> **IMPORTANT:** You **may not need URI.js** anymore! Modern browsers provide the [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) and [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) interfaces.
+
+---
+
 > **NOTE:** The npm package name changed to `urijs`
 
 ---
@@ -114,7 +118,7 @@ URI("/foo/bar/baz.html")
 
 ### RequireJS ###
 
-Clone the URI.js repository or use a package manager to get URI.js into your project. 
+Clone the URI.js repository or use a package manager to get URI.js into your project.
 
 ```javascript
 require.config({
