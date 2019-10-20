@@ -234,6 +234,16 @@
     })(t);
   }
 
+  module('serializing');
+  test('scheme and relative path', function() {
+    var u = new URI('')
+      .protocol('food')
+      .path('test/file.csv')
+      .toString()
+
+    equal(u.toString(), 'food:///test/file.csv', 'relative-path with scheme but no authority');
+  });
+
   module('mutating basics');
   test('protocol', function() {
     var u = new URI('http://example.org/foo.html');

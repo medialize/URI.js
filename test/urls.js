@@ -630,6 +630,54 @@ var urls = [{
       punycode: false
     }
   }, {
+    name: 'missing authority',
+    url: 'food:///test/file.csv',
+    parts: {
+      protocol: 'food',
+      username: null,
+      password: null,
+      hostname: null,
+      port: null,
+      path: '/test/file.csv',
+      query: null,
+      fragment: null
+    },
+    accessors: {
+      protocol: 'food',
+      username: '',
+      password: '',
+      port: '',
+      path: '/test/file.csv',
+      query: '',
+      fragment: '',
+      resource: '/test/file.csv',
+      authority: '',
+      origin: '',
+      userinfo: '',
+      subdomain: '',
+      domain: '',
+      tld: '',
+      directory: '/test',
+      filename: 'file.csv',
+      suffix: 'csv',
+      hash: '',
+      search: '',
+      host: '',
+      hostname: ''
+    },
+    is: {
+      urn: false,
+      url: true,
+      relative: true,
+      name: false,
+      sld: false,
+      ip: false,
+      ip4: false,
+      ip6: false,
+      idn: false,
+      punycode: false
+    }
+  }, {
     name: 'IPv4',
     url: 'http://user:pass@123.123.123.123:123/some/directory/file.html?query=string#fragment',
     parts: {
