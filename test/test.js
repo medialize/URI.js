@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   /*global window, document, location, URI, URI_pre_lib, IPv6, IPv6_pre_lib, URITemplate, URITemplate_pre_lib, SecondLevelDomains, SecondLevelDomains_pre_lib, urls, test, ok, equal, strictEqual, deepEqual, raises */
-  // FIXME: v2.0.0 renamce non-camelCase properties to uppercase
+  // FIXME: v2.0.0 rename non-camelCase properties to uppercase
   /*jshint camelcase: false, loopfunc: true */
 
   test('loaded', function() {
