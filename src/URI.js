@@ -612,12 +612,14 @@
   };
   URI.parseUserinfo = function(string, parts) {
     // extract username:password
+    var firstBackSlash = string.indexOf('\\');
     var firstSlash = string.indexOf('/');
+    var slash = firstBackSlash === -1 ? firstSlash : (firstSlash !== -1 ? Math.min(firstBackSlash, firstSlash): firstSlash)
     var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
     var t;
 
-    // authority@ must come before /path
-    if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
+    // authority@ must come before /path or \path
+    if (pos > -1 && (slash === -1 || pos < slash)) {
       t = string.substring(0, pos).split(':');
       parts.username = t[0] ? URI.decode(t[0]) : null;
       t.shift();
