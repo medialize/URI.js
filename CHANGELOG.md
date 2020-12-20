@@ -2,6 +2,9 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.19.3 (December 20th 2020) ###
+
+* **SECURITY** fixing [`URI.parseAuthority()`](http://medialize.github.io/URI.js/docs.html#static-parseAuthority) to rewrite `\` to `/` as Node and Browsers do - disclosed privately, relates to [Issue #233](https://github.com/medialize/URI.js/pull/233)
 ### 1.19.2 (October 20th 2019) ###
 
 * fixing [`URI.build()`](http://medialize.github.io/URI.js/docs.html#static-build) to properly handle relative paths when a scheme is given - [Issue #387](https://github.com/medialize/URI.js/issues/387)
