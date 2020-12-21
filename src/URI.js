@@ -549,6 +549,13 @@
       string = '';
     }
 
+    // Copy chrome, IE, opera backslash-handling behavior.
+    // Back slashes before the query string get converted to forward slashes
+    // See: https://github.com/joyent/node/blob/386fd24f49b0e9d1a8a076592a404168faeecc34/lib/url.js#L115-L124
+    // See: https://code.google.com/p/chromium/issues/detail?id=25916
+    // https://github.com/medialize/URI.js/pull/233
+    string = string.replace(/\\/g, '/');
+
     // extract host:port
     var pos = string.indexOf('/');
     var bracketPos;
@@ -600,24 +607,19 @@
     return string.substring(pos) || '/';
   };
   URI.parseAuthority = function(string, parts) {
-    // Copy chrome, IE, opera backslash-handling behavior.
-    // Back slashes before the query string get converted to forward slashes
-    // See: https://github.com/joyent/node/blob/386fd24f49b0e9d1a8a076592a404168faeecc34/lib/url.js#L115-L124
-    // See: https://code.google.com/p/chromium/issues/detail?id=25916
-    // https://github.com/medialize/URI.js/pull/233
-    string = string.replace(/\\/g, '/');
-	  
     string = URI.parseUserinfo(string, parts);
     return URI.parseHost(string, parts);
   };
   URI.parseUserinfo = function(string, parts) {
     // extract username:password
+    var firstBackSlash = string.indexOf('\\');
     var firstSlash = string.indexOf('/');
+    var slash = firstBackSlash === -1 ? firstSlash : (firstSlash !== -1 ? Math.min(firstBackSlash, firstSlash): firstSlash)
     var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
     var t;
 
     // authority@ must come before /path or \path
-    if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
+    if (pos > -1 && (slash === -1 || pos < slash)) {
       t = string.substring(0, pos).split(':');
       parts.username = t[0] ? URI.decode(t[0]) : null;
       t.shift();
