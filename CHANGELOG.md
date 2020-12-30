@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.19.5 (December 30th 2020) ###
+
+* dropping jquery.URI.js from minified bundle accidentally added since v1.19.3 - [Issue #404](https://github.com/medialize/URI.js/issues/404)
+
 ### 1.19.4 (December 23rd 2020) ###
 
 * **SECURITY** fixing [`URI.parseAuthority()`](http://medialize.github.io/URI.js/docs.html#static-parseAuthority) to rewrite `\` to `/` as Node and Browsers do - followed up to by [alesandroortiz](https://github.com/alesandroortiz) in [PR #403](https://github.com/medialize/URI.js/issues/403), relates to [Issue #233](https://github.com/medialize/URI.js/pull/233)
