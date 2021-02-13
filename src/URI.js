@@ -526,7 +526,7 @@
         if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
           // : may be within the path
           parts.protocol = undefined;
-        } else if (string.substring(pos + 1, pos + 3) === '//') {
+        } else if (string.substring(pos + 1, pos + 3).replace(/\\/g, '/') === '//') {
           string = string.substring(pos + 3);
 
           // extract "user:pass@host:port"
