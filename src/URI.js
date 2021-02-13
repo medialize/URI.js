@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.19.5
+ * Version: 1.19.6
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -81,7 +81,7 @@
     return /^[0-9]+$/.test(value);
   }
 
-  URI.version = '1.19.5';
+  URI.version = '1.19.6';
 
   var p = URI.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
@@ -526,7 +526,7 @@
         if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
           // : may be within the path
           parts.protocol = undefined;
-        } else if (string.substring(pos + 1, pos + 3) === '//') {
+        } else if (string.substring(pos + 1, pos + 3).replace(/\\/g, '/') === '//') {
           string = string.substring(pos + 3);
 
           // extract "user:pass@host:port"

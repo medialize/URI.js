@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.19.6 (February 13th 2021) ###
+
+* **SECURITY** fixing [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) to rewrite `\` in scheme delimiter to `/` as Node and Browsers do - disclosed privately by [Yaniv Nizry](https://twitter.com/ynizry) from the CxSCA AppSec team at Checkmarx
+
 ### 1.19.5 (December 30th 2020) ###
 
 * dropping jquery.URI.js from minified bundle accidentally added since v1.19.3 - [Issue #404](https://github.com/medialize/URI.js/issues/404)

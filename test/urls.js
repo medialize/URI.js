@@ -2082,6 +2082,55 @@ var urls = [{
         idn: false,
         punycode: false
       }
+    }, {
+      name: 'backslashes protocol',
+      url: 'https:/\\attacker.com',
+      _url: 'https://attacker.com/',
+      parts: {
+        protocol: 'https',
+        username: null,
+        password: null,
+        hostname: 'attacker.com',
+        port: null,
+        path: '/',
+        query: null,
+        fragment: null
+      },
+      accessors: {
+        protocol: 'https',
+        username: '',
+        password: '',
+        port: '',
+        path: '/',
+        query: '',
+        fragment: '',
+        resource: '/',
+        authority: 'attacker.com',
+        origin: 'https://attacker.com',
+        userinfo: '',
+        subdomain: '',
+        domain: 'attacker.com',
+        tld: 'com',
+        directory: '/',
+        filename: '',
+        suffix: '',
+        hash: '',
+        search: '',
+        host: 'attacker.com',
+        hostname: 'attacker.com'
+      },
+      is: {
+        urn: false,
+        url: true,
+        relative: false,
+        name: true,
+        sld: false,
+        ip: false,
+        ip4: false,
+        ip6: false,
+        idn: false,
+        punycode: false
+      }
     }
 ];
 
