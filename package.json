@@ -42,6 +42,10 @@
     "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com)",
     "Justin Chase <justin.m.chase@gmail.com> (http://justinmchase.com)"
   ],
+  "scripts": {
+    "clean": "rm -rf dist/;",
+    "build": "npm run clean; mkdir dist/; ./node_modules/.bin/r.js -o baseUrl=./src  name=URI out=dist/$npm_package_name-$npm_package_version.min.js"
+  },
   "files": [
     "src/URI.js",
     "src/IPv6.js",
@@ -71,8 +75,9 @@
     }
   ],
   "devDependencies": {
-    "jshint-stylish": "~0.1.5",
     "grunt": "~0.4.2",
-    "grunt-contrib-jshint": "~0.8.0"
+    "grunt-contrib-jshint": "~0.8.0",
+    "jshint-stylish": "~0.1.5",
+    "requirejs": "^2.2.0"
   }
 }
