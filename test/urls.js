@@ -2131,6 +2131,54 @@ var urls = [{
         idn: false,
         punycode: false
       }
+    }, {
+      name: '__proto__ in query',
+      url: 'http://www.example.org/?__proto__=hasOwnProperty&__proto__=eviltwin&uuid',
+      parts: {
+        protocol: 'http',
+        username: null,
+        password: null,
+        hostname: 'www.example.org',
+        port: null,
+        path: '/',
+        query: '__proto__=hasOwnProperty&__proto__=eviltwin&uuid',
+        fragment: null
+      },
+      accessors: {
+        protocol: 'http',
+        username: '',
+        password: '',
+        port: '',
+        path: '/',
+        query: '__proto__=hasOwnProperty&__proto__=eviltwin&uuid',
+        fragment: '',
+        resource: '/?__proto__=hasOwnProperty&__proto__=eviltwin&uuid',
+        authority: 'www.example.org',
+        origin: 'http://www.example.org',
+        userinfo: '',
+        subdomain: 'www',
+        domain: 'example.org',
+        tld: 'org',
+        directory: '/',
+        filename: '',
+        suffix: '',
+        hash: '',
+        search: '?__proto__=hasOwnProperty&__proto__=eviltwin&uuid',
+        host: 'www.example.org',
+        hostname: 'www.example.org'
+      },
+      is: {
+        urn: false,
+        url: true,
+        relative: false,
+        name: true,
+        sld: false,
+        ip: false,
+        ip4: false,
+        ip6: false,
+        idn: false,
+        punycode: false
+      }
     }
 ];
 
