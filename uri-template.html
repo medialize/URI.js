@@ -198,7 +198,7 @@ var result = template.expand({filename: "hello world.html"}, { strict: true });
 
     <h3>Objects ("plain objects" / "hash maps")</h3>
     <p>
-        Given <code>{"var": {"one": "alpha", "two": "bravo"}}</code>, the expression <code>{var}</code> expands to <code>one,two,three</code>. 
+        Given <code>{"var": {"one": "alpha", "two": "bravo"}}</code>, the expression <code>{var}</code> expands to <code>one,alpha,two,bravo</code>. 
         The following table shows an output matrix for every possible operator/modifier combination produced for <code>object</code> input.
     </p>
     <table>
