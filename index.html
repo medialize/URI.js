@@ -5,8 +5,8 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>URI.js - URLs in Javascript</title>
     <meta name="description" content="URI.js is a Javascript library for working with URLs." />
-    
-    <script src="jquery-1.9.1.min.js" type="text/javascript"></script>
+
+    <script src="jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="prettify/prettify.js" type="text/javascript"></script>
     <script src="screen.js" type="text/javascript"></script>
     <link href="screen.css" rel="stylesheet" type="text/css" />
@@ -29,10 +29,10 @@
 <body>
     <a id="github-forkme" href="https://github.com/medialize/URI.js"><img src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
     <div id="github-watch"><a href="https://github.com/medialize/URI.js" class="gitwatch">URI.js Github Repository</a></div>
-    
+
     <div id="container">
     <h1><a href="https://github.com/medialize/URI.js">URI.js</a></h1>
-    
+
     <ul class="menu">
         <li class="active"><a href="/URI.js/">Intro</a></li>
         <li><a href="about-uris.html">Understanding URIs</a></li>
@@ -42,8 +42,8 @@
         <li><a href="build.html">Build</a></li>
         <li><a href="http://rodneyrehm.de/en/">Author</a></li>
     </ul>
-    
-    <p>URI.js is a javascript library for working with URLs. It offers a "jQuery-style" API (<a href="http://en.wikipedia.org/wiki/Fluent_interface">Fluent Interface</a>, Method Chaining) to read and write all regular components and a number of convenience methods like 
+
+    <p>URI.js is a javascript library for working with URLs. It offers a "jQuery-style" API (<a href="http://en.wikipedia.org/wiki/Fluent_interface">Fluent Interface</a>, Method Chaining) to read and write all regular components and a number of convenience methods like
         .<a href="docs.html#accessors-directory">directory</a>() and .<a href="docs.html#accessors-authority">authority</a>().</p>
     <p>URI.js offers simple, yet powerful ways of working with query string, has a number of URI-normalization functions and converts relative/absolute paths.</p>
     <p>While URI.js provides a <a href="jquery-uri-plugin.html">jQuery plugin</a>. URI.js itself does not rely on jQuery. You <em>don't need jQuery</em> to use URI.js</p>
@@ -52,13 +52,13 @@
     <p>How do you like manipulating URLs the "jQuery-style"?</p>
     <pre class="prettyprint lang-js">// mutating URLs
 URI("http://example.org/foo.html?hello=world")
-    .<a href="docs.html#accessors-username">username</a>("rodneyrehm") 
+    .<a href="docs.html#accessors-username">username</a>("rodneyrehm")
         // -> http://rodneyrehm@example.org/foo.html?hello=world
-    .<a href="docs.html#accessors-username">username</a>("") 
+    .<a href="docs.html#accessors-username">username</a>("")
         // -> http://example.org/foo.html?hello=world
     .<a href="docs.html#accessors-directory">directory</a>("bar")
         // -> http://example.org/bar/foo.html?hello=world
-    .<a href="docs.html#accessors-suffix">suffix</a>("xml")    
+    .<a href="docs.html#accessors-suffix">suffix</a>("xml")
         // -> http://example.org/bar/foo.xml?hello=world
     .<a href="docs.html#accessors-hash">hash</a>("hackernews")
         // -> http://example.org/bar/foo.xml?hello=world#hackernews
@@ -82,14 +82,14 @@ URI("http://example.org/foo.html?hello=world")
     .<a href="docs.html#search-remove">removeSearch</a>("foo")
         // -> ?hello=world
     </pre>
-    
+
     <p>How do you like relative paths?</p>
     <pre class="prettyprint lang-js">URI("/relative/path")
     .<a href="docs.html#relativeto">relativeTo</a>("/relative/sub/foo/sub/file")
-        // -> ../../../path 
+        // -> ../../../path
     .<a href="docs.html#absolute">absoluteTo</a>("/relative/sub/foo/sub/file");
         // -> /relative/path </pre>
-    
+
     <p>How do you like cleaning things up?</p>
     <pre class="prettyprint lang-js">URI("?&amp;foo=bar&amp;&amp;foo=bar&amp;foo=baz&amp;&quot;)
     .<a href="docs.html#normalize-search">normalizeSearch</a>();
@@ -98,7 +98,7 @@ URI("http://example.org/foo.html?hello=world")
 URI("/hello/foo/woo/.././../world.html")
     .<a href="docs.html#normalize-path">normalizePathname</a>();
         // -> /hello/world.html </pre>
-    
+
     <p>How do you like detecting URIs within random text?</p>
     <pre class="prettyprint lang-js">var source = "Hello www.example.com,\n"
     + "http://google.com is a search engine, like http://www.bing.com\n"
@@ -129,7 +129,7 @@ links can also be in parens (<strong>&lt;a&gt;http://example.org&lt;/a&gt;</stro
 
 a !== b;
 URI(a).<a href="docs.html#equals">equals</a>(b) === true;</pre>
-    
+
     <p>How do you like fiddling with the fragment?</p>
     <pre class="prettyprint lang-js">// <strong>storing values in the fragment (hash):</strong>
 var uri = URI("#hello-world");
@@ -150,24 +150,24 @@ uri.toString() === "http://example.org/#!/hello.html"
 uri.protocol() == "urn";
 uri.path() == "uuid:c5542ab6-3d96-403e-8e6b-b8bb52f48d9a";
 uri.query() == "query=string";</pre>
-    
+
     <p>How do you like URI Templating?</p>
     <pre class="prettyprint lang-js">URI.expand("/foo/{dir}/{file}", {
   dir: "bar",
   file: "world.html"
 });
 // -> /foo/bar/world.html</pre>
-    
+
     <h2 id="authors">Authors</h2>
     <ul>
         <li><a href="http://rodneyrehm.de/en/">Rodney Rehm</a></li>
     </ul>
-    
+
     <h2 id="license">License</h2>
     <p>URI.js is published under the <a href="http://www.opensource.org/licenses/mit-license">MIT license</a>.</p>
-    
+
     </div>
-    
+
     <script type="text/javascript" src="https://raw.github.com/addyosmani/github-watchers-button/master/github-watchers.min.js"></script>
 </body>
 </html>

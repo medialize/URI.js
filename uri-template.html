@@ -5,8 +5,8 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>URI.js - URI-Template</title>
     <meta name="description" content="URI.js is a Javascript library for working with URLs." />
-    
-    <script src="jquery-1.9.1.min.js" type="text/javascript"></script>
+
+    <script src="jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="prettify/prettify.js" type="text/javascript"></script>
     <script src="screen.js" type="text/javascript"></script>
     <link href="screen.css" rel="stylesheet" type="text/css" />
@@ -38,12 +38,12 @@
             font-weight: bold;
             color: #663399;
         }
-        
+
         pre {
             padding: 10px;
             background: #EEE;
         }
-        
+
         table {
             width: 100%;
             border: 1px solid #AAA;
@@ -61,10 +61,10 @@
 </head>
 <body>
     <a id="github-forkme" href="https://github.com/medialize/URI.js"><img src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-    
+
     <div id="container">
     <h1><a href="https://github.com/medialize/URI.js">URI.js</a></h1>
-    
+
     <ul class="menu">
         <li><a href="/URI.js/">Intro</a></li>
         <li><a href="about-uris.html">Understanding URIs</a></li>
@@ -74,14 +74,14 @@
         <li><a href="build.html">Build</a></li>
         <li><a href="http://rodneyrehm.de/en/">Author</a></li>
     </ul>
-    
+
     <h2>URI Template</h2>
-    
+
     <p>As of version 1.7.0 URI.js includes an implementation of URI Templates, as specified in <a href="http://tools.ietf.org/html/rfc6570">RFC 6570</a> (Level 4, March 2012).</p>
-    
+
 
     <h2>Using URI Templates</h2>
-    
+
     <pre class="prettyprint lang-js">
 // creating a new URI Template
 var template = new URITemplate("http://example.org/{file}");
@@ -113,11 +113,11 @@ var template = new URITemplate("http://example.org/{file}");
 var result = template.expand({filename: "hello world.html"}, { strict: true });
 // Uncaught Error: Missing expansion value for variable "file"
 </pre>
-    
-    
-    
+
+
+
     <h2>URI Template Syntax</h2>
-    
+
     <p><em>Expressions</em> are placeholders which are to be substituted by the values their variables reference.</p>
     <ul>
         <li><code>http://example.org/~<strong>{<em class="tpl-variable">username</em>}</strong>/</code></li>
@@ -128,7 +128,7 @@ var result = template.expand({filename: "hello world.html"}, { strict: true });
         An expression consists of an <span class="tpl-operator">operator</span> and a (comma-separated) list of <em>variable-specifications</em>.
         A variable-specification consists of a <em class="tpl-variable">variable</em> and an optional <em class="tpl-modifier">modifier</em>.
     </p>
-    
+
     <hr>
     <p>Given the template</p>
     <pre><code>http://example.org/~<strong>{<em class="tpl-variable">username</em>}</strong>/<strong>{<em class="tpl-variable">term</em><span class="tpl-modifier">:1</span>}</strong>/<strong>{<em class="tpl-variable">term</em>}</strong><strong>{<span class="tpl-operator">?</span><em class="tpl-variable">q</em><span class="tpl-modifier">*</span>,<em class="tpl-variable">lang</em>}</strong></code></pre>
@@ -137,7 +137,7 @@ var result = template.expand({filename: "hello world.html"}, { strict: true });
     <p>the expansion looks as follows:
     <pre><code>"http://example.org/~rodneyrehm/h/hello%20world?a=mars&amp;b=jupiter&amp;lang=en"</code></pre>
     <hr>
-    
+
     <p>List of supported <span class="tpl-operator">operators</span>:</p>
     <table>
         <tr><th>Operator</th><th>Description</th></tr>
@@ -150,7 +150,7 @@ var result = template.expand({filename: "hello world.html"}, { strict: true });
         <tr><td><code>?</code></td><td>Query component beginning with "?" and consisting of name=value pairs separated by "&amp;"; and,</td></tr>
         <tr><td><code>&amp;</code></td><td>Continuation of query-style &amp;name=value pairs within a literal query component.</td></tr>
     </table>
-    
+
     <p>List of supported <span class="tpl-modifier">modifiers</span>:</p>
     <table>
         <tr><th>Modifier</th><th>Description</th></tr>
@@ -161,7 +161,7 @@ var result = template.expand({filename: "hello world.html"}, { strict: true });
 
     <h3>Strings and Numbers</h3>
     <p>
-        Given <code>{"var": "hello[world]"}</code>, the expression <code>{var}</code> expands to <code>hello%5Bworld%5D</code>. 
+        Given <code>{"var": "hello[world]"}</code>, the expression <code>{var}</code> expands to <code>hello%5Bworld%5D</code>.
         The following table shows an output matrix for every possible operator/modifier combination produced for <code>string</code> input.
     </p>
     <table>
@@ -180,7 +180,7 @@ var result = template.expand({filename: "hello world.html"}, { strict: true });
 
     <h3>Arrays</h3>
     <p>
-        Given <code>{"var": ["one", "two", "three"]}</code>, the expression <code>{var}</code> expands to <code>one,two,three</code>. 
+        Given <code>{"var": ["one", "two", "three"]}</code>, the expression <code>{var}</code> expands to <code>one,two,three</code>.
         The following table shows an output matrix for every possible operator/modifier combination produced for <code>array</code> input.
     </p>
     <table>
@@ -198,7 +198,7 @@ var result = template.expand({filename: "hello world.html"}, { strict: true });
 
     <h3>Objects ("plain objects" / "hash maps")</h3>
     <p>
-        Given <code>{"var": {"one": "alpha", "two": "bravo"}}</code>, the expression <code>{var}</code> expands to <code>one,two,three</code>. 
+        Given <code>{"var": {"one": "alpha", "two": "bravo"}}</code>, the expression <code>{var}</code> expands to <code>one,two,three</code>.
         The following table shows an output matrix for every possible operator/modifier combination produced for <code>object</code> input.
     </p>
     <table>
@@ -220,8 +220,8 @@ var result = template.expand({filename: "hello world.html"}, { strict: true });
     <p>URI Template is a <em>Proposed Standard</em> and because of that I did not want to deviate from it. That said I'm not at all happy with how the specification turned out. Here are some of my thoughts:</p>
     <ul>
         <li>The <em>explode modifier</em> works the wrong way. <code>{?some_object}</code> should lead to <code>?foo=bar&amp;hello=world</code>, as this is the common expansion</li>
-        <li>The <em>prefix modifier</em> (which I would've named <em>truncate modifier</em>) only has an end-offset. 
-            The specification says it's »used to partition an identifier space hierarchically«. <code>abc</code> may become <code>a/bc</code> or <code>a/ab/abc</code>. 
+        <li>The <em>prefix modifier</em> (which I would've named <em>truncate modifier</em>) only has an end-offset.
+            The specification says it's »used to partition an identifier space hierarchically«. <code>abc</code> may become <code>a/bc</code> or <code>a/ab/abc</code>.
             But there is no way of modifying output to <code>a/b/c</code> or <code>a/b/abc</code>. Whenever I had to partition identifier spaces, I used one of the latter patterns.</li>
         <li>Operators like <code>.</code> automatically prefix the expansion. So <code>{"var": ["filename", "extension"]}</code> and <code>{.var*}</code> results in <code>.filename.extension</code> - obviously not what I wanted.</li>
         <li>Variable names (<em>varname</em>) may only contain <code>ALPHA / DIGIT / "_" / pct-encoded</code> and may not be decoded for resolving the reference. This simply feels weird, especially the "may not be decoded" part.</li>
@@ -233,7 +233,7 @@ var result = template.expand({filename: "hello world.html"}, { strict: true });
 
 
 
-    
+
     </div>
 </body>
 </html>
