@@ -1,6 +1,6 @@
 {
   "name": "urijs",
-  "version": "1.19.6",
+  "version": "1.19.7",
   "title": "URI.js - Mutating URLs",
   "author": {
     "name": "Rodney Rehm",
@@ -69,10 +69,5 @@
         "LICENSE.txt"
       ]
     }
-  ],
-  "devDependencies": {
-    "jshint-stylish": "~0.1.5",
-    "grunt": "~0.4.2",
-    "grunt-contrib-jshint": "~0.8.0"
-  }
+  ]
 }

@@ -418,6 +418,10 @@
     equal(u.query(), 'foo&foo=bar', 'search: foo&foo=bar');
     equal(JSON.stringify(u.query(true)), JSON.stringify({foo: [null, 'bar']}), 'parsed query: {foo:[null, "bar"]}');
 
+    u.search('__proto__=hasOwnProperty&__proto__=eviltwin&uuid');
+    equal(u.query(), '__proto__=hasOwnProperty&__proto__=eviltwin&uuid', 'search: __proto__=hasOwnProperty&__proto__=eviltwin&uuid');
+    equal(JSON.stringify(u.query(true)), '{"uuid":null}', 'parsed query: {uuid: null}');
+
     // parsing empty query
     var t;
     t = u.query('?').query(true);
@@ -931,6 +935,10 @@
     u.setQuery('some value', 'must be encoded because of = and ? and #');
     equal(u.query(), 'some+value=must+be+encoded+because+of+%3D+and+%3F+and+%23', 'encoding');
     equal(u.query(true)['some value'], 'must be encoded because of = and ? and #', 'decoding');
+
+    u.query('?foo=bar');
+    u.setQuery('__proto__', 'hasOwnProperty');
+    equal(u.query(), 'foo=bar', 'set __proto__');
   });
   test('addQuery', function() {
     var u = URI('?foo=bar');

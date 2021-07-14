@@ -2,6 +2,13 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.19.7 (July 14th 2021) ###
+
+* **SECURITY** fixing [`URI.parseQuery()`](http://medialize.github.io/URI.js/docs.html#static-parseQuery) to prevent overwriting `__proto__` in parseQuery() - disclosed privately by @NewEraCracker
+* **SECURITY** fixing [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) to handle variable amounts of `\` and `/` in scheme delimiter as Node and Browsers do - disclosed privately by [ready-research](https://github.com/ready-research) via https://huntr.dev/
+* removed obsolete build tools
+* updated jQuery versions (verifying compatibility with 1.12.4, 2.2.4, 3.6.0)
+
 ### 1.19.6 (February 13th 2021) ###
 
 * **SECURITY** fixing [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) to rewrite `\` in scheme delimiter to `/` as Node and Browsers do - disclosed privately by [Yaniv Nizry](https://twitter.com/ynizry) from the CxSCA AppSec team at Checkmarx
