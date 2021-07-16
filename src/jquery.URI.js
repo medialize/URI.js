@@ -26,7 +26,7 @@
   }
 }(this, function ($, URI) {
   'use strict';
-  // FIXME: v2.0.0 renamce non-camelCase properties to uppercase
+  // FIXME: v2.0.0 rename non-camelCase properties to uppercase
   /*jshint camelcase: false */
 
   var comparable = {};

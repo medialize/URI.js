@@ -1,5 +1,5 @@
 /*global window */
-// FIXME: v2.0.0 renamce non-camelCase properties to uppercase
+// FIXME: v2.0.0 rename non-camelCase properties to uppercase
 /*jshint camelcase: false */
 window.URI                = window.URI_pre_lib                = 'original URI, before loading URI.js library';
 window.URITemplate        = window.URITemplate_pre_lib        = 'original URITemplate, before loading URI.js library';

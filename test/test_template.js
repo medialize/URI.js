@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   /*global window, URITemplate, URITemplate_pre_lib, test, equal, strictEqual, raises */
-  // FIXME: v2.0.0 renamce non-camelCase properties to uppercase
+  // FIXME: v2.0.0 rename non-camelCase properties to uppercase
   /*jshint camelcase: false, loopfunc: true, newcap: false */
 
   var levels = {
