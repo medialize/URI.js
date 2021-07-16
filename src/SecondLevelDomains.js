@@ -178,7 +178,8 @@
       'com': 'ar br cn de eu gb gr hu jpn kr no qc ru sa se uk us uy za ',
       'net': 'gb jp se uk ',
       'org': 'ae',
-      'de': 'com '
+      'de': 'com ',
+      'ee': 'edu gov riik lib med com pri aip org fie '
     },
     // gorhill 2013-10-25: Using indexOf() instead Regexp(). Significant boost
     // in both performance and memory footprint. No initialization required.
