@@ -2328,6 +2328,55 @@ var urls = [{
         punycode: false
       }
     }, {
+      name: 'excessive slash protocol https case-insensitive',
+      url: 'hTTps://////attacker.com',
+      _url: 'hTTps://attacker.com/',
+      parts: {
+        protocol: 'hTTps',
+        username: null,
+        password: null,
+        hostname: 'attacker.com',
+        port: null,
+        path: '/',
+        query: null,
+        fragment: null
+      },
+      accessors: {
+        protocol: 'hTTps',
+        username: '',
+        password: '',
+        port: '',
+        path: '/',
+        query: '',
+        fragment: '',
+        resource: '/',
+        authority: 'attacker.com',
+        origin: 'hTTps://attacker.com',
+        userinfo: '',
+        subdomain: '',
+        domain: 'attacker.com',
+        tld: 'com',
+        directory: '/',
+        filename: '',
+        suffix: '',
+        hash: '',
+        search: '',
+        host: 'attacker.com',
+        hostname: 'attacker.com'
+      },
+      is: {
+        urn: false,
+        url: true,
+        relative: false,
+        name: true,
+        sld: false,
+        ip: false,
+        ip4: false,
+        ip6: false,
+        idn: false,
+        punycode: false
+      }
+    }, {
       name: 'no slash protocol ftp',
       url: 'ftp:attacker.com',
       _url: 'ftp://attacker.com/',
