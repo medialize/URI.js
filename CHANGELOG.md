@@ -2,6 +2,10 @@
 
 The release notes tracked in this document are also made available on the [releases page](https://github.com/medialize/URI.js/releases)
 
+### 1.19.8 (February 15th 2022) ###
+
+* **SECURITY** fixing [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) treat scheme case-insenstivie when handling excessive slackes and backslashes - [PR #412](https://github.com/medialize/URI.js/pull/412) by [r0hanSH](https://github.com/r0hanSH)
+
 ### 1.19.7 (July 14th 2021) ###
 
 * **SECURITY** fixing [`URI.parseQuery()`](http://medialize.github.io/URI.js/docs.html#static-parseQuery) to prevent overwriting `__proto__` in parseQuery() - disclosed privately by @NewEraCracker
