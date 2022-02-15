@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.19.7
+ * Version: 1.19.8
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -81,7 +81,7 @@
     return /^[0-9]+$/.test(value);
   }
 
-  URI.version = '1.19.7';
+  URI.version = '1.19.8';
 
   var p = URI.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
@@ -513,7 +513,7 @@
     }
 
     // slashes and backslashes have lost all meaning for the web protocols (https, http, wss, ws)
-    string = string.replace(/^(https?|ftp|wss?)?:[/\\]*/, '$1://');
+    string = string.replace(/^(https?|ftp|wss?)?:[/\\]*/i, '$1://');
 
     // extract protocol
     if (string.substring(0, 2) === '//') {
