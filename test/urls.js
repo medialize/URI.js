@@ -2571,6 +2571,55 @@ var urls = [{
         idn: false,
         punycode: false
       }
+    }, {
+      name: 'leading white space',
+      url: '\t\bhttp://www.example.org/?hello=world',
+      _url: 'http://www.example.org/?hello=world',
+      parts: {
+        protocol: 'http',
+        username: null,
+        password: null,
+        hostname: 'www.example.org',
+        port: null,
+        path: '/',
+        query: 'hello=world',
+        fragment: null
+      },
+      accessors: {
+        protocol: 'http',
+        username: '',
+        password: '',
+        port: '',
+        path: '/',
+        query: 'hello=world',
+        fragment: '',
+        resource: '/?hello=world',
+        authority: 'www.example.org',
+        origin: 'http://www.example.org',
+        userinfo: '',
+        subdomain: 'www',
+        domain: 'example.org',
+        tld: 'org',
+        directory: '/',
+        filename: '',
+        suffix: '',
+        hash: '',
+        search: '?hello=world',
+        host: 'www.example.org',
+        hostname: 'www.example.org'
+      },
+      is: {
+        urn: false,
+        url: true,
+        relative: false,
+        name: true,
+        sld: false,
+        ip: false,
+        ip4: false,
+        ip6: false,
+        idn: false,
+        punycode: false
+      }
     }
 ];
 
