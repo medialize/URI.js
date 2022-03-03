@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.19.8
+ * Version: 1.19.9
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -81,7 +81,7 @@
     return /^[0-9]+$/.test(value);
   }
 
-  URI.version = '1.19.8';
+  URI.version = '1.19.9';
 
   var p = URI.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
@@ -239,6 +239,7 @@
     // balanced parens inclusion (), [], {}, <>
     parens: /(\([^\)]*\)|\[[^\]]*\]|\{[^}]*\}|<[^>]*>)/g,
   };
+  URI.leading_whitespace_expression = /^[\x00-\x20\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/
   // http://www.iana.org/assignments/uri-schemes.html
   // http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
   URI.defaultPorts = {
@@ -494,6 +495,9 @@
         preventInvalidHostname: URI.preventInvalidHostname
       };
     }
+
+    string = string.replace(URI.leading_whitespace_expression, '')
+
     // [protocol"://"[username[":"password]"@"]hostname[":"port]"/"?][path]["?"querystring]["#"fragment]
 
     // extract fragment
