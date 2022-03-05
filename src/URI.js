@@ -517,7 +517,7 @@
     }
 
     // slashes and backslashes have lost all meaning for the web protocols (https, http, wss, ws)
-    string = string.replace(/^(https?|ftp|wss?)?:[/\\]*/i, '$1://');
+    string = string.replace(/^(https?|ftp|wss?)?:+[/\\]*/i, '$1://');
 
     // extract protocol
     if (string.substring(0, 2) === '//') {
