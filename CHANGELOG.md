@@ -5,6 +5,7 @@ The release notes tracked in this document are also made available on the [relea
 ### master ###
 
 * **SECURITY** fixing [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) handle excessive slashes in scheme-relative URLs - disclosed by [zeyu2001](https://github.com/zeyu2001) via https://huntr.dev/
+* **SECURITY** fixing [`URI.parse()`](http://medialize.github.io/URI.js/docs.html#static-parse) remove `\r` (CR), `\n`, (LF) `\t` (TAB) - disclosed by [haxatron](https://github.com/haxatron) via https://huntr.dev/
 
 ### 1.19.10 (March 5th 2022) ###
 

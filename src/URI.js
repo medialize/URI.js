@@ -240,6 +240,8 @@
     parens: /(\([^\)]*\)|\[[^\]]*\]|\{[^}]*\}|<[^>]*>)/g,
   };
   URI.leading_whitespace_expression = /^[\x00-\x20\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+/
+  // https://infra.spec.whatwg.org/#ascii-tab-or-newline
+  URI.ascii_tab_whitespace = /[\u0009\u000A\u000D]+/g
   // http://www.iana.org/assignments/uri-schemes.html
   // http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
   URI.defaultPorts = {
@@ -497,6 +499,8 @@
     }
 
     string = string.replace(URI.leading_whitespace_expression, '')
+    // https://infra.spec.whatwg.org/#ascii-tab-or-newline
+    string = string.replace(URI.ascii_tab_whitespace, '')
 
     // [protocol"://"[username[":"password]"@"]hostname[":"port]"/"?][path]["?"querystring]["#"fragment]
 

@@ -2719,6 +2719,55 @@ var urls = [{
         punycode: false
       }
     }, {
+      name: 'ASCII tab or newline',
+      url: 'ja\r\nva\tscript:alert(1)',
+      _url: 'javascript:alert(1)',
+      parts: {
+        protocol: 'javascript',
+        username: null,
+        password: null,
+        hostname: null,
+        port: null,
+        path: 'alert(1)',
+        query: null,
+        fragment: null
+      },
+      accessors: {
+        protocol: 'javascript',
+        username: '',
+        password: '',
+        port: '',
+        path: 'alert(1)',
+        query: '',
+        fragment: '',
+        resource: 'alert(1)',
+        authority: '',
+        origin: '',
+        userinfo: '',
+        subdomain: '',
+        domain: '',
+        tld: '',
+        directory: '',
+        filename: '',
+        suffix: '',
+        hash: '',
+        search: '',
+        host: '',
+        hostname: ''
+      },
+      is: {
+        urn: true,
+        url: false,
+        relative: false,
+        name: false,
+        sld: false,
+        ip: false,
+        ip4: false,
+        ip6: false,
+        idn: false,
+        punycode: false
+      }
+    }, {
       name: 'excessive colon in protocol delimiter',
       url: 'http:://www.example.org:8080/hello:world',
       _url: 'http://www.example.org:8080/hello:world',
