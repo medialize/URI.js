@@ -209,7 +209,7 @@ If you don't like URI.js, you may like one of the following libraries. (If yours
 * [The simple <a> URL Mutation "Hack"](http://jsfiddle.net/rodneyrehm/KkGUJ/) ([jsPerf comparison](http://jsperf.com/idl-attributes-vs-uri-js))
 * [URI Parser](http://blog.stevenlevithan.com/archives/parseuri)
 * [jQuery-URL-Parser](https://github.com/allmarkedup/jQuery-URL-Parser)
-* [Google Closure Uri](https://google.github.io/closure-library/api/class_goog_Uri.html)
+* [Google Closure Uri](https://google.github.io/closure-library/api/goog.Uri.html)
 * [URI.js by Gary Court](https://github.com/garycourt/uri-js)
 
 #### URI Template ####
