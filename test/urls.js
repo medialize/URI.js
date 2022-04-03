@@ -582,8 +582,106 @@ var urls = [{
       punycode: false
     }
   }, {
+    name: 'ignoring scheme excessive slashes',
+    url: ':/\\//user:pass@example.org:123/some/directory/file.html?query=string#fragment',
+    _url: '//user:pass@example.org:123/some/directory/file.html?query=string#fragment',
+    parts: {
+      protocol: null,
+      username: 'user',
+      password: 'pass',
+      hostname: 'example.org',
+      port: '123',
+      path: '/some/directory/file.html',
+      query: 'query=string',
+      fragment: 'fragment'
+    },
+    accessors: {
+      protocol: '',
+      username: 'user',
+      password: 'pass',
+      port: '123',
+      path: '/some/directory/file.html',
+      query: 'query=string',
+      fragment: 'fragment',
+      resource: '/some/directory/file.html?query=string#fragment',
+      authority: 'user:pass@example.org:123',
+      origin: 'user:pass@example.org:123',
+      userinfo: 'user:pass',
+      subdomain: '',
+      domain: 'example.org',
+      tld: 'org',
+      directory: '/some/directory',
+      filename: 'file.html',
+      suffix: 'html',
+      hash: '#fragment',
+      search: '?query=string',
+      host: 'example.org:123',
+      hostname: 'example.org'
+    },
+    is: {
+      urn: false,
+      url: true,
+      relative: false,
+      name: true,
+      sld: false,
+      ip: false,
+      ip4: false,
+      ip6: false,
+      idn: false,
+      punycode: false
+    }
+  }, {
     name: 'scheme-relative URL',
     url: '//www.example.org/',
+    parts: {
+      protocol: null,
+      username: null,
+      password: null,
+      hostname: 'www.example.org',
+      port: null,
+      path: '/',
+      query: null,
+      fragment: null
+    },
+    accessors: {
+      protocol: '',
+      username: '',
+      password: '',
+      port: '',
+      path: '/',
+      query: '',
+      fragment: '',
+      resource: '/',
+      authority: 'www.example.org',
+      origin: 'www.example.org',
+      userinfo: '',
+      subdomain: 'www',
+      domain: 'example.org',
+      tld: 'org',
+      directory: '/',
+      filename: '',
+      suffix: '',
+      hash: '',
+      search: '',
+      host: 'www.example.org',
+      hostname: 'www.example.org'
+    },
+    is: {
+      urn: false,
+      url: true,
+      relative: false,
+      name: true,
+      sld: false,
+      ip: false,
+      ip4: false,
+      ip6: false,
+      idn: false,
+      punycode: false
+    }
+  }, {
+    name: 'scheme-relative URL excessive slashes',
+    url: '//\\/www.example.org/',
+    _url: '//www.example.org/',
     parts: {
       protocol: null,
       username: null,
