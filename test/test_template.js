@@ -4,7 +4,7 @@
   // FIXME: v2.0.0 renamce non-camelCase properties to uppercase
   /*jshint camelcase: false, loopfunc: true, newcap: false */
 
-  var levels = {
+  let levels = {
     // http://tools.ietf.org/html/rfc6570#section-1.2
     'Level 1' : {
       expressions : {
@@ -320,14 +320,14 @@
 
   module('URITemplate');
   // [].forEach() no IE, lacking interest in polyfilling this...
-  for (var i in levels) {
+  for (let i in levels) {
     (function(level, data){
       test(level, function() {
-        var combined_expression = '',
+        let combined_expression = '',
           combined_expansion = '',
           template, expression, expansion;
 
-        for (var type in data.expressions) {
+        for (let type in data.expressions) {
           for (expression in data.expressions[type]) {
             combined_expression += '/' + expression;
             combined_expansion += '/' + data.expressions[type][expression];
@@ -345,12 +345,12 @@
     })(i, levels[i]);
   }
   test('Data Callbacks', function() {
-    var template = new URITemplate('{var}');
-    var global = function(key) {
-      var data = {'var': 'hello world.html'};
+    let template = new URITemplate('{var}');
+    let global = function(key) {
+      let data = {'var': 'hello world.html'};
       return data[key];
     };
-    var local = function() {
+    let local = function() {
       return 'hello world.html';
     };
 
@@ -378,14 +378,14 @@
 
   test('Expansion errors', function() {
     raises(function() {
-      var data = {'composite_var': ['multiple', 'values']};
+      let data = {'composite_var': ['multiple', 'values']};
       URITemplate('{composite_var:3}').expand(data);
     }, Error, 'Failing prefix modifier after composite variable');
   });
 
   test('noConflict mode', function() {
-    var actual_lib = URITemplate; // actual library; after loading, before noConflict()
-    var unconflicted = URITemplate.noConflict();
+    let actual_lib = URITemplate; // actual library; after loading, before noConflict()
+    let unconflicted = URITemplate.noConflict();
 
     strictEqual( unconflicted, actual_lib, 'noConflict() returns the URITemplate object' );
     strictEqual( URITemplate, URITemplate_pre_lib, 'noConflict() restores the `URITemplate` variable' );
@@ -395,10 +395,10 @@
   });
 
   test('Periods in varnames', function() {
-    var template = new URITemplate('{hello.world.var}');
-    var literal = 'replacement';
-    var data = {'hello.world.var': literal};
-    var expansion = template.expand(data);
+    let template = new URITemplate('{hello.world.var}');
+    let literal = 'replacement';
+    let data = {'hello.world.var': literal};
+    let expansion = template.expand(data);
     equal(expansion, literal, 'period in varname');
   });
 
