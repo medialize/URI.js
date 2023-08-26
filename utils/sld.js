@@ -1,7 +1,7 @@
-var fs = require('fs');
-var url = require('url');
-var http = require('http');
-var domains = {};
+let fs = require('fs');
+let url = require('url');
+let http = require('http');
+let domains = {};
 
 /*
     Problem with PublicSuffix:
@@ -20,9 +20,9 @@ http.get("http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tl
                 return;
             }
             
-            var parts = line.split('.');
-            var sld = parts.slice(0, -1).join('.');
-            var tld = parts.slice(-1);
+            let parts = line.split('.');
+            let sld = parts.slice(0, -1).join('.');
+            let tld = parts.slice(-1);
 
             if (parts.length < 2) {
                 return;
@@ -36,7 +36,7 @@ http.get("http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tl
         });
     }).on('end', function() {
         //file.end();
-        for (var tld in domains) {
+        for (let tld in domains) {
             domains[tld].sort();
             
             // ! and * are sorted to the top
