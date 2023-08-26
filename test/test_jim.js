@@ -11,7 +11,7 @@
 
   module('injection');
   test('protocol', function() {
-    var u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
+    let u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
     raises(function() {
       u.protocol('ftp://example.org');
     }, TypeError, 'Failing invalid characters');
@@ -21,7 +21,7 @@
     equal(u.hostname(), 'example.com', 'protocol() has changed the hostname');
   });
   test('port', function() {
-    var u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
+    let u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
     raises(function() {
       u.port('99:example.org');
     }, TypeError, 'Failing invalid characters');
@@ -43,7 +43,7 @@
     }, TypeError, 'Failing invalid characters');
   });
   test('domain', function() {
-    var u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
+    let u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
 
     raises(function() {
       u.domain('example.org/dir0/');
@@ -58,7 +58,7 @@
     }, TypeError, 'Failing invalid characters');
   });
   test('subdomain', function() {
-    var u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
+    let u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
 
     raises(function() {
       u.subdomain('example.org/dir0/');
@@ -73,14 +73,14 @@
     }, TypeError, 'Failing invalid characters');
   });
   test('tld', function() {
-    var u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
+    let u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
 
     raises(function() {
       u.tld('foo/bar.html');
     }, TypeError, 'Failing invalid characters');
   });
   test('path', function() {
-    var u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
+    let u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
     u.path('/dir3/?query3=value3#fragment');
     equal(u.hostname(), 'example.com', 'path() has modified hostname');
     equal(u.path(), '/dir3/%3Fquery3=value3%23fragment', 'path() has set invalid path');
@@ -88,7 +88,7 @@
     equal(u.fragment(), 'hash', 'path() has modified fragment');
   });
   test('filename', function() {
-    var u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
+    let u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
 
     u.filename('name.html?query');
     equal(u.filename(), 'name.html%3Fquery', 'filename() has set invalid filename');
@@ -112,7 +112,7 @@
     equal(u.directory(), '/dir1', 'filename() has not altered directory properly');
   });
   test('addQuery', function() {
-    var u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
+    let u = new URI('http://example.com/dir1/dir2/?query1=value1&query2=value2#hash');
     u.addQuery('query3', 'value3#got');
     equal(u.query(), 'query1=value1&query2=value2&query3=value3%23got', 'addQuery() has set invalid query');
     equal(u.fragment(), 'hash', 'addQuery() has modified fragment');
