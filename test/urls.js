@@ -1,5 +1,5 @@
 /*jshint unused:false, scripturl:true */
-var urls = [{
+let urls = [{
     name: 'scheme and domain',
     url: 'http://www.example.org',
     _url: 'http://www.example.org/',
