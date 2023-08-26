@@ -4,7 +4,7 @@
 
   module('URI.fragmentQuery');
   test('storing query-data in fragment', function() {
-    var u = URI('http://example.org');
+    let u = URI('http://example.org');
 
     deepEqual(u.fragment(true), {}, 'empty map for missing fragment');
 
@@ -39,7 +39,7 @@
     equal(u.toString(), 'http://example.org/#?name=value2', 'setting name to value2 serialized');
   });
   test('fragmentPrefix', function() {
-    var u;
+    let u;
 
     URI.fragmentPrefix = '!';
     u = URI('http://example.org');
