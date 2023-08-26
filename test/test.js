@@ -10,7 +10,7 @@
 
   module('constructing');
   test('URI()', function() {
-    var u = URI();
+    let u = URI();
     ok(u instanceof URI, 'instanceof URI');
     equal(u.toString(), window.location && window.location.href || '', 'is location (browser) or empty string (node)');
   });
@@ -25,18 +25,18 @@
     }, TypeError, 'Failing undefined input');
   });
   test('new URI(string)', function() {
-    var u = new URI('http://example.org/');
+    let u = new URI('http://example.org/');
     ok(u instanceof URI, 'instanceof URI');
     ok(u._parts.hostname !== undefined, 'host undefined');
   });
   test('new URI(object)', function() {
-    var u = new URI({protocol: 'http', hostname: 'example.org'});
+    let u = new URI({protocol: 'http', hostname: 'example.org'});
     ok(u instanceof URI, 'instanceof URI');
     ok(u._parts.hostname !== undefined, 'host undefined');
   });
 
   test('new URI(object)', function() {
-    var u = new URI({
+    let u = new URI({
       protocol: 'http',
       hostname: 'example.org',
       query: {
@@ -52,7 +52,7 @@
     deepEqual(u.search(true), { foo: 'bar', bar: 'foo' }, 'search(true) value');
   });
   test('new URI(object)', function() {
-    var u = new URI({
+    let u = new URI({
       protocol: 'http',
       hostname: 'example.org',
       query: 'foo=bar&bar=foo',
@@ -65,7 +65,7 @@
     deepEqual(u.search(true), { foo: 'bar', bar: 'foo' }, 'search(true) value');
   });
   test('new URI(object)', function() {
-    var u = new URI({
+    let u = new URI({
       protocol: 'http',
       hostname: 'example.org',
       query: '?foo=bar&bar=foo',
@@ -78,11 +78,11 @@
     deepEqual(u.search(true), { foo: 'bar', bar: 'foo' }, 'search(true) value');
   });
   test('new URI(Location)', function () {
-    var u = new URI(location);
+    let u = new URI(location);
     equal(u.href(), String(location.href), 'location object');
   });
   test('new URI(undefined)', function() {
-    var u = new URI();
+    let u = new URI();
     ok(u instanceof URI, 'instanceof URI');
     equal(u.toString(), window.location && window.location.href || '', 'is location (browser) or empty string (node)');
     raises(function() {
@@ -90,13 +90,13 @@
     }, TypeError, 'Failing undefined input');
   });
   (function() {
-    var element;
+    let element;
 
     function testDomAttribute(element, attribute) {
       test('new URI(Element ' + element.nodeName + ')', function() {
         element[attribute] = 'http://example.org/foobar.html';
 
-        var u = new URI(element);
+        let u = new URI(element);
         equal(u.scheme(), 'http', 'scheme');
         equal(u.host(), 'example.org', 'host');
         equal(u.path(), '/foobar.html', 'path');
@@ -111,7 +111,7 @@
       test('new URI(unsupported Element ' + element.nodeName + ')', function() {
         element[attribute] = 'http://example.org/foobar.html';
 
-        var u = new URI(element);
+        let u = new URI(element);
         equal(u.scheme(), '', 'scheme');
         equal(u.host(), '', 'host');
         equal(u.path(), '', 'path');
@@ -122,7 +122,7 @@
       });
     }
 
-    for (var nodeName in URI.domAttributes) {
+    for (let nodeName in URI.domAttributes) {
       if (!Object.prototype.hasOwnProperty.call(URI.domAttributes, nodeName) || nodeName === 'input') {
         continue;
       }
@@ -142,7 +142,7 @@
     testUnsupportedDomAttribute(element, 'src');
   })();
   test('new URI(URI)', function() {
-    var u = new URI(new URI({protocol: 'http', hostname: 'example.org'}));
+    let u = new URI(new URI({protocol: 'http', hostname: 'example.org'}));
     ok(u instanceof URI, 'instanceof URI');
     ok(u._parts.hostname !== undefined, 'host undefined');
   });
@@ -157,13 +157,13 @@
     }, TypeError, 'Failing undefined input');
   });
   test('new URI()', function() {
-    var u = new URI();
+    let u = new URI();
     ok(u instanceof URI, 'instanceof URI');
     ok(u._parts.hostname === location.hostname || u._parts.hostname === null && location.hostname === '',
         'hostname == location.hostname');
   });
   test('function URI(string)', function() {
-    var u = new URI('http://example.org/');
+    let u = new URI('http://example.org/');
     ok(u instanceof URI, 'instanceof URI');
     ok(u._parts.hostname !== undefined, 'host undefined');
   });
@@ -195,16 +195,16 @@
   });
   test('new URI(string, string)', function() {
     // see http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#constructor
-    var u = new URI('../foobar.html', 'http://example.org/hello/world.html');
+    let u = new URI('../foobar.html', 'http://example.org/hello/world.html');
     equal(u+'', 'http://example.org/foobar.html', 'resolve on construct');
   });
 
   module('parsing');
   // [].forEach() no IE, lacking interest in polyfilling this...
-  for (var i = 0, t; (t = urls[i]); i++) {
+  for (let i = 0, t; (t = urls[i]); i++) {
     (function(t){
       test('parse ' + t.name, function() {
-        var u = new URI(t.url),
+        let u = new URI(t.url),
           key;
 
         // test URL built from parts
@@ -236,7 +236,7 @@
 
   module('serializing');
   test('scheme and relative path', function() {
-    var u = new URI('')
+    let u = new URI('')
       .protocol('food')
       .path('test/file.csv')
       .toString()
@@ -246,7 +246,7 @@
 
   module('mutating basics');
   test('protocol', function() {
-    var u = new URI('http://example.org/foo.html');
+    let u = new URI('http://example.org/foo.html');
     u.protocol('ftp');
     equal(u.protocol(), 'ftp', 'ftp protocol');
     equal(u+'', 'ftp://example.org/foo.html', 'ftp url');
@@ -268,7 +268,7 @@
     equal(u+'', '//example.org/foo.html', 'missing-scheme url');
   });
   test('username', function() {
-    var u = new URI('http://example.org/foo.html');
+    let u = new URI('http://example.org/foo.html');
     u.username('hello');
     equal(u.username(), 'hello', 'changed username hello');
     equal(u.password(), '', 'changed passowrd hello');
@@ -280,7 +280,7 @@
     equal(u+'', 'http://example.org/foo.html', 'changed url ""');
   });
   test('password', function() {
-    var u = new URI('http://hello@example.org/foo.html');
+    let u = new URI('http://hello@example.org/foo.html');
     u.password('world');
     equal(u.username(), 'hello', 'changed username world');
     equal(u.password(), 'world', 'changed passowrd world');
@@ -297,7 +297,7 @@
     equal(u+'', 'http://:hahaha@example.org/foo.html', 'changed url - password without username');
   });
   test('hostname', function() {
-    var u = new URI('http://example.org/foo.html');
+    let u = new URI('http://example.org/foo.html');
     u.hostname('abc.foobar.lala');
     equal(u.hostname(), 'abc.foobar.lala', 'hostname changed');
     equal(u+'', 'http://abc.foobar.lala/foo.html', 'hostname changed url');
@@ -326,7 +326,7 @@
     }, TypeError, "Trying to set hostname to null with http(s) protocol throws a TypeError");
   });
   test('port', function() {
-    var u = new URI('http://example.org/foo.html');
+    let u = new URI('http://example.org/foo.html');
     u.port('80');
     equal(u.port(), '80', 'changing port 80');
     equal(u+'', 'http://example.org:80/foo.html', 'changing url 80');
@@ -336,7 +336,7 @@
     equal(u+'', 'http://example.org/foo.html', 'changing url ""');
   });
   test('path', function() {
-    var u = new URI('http://example.org/foobar.html?query=string');
+    let u = new URI('http://example.org/foobar.html?query=string');
     u.pathname('/some/path/file.suffix');
     equal(u.pathname(), '/some/path/file.suffix', 'changing pathname "/some/path/file.suffix"');
     equal(u+'', 'http://example.org/some/path/file.suffix?query=string', 'changing url "/some/path/file.suffix"');
@@ -358,7 +358,7 @@
     equal(u.toString(), '/', 'empty absolute path to string');
   });
   test('URN paths', function() {
-    var u = new URI('urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66?foo=bar');
+    let u = new URI('urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66?foo=bar');
     u.pathname('uuid:de305d54-75b4-431b-adb2-eb6b9e546013');
     equal(u.pathname(), 'uuid:de305d54-75b4-431b-adb2-eb6b9e546013');
     equal(u + '', 'urn:uuid:de305d54-75b4-431b-adb2-eb6b9e546013?foo=bar');
@@ -372,7 +372,7 @@
     equal(u.pathname(true), 'music:classical:Béla Bártok%3A Concerto for Orchestra', 'path decoded');
   });
   test('query', function() {
-    var u = new URI('http://example.org/foo.html');
+    let u = new URI('http://example.org/foo.html');
     u.query('foo=bar=foo');
     equal(u.query(), 'foo=bar=foo', 'query: foo=bar=foo');
     equal(u.search(), '?foo=bar=foo', 'query: foo=bar=foo - search');
@@ -423,13 +423,13 @@
     equal(JSON.stringify(u.query(true)), '{"uuid":null}', 'parsed query: {uuid: null}');
 
     // parsing empty query
-    var t;
+    let t;
     t = u.query('?').query(true);
     t = u.query('').query(true);
     t = u.href('http://example.org').query(true);
   });
   test('fragment', function() {
-    var u = new URI('http://example.org/foo.html');
+    let u = new URI('http://example.org/foo.html');
     u.fragment('foo');
     equal(u.fragment(), 'foo', 'fragment: foo');
     equal(u.hash(), '#foo', 'fragment: foo - hash');
@@ -458,7 +458,7 @@
 
   module('mutating compounds');
   test('host', function() {
-    var u = new URI('http://foo.bar/foo.html');
+    let u = new URI('http://foo.bar/foo.html');
 
     u.host('example.org:80');
     equal(u.hostname(), 'example.org', 'host changed hostname');
@@ -480,7 +480,7 @@
     }, TypeError, 'Failing backslash detection in host');
   });
   test('origin', function () {
-    var u = new URI('http://foo.bar/foo.html');
+    let u = new URI('http://foo.bar/foo.html');
     equal(u.origin(), 'http://foo.bar', 'invalid origin');
 
     u.origin('http://bar.foo/bar.html');
@@ -488,7 +488,7 @@
     equal(u+'', 'http://bar.foo/foo.html', 'origin path changed');
   });
   test('authority', function() {
-    var u = new URI('http://foo.bar/foo.html');
+    let u = new URI('http://foo.bar/foo.html');
 
     u.authority('username:password@example.org:80');
     equal(u.username(), 'username', 'authority changed username');
@@ -509,7 +509,7 @@
     }, TypeError, 'Failing backslash detection in authority');
   });
   test('userinfo', function() {
-    var u = new URI('http://foo.bar/foo.html');
+    let u = new URI('http://foo.bar/foo.html');
 
     u.userinfo('username:password');
     equal(u.username(), 'username', 'userinfo changed username-only');
@@ -527,7 +527,7 @@
     equal(u+'', 'http://foo.bar/foo.html', 'userinfo changed url');
   });
   test('href', function() {
-    var u = new URI('http://foo.bar/foo.html');
+    let u = new URI('http://foo.bar/foo.html');
 
     u.href('ftp://u:p@example.org:123/directory/file.suffix?query=string#fragment');
     equal(u.protocol(), 'ftp', 'href changed protocol');
@@ -557,7 +557,7 @@
     equal(u.pathname(), '/narf', 'href from String instance');
   });
   test('resource', function() {
-    var u = new URI('http://foo.bar/foo.html?hello#world');
+    let u = new URI('http://foo.bar/foo.html?hello#world');
 
     equal(u.resource(), '/foo.html?hello#world', 'get resource');
 
@@ -591,7 +591,7 @@
 
   module('mutating fractions');
   test('subdomain', function() {
-    var u = new URI('http://www.example.org/foo.html');
+    let u = new URI('http://www.example.org/foo.html');
     u.subdomain('foo.bar');
     equal(u.hostname(), 'foo.bar.example.org', 'changed subdomain foo.bar');
     equal(u+'', 'http://foo.bar.example.org/foo.html', 'changed url foo.bar');
@@ -609,7 +609,7 @@
     equal(u+'', 'http://foo_bar.example.org/foo.html', 'changed url foo_bar');
   });
   test('domain', function() {
-    var u = new URI('http://www.example.org/foo.html');
+    let u = new URI('http://www.example.org/foo.html');
     u.domain('foo.bar');
     equal(u.hostname(), 'www.foo.bar', 'changed hostname foo.bar');
     equal(u+'', 'http://www.foo.bar/foo.html', 'changed url foo.bar');
@@ -646,7 +646,7 @@
     equal(u+'', 'http://bar.exam_ple.org/', 'url after changed domain exam_ple.org');
   });
   test('tld', function() {
-    var u = new URI('http://www.example.org/foo.html');
+    let u = new URI('http://www.example.org/foo.html');
     u.tld('mine');
     equal(u.tld(), 'mine', 'tld changed');
     equal(u+'', 'http://www.example.mine/foo.html', 'changed url mine');
@@ -673,7 +673,7 @@
 
   });
   test('sld', function() {
-    var u = new URI('http://www.example.ch/foo.html')
+    let u = new URI('http://www.example.ch/foo.html')
     equal(u.is('sld'), false, 'is() www.example.ch');
     equal(u.domain(), 'example.ch', 'domain() www.example.ch');
     equal(u.subdomain(), 'www', 'subdomain() www.example.ch');
@@ -689,7 +689,7 @@
     equal(u.subdomain(), 'www', 'subdomain() www.example.eu.com');
   });
   test('directory', function() {
-    var u = new URI('http://www.example.org/some/directory/foo.html');
+    let u = new URI('http://www.example.org/some/directory/foo.html');
     u.directory('/');
     equal(u.path(), '/foo.html', 'changed path '/'');
     equal(u+'', 'http://www.example.org/foo.html', 'changed url '/'');
@@ -735,7 +735,7 @@
     equal(u.directory(true), '/~userhome/@mine;is %2F and', 'directory decoded');
   });
   test('filename', function() {
-    var u = new URI('http://www.example.org/some/directory/foo.html');
+    let u = new URI('http://www.example.org/some/directory/foo.html');
     u.filename('hello.world');
     equal(u.path(), '/some/directory/hello.world', 'changed path "hello.world"');
     equal(u+'', 'http://www.example.org/some/directory/hello.world', 'changed url "hello.world"');
@@ -759,7 +759,7 @@
     equal(u.filename(true), 'hällo wörld.html', 'filename decoded');
   });
   test('suffix', function() {
-    var u = new URI('http://www.example.org/some/directory/foo.html');
+    let u = new URI('http://www.example.org/some/directory/foo.html');
     u.suffix('xml');
     equal(u.path(), '/some/directory/foo.xml', 'changed path "xml"');
     equal(u+'', 'http://www.example.org/some/directory/foo.xml', 'changed url "xml"');
@@ -779,7 +779,7 @@
     equal(u.suffix(true), 'cört', 'suffix decoded'); // suffix is expected to be alnum!
   });
   test('segment', function() {
-    var u = new URI('http://www.example.org/some/directory/foo.html'),
+    let u = new URI('http://www.example.org/some/directory/foo.html'),
       s = u.segment();
 
     equal(s.join('||'), 'some||directory||foo.html', 'segment get array');
@@ -841,7 +841,7 @@
     equal(u.path(), '/hello/mars/foo.html', 'segment set index trimming slashes');
   });
   test('segmentCoded', function() {
-    var u = new URI('http://www.example.org/some%20thing/directory/foo.html'),
+    let u = new URI('http://www.example.org/some%20thing/directory/foo.html'),
       s = u.segmentCoded();
 
     equal(s.join('||'), 'some thing||directory||foo.html', 'segmentCoded get array');
@@ -875,7 +875,7 @@
 
   module('mutating query strings');
   test('mutating object', function() {
-    var u = new URI('?foo=bar&baz=bam&baz=bau'),
+    let u = new URI('?foo=bar&baz=bam&baz=bau'),
       q = u.query(true);
 
     q.something = ['new', 'and', 'funky'];
@@ -891,7 +891,7 @@
     equal(u.query(), 'something=new&something=and&something=funky', 'removing array');
   });
   test('query callback', function() {
-    var u = URI('?foo=bar');
+    let u = URI('?foo=bar');
     u.query(function(data) {
       data.foo = 'bam';
     });
@@ -905,7 +905,7 @@
     equal(u.query(), 'bla=blubb', 'overwrite returned value');
   });
   test('setQuery', function() {
-    var u = URI('?foo=bar');
+    let u = URI('?foo=bar');
     u.setQuery('foo', 'bam');
     equal(u.query(), 'foo=bam', 'set name, value');
 
@@ -941,7 +941,7 @@
     equal(u.query(), 'foo=bar', 'set __proto__');
   });
   test('addQuery', function() {
-    var u = URI('?foo=bar');
+    let u = URI('?foo=bar');
     u.addQuery('baz', 'bam');
     equal(u.query(), 'foo=bar&baz=bam', 'add name, value');
 
@@ -977,7 +977,7 @@
     equal(u.query(true)['some value'], 'must be encoded because of = and ? and #', 'decoding');
   });
   test('removeQuery', function() {
-    var u = new URI('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
+    let u = new URI('?foo=bar&foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3');
 
     u.removeQuery('foo', 'bar');
     equal(u.query(), 'foo=baz&foo=bam&obj=bam&bar=1&bar=2&bar=3', 'removing name, value');
@@ -1028,7 +1028,7 @@
     equal(u.query(), 'foo=bam&obj=bam&bar=bar&bar=baz&bar=bam', 'removing by value RegExp');
   });
   test('duplicateQueryParameters', function() {
-    var u = new URI('?bar=1&bar=1&bar=1');
+    let u = new URI('?bar=1&bar=1&bar=1');
 
     u.normalizeQuery();
     equal(u.toString(), '?bar=1', 'parameters de-duplicated');
@@ -1066,8 +1066,8 @@
     equal(u.toString(), '?bar=1&bar=1&bar=1&bar=1', 'parameters NOT de-duplicated after addQuery()');
   });
   test('escapeQuerySpace', function() {
-    var u = new URI('?bar=foo+bar&bam+baz=foo');
-    var data = u.query(true);
+    let u = new URI('?bar=foo+bar&bam+baz=foo');
+    let data = u.query(true);
 
     equal(data.bar, 'foo bar', 'value un-spac-escaped');
     equal(data['bam baz'], 'foo', 'name un-spac-escaped');
@@ -1098,7 +1098,7 @@
     URI.escapeQuerySpace = true;
   });
   test('hasQuery', function() {
-    var u = URI('?string=bar&list=one&list=two&number=123&null&empty=&nested[one]=1&nested[two]=2');
+    let u = URI('?string=bar&list=one&list=two&number=123&null&empty=&nested[one]=1&nested[two]=2');
 
     // exists
     equal(u.hasQuery('string'), true, 'simple exists check - passing');
@@ -1169,17 +1169,17 @@
 
   module('normalizing');
   test('normalize', function() {
-    var u = new URI('http://www.exämple.org:80/food/woo/.././../baz.html?&foo=bar&&baz=bam&&baz=bau&#');
+    let u = new URI('http://www.exämple.org:80/food/woo/.././../baz.html?&foo=bar&&baz=bam&&baz=bau&#');
     u.normalize();
     equal(u+'', 'http://www.xn--exmple-cua.org/baz.html?foo=bar&baz=bam&baz=bau', 'fully normalized URL');
   });
   test('normalizeProtocol', function() {
-    var u = new URI('hTTp://example.org/foobar.html');
+    let u = new URI('hTTp://example.org/foobar.html');
     u.normalizeProtocol();
     equal(u+'', 'http://example.org/foobar.html', 'lowercase http');
   });
   test('normalizeHost', function() {
-    var u;
+    let u;
 
     if (window.punycode) {
       u = new URI('http://exämple.org/foobar.html');
@@ -1204,7 +1204,7 @@
     equal(u+'', 'http://www.example.org/foobar.html', 'lower case hostname');
   });
   test('normalizePort', function() {
-    var u = new URI('http://example.org:80/foobar.html');
+    let u = new URI('http://example.org:80/foobar.html');
     u.normalizePort();
     equal(u+'', 'http://example.org/foobar.html', 'dropping port 80 for http');
 
@@ -1215,7 +1215,7 @@
   });
   test('normalizePath', function() {
     // relative URL
-    var u = new URI('/food/bar/baz.html');
+    let u = new URI('/food/bar/baz.html');
 
     u.normalizePath();
     equal(u.path(), '/food/bar/baz.html', 'absolute path without change');
@@ -1327,7 +1327,7 @@
     equal(u.path(), 'games:cards:Magic%3A%20the%20Gathering');
   });
   test('normalizeQuery', function() {
-    var u = new URI('http://example.org/foobar.html?');
+    let u = new URI('http://example.org/foobar.html?');
     u.normalizeQuery();
     equal(u+'', 'http://example.org/foobar.html', 'dropping empty query sign');
 
@@ -1344,15 +1344,15 @@
     equal(u.query(), '=bar', 'query without key');
   });
   test('normalizeFragment', function() {
-    var u = new URI('http://example.org/foobar.html#');
+    let u = new URI('http://example.org/foobar.html#');
     u.normalizeFragment();
     equal(u+'', 'http://example.org/foobar.html', 'dropping empty fragment sign');
   });
   test('readable', function() {
-    var u = new URI('http://foo:bar@www.xn--exmple-cua.org/hello%20world/ä.html?foo%5B%5D=b+är#fragment');
+    let u = new URI('http://foo:bar@www.xn--exmple-cua.org/hello%20world/ä.html?foo%5B%5D=b+är#fragment');
     equal(u.readable(), 'http://www.exämple.org/hello world/ä.html?foo[]=b är#fragment', 'readable URL');
 
-    var u = new URI('http://example.org/?=5640');
+    let u = new URI('http://example.org/?=5640');
     equal(u.readable(), 'http://example.org/?=5640', 'readable URL: query without key');
   });
 
@@ -1361,7 +1361,7 @@
     // this being '../bar/baz.html?foo=bar'
     // base being 'http://example.org/foo/other/file.html'
     // return being http://example.org/foo/bar/baz.html?foo=bar'
-    var tests = [{
+    let tests = [{
         name: 'relative resolve',
         url: 'relative/path?blubber=1#hash1',
         base: 'http://www.example.org/path/to/file?some=query#hash',
@@ -1469,8 +1469,8 @@
       }
     ];
 
-    for (var i = 0, t; (t = tests[i]); i++) {
-      var u = new URI(t.url),
+    for (let i = 0, t; (t = tests[i]); i++) {
+      let u = new URI(t.url),
         r = u.absoluteTo(t.base);
 
       equal(r + '', t.result, t.name);
@@ -1478,8 +1478,8 @@
   });
   test('absoluteTo - RFC3986 reference resolution', function() {
     // http://tools.ietf.org/html/rfc3986#section-5.4
-    var base = 'http://a/b/c/d;p?q';
-    var map = {
+    let base = 'http://a/b/c/d;p?q';
+    let map = {
       // normal
       // 'g:h'       :  'g:h', // identified as URN
       'g'       :  'http://a/b/c/g',
@@ -1509,15 +1509,15 @@
       '../../../../g' :  'http://a/g'
     };
 
-    for (var key in map) {
-      var u = new URI(key),
+    for (let key in map) {
+      let u = new URI(key),
         r = u.absoluteTo(base);
 
       equal(r + '', map[key], 'resolution "' + key + '"');
     }
   });
   test('relativeTo', function() {
-    var tests = [{
+    let tests = [{
         name: 'same parent',
         url: '/relative/path?blubber=1#hash1',
         base: '/relative/file?some=query#hash',
@@ -1655,11 +1655,11 @@
       }
     ];
 
-    for (var i = 0, t; (t = tests[i]); i++) {
-      var u = new URI(t.url),
+    for (let i = 0, t; (t = tests[i]); i++) {
+      let u = new URI(t.url),
         b = new URI(t.base),
         caught = false;
-      var r;
+      let r;
 
       try {
         r = u.relativeTo(b);
@@ -1674,8 +1674,8 @@
         ok(!caught, t.name + ' should not throw exception');
         equal(r + '', t.result, t.name);
 
-        var a = r.absoluteTo(t.base);
-        var n = u.clone().normalize();
+        let a = r.absoluteTo(t.base);
+        let n = u.clone().normalize();
         equal(a.toString(), n.toString(), t.name + ' reversed');
       }
     }
@@ -1699,7 +1699,7 @@
   module('static helpers');
   test('withinString', function() {
     /*jshint laxbreak: true */
-    var source = 'Hello www.example.com,\n'
+    let source = 'Hello www.example.com,\n'
       + 'http://google.com is a search engine, like http://www.bing.com\n'
       + 'http://exämple.org/foo.html?baz=la#bumm is an IDN URL,\n'
       + 'http://123.123.123.123/foo.html is IPv4 and http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html is IPv6.\n'
@@ -1707,7 +1707,7 @@
       + 'yet https://example.com/with_(balanced_parentheses) and https://example.com/with_(balanced_parentheses).txt contain the closing parens, but '
       + 'https://example.com/with_unbalanced_parentheses) does not.\n'
       + 'Note that www. is not a URL and neither is http://.';
-    var expected = 'Hello <a>www.example.com</a>,\n'
+    let expected = 'Hello <a>www.example.com</a>,\n'
       + '<a>http://google.com</a> is a search engine, like <a>http://www.bing.com</a>\n'
       + '<a>http://exämple.org/foo.html?baz=la#bumm</a> is an IDN URL,\n'
       + '<a>http://123.123.123.123/foo.html</a> is IPv4 and <a>http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html</a> is IPv6.\n'
@@ -1716,52 +1716,52 @@
       + '<a>https://example.com/with_unbalanced_parentheses</a>) does not.\n'
       + 'Note that www. is not a URL and neither is http://.';
     /*jshint laxbreak: false */
-    var result = URI.withinString(source, function(url) {
+    let result = URI.withinString(source, function(url) {
       return '<a>' + url + '</a>';
     });
 
     equal(result, expected, 'in string URI identification');
   });
   test('withinString - ignore', function() {
-    var decorate = function(url) {
+    let decorate = function(url) {
       return '<a>' + url + '</a>';
     };
     /*jshint laxbreak: true */
-    var source = 'Hello www.example.com,\n'
+    let source = 'Hello www.example.com,\n'
       + 'proto://example.org/foo.html?baz=la#bumm is an URL.\n';
-    var expected = 'Hello <a>www.example.com</a>,\n'
+    let expected = 'Hello <a>www.example.com</a>,\n'
       + 'proto://example.org/foo.html?baz=la#bumm is an URL.\n';
     /*jshint laxbreak: false */
-    var result = URI.withinString(source, decorate, {ignore: /^proto:/i});
+    let result = URI.withinString(source, decorate, {ignore: /^proto:/i});
 
     equal(result, expected, 'filtered in string URI identification');
   });
   test('withinString - ignoreHtml', function() {
-    var decorate = function(url) {
+    let decorate = function(url) {
       return '<a>' + url + '</a>';
     };
     /*jshint laxbreak: true */
-    var source = 'Hello www.example.com,\n'
+    let source = 'Hello www.example.com,\n'
       + '<a href=http://example.org/foo.html?baz=la#bumm is an URL</a>.\n'
       + '<a href="http://example.org/foo.html?baz=la#bumm> is an URL</a>.\n'
       + '<a href=\'http://example.org/foo.html?baz=la#bumm\'> is an URL</a>.\n';
-    var expected = 'Hello <a>www.example.com</a>,\n'
+    let expected = 'Hello <a>www.example.com</a>,\n'
       + '<a href=http://example.org/foo.html?baz=la#bumm is an URL</a>.\n'
       + '<a href="http://example.org/foo.html?baz=la#bumm> is an URL</a>.\n'
       + '<a href=\'http://example.org/foo.html?baz=la#bumm\'> is an URL</a>.\n';
     /*jshint laxbreak: false */
-    var result = URI.withinString(source, decorate, {ignoreHtml: true});
+    let result = URI.withinString(source, decorate, {ignoreHtml: true});
 
     equal(result, expected, 'filtered in string URI identification');
   });
   test('withinString - capture only', function() {
     /*jshint laxbreak: true */
-    var source = 'Hello www.example.com,\n'
+    let source = 'Hello www.example.com,\n'
       + 'http://google.com is a search engine, like http://www.bing.com\n'
       + 'http://exämple.org/foo.html?baz=la#bumm is an IDN URL,\n'
       + 'http://123.123.123.123/foo.html is IPv4 and http://fe80:0000:0000:0000:0204:61ff:fe9d:f156/foobar.html is IPv6.\n'
       + 'links can also be in parens (http://example.org) or quotes »http://example.org«.';
-    var expected = [
+    let expected = [
       'www.example.com',
       'http://google.com',
       'http://www.bing.com',
@@ -1773,8 +1773,8 @@
     ];
 
     /*jshint laxbreak: false */
-    var links = [];
-    var result = URI.withinString(source, function(url) {
+    let links = [];
+    let result = URI.withinString(source, function(url) {
       links.push(url);
     });
 
@@ -1784,7 +1784,7 @@
   test('ensureValidPort', function() {
 
     function testPort(value) {
-      var result = true;
+      let result = true;
       try {
         URI.ensureValidPort(value);
       } catch(e) {
@@ -1812,8 +1812,8 @@
     equal(testPort(8080.2), false);
   });
   test('noConflict', function() {
-    var actual_lib = URI; // actual library; after loading, before noConflict()
-    var unconflicted = URI.noConflict();
+    let actual_lib = URI; // actual library; after loading, before noConflict()
+    let unconflicted = URI.noConflict();
 
     strictEqual( unconflicted, actual_lib, 'noConflict() returns the URI object' );
     strictEqual( URI, URI_pre_lib, 'noConflict() restores the `URI` variable' );
@@ -1822,14 +1822,14 @@
     window.URI = actual_lib;
   });
   test('noConflict(removeAll=true)', function() {
-    var actual = {
+    let actual = {
       URI:        URI,
       URITemplate:    URITemplate,
       IPv6:         IPv6,
       SecondLevelDomains: SecondLevelDomains
     };
 
-    var unconflicted = URI.noConflict(true);
+    let unconflicted = URI.noConflict(true);
 
     deepEqual( unconflicted, actual, 'noConflict(true) returns the { URI, URITemplate, IPv6, SecondLevelDomains } object' );
     strictEqual( URI,        URI_pre_lib,        'noConflict(true) restores the `URI` variable' );
@@ -1844,7 +1844,7 @@
     window.SecondLevelDomains = actual.SecondLevelDomains;
   });
   test('joinPaths', function() {
-    var result;
+    let result;
 
     result = URI.joinPaths('/a/b', '/c', 'd', '/e').toString();
     equal(result, '/a/b/c/d/e', 'absolute paths');
@@ -1874,7 +1874,7 @@
     equal(result, 'a/b/', 'trailing empty segment');
   });
   test('setQuery', function () {
-    var o = {foo: 'bar'};
+    let o = {foo: 'bar'};
 
     URI.setQuery(o, 'foo', 'bam');
     deepEqual(o, {foo: 'bam'}, 'set name, value');
@@ -1914,7 +1914,7 @@
 
   module('comparing URLs');
   test('equals', function() {
-    var u = new URI('http://example.org/foo/bar.html?foo=bar&hello=world&hello=mars#fragment'),
+    let u = new URI('http://example.org/foo/bar.html?foo=bar&hello=world&hello=mars#fragment'),
       e = [
         'http://example.org/foo/../foo/bar.html?foo=bar&hello=world&hello=mars#fragment',
         'http://exAmple.org/foo/bar.html?foo=bar&hello=world&hello=mars#fragment',
@@ -1945,7 +1945,7 @@
 
   module('Charset');
   test('iso8859', function() {
-    var u = new URI('/ä.html');
+    let u = new URI('/ä.html');
     u.normalizePath();
     equal(u.path(), '/%C3%A4.html', 'Unicode');
 
@@ -1970,8 +1970,8 @@
     equal(u.path(), '/%C3%A4.html', 'convert unicode');
   });
   test('bad charset in QueryString', function() {
-    var uri = new URI('http://www.google.com.hk/search?q=pennytel%20downloads&sa=%20%CB%D1%20%CB%F7%20&forid=1&prog=aff&ie=GB2312&oe=GB2312&safe=active&source=sdo_sb_html&hl=zh-CN');
-    var data = uri.query(true);
+    let uri = new URI('http://www.google.com.hk/search?q=pennytel%20downloads&sa=%20%CB%D1%20%CB%F7%20&forid=1&prog=aff&ie=GB2312&oe=GB2312&safe=active&source=sdo_sb_html&hl=zh-CN');
+    let data = uri.query(true);
 
     equal(data.sa, '%20%CB%D1%20%CB%F7%20', 'undecodable value returned');
     equal(data.forid, '1', 'decodable value returned');
@@ -1999,7 +1999,7 @@
     equal(URI.decodeUrnPathSegment('%%20'), '%%20', 'malformed URN component returned');
   });
   test('encodeQuery', function() {
-    var escapeQuerySpace = URI.escapeQuerySpace;
+    let escapeQuerySpace = URI.escapeQuerySpace;
 
     URI.escapeQuerySpace = true;
     equal(URI.encodeQuery(' '), '+');
@@ -2012,7 +2012,7 @@
     URI.escapeQuerySpace = escapeQuerySpace;
   });
   test('decodeQuery', function() {
-    var escapeQuerySpace = URI.escapeQuerySpace;
+    let escapeQuerySpace = URI.escapeQuerySpace;
 
     URI.escapeQuerySpace = true;
     equal(URI.decodeQuery('+'), ' ');
