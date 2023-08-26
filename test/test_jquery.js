@@ -4,7 +4,7 @@
 
   module('jQuery.URI', {
     setup: function() {
-      var links = [
+      let links = [
           '<a href="http://example.org/">an HTTP link</a>',
           '<a href="https://example.org/">an HTTPS link</a>',
           '<a href="http://example.org/so)me.pdf">some pdf</a>',
@@ -24,32 +24,32 @@
       $('<div>foo</div>')
         .appendTo(document.body);
 
-      var script = document.createElement('script');
+      let script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = '/nonexistant.js';
       document.getElementById('testestest').appendChild(script);
     },
     teardown: function() {
-      var t = $('#testestest');
+      let t = $('#testestest');
       t.next().remove();
       t.remove();
     }
   });
   test('.uri()', function() {
-    var $links = $('#testestest'),
+    let $links = $('#testestest'),
       $first = $links.children().first(),
       uri = $first.uri(),
       _uri = URI('/hello.world');
 
     ok(uri !== _uri, 'different URI instances');
-    var __uri = $first.uri(_uri);
+    let __uri = $first.uri(_uri);
     ok(uri !== _uri, 'different URI instances');
     ok(uri === __uri, 'same URI instances');
     equal($first.attr('href'), _uri.toString(), 'equal URI');
 
   });
   test('filtering with :uri()', function() {
-    var $links = $('#testestest');
+    let $links = $('#testestest');
 
     // find using accessor and "begins with" comparison
     equal($('a:uri(href^=#anc)').length, 1, '$(selector) Anchor Link');
@@ -90,7 +90,7 @@
     equal($('div').has(':uri(suffix=js)').length, 1, '.has(\':uri(suffix=js)\')');
   });
   test('.attr("href")', function() {
-    var $links = $('#testestest'),
+    let $links = $('#testestest'),
       $first = $links.children().first(),
       first = $first.get(0),
       uri = $first.uri(),
@@ -118,7 +118,7 @@
     equal(href(first), uri.toString(), 'transparent href update');
   });
   test('.attr("uri:accessor")', function() {
-    var $links = $('#testestest'),
+    let $links = $('#testestest'),
       $first = $links.children().first(),
       uri = $first.uri(),
       href = function(elem) {
