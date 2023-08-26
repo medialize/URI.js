@@ -4,8 +4,8 @@
 
   module('URI.fragmentURI');
   test('storing URLs in fragment', function() {
-    var u = URI('http://example.org');
-    var f;
+    let u = URI('http://example.org');
+    let f;
   
     // var uri = URI('http://example.org/#!/foo/bar/baz.html');
     // var furi = uri.fragment(true);
@@ -29,7 +29,7 @@
     equal(u.toString(), 'http://example.org/#!/foo/bar/foobar.txt', 'modifying filename of FragmentURI on original');
   });
   test('fragmentPrefix', function() {
-    var u;
+    let u;
   
     URI.fragmentPrefix = '?';
     u = URI('http://example.org');
