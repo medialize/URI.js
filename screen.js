@@ -7,7 +7,7 @@
         
         $('.showcase').each(function(){
             
-            var $this = $(that || this),
+            let $this = $(that || this),
                 text, nodeName, lang, that;
             
             if ($this.data('showcaseImport')) {
