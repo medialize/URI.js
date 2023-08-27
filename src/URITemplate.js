@@ -30,9 +30,9 @@
   /*jshint camelcase: false */
 
   // save current URITemplate variable, if any
-  var _URITemplate = root && root.URITemplate;
+  let _URITemplate = root && root.URITemplate;
 
-  var hasOwn = Object.prototype.hasOwnProperty;
+  let hasOwn = Object.prototype.hasOwnProperty;
   function URITemplate(expression) {
     // serve from cache where possible
     if (URITemplate._cache[expression]) {
@@ -54,9 +54,9 @@
     this.cache = {};
   }
 
-  var p = URITemplate.prototype;
+  let p = URITemplate.prototype;
   // list of operators and their defined options
-  var operators = {
+  let operators = {
     // Simple string expansion
     '' : {
       prefix: '',
@@ -142,14 +142,14 @@
   // expand parsed expression (expression, not template!)
   URITemplate.expand = function(expression, data, opts) {
     // container for defined options for the given operator
-    var options = operators[expression.operator];
+    let options = operators[expression.operator];
     // expansion type (include keys or not)
-    var type = options.named ? 'Named' : 'Unnamed';
+    let type = options.named ? 'Named' : 'Unnamed';
     // list of variables within the expression
-    var variables = expression.variables;
+    let variables = expression.variables;
     // result buffer for evaluating the expression
-    var buffer = [];
-    var d, variable, i;
+    let buffer = [];
+    let d, variable, i;
 
     for (i = 0; (variable = variables[i]); i++) {
       // fetch simplified data source
@@ -193,15 +193,15 @@
   // expand a named variable
   URITemplate.expandNamed = function(d, options, explode, separator, length, name) {
     // variable result buffer
-    var result = '';
+    let result = '';
     // peformance crap
-    var encode = options.encode;
-    var empty_name_separator = options.empty_name_separator;
+    let encode = options.encode;
+    let empty_name_separator = options.empty_name_separator;
     // flag noting if values are already encoded
-    var _encode = !d[encode].length;
+    let _encode = !d[encode].length;
     // key for named expansion
-    var _name = d.type === 2 ? '': URI[encode](name);
-    var _value, i, l;
+    let _name = d.type === 2 ? '': URI[encode](name);
+    let _value, i, l;
 
     // for each found value
     for (i = 0, l = d.val.length; i < l; i++) {
@@ -259,13 +259,13 @@
   // expand an unnamed variable
   URITemplate.expandUnnamed = function(d, options, explode, separator, length) {
     // variable result buffer
-    var result = '';
+    let result = '';
     // performance crap
-    var encode = options.encode;
-    var empty_name_separator = options.empty_name_separator;
+    let encode = options.encode;
+    let empty_name_separator = options.empty_name_separator;
     // flag noting if values are already encoded
-    var _encode = !d[encode].length;
-    var _name, _value, i, l;
+    let _encode = !d[encode].length;
+    let _name, _value, i, l;
 
     // for each found value
     for (i = 0, l = d.val.length; i < l; i++) {
@@ -324,7 +324,7 @@
 
   // expand template through given data map
   p.expand = function(data, opts) {
-    var result = '';
+    let result = '';
 
     if (!this.parts || !this.parts.length) {
       // lazilyy parse the template
@@ -337,7 +337,7 @@
       data = new Data(data);
     }
 
-    for (var i = 0, l = this.parts.length; i < l; i++) {
+    for (let i = 0, l = this.parts.length; i < l; i++) {
       /*jshint laxbreak: true */
       result += typeof this.parts[i] === 'string'
         // literal string
@@ -352,18 +352,18 @@
   // parse template into action tokens
   p.parse = function() {
     // performance crap
-    var expression = this.expression;
-    var ePattern = URITemplate.EXPRESSION_PATTERN;
-    var vPattern = URITemplate.VARIABLE_PATTERN;
-    var nPattern = URITemplate.VARIABLE_NAME_PATTERN;
-    var lPattern = URITemplate.LITERAL_PATTERN;
+    let expression = this.expression;
+    let ePattern = URITemplate.EXPRESSION_PATTERN;
+    let vPattern = URITemplate.VARIABLE_PATTERN;
+    let nPattern = URITemplate.VARIABLE_NAME_PATTERN;
+    let lPattern = URITemplate.LITERAL_PATTERN;
     // token result buffer
-    var parts = [];
+    let parts = [];
       // position within source template
-    var pos = 0;
-    var variables, eMatch, vMatch;
+    let pos = 0;
+    let variables, eMatch, vMatch;
 
-    var checkLiteral = function(literal) {
+    let checkLiteral = function(literal) {
       if (literal.match(lPattern)) {
         throw new Error('Invalid Literal "' + literal + '"');
       }
@@ -395,7 +395,7 @@
 
       // parse variable-list
       variables = eMatch[2].split(',');
-      for (var i = 0, l = variables.length; i < l; i++) {
+      for (let i = 0, l = variables.length; i < l; i++) {
         vMatch = variables[i].match(vPattern);
         if (vMatch === null) {
           throw new Error('Invalid Variable "' + variables[i] + '" in "' + eMatch[0] + '"');
@@ -435,9 +435,9 @@
   // simplify data structures
   Data.prototype.get = function(key) {
     // performance crap
-    var data = this.data;
+    let data = this.data;
     // cache for processed data-point
-    var d = {
+    let d = {
       // type of data 0: undefined/null, 1: string, 2: object, 3: array
       type: 0,
       // original values (except undefined/null)
@@ -446,7 +446,7 @@
       encode: [],
       encodeReserved: []
     };
-    var i, l, value;
+    let i, l, value;
 
     if (this.cache[key] !== undefined) {
       // we've already processed this key
@@ -506,8 +506,8 @@
 
   // hook into URI for fluid access
   URI.expand = function(expression, data) {
-    var template = new URITemplate(expression);
-    var expansion = template.expand(data);
+    let template = new URITemplate(expression);
+    let expansion = template.expand(data);
 
     return new URI(expansion);
   };
