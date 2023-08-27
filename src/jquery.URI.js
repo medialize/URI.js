@@ -29,8 +29,8 @@
   // FIXME: v2.0.0 renamce non-camelCase properties to uppercase
   /*jshint camelcase: false */
 
-  var comparable = {};
-  var compare = {
+  let comparable = {};
+  let compare = {
     // equals
     '=': function(value, target) {
       return value === target;
@@ -68,8 +68,8 @@
   }
 
   function getUriProperty(elem) {
-    var nodeName = elem.nodeName.toLowerCase();
-    var property = URI.domAttributes[nodeName];
+    let nodeName = elem.nodeName.toLowerCase();
+    let property = URI.domAttributes[nodeName];
     if (nodeName === 'input' && elem.type !== 'image') {
       // compensate ambiguous <input> that is not an image
       return undefined;
@@ -100,7 +100,7 @@
   });
 
   // pipe $.attr('src') and $.attr('href') through URI.js
-  var _attrHooks = {
+  let _attrHooks = {
     get: function(elem) {
       return $(elem).uri();
     },
@@ -117,16 +117,16 @@
 
   // general URI accessor
   $.fn.uri = function(uri) {
-    var $this = this.first();
-    var elem = $this.get(0);
-    var property = getUriProperty(elem);
+    let $this = this.first();
+    let elem = $this.get(0);
+    let property = getUriProperty(elem);
 
     if (!property) {
       throw new Error('Element "' + elem.nodeName + '" does not have either property: href, src, action, cite');
     }
 
     if (uri !== undefined) {
-      var old = $this.data('uri');
+      let old = $this.data('uri');
       if (old) {
         return old.href(uri);
       }
@@ -169,10 +169,10 @@
   };
 
   // add :uri() pseudo class selector to sizzle
-  var uriSizzle;
-  var pseudoArgs = /^([a-zA-Z]+)\s*([\^\$*]?=|:)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/;
+  let uriSizzle;
+  let pseudoArgs = /^([a-zA-Z]+)\s*([\^\$*]?=|:)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/;
   function uriPseudo (elem, text) {
-    var match, property, uri;
+    let match, property, uri;
 
     // skip anything without src|href|action and bad :uri() syntax
     if (!getUriProperty(elem) || !text) {
