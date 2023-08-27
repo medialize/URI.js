@@ -37,7 +37,7 @@
   */
 
   // save current IPv6 variable, if any
-  var _IPv6 = root && root.IPv6;
+  let _IPv6 = root && root.IPv6;
 
   function bestPresentation(address) {
     // based on:
@@ -50,10 +50,10 @@
     // http://intermapper.com/support/tools/IPV6-Validator.aspx
     // http://download.dartware.com/thirdparty/ipv6validator.js
 
-    var _address = address.toLowerCase();
-    var segments = _address.split(':');
-    var length = segments.length;
-    var total = 8;
+    let _address = address.toLowerCase();
+    let segments = _address.split(':');
+    let length = segments.length;
+    let total = 8;
 
     // trim colons (:: or ::a:b:c… or …a:b:c::)
     if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
@@ -79,7 +79,7 @@
     }
 
     // fill empty segments them with "0000"
-    var pos;
+    let pos;
     for (pos = 0; pos < length; pos++) {
       if (segments[pos] === '') {
         break;
@@ -94,10 +94,10 @@
     }
 
     // strip leading zeros
-    var _segments;
-    for (var i = 0; i < total; i++) {
+    let _segments;
+    for (let i = 0; i < total; i++) {
       _segments = segments[i].split('');
-      for (var j = 0; j < 3 ; j++) {
+      for (let j = 0; j < 3 ; j++) {
         if (_segments[0] === '0' && _segments.length > 1) {
           _segments.splice(0,1);
         } else {
@@ -109,11 +109,11 @@
     }
 
     // find longest sequence of zeroes and coalesce them into one segment
-    var best = -1;
-    var _best = 0;
-    var _current = 0;
-    var current = -1;
-    var inzeroes = false;
+    let best = -1;
+    let _best = 0;
+    let _current = 0;
+    let current = -1;
+    let inzeroes = false;
     // i; already declared
 
     for (i = 0; i < total; i++) {
@@ -148,7 +148,7 @@
     length = segments.length;
 
     // assemble remaining segments
-    var result = '';
+    let result = '';
     if (segments[0] === '')  {
       result = ':';
     }
