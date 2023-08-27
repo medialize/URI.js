@@ -3,7 +3,7 @@
     window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
 
 function build(files) {
-    var $out = $('#output'),
+    let $out = $('#output'),
         $progress = $('#prog'),
         sources = [],
         connections = [],
@@ -12,7 +12,7 @@ function build(files) {
     $out.parent().hide();
     $progress.show().prop('value', 1).text('Loading Files');
 
-    for (var i = 0, length = files.length; i < length; i++) {
+    for (let i = 0, length = files.length; i < length; i++) {
         sources.push("");
         (function(i, file){
             connections.push($.get("src/" + file, function(data) {
@@ -29,7 +29,7 @@ function build(files) {
             output_format: "text",
             output_info: "compiled_code"
         }, function(data) {
-            var code = "/*! URI.js v1.19.11 http://medialize.github.io/URI.js/ */\n/* build contains: " + files.join(', ') + " */\n" + data;
+            let code = "/*! URI.js v1.19.11 http://medialize.github.io/URI.js/ */\n/* build contains: " + files.join(', ') + " */\n" + data;
             $progress.hide();
             $out.val(code).parent().show();
             $out.prev().find('a').remove();
@@ -41,9 +41,9 @@ function build(files) {
 };
 
 function download(code) {
-    var blob = new Blob([code], {type: 'text\/javascript'});
+    let blob = new Blob([code], {type: 'text\/javascript'});
 
-    var a = document.createElement('a');
+    let a = document.createElement('a');
     a.download = 'URI.js';
     a.href = window.URL.createObjectURL(blob);
     a.textContent = 'Download';
@@ -54,7 +54,7 @@ function download(code) {
 
 $(function(){
     $('#builder').on('submit', function(e) {
-        var $this = $(this),
+        let $this = $(this),
             $files = $this.find('input:checked'),
             files = [];
 
@@ -67,7 +67,7 @@ $(function(){
         }
 
         $files.each(function() {
-            var val = $(this).val();
+            let val = $(this).val();
             val.length && files.push(val);
         });
 
