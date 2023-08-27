@@ -2,11 +2,11 @@
 ;(function(root) {
 
 	/** Detect free variables */
-	var freeExports = typeof exports == 'object' && exports &&
+	let freeExports = typeof exports == 'object' && exports &&
 		!exports.nodeType && exports;
-	var freeModule = typeof module == 'object' && module &&
+	let freeModule = typeof module == 'object' && module &&
 		!module.nodeType && module;
-	var freeGlobal = typeof global == 'object' && global;
+	let freeGlobal = typeof global == 'object' && global;
 	if (
 		freeGlobal.global === freeGlobal ||
 		freeGlobal.window === freeGlobal ||
@@ -20,7 +20,7 @@
 	 * @name punycode
 	 * @type Object
 	 */
-	var punycode,
+	let punycode,
 
 	/** Highest positive signed 32-bit float value */
 	maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
@@ -76,8 +76,8 @@
 	 * @returns {Array} A new array of values returned by the callback function.
 	 */
 	function map(array, fn) {
-		var length = array.length;
-		var result = [];
+		let length = array.length;
+		let result = [];
 		while (length--) {
 			result[length] = fn(array[length]);
 		}
@@ -95,8 +95,8 @@
 	 * function.
 	 */
 	function mapDomain(string, fn) {
-		var parts = string.split('@');
-		var result = '';
+		let parts = string.split('@');
+		let result = '';
 		if (parts.length > 1) {
 			// In email addresses, only the domain name should be punycoded. Leave
 			// the local part (i.e. everything up to `@`) intact.
@@ -105,8 +105,8 @@
 		}
 		// Avoid `split(regex)` for IE8 compatibility. See #17.
 		string = string.replace(regexSeparators, '\x2E');
-		var labels = string.split('.');
-		var encoded = map(labels, fn).join('.');
+		let labels = string.split('.');
+		let encoded = map(labels, fn).join('.');
 		return result + encoded;
 	}
 
@@ -124,7 +124,7 @@
 	 * @returns {Array} The new array of code points.
 	 */
 	function ucs2decode(string) {
-		var output = [],
+		let output = [],
 		    counter = 0,
 		    length = string.length,
 		    value,
@@ -159,7 +159,7 @@
 	 */
 	function ucs2encode(array) {
 		return map(array, function(value) {
-			var output = '';
+			let output = '';
 			if (value > 0xFFFF) {
 				value -= 0x10000;
 				output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
@@ -215,7 +215,7 @@
 	 * @private
 	 */
 	function adapt(delta, numPoints, firstTime) {
-		var k = 0;
+		let k = 0;
 		delta = firstTime ? floor(delta / damp) : delta >> 1;
 		delta += floor(delta / numPoints);
 		for (/* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {
@@ -233,7 +233,7 @@
 	 */
 	function decode(input) {
 		// Don't use UCS-2
-		var output = [],
+		let output = [],
 		    inputLength = input.length,
 		    out,
 		    i = 0,
@@ -333,7 +333,7 @@
 	 * @returns {String} The resulting Punycode string of ASCII-only symbols.
 	 */
 	function encode(input) {
-		var n,
+		let n,
 		    delta,
 		    handledCPCount,
 		    basicLength,
