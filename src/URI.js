@@ -30,11 +30,11 @@
   /*jshint camelcase: false */
 
   // save current URI variable, if any
-  var _URI = root && root.URI;
+  let _URI = root && root.URI;
 
   function URI(url, base) {
-    var _urlSupplied = arguments.length >= 1;
-    var _baseSupplied = arguments.length >= 2;
+    let _urlSupplied = arguments.length >= 1;
+    let _baseSupplied = arguments.length >= 2;
 
     // Allow instantiation without the 'new' keyword
     if (!(this instanceof URI)) {
@@ -83,8 +83,8 @@
 
   URI.version = '1.19.11';
 
-  var p = URI.prototype;
-  var hasOwn = Object.prototype.hasOwnProperty;
+  let p = URI.prototype;
+  let hasOwn = Object.prototype.hasOwnProperty;
 
   function escapeRegEx(string) {
     // https://github.com/medialize/URI.js/commit/85ac21783c11f8ccab06106dba9735a31a86924d#commitcomment-821963
@@ -105,8 +105,8 @@
   }
 
   function filterArrayValues(data, value) {
-    var lookup = {};
-    var i, length;
+    let lookup = {};
+    let i, length;
 
     if (getType(value) === 'RegExp') {
       lookup = null;
@@ -120,7 +120,7 @@
 
     for (i = 0, length = data.length; i < length; i++) {
       /*jshint laxbreak: true */
-      var _match = lookup && lookup[data[i]] !== undefined
+      let _match = lookup && lookup[data[i]] !== undefined
         || !lookup && value.test(data[i]);
       /*jshint laxbreak: false */
       if (_match) {
@@ -134,7 +134,7 @@
   }
 
   function arrayContains(list, value) {
-    var i, length;
+    let i, length;
 
     // value may be string, number, array, regexp
     if (isArray(value)) {
@@ -148,7 +148,7 @@
       return true;
     }
 
-    var _type = getType(value);
+    let _type = getType(value);
     for (i = 0, length = list.length; i < length; i++) {
       if (_type === 'RegExp') {
         if (typeof list[i] === 'string' && list[i].match(value)) {
@@ -175,7 +175,7 @@
     one.sort();
     two.sort();
 
-    for (var i = 0, l = one.length; i < l; i++) {
+    for (let i = 0, l = one.length; i < l; i++) {
       if (one[i] !== two[i]) {
         return false;
       }
@@ -185,7 +185,7 @@
   }
 
   function trimSlashes(text) {
-    var trim_expression = /^\/+|\/+$/g;
+    let trim_expression = /^\/+|\/+$/g;
     return text.replace(trim_expression, '');
   }
 
@@ -285,7 +285,7 @@
       return undefined;
     }
 
-    var nodeName = node.nodeName.toLowerCase();
+    let nodeName = node.nodeName.toLowerCase();
     // <input> should only expose src for type="image"
     if (nodeName === 'input' && node.type !== 'image') {
       return undefined;
@@ -410,7 +410,7 @@
     }
   };
   URI.encodeQuery = function(string, escapeQuerySpace) {
-    var escaped = URI.encode(string + '');
+    let escaped = URI.encode(string + '');
     if (escapeQuerySpace === undefined) {
       escapeQuerySpace = URI.escapeQuerySpace;
     }
@@ -434,9 +434,9 @@
     }
   };
   // generate encode/decode path functions
-  var _parts = {'encode':'encode', 'decode':'decode'};
-  var _part;
-  var generateAccessor = function(_group, _part) {
+  let _parts = {'encode':'encode', 'decode':'decode'};
+  let _part;
+  let generateAccessor = function(_group, _part) {
     return function(string) {
       try {
         return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function(c) {
@@ -457,13 +457,13 @@
     URI[_part + 'UrnPathSegment'] = generateAccessor('urnpath', _parts[_part]);
   }
 
-  var generateSegmentedPathFunction = function(_sep, _codingFuncName, _innerCodingFuncName) {
+  let generateSegmentedPathFunction = function(_sep, _codingFuncName, _innerCodingFuncName) {
     return function(string) {
       // Why pass in names of functions, rather than the function objects themselves? The
       // definitions of some functions (but in particular, URI.decode) will occasionally change due
       // to URI.js having ISO8859 and Unicode modes. Passing in the name and getting it will ensure
       // that the functions we use here are "fresh".
-      var actualCodingFunc;
+      let actualCodingFunc;
       if (!_innerCodingFuncName) {
         actualCodingFunc = URI[_codingFuncName];
       } else {
@@ -472,9 +472,9 @@
         };
       }
 
-      var segments = (string + '').split(_sep);
+      let segments = (string + '').split(_sep);
 
-      for (var i = 0, length = segments.length; i < length; i++) {
+      for (let i = 0, length = segments.length; i < length; i++) {
         segments[i] = actualCodingFunc(segments[i]);
       }
 
@@ -491,7 +491,7 @@
   URI.encodeReserved = generateAccessor('reserved', 'encode');
 
   URI.parse = function(string, parts) {
-    var pos;
+    let pos;
     if (!parts) {
       parts = {
         preventInvalidHostname: URI.preventInvalidHostname
@@ -570,9 +570,9 @@
     string = string.replace(/\\/g, '/');
 
     // extract host:port
-    var pos = string.indexOf('/');
-    var bracketPos;
-    var t;
+    let pos = string.indexOf('/');
+    let bracketPos;
+    let t;
 
     if (pos === -1) {
       pos = string.length;
@@ -589,9 +589,9 @@
         parts.port = null;
       }
     } else {
-      var firstColon = string.indexOf(':');
-      var firstSlash = string.indexOf('/');
-      var nextColon = string.indexOf(':', firstColon + 1);
+      let firstColon = string.indexOf(':');
+      let firstSlash = string.indexOf('/');
+      let nextColon = string.indexOf(':', firstColon + 1);
       if (nextColon !== -1 && (firstSlash === -1 || nextColon < firstSlash)) {
         // IPv6 host contains multiple colons - but no port
         // this notation is actually not allowed by RFC 3986, but we're a liberal parser
@@ -625,14 +625,14 @@
   };
   URI.parseUserinfo = function(string, parts) {
     // extract username:password
-    var _string = string
-    var firstBackSlash = string.indexOf('\\');
+    let _string = string
+    let firstBackSlash = string.indexOf('\\');
     if (firstBackSlash !== -1) {
       string = string.replace(/\\/g, '/')
     }
-    var firstSlash = string.indexOf('/');
-    var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
-    var t;
+    let firstSlash = string.indexOf('/');
+    let pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
+    let t;
 
     // authority@ must come before /path or \path
     if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
@@ -660,12 +660,12 @@
       return {};
     }
 
-    var items = {};
-    var splits = string.split('&');
-    var length = splits.length;
-    var v, name, value;
+    let items = {};
+    let splits = string.split('&');
+    let length = splits.length;
+    let v, name, value;
 
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       v = splits[i].split('=');
       name = URI.decodeQuery(v.shift(), escapeQuerySpace);
       // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
@@ -689,8 +689,8 @@
   };
 
   URI.build = function(parts) {
-    var t = '';
-    var requireAbsolutePath = false
+    let t = '';
+    let requireAbsolutePath = false
 
     if (parts.protocol) {
       t += parts.protocol + ':';
@@ -721,7 +721,7 @@
     return t;
   };
   URI.buildHost = function(parts) {
-    var t = '';
+    let t = '';
 
     if (!parts.hostname) {
       return '';
@@ -741,7 +741,7 @@
     return URI.buildUserinfo(parts) + URI.buildHost(parts);
   };
   URI.buildUserinfo = function(parts) {
-    var t = '';
+    let t = '';
 
     if (parts.username) {
       t += URI.encode(parts.username);
@@ -764,8 +764,8 @@
     // URI.js treats the query string as being application/x-www-form-urlencoded
     // see http://www.w3.org/TR/REC-html40/interact/forms.html#form-content-type
 
-    var t = '';
-    var unique, key, i, length;
+    let t = '';
+    let unique, key, i, length;
     for (key in data) {
       if (key === '__proto__') {
         // ignore attempt at exploiting JavaScript internals
@@ -797,7 +797,7 @@
 
   URI.addQuery = function(data, name, value) {
     if (typeof name === 'object') {
-      for (var key in name) {
+      for (let key in name) {
         if (hasOwn.call(name, key)) {
           URI.addQuery(data, key, name[key]);
         }
@@ -822,7 +822,7 @@
 
   URI.setQuery = function(data, name, value) {
     if (typeof name === 'object') {
-      for (var key in name) {
+      for (let key in name) {
         if (hasOwn.call(name, key)) {
           URI.setQuery(data, key, name[key]);
         }
@@ -835,7 +835,7 @@
   };
 
   URI.removeQuery = function(data, name, value) {
-    var i, length, key;
+    let i, length, key;
 
     if (isArray(name)) {
       for (i = 0, length = name.length; i < length; i++) {
@@ -880,7 +880,7 @@
         break;
 
       case 'RegExp':
-        for (var key in data) {
+        for (let key in data) {
           if (hasOwn.call(data, key)) {
             if (name.test(key) && (value === undefined || URI.hasQuery(data, key, value))) {
               return true;
@@ -891,7 +891,7 @@
         return false;
 
       case 'Object':
-        for (var _key in name) {
+        for (let _key in name) {
           if (hasOwn.call(name, _key)) {
             if (!URI.hasQuery(data, _key, name[_key])) {
               return false;
@@ -912,7 +912,7 @@
 
       case 'Boolean':
         // true if exists and non-empty
-        var _booly = Boolean(isArray(data[name]) ? data[name].length : data[name]);
+        let _booly = Boolean(isArray(data[name]) ? data[name].length : data[name]);
         return value === _booly;
 
       case 'Function':
@@ -924,7 +924,7 @@
           return false;
         }
 
-        var op = withinArray ? arrayContains : arraysEqual;
+        let op = withinArray ? arrayContains : arraysEqual;
         return op(data[name], value);
 
       case 'RegExp':
@@ -959,15 +959,15 @@
 
 
   URI.joinPaths = function() {
-    var input = [];
-    var segments = [];
-    var nonEmptySegments = 0;
+    let input = [];
+    let segments = [];
+    let nonEmptySegments = 0;
 
-    for (var i = 0; i < arguments.length; i++) {
-      var url = new URI(arguments[i]);
+    for (let i = 0; i < arguments.length; i++) {
+      let url = new URI(arguments[i]);
       input.push(url);
-      var _segments = url.segment();
-      for (var s = 0; s < _segments.length; s++) {
+      let _segments = url.segment();
+      for (let s = 0; s < _segments.length; s++) {
         if (typeof _segments[s] === 'string') {
           segments.push(_segments[s]);
         }
@@ -982,7 +982,7 @@
       return new URI('');
     }
 
-    var uri = new URI('').segment(segments);
+    let uri = new URI('').segment(segments);
 
     if (input[0].path() === '' || input[0].path().slice(0, 1) === '/') {
       uri.path('/' + uri.path());
@@ -992,8 +992,8 @@
   };
 
   URI.commonPath = function(one, two) {
-    var length = Math.min(one.length, two.length);
-    var pos;
+    let length = Math.min(one.length, two.length);
+    let pos;
 
     // find first non-matching character
     for (pos = 0; pos < length; pos++) {
@@ -1017,39 +1017,39 @@
 
   URI.withinString = function(string, callback, options) {
     options || (options = {});
-    var _start = options.start || URI.findUri.start;
-    var _end = options.end || URI.findUri.end;
-    var _trim = options.trim || URI.findUri.trim;
-    var _parens = options.parens || URI.findUri.parens;
-    var _attributeOpen = /[a-z0-9-]=["']?$/i;
+    let _start = options.start || URI.findUri.start;
+    let _end = options.end || URI.findUri.end;
+    let _trim = options.trim || URI.findUri.trim;
+    let _parens = options.parens || URI.findUri.parens;
+    let _attributeOpen = /[a-z0-9-]=["']?$/i;
 
     _start.lastIndex = 0;
     while (true) {
-      var match = _start.exec(string);
+      let match = _start.exec(string);
       if (!match) {
         break;
       }
 
-      var start = match.index;
+      let start = match.index;
       if (options.ignoreHtml) {
         // attribut(e=["']?$)
-        var attributeOpen = string.slice(Math.max(start - 3, 0), start);
+        let attributeOpen = string.slice(Math.max(start - 3, 0), start);
         if (attributeOpen && _attributeOpen.test(attributeOpen)) {
           continue;
         }
       }
 
-      var end = start + string.slice(start).search(_end);
-      var slice = string.slice(start, end);
+      let end = start + string.slice(start).search(_end);
+      let slice = string.slice(start, end);
       // make sure we include well balanced parens
-      var parensEnd = -1;
+      let parensEnd = -1;
       while (true) {
-        var parensMatch = _parens.exec(slice);
+        let parensMatch = _parens.exec(slice);
         if (!parensMatch) {
           break;
         }
 
-        var parensMatchEnd = parensMatch.index + parensMatch[0].length;
+        let parensMatchEnd = parensMatch.index + parensMatch[0].length;
         parensEnd = Math.max(parensEnd, parensMatchEnd);
       }
 
@@ -1070,7 +1070,7 @@
       }
 
       end = start + slice.length;
-      var result = callback(slice, start, end, string);
+      let result = callback(slice, start, end, string);
       if (result === undefined) {
         _start.lastIndex = end;
         continue;
@@ -1089,9 +1089,9 @@
     // Theoretically URIs allow percent-encoding in Hostnames (according to RFC 3986)
     // they are not part of DNS and therefore ignored by URI.js
 
-    var hasHostname = !!v; // not null and not an empty string
-    var hasProtocol = !!protocol;
-    var rejectEmptyHostname = false;
+    let hasHostname = !!v; // not null and not an empty string
+    let hasProtocol = !!protocol;
+    let rejectEmptyHostname = false;
 
     if (hasProtocol) {
       rejectEmptyHostname = arrayContains(URI.hostProtocols, protocol);
@@ -1115,7 +1115,7 @@
       return;
     }
 
-    var port = Number(v);
+    let port = Number(v);
     if (isInteger(port) && (port > 0) && (port < 65536)) {
       return;
     }
@@ -1126,7 +1126,7 @@
   // noConflict
   URI.noConflict = function(removeAll) {
     if (removeAll) {
-      var unconflicted = {
+      let unconflicted = {
         URI: this.noConflict()
       };
 
@@ -1210,17 +1210,17 @@
   p.fragment = generatePrefixAccessor('fragment', '#');
 
   p.search = function(v, build) {
-    var t = this.query(v, build);
+    let t = this.query(v, build);
     return typeof t === 'string' && t.length ? ('?' + t) : t;
   };
   p.hash = function(v, build) {
-    var t = this.fragment(v, build);
+    let t = this.fragment(v, build);
     return typeof t === 'string' && t.length ? ('#' + t) : t;
   };
 
   p.pathname = function(v, build) {
     if (v === undefined || v === true) {
-      var res = this._parts.path || (this._parts.hostname ? '/' : '');
+      let res = this._parts.path || (this._parts.hostname ? '/' : '');
       return v ? (this._parts.urn ? URI.decodeUrnPath : URI.decodePath)(res) : res;
     } else {
       if (this._parts.urn) {
@@ -1234,7 +1234,7 @@
   };
   p.path = p.pathname;
   p.href = function(href, build) {
-    var key;
+    let key;
 
     if (href === undefined) {
       return this.toString();
@@ -1243,8 +1243,8 @@
     this._string = '';
     this._parts = URI._parts();
 
-    var _URI = href instanceof URI;
-    var _object = typeof href === 'object' && (href.hostname || href.path || href.pathname);
+    let _URI = href instanceof URI;
+    let _object = typeof href === 'object' && (href.hostname || href.path || href.pathname);
     if (href.nodeName) {
       var attribute = URI.getDomAttribute(href);
       href = href[attribute] || '';
@@ -1265,7 +1265,7 @@
     if (typeof href === 'string' || href instanceof String) {
       this._parts = URI.parse(String(href), this._parts);
     } else if (_URI || _object) {
-      var src = _URI ? href._parts : href;
+      let src = _URI ? href._parts : href;
       for (key in src) {
         if (key === 'query') { continue; }
         if (hasOwn.call(this._parts, key)) {
@@ -1285,14 +1285,14 @@
 
   // identification accessors
   p.is = function(what) {
-    var ip = false;
-    var ip4 = false;
-    var ip6 = false;
-    var name = false;
-    var sld = false;
-    var idn = false;
-    var punycode = false;
-    var relative = !this._parts.urn;
+    let ip = false;
+    let ip4 = false;
+    let ip6 = false;
+    let name = false;
+    let sld = false;
+    let idn = false;
+    let punycode = false;
+    let relative = !this._parts.urn;
 
     if (this._parts.hostname) {
       relative = false;
