@@ -33,16 +33,16 @@
 }(this, function (URI) {
   'use strict';
 
-  var p = URI.prototype;
+  let p = URI.prototype;
   // old handlers we need to wrap
-  var f = p.fragment;
-  var b = p.build;
+  let f = p.fragment;
+  let b = p.build;
 
   // make fragmentPrefix configurable
   URI.fragmentPrefix = '!';
-  var _parts = URI._parts;
+  let _parts = URI._parts;
   URI._parts = function() {
-    var parts = _parts();
+    let parts = _parts();
     parts.fragmentPrefix = URI.fragmentPrefix;
     return parts;
   };
@@ -53,9 +53,9 @@
 
   // add fragment(true) and fragment(URI) signatures  
   p.fragment = function(v, build) {
-    var prefix = this._parts.fragmentPrefix;
-    var fragment = this._parts.fragment || '';
-    var furi;
+    let prefix = this._parts.fragmentPrefix;
+    let fragment = this._parts.fragment || '';
+    let furi;
 
     if (v === true) {
       if (fragment.substring(0, prefix.length) !== prefix) {
@@ -82,7 +82,7 @@
 
   // make .build() of the actual URI aware of the FragmentURI
   p.build = function(deferBuild) {
-    var t = b.call(this, deferBuild);
+    let t = b.call(this, deferBuild);
   
     if (deferBuild !== false && this._parentURI) {
       // update the parent
