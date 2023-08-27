@@ -40,15 +40,15 @@
 }(this, function (URI) {
   'use strict';
 
-  var p = URI.prototype;
+  let p = URI.prototype;
   // old fragment handler we need to wrap
-  var f = p.fragment;
+  let f = p.fragment;
 
   // make fragmentPrefix configurable
   URI.fragmentPrefix = '?';
-  var _parts = URI._parts;
+  let _parts = URI._parts;
   URI._parts = function() {
-    var parts = _parts();
+    let parts = _parts();
     parts.fragmentPrefix = URI.fragmentPrefix;
     return parts;
   };
@@ -59,8 +59,8 @@
 
   // add fragment(true) and fragment({key: value}) signatures
   p.fragment = function(v, build) {
-    var prefix = this._parts.fragmentPrefix;
-    var fragment = this._parts.fragment || '';
+    let prefix = this._parts.fragmentPrefix;
+    let fragment = this._parts.fragment || '';
 
     if (v === true) {
       if (fragment.substring(0, prefix.length) !== prefix) {
@@ -77,8 +77,8 @@
     }
   };
   p.addFragment = function(name, value, build) {
-    var prefix = this._parts.fragmentPrefix;
-    var data = URI.parseQuery((this._parts.fragment || '').substring(prefix.length));
+    let prefix = this._parts.fragmentPrefix;
+    let data = URI.parseQuery((this._parts.fragment || '').substring(prefix.length));
     URI.addQuery(data, name, value);
     this._parts.fragment = prefix + URI.buildQuery(data);
     if (typeof name !== 'string') {
@@ -89,8 +89,8 @@
     return this;
   };
   p.removeFragment = function(name, value, build) {
-    var prefix = this._parts.fragmentPrefix;
-    var data = URI.parseQuery((this._parts.fragment || '').substring(prefix.length));
+    let prefix = this._parts.fragmentPrefix;
+    let data = URI.parseQuery((this._parts.fragment || '').substring(prefix.length));
     URI.removeQuery(data, name, value);
     this._parts.fragment = prefix + URI.buildQuery(data);
     if (typeof name !== 'string') {
@@ -101,8 +101,8 @@
     return this;
   };
   p.setFragment = function(name, value, build) {
-    var prefix = this._parts.fragmentPrefix;
-    var data = URI.parseQuery((this._parts.fragment || '').substring(prefix.length));
+    let prefix = this._parts.fragmentPrefix;
+    let data = URI.parseQuery((this._parts.fragment || '').substring(prefix.length));
     URI.setQuery(data, name, value);
     this._parts.fragment = prefix + URI.buildQuery(data);
     if (typeof name !== 'string') {
