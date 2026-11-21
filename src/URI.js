@@ -1022,6 +1022,7 @@
     var _trim = options.trim || URI.findUri.trim;
     var _parens = options.parens || URI.findUri.parens;
     var _attributeOpen = /[a-z0-9-]=["']?$/i;
+    var _brackets = /[\[\]]/g;
 
     _start.lastIndex = 0;
     while (true) {
@@ -1041,6 +1042,21 @@
 
       var end = start + string.slice(start).search(_end);
       var slice = string.slice(start, end);
+      // An unmatched ] ends a URL, while IPv6 and query brackets stay intact.
+      _brackets.lastIndex = 0;
+      var bracketDepth = 0;
+      var bracketMatch;
+      while ((bracketMatch = _brackets.exec(slice))) {
+        if (bracketMatch[0] === '[') {
+          bracketDepth++;
+        } else if (!bracketDepth) {
+          slice = slice.slice(0, bracketMatch.index);
+          break;
+        } else {
+          bracketDepth--;
+        }
+      }
+
       // make sure we include well balanced parens
       var parensEnd = -1;
       while (true) {
