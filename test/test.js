@@ -1722,6 +1722,32 @@
 
     equal(result, expected, 'in string URI identification');
   });
+  test('withinString - markdown links', function() {
+    var source = '[dat://blog.tableflip.io/](dat://blog.tableflip.io/) is a thing';
+    var links = [];
+    var result = URI.withinString(source, function(url, start, end, string) {
+      links.push(url);
+      equal(string.slice(start, end), url, 'callback offsets identify the URL');
+    });
+
+    deepEqual(links, ['dat://blog.tableflip.io/', 'dat://blog.tableflip.io/'], 'label and destination are separate URLs');
+    equal(result, source, 'capture only leaves the source unchanged');
+    equal(URI.withinString(source, function(url) {
+      return '<a>' + url + '</a>';
+    }), '[<a>dat://blog.tableflip.io/</a>](<a>dat://blog.tableflip.io/</a>) is a thing', 'each URL is replaced separately');
+  });
+  test('withinString - square brackets', function() {
+    var source = '[http://[::1]/?foo[1]=bar](https://example.org/path[1])';
+    var links = [];
+    URI.withinString(source, function(url) {
+      links.push(url);
+    });
+
+    deepEqual(links, ['http://[::1]/?foo[1]=bar', 'https://example.org/path[1]'], 'balanced IPv6, query and path brackets are preserved');
+    equal(URI.withinString('https://example.org/foo]bar', function(url) {
+      return '<a>' + url + '</a>';
+    }), '<a>https://example.org/foo</a>]bar', 'an unmatched closing bracket ends the URL');
+  });
   test('withinString - ignore', function() {
     var decorate = function(url) {
       return '<a>' + url + '</a>';
